@@ -89,6 +89,94 @@ body {
   animation: heroIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@keyframes ctaFloat {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 6px 0 rgba(146, 92, 0, 0.35),
+      0 14px 28px rgba(180, 126, 20, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow:
+      0 7px 0 rgba(146, 92, 0, 0.30),
+      0 18px 34px rgba(180, 126, 20, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes ctaShine {
+  0% {
+    transform: translateX(-140%) skewX(-20deg);
+  }
+  45%, 100% {
+    transform: translateX(140%) skewX(-20deg);
+  }
+}
+
+/* 3D CTA Button ─────────────────────── */
+.cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #1a0f00;
+  text-decoration: none;
+  background: linear-gradient(
+    155deg,
+    #f5dc70 0%,
+    #d4a840 18%,
+    #b07020 42%,
+    #cc9a30 65%,
+    #eece58 85%,
+    #b07020 100%
+  );
+  animation: ctaFloat 2.8s ease-in-out infinite;
+}
+
+.cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.cta-btn:hover .cta-btn-inner {
+  transform: translateY(-1px) scale(1.01);
+}
+
+.cta-btn:active .cta-btn-inner {
+  transform: translateY(2px) scale(0.995);
+}
+
+.cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+  animation: ctaShine 3.5s ease-in-out infinite;
+}
+
 /* Reduced motion: disable all decorative animations */
 @media (prefers-reduced-motion: reduce) {
   .hero-enter  { animation: none; opacity: 1; transform: none; }
@@ -100,7 +188,10 @@ body {
     color: #0f172a;
   }
   .sparkle-particle { display: none; }
-  .cta-glow { animation: none !important; }
+  .cta-glow  { animation: none !important; }
+  .cta-float { animation: none !important; }
+  .cta-btn   { animation: none !important; }
+  .cta-shine { animation: none !important; display: none; }
 }
 
 /* Section fade-in (JS-driven via IntersectionObserver) */
