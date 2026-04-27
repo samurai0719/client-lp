@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
@@ -297,17 +298,27 @@ function ImageBlock({
   gradient,
   alt,
   className = '',
+  preload = false,
 }: {
   src: string;
   gradient: string;
   alt: string;
   className?: string;
+  preload?: boolean;
 }) {
   if (src) {
     return (
-      <div className={`w-full rounded-2xl overflow-hidden ${className}`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt={alt} className="w-full h-full object-cover" />
+      <div className={`relative w-full rounded-2xl overflow-hidden ${className}`}>
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 640px) 100vw, 640px"
+          className="object-cover"
+          quality={70}
+          preload={preload}
+          loading={preload ? 'eager' : 'lazy'}
+        />
       </div>
     );
   }
@@ -509,6 +520,7 @@ function HeroSection() {
             gradient={`linear-gradient(135deg, ${GREEN_DARK} 0%, ${GREEN} 40%, #1e4a2e 70%, ${GREEN_DARK} 100%)`}
             alt="RIZAP GOLF ヒーロー画像"
             className="aspect-[4/3]"
+            preload
           />
         </motion.div>
 
