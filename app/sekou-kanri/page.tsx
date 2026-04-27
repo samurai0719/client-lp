@@ -12,7 +12,7 @@ function CtaButton({ href, large = false }: { href: string; large?: boolean }) {
     <a
       href={href}
       rel="nofollow"
-      className={`cta-glow flex flex-col items-center justify-center gap-0.5 w-full max-w-sm bg-orange-500 hover:bg-orange-600 active:bg-orange-700 active:scale-[0.98] text-white rounded-2xl shadow-lg transition-all duration-200 cursor-pointer touch-manipulation mx-auto ${
+      className={`relative z-30 pointer-events-auto cta-glow flex flex-col items-center justify-center gap-0.5 w-full max-w-sm bg-orange-500 hover:bg-orange-600 active:bg-orange-700 active:scale-[0.98] text-white rounded-2xl shadow-lg transition-all duration-200 cursor-pointer touch-manipulation mx-auto ${
         large ? "py-5 px-8 min-h-[64px]" : "py-4 px-6 min-h-[56px]"
       }`}
     >
@@ -447,7 +447,7 @@ function MidCtaBanner() {
           <a
             href={CTA_HREF}
             rel="nofollow"
-            className="flex flex-col items-center justify-center gap-0.5 w-full max-w-xs min-h-[56px] bg-white hover:bg-slate-50 active:scale-[0.98] text-orange-500 rounded-2xl py-4 px-6 shadow-lg transition-all duration-200 cursor-pointer touch-manipulation font-bold"
+            className="relative z-30 pointer-events-auto flex flex-col items-center justify-center gap-0.5 w-full max-w-xs min-h-[56px] bg-white hover:bg-slate-50 active:scale-[0.98] text-orange-500 rounded-2xl py-4 px-6 shadow-lg transition-all duration-200 cursor-pointer touch-manipulation font-bold"
           >
             <span className="text-orange-400 text-[11px] font-semibold tracking-[0.18em]">
               公式サイト

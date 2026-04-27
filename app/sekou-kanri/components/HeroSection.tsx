@@ -196,7 +196,7 @@ export default function HeroSection() {
             <a
               href={CTA_HREF}
               rel="nofollow"
-              className="relative overflow-hidden flex flex-col items-center justify-center
+              className="relative z-30 pointer-events-auto overflow-hidden flex flex-col items-center justify-center
                          w-full min-h-[54px] md:min-h-[56px] rounded-2xl
                          cursor-pointer touch-manipulation active:scale-[0.96]"
               style={{
@@ -219,7 +219,7 @@ export default function HeroSection() {
             >
               <span
                 aria-hidden
-                className="absolute inset-x-4 top-[1px] h-[1px] rounded-full"
+                className="absolute inset-x-4 top-[1px] h-[1px] rounded-full pointer-events-none"
                 style={{
                   background:
                     "linear-gradient(90deg,transparent,rgba(255,255,255,0.75) 30%,rgba(255,255,255,0.75) 70%,transparent)",

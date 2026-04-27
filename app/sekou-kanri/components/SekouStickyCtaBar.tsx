@@ -41,7 +41,7 @@ export default function SekouStickyCtaBar() {
       <a
         href={CTA_HREF}
         rel="nofollow"
-        className="relative flex flex-col items-center justify-center gap-0 w-full
+        className="relative z-30 pointer-events-auto flex flex-col items-center justify-center gap-0 w-full
                    min-h-[52px] rounded-[14px] overflow-hidden
                    cursor-pointer touch-manipulation
                    active:scale-[0.97]"
@@ -75,7 +75,7 @@ export default function SekouStickyCtaBar() {
         {/* Top highlight strip — "lit from above" */}
         <span
           aria-hidden
-          className="absolute inset-x-2 top-px h-px rounded-full opacity-40"
+          className="absolute inset-x-2 top-px h-px rounded-full opacity-40 pointer-events-none"
           style={{ background: "linear-gradient(90deg, transparent, white 30%, white 70%, transparent)" }}
         />
 
