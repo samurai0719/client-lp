@@ -19,16 +19,16 @@ import {
 // ─────────────────────────────────────────────────────────────────────────────
 // 画像URL変数 — 後から外部URLを入れてください
 // ─────────────────────────────────────────────────────────────────────────────
-const heroImage = '';
-const problemImage = '';
-const diagnosisImage = '';
-const lessonImage = '';
-const ctaImage = '';
+const heroImage = 'https://static.wixstatic.com/media/5ebda9_56f2411ba35540e893541177d8306980~mv2.png';
+const problemImage = 'https://static.wixstatic.com/media/5ebda9_de4aab3b17a3451dae3e43ac0382d79e~mv2.png';
+const diagnosisImage = 'https://static.wixstatic.com/media/5ebda9_86fe0cab5d744de589a3c190a9926a0a~mv2.png';
+const lessonImage = 'https://static.wixstatic.com/media/5ebda9_3a1b6944157b4ee89b8c2af46f2ce857~mv2.png';
+const ctaImage = 'https://static.wixstatic.com/media/5ebda9_877f0360cd4d40d3ac13186bd52d90ca~mv2.png';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CTA リンク
 // ─────────────────────────────────────────────────────────────────────────────
-const CTA_HREF = '#';
+const CTA_HREF = 'https://px.a8.net/svt/ejp?a8mat=3ZD870+67V1S2+CW6+BF23HE';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 型定義
@@ -325,7 +325,8 @@ function CtaButton({ href }: { href: string }) {
   return (
     <a
       href={href}
-      rel="nofollow"
+      target="_blank"
+      rel="noopener noreferrer"
       className="block w-full max-w-sm mx-auto rounded-2xl py-5 px-6 text-center cursor-pointer touch-manipulation active:scale-[0.97] transition-transform duration-150 select-none"
       style={{
         background:
@@ -454,25 +455,23 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
 function HeroSection() {
   return (
     <section className="relative px-4 pt-8 pb-14 bg-white overflow-hidden">
-      {/* PR バッジ */}
-      <div className="flex items-center gap-2 mb-5">
+      {/* PR バッジ + ブランドラベル */}
+      <div className="flex items-center gap-2.5 mb-5">
         <span
-          className="font-bold border border-gray-300 text-gray-400 px-2 py-0.5 rounded-sm"
+          className="font-bold border border-gray-300 text-gray-400 px-2 py-0.5 rounded-sm shrink-0"
           style={{ fontSize: 9, letterSpacing: '0.18em' }}
         >
           PR
         </span>
-      </div>
-
-      <motion.div initial="hidden" animate="visible" variants={stagger}>
-        {/* ブランドラベル */}
-        <motion.p
-          variants={fadeUp}
-          className="font-extrabold mb-3"
+        <span
+          className="font-extrabold"
           style={{ fontSize: 10, letterSpacing: '0.32em', color: GOLD_DARK }}
         >
           RIZAP GOLF
-        </motion.p>
+        </span>
+      </div>
+
+      <motion.div initial="hidden" animate="visible" variants={stagger}>
 
         {/* H1 */}
         <motion.h1
