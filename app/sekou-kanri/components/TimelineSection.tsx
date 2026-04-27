@@ -277,6 +277,7 @@ function MidCtaBanner() {
       </p>
       <a
         href={CTA_HREF}
+        rel="nofollow"
         className="cta-glow inline-flex flex-col items-center justify-center gap-0.5 w-full max-w-xs bg-orange-500 hover:bg-orange-600 active:bg-orange-700 active:scale-[0.98] text-white rounded-2xl py-4 px-6 shadow-xl transition-all duration-150 mx-auto"
       >
         <span className="text-orange-100 text-xs font-semibold tracking-widest">

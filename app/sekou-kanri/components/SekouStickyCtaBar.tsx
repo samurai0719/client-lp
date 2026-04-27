@@ -40,6 +40,7 @@ export default function SekouStickyCtaBar() {
     >
       <a
         href={CTA_HREF}
+        rel="nofollow"
         className="relative flex flex-col items-center justify-center gap-0 w-full
                    min-h-[52px] rounded-[14px] overflow-hidden
                    cursor-pointer touch-manipulation

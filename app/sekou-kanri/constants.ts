@@ -1,4 +1,4 @@
-export const CTA_HREF = "#"; // TODO: replace with actual affiliate link
+export const CTA_HREF = "https://px.a8.net/svt/ejp?a8mat=4AV1SK+740GG2+5T42+60WN6";
 
 export const IMAGES = {
   hero: "https://static.wixstatic.com/media/5ebda9_f62ce9146ee74b65a5c4edafcbd6790f~mv2.png",

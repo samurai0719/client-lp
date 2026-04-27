@@ -195,6 +195,7 @@ export default function HeroSection() {
           <div id="hero-cta" className="flex flex-col gap-1.5 max-w-[288px] md:max-w-[300px]">
             <a
               href={CTA_HREF}
+              rel="nofollow"
               className="relative overflow-hidden flex flex-col items-center justify-center
                          w-full min-h-[54px] md:min-h-[56px] rounded-2xl
                          cursor-pointer touch-manipulation active:scale-[0.96]"

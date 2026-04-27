@@ -11,6 +11,7 @@ function CtaButton({ href, large = false }: { href: string; large?: boolean }) {
   return (
     <a
       href={href}
+      rel="nofollow"
       className={`cta-glow flex flex-col items-center justify-center gap-0.5 w-full max-w-sm bg-orange-500 hover:bg-orange-600 active:bg-orange-700 active:scale-[0.98] text-white rounded-2xl shadow-lg transition-all duration-200 cursor-pointer touch-manipulation mx-auto ${
         large ? "py-5 px-8 min-h-[64px]" : "py-4 px-6 min-h-[56px]"
       }`}
@@ -445,6 +446,7 @@ function MidCtaBanner() {
           </p>
           <a
             href={CTA_HREF}
+            rel="nofollow"
             className="flex flex-col items-center justify-center gap-0.5 w-full max-w-xs min-h-[56px] bg-white hover:bg-slate-50 active:scale-[0.98] text-orange-500 rounded-2xl py-4 px-6 shadow-lg transition-all duration-200 cursor-pointer touch-manipulation font-bold"
           >
             <span className="text-orange-400 text-[11px] font-semibold tracking-[0.18em]">
@@ -713,6 +715,9 @@ export default function SekouKanriPage() {
       <SekouStickyCtaBar />
       {/* Bottom padding for sticky CTA bar on mobile */}
       <div className="h-20 sm:hidden" aria-hidden />
+      {/* A8 conversion tracking pixel */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img border={0} width={1} height={1} src="https://www12.a8.net/0.gif?a8mat=4AV1SK+740GG2+5T42+60WN6" alt="" />
     </main>
   );
 }
