@@ -717,7 +717,13 @@ export default function SekouKanriPage() {
       <div className="h-20 sm:hidden" aria-hidden />
       {/* A8 conversion tracking pixel */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img border={0} width={1} height={1} src="https://www12.a8.net/0.gif?a8mat=4AV1SK+740GG2+5T42+60WN6" alt="" />
+      <img
+        width={1}
+        height={1}
+        src="https://www12.a8.net/0.gif?a8mat=4AV1SK+740GG2+5T42+60WN6"
+        alt=""
+        style={{ display: "none" }}
+      />
     </main>
   );
 }
