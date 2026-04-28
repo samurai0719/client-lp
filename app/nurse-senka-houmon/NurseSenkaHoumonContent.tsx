@@ -20,6 +20,7 @@ import {
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 const CTA_HREF = 'https://px.a8.net/svt/ejp?a8mat=3ZLWB9+5U62V6+9MO+3Z7TKH';
+const PROMO_HREF = 'https://px.a8.net/svt/ejp?a8mat=3ZLWB9+5U62V6+9MO+3YWW1T';
 
 const BLUE = '#1a7bb8';
 const BLUE_DARK = '#1258a0';
@@ -191,9 +192,19 @@ function SectionLabel({ children, color = 'blue' }: { children: string; color?: 
   );
 }
 
-function CtaButton({ label = '公式サイトで求人を見てみる' }: { label?: string }) {
+function CtaButton({
+  label = '公式サイトで求人を見てみる',
+  href = CTA_HREF,
+  target = '_blank',
+  rel = 'noopener noreferrer',
+}: {
+  label?: string;
+  href?: string;
+  target?: string;
+  rel?: string;
+}) {
   return (
-    <a href={CTA_HREF} target="_blank" rel="noopener noreferrer" className="nurse-cta-btn">
+    <a href={href} target={target} rel={rel} className="nurse-cta-btn">
       <span className="nurse-cta-shine" aria-hidden="true" />
       <span className="nurse-cta-btn-inner">
         <span className="block text-[15px] font-extrabold leading-tight tracking-wide">{label}</span>
@@ -736,6 +747,149 @@ function CautionsSection() {
   );
 }
 
+function NurseSenkaPromoSection() {
+  return (
+    <SectionWrap bg="white">
+      <SectionLabel>施設訪問看護の求人を探すなら</SectionLabel>
+      <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-5 leading-snug">
+        ナース専科 転職も
+        <br />
+        <span style={{ color: BLUE }}>おすすめです</span>
+      </h2>
+
+      <p className="text-sm text-gray-600 leading-relaxed mb-6">
+        施設訪問看護の求人は、施設形態や勤務時間、オンコールの有無、夜勤の有無などによって働き方が大きく変わります。
+        だからこそ、求人票だけで判断せず、複数の求人を比較しながら自分に合う職場を探すことが大切です。
+      </p>
+
+      {/* 実績バッジ */}
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-40px' }}
+        className="grid grid-cols-3 gap-3 mb-7"
+      >
+        {[
+          { num: '20万件\n以上', label: '掲載求人数' },
+          { num: '第1位', label: '2026年\nオリコン顧客満足度®' },
+          { num: '4年連続\nNo.1', label: '2023年〜2026年\n総合評価' },
+        ].map((badge, i) => (
+          <motion.div
+            key={i}
+            variants={fadeUp}
+            className="flex flex-col items-center justify-center text-center rounded-2xl border py-4 px-2"
+            style={{
+              background: i === 1
+                ? `linear-gradient(160deg, ${BLUE_DARK} 0%, ${BLUE} 100%)`
+                : BLUE_BG,
+              borderColor: i === 1 ? BLUE_DARK : BLUE_BORDER,
+              boxShadow: i === 1 ? '0 4px 16px rgba(18,88,160,0.20)' : '0 2px 8px rgba(0,0,0,0.04)',
+            }}
+          >
+            <p
+              className="font-extrabold leading-tight mb-1 whitespace-pre-line"
+              style={{
+                fontSize: 15,
+                color: i === 1 ? '#fff' : BLUE_DARK,
+              }}
+            >
+              {badge.num}
+            </p>
+            <p
+              className="leading-tight whitespace-pre-line"
+              style={{
+                fontSize: 9,
+                color: i === 1 ? 'rgba(255,255,255,0.80)' : '#64748b',
+              }}
+            >
+              {badge.label}
+            </p>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* 本文 */}
+      <div
+        className="p-5 rounded-2xl text-sm leading-relaxed mb-7"
+        style={{ background: BLUE_BG, border: `1px solid ${BLUE_BORDER}` }}
+      >
+        <p className="text-gray-700 mb-3">
+          ナース専科 転職は、看護師向けの転職支援サービスです。
+          20万件以上の豊富な求人を扱っており、病院・クリニック・訪問看護・施設など、幅広い選択肢から求人を探せます。
+        </p>
+        <p className="text-gray-700 mb-3">
+          また、2026年 オリコン顧客満足度®調査 看護師転職で第1位を獲得しており、
+          2023年〜2026年で4年連続 総合No.1に選ばれています。
+        </p>
+        <p className="text-gray-700">
+          施設訪問看護に興味がある方や、今の働き方を見直したい方は、
+          まずはどんな求人があるのか確認してみるのがおすすめです。
+        </p>
+      </div>
+
+      {/* 特徴リスト */}
+      <div className="space-y-2.5 mb-8">
+        {[
+          '病院・クリニック・訪問看護・施設など、幅広い看護師求人を探せる',
+          '自分では見つけにくい求人や、職場の雰囲気・働き方なども相談しやすい',
+          '施設訪問看護のように、条件や働き方を比較したい人にもおすすめ',
+        ].map((feat, i) => (
+          <div key={i} className="flex items-start gap-3">
+            <CheckCircle2 size={16} className="shrink-0 mt-0.5" style={{ color: MINT }} />
+            <p className="text-sm text-gray-700 leading-snug">{feat}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* A8バナー */}
+      <div className="flex flex-col items-center mb-7 gap-3">
+        <a
+          href={PROMO_HREF}
+          rel="nofollow"
+          className="block"
+          style={{ maxWidth: 300, width: '100%' }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            style={{ border: 0, maxWidth: 300, width: '100%', height: 'auto', display: 'block', margin: '0 auto' }}
+            width={300}
+            height={250}
+            alt="ナース専科 転職"
+            src="https://www22.a8.net/svt/bgt?aid=241206741353&wid=003&eno=01&mid=s00000001248024004000&mc=1"
+          />
+        </a>
+        {/* A8計測用1px画像 */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          style={{ border: 0, display: 'block' }}
+          width={1}
+          height={1}
+          src="https://www14.a8.net/0.gif?a8mat=3ZLWB9+5U62V6+9MO+3YWW1T"
+          alt=""
+        />
+      </div>
+
+      {/* CTAボタン */}
+      <CtaButton
+        label="ナース専科 転職の公式サイトを見る"
+        href={PROMO_HREF}
+        target="_self"
+        rel="nofollow sponsored"
+      />
+
+      {/* 注釈 */}
+      <p className="text-center mt-4 leading-relaxed" style={{ fontSize: 11, color: '#94a3b8' }}>
+        ※求人数や求人内容は時期・地域により変動します。
+        <br />
+        ※2026年 オリコン顧客満足度®調査 看護師転職 第1位。
+        <br />
+        ※2023年〜2026年 オリコン顧客満足度®調査 看護師転職 総合No.1。
+      </p>
+    </SectionWrap>
+  );
+}
+
 function NurseSenkaSection() {
   return (
     <SectionWrap bg="blue">
@@ -913,6 +1067,7 @@ export default function NurseSenkaHoumonContent() {
         <MeritsSection />
         <MidCtaSection />
         <CautionsSection />
+        <NurseSenkaPromoSection />
         <NurseSenkaSection />
         <FaqSection />
 

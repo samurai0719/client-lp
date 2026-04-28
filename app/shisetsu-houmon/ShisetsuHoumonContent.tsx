@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import type { ReactNode } from 'react';
@@ -18,6 +19,7 @@ import {
 // ─────────────────────────────────────────────────────────────────────────────
 const CTA_HREF = 'https://px.a8.net/svt/ejp?a8mat=3ZLWB9+5U62V6+9MO+3Z7TKH';
 const CTA_REL = 'nofollow sponsored';
+const PROMO_HREF = 'https://px.a8.net/svt/ejp?a8mat=3ZLWB9+5U62V6+9MO+3YWW1T';
 
 const GREEN = '#16a34a';
 const GREEN_DARK = '#15803d';
@@ -163,11 +165,22 @@ function SectionLabel({
   );
 }
 
-function CtaButton({ label = 'ナース専科で求人を見てみる' }: { label?: string }) {
+function CtaButton({
+  label = 'ナース専科で求人を見てみる',
+  href = CTA_HREF,
+  target,
+  rel = CTA_REL,
+}: {
+  label?: string;
+  href?: string;
+  target?: string;
+  rel?: string;
+}) {
   return (
     <a
-      href={CTA_HREF}
-      rel={CTA_REL}
+      href={href}
+      rel={rel}
+      target={target}
       className="shisetsu-cta-btn"
     >
       <span className="shisetsu-cta-shine" aria-hidden="true" />
@@ -243,6 +256,27 @@ function ImagePlaceholder({ label }: { label: string }) {
         </p>
         <p style={{ fontSize: 10, color: '#a7f3d0' }}>{label}</p>
       </div>
+    </div>
+  );
+}
+
+function SectionImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div
+      className="relative w-full overflow-hidden rounded-2xl"
+      style={{
+        height: 'clamp(200px, 42vw, 360px)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        border: '1px solid rgba(0,0,0,0.06)',
+      }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="(max-width: 640px) 100vw, 640px"
+      />
     </div>
   );
 }
@@ -379,7 +413,16 @@ function HeroSection() {
 
         {/* ── IMAGE SLOT 1: ファーストビュー ── */}
         <motion.div variants={fadeUp} className="mb-7">
-          <ImagePlaceholder label="ファーストビュー用画像" />
+          <div className="mx-auto w-full max-w-[820px] overflow-hidden rounded-2xl shadow-lg" style={{ background: 'rgba(240,253,244,0.7)' }}>
+            <div className="relative aspect-[12/9] w-full">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://static.wixstatic.com/media/5ebda9_7cdafac75d1f4384b7f81909fea21a1e~mv2.jpg"
+                alt="施設訪問看護で働く看護師のイメージ"
+                className="h-full w-full object-contain"
+              />
+            </div>
+          </div>
         </motion.div>
 
         {/* サブコピー */}
@@ -439,7 +482,10 @@ function EmpathySection() {
 
       {/* ── IMAGE SLOT 2: 共感ブロック ── */}
       <div className="mb-7">
-        <ImagePlaceholder label="共感ブロック用画像" />
+        <SectionImage
+          src="https://static.wixstatic.com/media/5ebda9_99488e48beaa4a33884eacb004025715~mv2.jpg"
+          alt="働き方に悩む看護師のイメージ"
+        />
       </div>
 
       <motion.div
@@ -494,7 +540,10 @@ function WhatIsSection() {
 
       {/* ── IMAGE SLOT 3: 施設訪問看護とは？ ── */}
       <div className="mb-7">
-        <ImagePlaceholder label="施設訪問看護とは？用画像" />
+        <SectionImage
+          src="https://static.wixstatic.com/media/5ebda9_c61b70e67b1f4955b2a0739139c90e0f~mv2.jpg"
+          alt="施設訪問看護の仕事内容のイメージ"
+        />
       </div>
 
       <p className="text-sm text-gray-600 leading-relaxed mb-5">
@@ -523,7 +572,10 @@ function MeritsSection() {
 
       {/* ── IMAGE SLOT 4: メリット4選 ── */}
       <div className="mb-7">
-        <ImagePlaceholder label="メリット紹介用画像" />
+        <SectionImage
+          src="https://static.wixstatic.com/media/5ebda9_43c7bc286f114a5f8e51c761951a4180~mv2.jpg"
+          alt="一般的な訪問看護との違いを説明するイメージ"
+        />
       </div>
 
       <motion.div
@@ -612,6 +664,151 @@ function RecommendedSection() {
           </motion.div>
         ))}
       </motion.div>
+    </SectionWrap>
+  );
+}
+
+function NurseSenkaPromoSection() {
+  return (
+    <SectionWrap bg="white">
+      <SectionLabel color="green">施設訪問看護の求人を探すなら</SectionLabel>
+      <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-5 leading-snug">
+        ナース専科 転職も
+        <br />
+        <span style={{ color: GREEN_DARK }}>おすすめです</span>
+      </h2>
+
+      <p className="text-sm text-gray-600 leading-relaxed mb-6">
+        施設訪問看護の求人は、施設形態や勤務時間、オンコールの有無、夜勤の有無などによって働き方が大きく変わります。
+        だからこそ、求人票だけで判断せず、複数の求人を比較しながら自分に合う職場を探すことが大切です。
+      </p>
+
+      {/* 実績バッジ */}
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-40px' }}
+        className="grid grid-cols-3 gap-3 mb-7"
+      >
+        {[
+          { num: '20万件\n以上', label: '掲載求人数' },
+          { num: '第1位', label: '2026年\nオリコン顧客満足度®' },
+          { num: '4年連続\nNo.1', label: '2023年〜2026年\n総合評価' },
+        ].map((badge, i) => (
+          <motion.div
+            key={i}
+            variants={fadeUp}
+            className="flex flex-col items-center justify-center text-center rounded-2xl border py-4 px-2"
+            style={{
+              background: i === 1
+                ? `linear-gradient(160deg, ${GREEN_DARK} 0%, ${GREEN} 100%)`
+                : GREEN_BG,
+              borderColor: i === 1 ? GREEN_DARK : GREEN_BORDER,
+              boxShadow: i === 1
+                ? '0 4px 16px rgba(21,128,61,0.22)'
+                : '0 2px 8px rgba(0,0,0,0.04)',
+            }}
+          >
+            <p
+              className="font-extrabold leading-tight mb-1 whitespace-pre-line"
+              style={{
+                fontSize: 15,
+                color: i === 1 ? '#fff' : GREEN_DARK,
+              }}
+            >
+              {badge.num}
+            </p>
+            <p
+              className="leading-tight whitespace-pre-line"
+              style={{
+                fontSize: 9,
+                color: i === 1 ? 'rgba(255,255,255,0.82)' : '#64748b',
+              }}
+            >
+              {badge.label}
+            </p>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* 本文 */}
+      <div
+        className="p-5 rounded-2xl text-sm leading-relaxed mb-7"
+        style={{ background: GREEN_BG, border: `1px solid ${GREEN_BORDER}` }}
+      >
+        <p className="text-gray-700 mb-3">
+          ナース専科 転職は、看護師向けの転職支援サービスです。
+          20万件以上の豊富な求人を扱っており、病院・クリニック・訪問看護・施設など、幅広い選択肢から求人を探せます。
+        </p>
+        <p className="text-gray-700 mb-3">
+          また、2026年 オリコン顧客満足度®調査 看護師転職で第1位を獲得しており、
+          2023年〜2026年で4年連続 総合No.1に選ばれています。
+        </p>
+        <p className="text-gray-700">
+          施設訪問看護に興味がある方や、今の働き方を見直したい方は、
+          まずはどんな求人があるのか確認してみるのがおすすめです。
+        </p>
+      </div>
+
+      {/* 特徴リスト */}
+      <div className="space-y-2.5 mb-8">
+        {[
+          '病院・クリニック・訪問看護・施設など、幅広い看護師求人を探せる',
+          '施設訪問看護のように、条件や働き方を比較したい人にもおすすめ',
+          '求人票だけでは分かりにくい職場の雰囲気や働き方も相談しやすい',
+        ].map((feat, i) => (
+          <div key={i} className="flex items-start gap-3">
+            <CheckCircle2 size={16} className="shrink-0 mt-0.5" style={{ color: TEAL }} />
+            <p className="text-sm text-gray-700 leading-snug">{feat}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* A8バナー */}
+      <div className="flex flex-col items-center mb-7 gap-3">
+        <a
+          href={PROMO_HREF}
+          rel="nofollow"
+          className="block"
+          style={{ maxWidth: 300, width: '100%' }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            style={{ border: 0, maxWidth: 300, width: '100%', height: 'auto', display: 'block', margin: '0 auto' }}
+            width={300}
+            height={250}
+            alt="ナース専科 転職"
+            src="https://www22.a8.net/svt/bgt?aid=241206741353&wid=003&eno=01&mid=s00000001248024004000&mc=1"
+          />
+        </a>
+        {/* A8計測用1px画像 */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          style={{ border: 0, display: 'block' }}
+          width={1}
+          height={1}
+          src="https://www14.a8.net/0.gif?a8mat=3ZLWB9+5U62V6+9MO+3YWW1T"
+          alt=""
+        />
+      </div>
+
+      {/* CTAボタン */}
+      <CtaButton
+        label="ナース専科 転職の公式サイトを見る"
+        href={PROMO_HREF}
+        target="_self"
+        rel="nofollow sponsored"
+      />
+
+      {/* 注釈 */}
+      <p className="text-center mt-4 leading-relaxed" style={{ fontSize: 11, color: '#94a3b8' }}>
+        ※求人数や求人内容は時期・地域により変動します。
+        <br />
+        ※2026年 オリコン顧客満足度®調査 看護師転職 第1位。
+        <br />
+        ※2023年〜2026年 オリコン顧客満足度®調査 看護師転職 総合No.1。
+      </p>
     </SectionWrap>
   );
 }
@@ -747,13 +944,17 @@ export default function ShisetsuHoumonContent() {
         <WhatIsSection />
         <MeritsSection />
         <RecommendedSection />
+        <NurseSenkaPromoSection />
         <LeadSection />
         <FaqSection />
 
         {/* ── IMAGE SLOT 5: 最終CTA直前 ── */}
         <section className="px-5 py-10" style={{ background: '#f8fafc' }}>
           <div className="max-w-xl mx-auto">
-            <ImagePlaceholder label="最終CTA直前用画像" />
+            <SectionImage
+              src="https://static.wixstatic.com/media/5ebda9_0698b8df08864cf5926f10641bcdf150~mv2.jpg"
+              alt="施設訪問看護で働くメリットのイメージ"
+            />
           </div>
         </section>
 
