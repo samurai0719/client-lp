@@ -17,7 +17,7 @@ import {
 // Constants
 // ─────────────────────────────────────────────────────────────────────────────
 const CTA_HREF = 'https://px.a8.net/svt/ejp?a8mat=3ZLWB9+5U62V6+9MO+3Z7TKH';
-const CTA_REL = 'nofollow sponsored noopener noreferrer';
+const CTA_REL = 'nofollow sponsored';
 
 const GREEN = '#16a34a';
 const GREEN_DARK = '#15803d';
@@ -167,7 +167,6 @@ function CtaButton({ label = 'ナース専科で求人を見てみる' }: { labe
   return (
     <a
       href={CTA_HREF}
-      target="_blank"
       rel={CTA_REL}
       className="shisetsu-cta-btn"
     >
