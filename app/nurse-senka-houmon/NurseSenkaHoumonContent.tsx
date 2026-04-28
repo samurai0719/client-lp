@@ -205,6 +205,44 @@ function CtaButton({ label = '公式サイトで求人を見てみる' }: { labe
   );
 }
 
+function ImagePlaceholder({ label, heightClass = 'h-40 sm:h-56' }: { label: string; heightClass?: string }) {
+  return (
+    <div
+      className={`w-full rounded-2xl flex flex-col items-center justify-center gap-2.5 select-none ${heightClass}`}
+      style={{
+        background: 'rgba(240, 247, 255, 0.7)',
+        border: '2px dashed #93c5fd',
+      }}
+    >
+      <div
+        className="flex items-center justify-center w-11 h-11 rounded-full"
+        style={{ background: '#dbeafe' }}
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <polyline points="21 15 16 10 5 21" />
+        </svg>
+      </div>
+      <div className="text-center">
+        <p className="text-xs font-extrabold" style={{ color: '#60a5fa' }}>
+          {label}
+        </p>
+        <p style={{ fontSize: 10, color: '#93c5fd', marginTop: 2 }}>画像挿入予定</p>
+      </div>
+    </div>
+  );
+}
+
 function CtaNotes() {
   return (
     <p className="text-center mt-3 leading-relaxed" style={{ fontSize: 11, color: '#94a3b8' }}>
@@ -313,7 +351,7 @@ function HeroSection() {
           className="text-[1.65rem] sm:text-3xl font-extrabold text-gray-900 leading-snug mb-5"
           style={{ letterSpacing: '-0.01em' }}
         >
-          夜勤・急変対応に
+          夜勤・急変対応に疲れた
           <br />
           <span
             style={{
@@ -323,7 +361,7 @@ function HeroSection() {
               backgroundClip: 'text',
             }}
           >
-            疲れた看護師さんへ
+            看護師さんへ
           </span>
         </motion.h1>
 
@@ -355,6 +393,11 @@ function HeroSection() {
         <motion.div variants={fadeUp}>
           <CtaButton />
           <CtaNotes />
+        </motion.div>
+
+        {/* ファーストビュー用画像 */}
+        <motion.div variants={fadeUp} className="mt-8">
+          <ImagePlaceholder label="ファーストビュー用画像" heightClass="h-48 sm:h-64" />
         </motion.div>
       </motion.div>
 
@@ -431,6 +474,11 @@ function EmpathySection() {
           「施設訪問看護」という選択肢を、一緒に見てみませんか？
         </p>
       </div>
+
+      {/* 共感ブロック用画像 */}
+      <div className="mt-8">
+        <ImagePlaceholder label="共感ブロック用画像" />
+      </div>
     </SectionWrap>
   );
 }
@@ -477,6 +525,11 @@ function WhatIsSection() {
             <p className="text-sm text-gray-700 leading-relaxed">{item.body}</p>
           </div>
         ))}
+      </div>
+
+      {/* 施設訪問看護とは？用画像 */}
+      <div className="mt-8">
+        <ImagePlaceholder label="施設訪問看護とは？用画像" />
       </div>
     </SectionWrap>
   );
@@ -541,6 +594,11 @@ function ComparisonSection() {
       <p className="mt-4 text-center leading-relaxed" style={{ fontSize: 11, color: '#64748b' }}>
         ※職場によって異なります。求人内容は必ず確認してください。
       </p>
+
+      {/* 一般的な訪問看護との違い用画像 */}
+      <div className="mt-8">
+        <ImagePlaceholder label="一般的な訪問看護との違い用画像" />
+      </div>
     </SectionWrap>
   );
 }
@@ -599,6 +657,11 @@ function MeritsSection() {
           </motion.div>
         ))}
       </motion.div>
+
+      {/* 施設訪問看護で働くメリット用画像 */}
+      <div className="mt-8">
+        <ImagePlaceholder label="施設訪問看護で働くメリット用画像" />
+      </div>
     </SectionWrap>
   );
 }
@@ -664,6 +727,11 @@ function CautionsSection() {
           </motion.div>
         ))}
       </motion.div>
+
+      {/* 注意点・確認すべきポイント用画像 */}
+      <div className="mt-8">
+        <ImagePlaceholder label="注意点・確認すべきポイント用画像" />
+      </div>
     </SectionWrap>
   );
 }
@@ -717,6 +785,11 @@ function NurseSenkaSection() {
         <p className="mt-3 leading-relaxed" style={{ fontSize: 11, color: '#94a3b8' }}>
           ※希望に必ず合う求人をご案内できるとは限りません。条件に合わせてご確認ください。
         </p>
+      </div>
+
+      {/* ナース専科 転職紹介用画像 */}
+      <div className="mb-7">
+        <ImagePlaceholder label="ナース専科 転職紹介用画像" />
       </div>
 
       <CtaButton />
@@ -842,6 +915,14 @@ export default function NurseSenkaHoumonContent() {
         <CautionsSection />
         <NurseSenkaSection />
         <FaqSection />
+
+        {/* 最終CTA直前用画像 */}
+        <section className="px-5 py-10" style={{ background: '#f8fafc' }}>
+          <div className="max-w-xl mx-auto">
+            <ImagePlaceholder label="最終CTA直前用画像" heightClass="h-48 sm:h-64" />
+          </div>
+        </section>
+
         <FinalCtaSection />
       </main>
     </>

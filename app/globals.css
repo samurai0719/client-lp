@@ -244,6 +244,73 @@ body {
   animation: nurseCta-shine 3.5s ease-in-out infinite;
 }
 
+/* ── Nurse Senka Shisetsu LP CTA (green) ────────────────────────── */
+@keyframes shisetsuCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 5px 0 rgba(21, 128, 61, 0.30),
+      0 12px 28px rgba(34, 197, 94, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 7px 0 rgba(21, 128, 61, 0.25),
+      0 18px 36px rgba(34, 197, 94, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes shisetsuCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.shisetsu-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(145deg, #22c55e 0%, #16a34a 50%, #0d9488 100%);
+  background-size: 200% 200%;
+  animation: shisetsuCta-float 2.8s ease-in-out infinite;
+}
+
+.shisetsu-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.shisetsu-cta-btn:hover .shisetsu-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.shisetsu-cta-btn:active .shisetsu-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.shisetsu-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: shisetsuCta-shine 3.5s ease-in-out infinite;
+}
+
 /* Reduced motion: disable all decorative animations */
 @media (prefers-reduced-motion: reduce) {
   .hero-enter  { animation: none; opacity: 1; transform: none; }
@@ -261,6 +328,8 @@ body {
   .cta-shine { animation: none !important; display: none; }
   .nurse-cta-btn   { animation: none !important; }
   .nurse-cta-shine { animation: none !important; display: none; }
+  .shisetsu-cta-btn   { animation: none !important; }
+  .shisetsu-cta-shine { animation: none !important; display: none; }
 }
 
 /* Section fade-in (JS-driven via IntersectionObserver) */
