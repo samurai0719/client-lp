@@ -177,6 +177,73 @@ body {
   animation: ctaShine 3.5s ease-in-out infinite;
 }
 
+/* ── Nurse Senka Houmon LP CTA ───────────────────────────────────── */
+@keyframes nurseCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 5px 0 rgba(210, 50, 100, 0.3),
+      0 12px 28px rgba(249, 107, 157, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 7px 0 rgba(210, 50, 100, 0.25),
+      0 18px 36px rgba(249, 107, 157, 0.44),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes nurseCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.nurse-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(145deg, #f96ba0 0%, #ff8c60 50%, #f96ba0 100%);
+  background-size: 200% 200%;
+  animation: nurseCta-float 2.8s ease-in-out infinite;
+}
+
+.nurse-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.nurse-cta-btn:hover .nurse-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.nurse-cta-btn:active .nurse-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.nurse-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: nurseCta-shine 3.5s ease-in-out infinite;
+}
+
 /* Reduced motion: disable all decorative animations */
 @media (prefers-reduced-motion: reduce) {
   .hero-enter  { animation: none; opacity: 1; transform: none; }
@@ -192,6 +259,8 @@ body {
   .cta-float { animation: none !important; }
   .cta-btn   { animation: none !important; }
   .cta-shine { animation: none !important; display: none; }
+  .nurse-cta-btn   { animation: none !important; }
+  .nurse-cta-shine { animation: none !important; display: none; }
 }
 
 /* Section fade-in (JS-driven via IntersectionObserver) */
