@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import HeroSection from "./components/HeroSection";
 import FadeInSection from "./components/FadeInSection";
@@ -5,47 +6,92 @@ import SekouFaqAccordion from "./components/SekouFaqAccordion";
 import SekouStickyCtaBar from "./components/SekouStickyCtaBar";
 import { CTA_HREF, IMAGES } from "./constants";
 
-// ── Shared components (server) ───────────────────────────────────────────────
+// ── Design tokens ─────────────────────────────────────────────────────────────
+const ORANGE = "#f97316";
+const ORANGE_DARK = "#c25a0a";
 
+// ── CTA Button ────────────────────────────────────────────────────────────────
 function CtaButton({ href, large = false }: { href: string; large?: boolean }) {
   return (
     <a
       href={href}
       rel="nofollow"
-      className={`relative z-30 pointer-events-auto cta-glow flex flex-col items-center justify-center gap-0.5 w-full max-w-sm bg-orange-500 hover:bg-orange-600 active:bg-orange-700 active:scale-[0.98] text-white rounded-2xl shadow-lg transition-all duration-200 cursor-pointer touch-manipulation mx-auto ${
-        large ? "py-5 px-8 min-h-[64px]" : "py-4 px-6 min-h-[56px]"
-      }`}
+      className="sekou-cta-btn"
+      style={{ maxWidth: large ? "22rem" : "20rem" }}
     >
-      <span className="text-orange-100 text-[11px] font-semibold tracking-[0.18em]">
-        公式サイト
-      </span>
-      <span
-        className={`text-white font-extrabold leading-tight ${
-          large ? "text-xl" : "text-[1.05rem]"
-        }`}
-      >
-        非公開求人を見てみる
+      <span className="sekou-cta-shine" aria-hidden="true" />
+      <span className="sekou-cta-btn-inner">
+        <span
+          className="block mb-0.5"
+          style={{
+            fontSize: 10,
+            letterSpacing: "0.24em",
+            color: "rgba(255,237,213,0.85)",
+            fontWeight: 600,
+          }}
+        >
+          公式サイト
+        </span>
+        <span
+          className="block leading-tight"
+          style={{
+            fontSize: large ? "1.1rem" : "1rem",
+            fontWeight: 800,
+            color: "#fff",
+            textShadow: "0 1px 4px rgba(130,35,0,0.28)",
+          }}
+        >
+          非公開求人を見てみる
+        </span>
       </span>
     </a>
   );
 }
 
-function SectionLabel({ children }: { children: string }) {
+// ── Section Label ─────────────────────────────────────────────────────────────
+function SectionLabel({
+  children,
+  light = false,
+}: {
+  children: string;
+  light?: boolean;
+}) {
   return (
-    <p className="text-orange-500 text-xs font-bold tracking-[0.22em] uppercase mb-3">
+    <p
+      className="text-[10px] font-extrabold uppercase tracking-[0.26em] mb-3"
+      style={{ color: light ? "rgba(251,146,60,0.9)" : ORANGE_DARK }}
+    >
       {children}
     </p>
   );
 }
 
+// ── Orange underline for headings ─────────────────────────────────────────────
+function OrangeLine({ children }: { children: ReactNode }) {
+  return (
+    <span
+      style={{
+        backgroundImage: `linear-gradient(to right, ${ORANGE} 0%, rgba(249,163,86,0.5) 100%)`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 2.5px",
+        backgroundPosition: "0 100%",
+        paddingBottom: 4,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+// ── Check Item ────────────────────────────────────────────────────────────────
 function CheckItem({ children }: { children: string }) {
   return (
     <div className="flex gap-3 items-start">
       <svg
-        className="w-5 h-5 shrink-0 text-orange-500 mt-0.5"
+        className="w-5 h-5 shrink-0 mt-0.5"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="currentColor"
+        stroke={ORANGE}
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -60,8 +106,22 @@ function CheckItem({ children }: { children: string }) {
   );
 }
 
-// ── Section 1: Pain Points ────────────────────────────────────────────────────
+// ── Step Badge ────────────────────────────────────────────────────────────────
+function StepBadge({ n }: { n: string }) {
+  return (
+    <span
+      className="flex items-center justify-center w-10 h-10 rounded-full text-sm font-extrabold text-white shrink-0"
+      style={{
+        background: `linear-gradient(135deg, #e55d0a 0%, ${ORANGE} 50%, #ff9a47 80%, #e55d0a 100%)`,
+        boxShadow: "0 2px 10px rgba(249,115,22,0.42)",
+      }}
+    >
+      {n}
+    </span>
+  );
+}
 
+// ── Section 1: Pain Points ────────────────────────────────────────────────────
 function PainPointsSection() {
   const pains = [
     {
@@ -105,7 +165,7 @@ function PainPointsSection() {
   ];
 
   return (
-    <section className="bg-slate-50 py-20 px-6" aria-labelledby="pain-heading">
+    <section className="py-20 px-5" style={{ background: "#f8f8f6" }} aria-labelledby="pain-heading">
       <div className="max-w-5xl mx-auto">
         <FadeInSection>
           <div className="text-center mb-12">
@@ -115,9 +175,7 @@ function PainPointsSection() {
               className="font-black leading-tight text-slate-900"
               style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}
             >
-              <span className="sparkle-text-subtle">
-                今の年収に、本当に満足していますか？
-              </span>
+              <OrangeLine>今の年収に、本当に満足していますか？</OrangeLine>
             </h2>
           </div>
         </FadeInSection>
@@ -125,13 +183,16 @@ function PainPointsSection() {
         <div className="flex flex-col md:flex-row gap-10 items-center">
           {/* Image */}
           <FadeInSection className="md:w-2/5 flex justify-center" delay={0.1}>
-            <div className="relative w-full max-w-xs md:max-w-none">
+            <div
+              className="relative w-full max-w-xs md:max-w-none rounded-2xl overflow-hidden"
+              style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)" }}
+            >
               <Image
                 src={IMAGES.worry}
                 alt="悩む施工管理者"
                 width={440}
                 height={520}
-                className="w-full h-auto object-contain rounded-2xl"
+                className="w-full h-auto object-contain"
                 loading="lazy"
               />
             </div>
@@ -141,8 +202,17 @@ function PainPointsSection() {
           <div className="md:w-3/5 space-y-3">
             {pains.map((pain, i) => (
               <FadeInSection key={i} delay={i * 0.08}>
-                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex gap-4 items-start cursor-default">
-                  <span className="shrink-0 w-9 h-9 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center">
+                <div
+                  className="bg-white rounded-2xl p-5 flex gap-4 items-start"
+                  style={{
+                    border: "1px solid #f1f5f9",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)",
+                  }}
+                >
+                  <span
+                    className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center"
+                    style={{ background: "rgba(249,115,22,0.10)", color: ORANGE }}
+                  >
                     {pain.icon}
                   </span>
                   <p className="text-slate-800 font-medium leading-relaxed text-sm md:text-base pt-1.5">
@@ -153,8 +223,14 @@ function PainPointsSection() {
             ))}
 
             <FadeInSection delay={pains.length * 0.08}>
-              <div className="bg-orange-50 rounded-2xl border border-orange-200/60 p-5 mt-2">
-                <p className="text-orange-800 text-sm font-medium leading-relaxed">
+              <div
+                className="rounded-2xl p-5 mt-2"
+                style={{
+                  background: "rgba(249,115,22,0.06)",
+                  border: "1px solid rgba(249,115,22,0.20)",
+                }}
+              >
+                <p className="text-orange-900 text-sm font-medium leading-relaxed">
                   今の会社だけで判断していると、<strong>条件の良い求人を見逃している可能性</strong>があります。
                 </p>
               </div>
@@ -167,7 +243,6 @@ function PainPointsSection() {
 }
 
 // ── Section 2: Market Value ──────────────────────────────────────────────────
-
 function MarketValueSection() {
   const points = [
     "建築・土木・電気工事・機械設備などの経験は、転職市場で評価されやすい",
@@ -176,19 +251,24 @@ function MarketValueSection() {
   ];
 
   return (
-    <section className="bg-white py-20 px-6" aria-labelledby="market-heading">
+    <section className="bg-white py-20 px-5" aria-labelledby="market-heading">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row-reverse gap-10 items-center">
           {/* Image */}
           <FadeInSection className="md:w-2/5 flex justify-center" delay={0.1}>
-            <Image
-              src={IMAGES.lookUp}
-              alt="上を向く施工管理者"
-              width={440}
-              height={520}
-              className="w-full max-w-xs md:max-w-none h-auto object-contain"
-              loading="lazy"
-            />
+            <div
+              className="w-full max-w-xs md:max-w-none rounded-2xl overflow-hidden"
+              style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)" }}
+            >
+              <Image
+                src={IMAGES.lookUp}
+                alt="上を向く施工管理者"
+                width={440}
+                height={520}
+                className="w-full h-auto object-contain"
+                loading="lazy"
+              />
+            </div>
           </FadeInSection>
 
           {/* Text */}
@@ -200,11 +280,9 @@ function MarketValueSection() {
                 className="font-black leading-tight text-slate-900 mb-6"
                 style={{ fontSize: "clamp(1.4rem, 3.8vw, 2.1rem)" }}
               >
-                <span className="sparkle-text-subtle">
-                  施工管理経験者は、
-                  <br className="hidden sm:block" />
-                  転職市場で評価されやすい
-                </span>
+                施工管理経験者は、
+                <br className="hidden sm:block" />
+                <OrangeLine>転職市場で評価されやすい</OrangeLine>
               </h2>
             </FadeInSection>
 
@@ -217,7 +295,14 @@ function MarketValueSection() {
             </div>
 
             <FadeInSection delay={0.35}>
-              <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5">
+              <div
+                className="rounded-2xl p-5"
+                style={{
+                  background: "#f8f8f6",
+                  border: "1px solid #e8e4da",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                }}
+              >
                 <p className="text-slate-700 text-sm leading-relaxed">
                   まず非公開求人を確認して、<strong>今より良い条件があるか</strong>だけ確かめてみる。
                   転職を決めるのは、それからでも遅くありません。
@@ -232,7 +317,6 @@ function MarketValueSection() {
 }
 
 // ── Section 3: Service Features (dark) ──────────────────────────────────────
-
 function ServiceSection() {
   const features = [
     {
@@ -285,13 +369,22 @@ function ServiceSection() {
   ];
 
   return (
-    <section className="bg-slate-950 py-20 px-6" aria-labelledby="service-heading">
-      <div className="max-w-5xl mx-auto">
+    <section
+      className="py-20 px-5 relative overflow-hidden"
+      style={{ background: "#0b1120" }}
+      aria-labelledby="service-heading"
+    >
+      {/* Ambient glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(249,115,22,0.07) 0%, transparent 65%)" }}
+        aria-hidden
+      />
+
+      <div className="max-w-5xl mx-auto relative">
         <FadeInSection>
           <div className="text-center mb-12">
-            <p className="text-orange-400 text-xs font-bold tracking-[0.22em] uppercase mb-3">
-              サービスの特徴
-            </p>
+            <SectionLabel light>サービスの特徴</SectionLabel>
             <h2
               id="service-heading"
               className="font-black leading-tight text-white"
@@ -299,38 +392,59 @@ function ServiceSection() {
             >
               建設・設備求人データベースとは
             </h2>
-            <p className="text-slate-400 mt-3 text-sm leading-relaxed max-w-xl mx-auto">
+            <p
+              className="mt-3 text-sm leading-relaxed max-w-xl mx-auto"
+              style={{ color: "rgba(148,163,184,0.85)" }}
+            >
               株式会社クイックが運営する、建設・設備・プラント系に特化した転職サービスです。
             </p>
           </div>
         </FadeInSection>
 
-        <div className="flex flex-col lg:flex-row gap-10 items-start">
+        <div className="flex flex-col lg:flex-row gap-10 items-center">
           {/* Image */}
-          <FadeInSection className="lg:w-2/5 flex justify-center" delay={0.1}>
-            <Image
-              src={IMAGES.team}
-              alt="図面を確認するチーム"
-              width={500}
-              height={400}
-              className="w-full max-w-sm lg:max-w-none h-auto object-contain rounded-2xl"
-              loading="lazy"
-            />
+          <FadeInSection className="w-full lg:w-2/5 flex justify-center" delay={0.1}>
+            <div
+              className="w-full max-w-sm lg:max-w-none rounded-2xl overflow-hidden"
+              style={{
+                boxShadow: "0 8px 40px rgba(0,0,0,0.30)",
+                border: "1px solid rgba(255,255,255,0.07)",
+              }}
+            >
+              <Image
+                src={IMAGES.team}
+                alt="図面を確認するチーム"
+                width={500}
+                height={400}
+                className="w-full h-auto object-contain"
+                loading="lazy"
+              />
+            </div>
           </FadeInSection>
 
           {/* Feature cards */}
           <div className="lg:w-3/5 space-y-3">
             {features.map((f, i) => (
               <FadeInSection key={i} delay={i * 0.07}>
-                <div className="bg-slate-900 rounded-2xl border border-slate-800 p-5 flex gap-4 items-start">
-                  <span className="shrink-0 w-9 h-9 rounded-xl bg-orange-500/15 text-orange-400 flex items-center justify-center">
+                <div
+                  className="rounded-2xl p-5 flex gap-4 items-start"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.18)",
+                  }}
+                >
+                  <span
+                    className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center"
+                    style={{ background: "rgba(249,115,22,0.15)", color: "#fb923c" }}
+                  >
                     {f.icon}
                   </span>
                   <div>
                     <h3 className="text-white font-bold text-sm md:text-base mb-1">
                       {f.title}
                     </h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">
+                    <p className="text-sm leading-relaxed" style={{ color: "rgba(148,163,184,0.85)" }}>
                       {f.desc}
                     </p>
                   </div>
@@ -344,7 +458,7 @@ function ServiceSection() {
         <FadeInSection delay={0.3}>
           <div className="mt-12 text-center flex flex-col items-center gap-3">
             <CtaButton href={CTA_HREF} />
-            <p className="text-slate-500 text-xs">
+            <p className="text-xs" style={{ color: "rgba(100,116,139,0.8)" }}>
               ※ 求職者は完全無料でご利用いただけます
             </p>
           </div>
@@ -355,7 +469,6 @@ function ServiceSection() {
 }
 
 // ── Section 4: Steps ─────────────────────────────────────────────────────────
-
 function StepsSection() {
   const steps = [
     {
@@ -376,7 +489,7 @@ function StepsSection() {
   ];
 
   return (
-    <section className="bg-white py-20 px-6" aria-labelledby="steps-heading">
+    <section className="bg-white py-20 px-5" aria-labelledby="steps-heading">
       <div className="max-w-4xl mx-auto">
         <FadeInSection>
           <div className="text-center mb-12">
@@ -386,9 +499,8 @@ function StepsSection() {
               className="font-black leading-tight text-slate-900"
               style={{ fontSize: "clamp(1.4rem, 3.8vw, 2.1rem)" }}
             >
-              <span className="sparkle-text-subtle">
-                3ステップで無料確認
-              </span>
+              3ステップで
+              <OrangeLine>無料確認</OrangeLine>
             </h2>
           </div>
         </FadeInSection>
@@ -396,11 +508,19 @@ function StepsSection() {
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {steps.map((step, i) => (
             <FadeInSection key={i} delay={i * 0.12}>
-              <div className="relative bg-slate-50 rounded-2xl border border-slate-100 p-6 h-full">
+              <div
+                className="relative rounded-2xl p-6 h-full flex flex-col"
+                style={{
+                  background: "#f8f8f6",
+                  border: "1px solid rgba(249,115,22,0.18)",
+                  boxShadow: "0 2px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04)",
+                }}
+              >
                 {/* Connector arrow (desktop) */}
                 {i < steps.length - 1 && (
                   <div
-                    className="hidden md:block absolute top-8 -right-5 z-10 text-orange-300"
+                    className="hidden md:block absolute top-8 -right-5 z-10"
+                    style={{ color: "rgba(249,115,22,0.4)" }}
                     aria-hidden
                   >
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -409,12 +529,12 @@ function StepsSection() {
                     </svg>
                   </div>
                 )}
-                <span className="block text-4xl font-black text-orange-500/20 mb-3 leading-none select-none">
-                  {step.num}
-                </span>
-                <h3 className="text-slate-900 font-bold text-base mb-2">
-                  {step.title}
-                </h3>
+                <div className="flex items-center gap-3 mb-4">
+                  <StepBadge n={step.num} />
+                  <h3 className="text-slate-900 font-bold text-sm md:text-base leading-snug">
+                    {step.title}
+                  </h3>
+                </div>
                 <p className="text-slate-600 text-sm leading-relaxed">
                   {step.desc}
                 </p>
@@ -428,35 +548,38 @@ function StepsSection() {
 }
 
 // ── Section 5: Mid CTA Banner ────────────────────────────────────────────────
-
 function MidCtaBanner() {
   return (
-    <section className="py-14 px-6 bg-gradient-to-br from-orange-500 to-orange-600">
+    <section
+      className="py-16 px-5 relative overflow-hidden"
+      style={{
+        background: "linear-gradient(160deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)",
+      }}
+    >
+      {/* Ambient glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(249,115,22,0.10) 0%, transparent 70%)" }}
+        aria-hidden
+      />
+
       <FadeInSection>
-        <div className="max-w-xl mx-auto text-center flex flex-col items-center gap-5">
+        <div className="max-w-xl mx-auto text-center flex flex-col items-center gap-5 relative">
+          <SectionLabel light>まずは一歩から</SectionLabel>
           <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
             年収800万円以下なら、
             <br />
             まず非公開求人を確認してみる
           </h2>
-          <p className="text-orange-100 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.62)" }}>
             転職するかどうかは後で決めればOK。
             <br className="sm:hidden" />
             まずは求人を見るだけでも大丈夫です。
           </p>
-          <a
-            href={CTA_HREF}
-            rel="nofollow"
-            className="relative z-30 pointer-events-auto flex flex-col items-center justify-center gap-0.5 w-full max-w-xs min-h-[56px] bg-white hover:bg-slate-50 active:scale-[0.98] text-orange-500 rounded-2xl py-4 px-6 shadow-lg transition-all duration-200 cursor-pointer touch-manipulation font-bold"
-          >
-            <span className="text-orange-400 text-[11px] font-semibold tracking-[0.18em]">
-              公式サイト
-            </span>
-            <span className="text-orange-500 text-[1.05rem] font-extrabold leading-tight">
-              非公開求人を見てみる
-            </span>
-          </a>
-          <p className="text-orange-200 text-xs">※ 無料でご利用いただけます</p>
+          <CtaButton href={CTA_HREF} large />
+          <p className="text-xs" style={{ color: "rgba(100,116,139,0.75)" }}>
+            ※ 無料でご利用いただけます
+          </p>
         </div>
       </FadeInSection>
     </section>
@@ -464,7 +587,6 @@ function MidCtaBanner() {
 }
 
 // ── Section 6: Target Audience ───────────────────────────────────────────────
-
 function TargetSection() {
   const targets = [
     { text: "年収800万円以下の施工管理経験者" },
@@ -476,7 +598,11 @@ function TargetSection() {
   ];
 
   return (
-    <section className="bg-slate-50 py-20 px-6" aria-labelledby="target-heading">
+    <section
+      className="py-20 px-5"
+      style={{ background: "#f8f8f6" }}
+      aria-labelledby="target-heading"
+    >
       <div className="max-w-4xl mx-auto">
         <FadeInSection>
           <div className="text-center mb-12">
@@ -486,9 +612,7 @@ function TargetSection() {
               className="font-black leading-tight text-slate-900"
               style={{ fontSize: "clamp(1.4rem, 3.8vw, 2.1rem)" }}
             >
-              <span className="sparkle-text-subtle">
-                あなたは当てはまりますか？
-              </span>
+              あなたは当てはまりますか？
             </h2>
           </div>
         </FadeInSection>
@@ -496,9 +620,27 @@ function TargetSection() {
         <div className="grid sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
           {targets.map((t, i) => (
             <FadeInSection key={i} delay={i * 0.06}>
-              <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex gap-3 items-center">
-                <span className="shrink-0 w-6 h-6 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <div
+                className="bg-white rounded-2xl p-4 flex gap-3 items-center"
+                style={{
+                  border: "1px solid #eeebe4",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.03)",
+                }}
+              >
+                <span
+                  className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
+                  style={{ background: "rgba(249,115,22,0.12)" }}
+                >
+                  <svg
+                    className="w-3.5 h-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={ORANGE}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </span>
@@ -521,22 +663,26 @@ function TargetSection() {
 }
 
 // ── Section 7: Consultation CTA ──────────────────────────────────────────────
-
 function ConsultSection() {
   return (
-    <section className="bg-white py-20 px-6" aria-labelledby="consult-heading">
+    <section className="bg-white py-20 px-5" aria-labelledby="consult-heading">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row gap-10 items-center">
           {/* Image */}
           <FadeInSection className="md:w-2/5 flex justify-center" delay={0.1}>
-            <Image
-              src={IMAGES.consult}
-              alt="コンサルタントとの相談"
-              width={440}
-              height={520}
-              className="w-full max-w-xs md:max-w-none h-auto object-contain"
-              loading="lazy"
-            />
+            <div
+              className="w-full max-w-xs md:max-w-none rounded-2xl overflow-hidden"
+              style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06)" }}
+            >
+              <Image
+                src={IMAGES.consult}
+                alt="コンサルタントとの相談"
+                width={440}
+                height={520}
+                className="w-full h-auto object-contain"
+                loading="lazy"
+              />
+            </div>
           </FadeInSection>
 
           {/* Text + CTA */}
@@ -548,11 +694,9 @@ function ConsultSection() {
                 className="font-black leading-tight text-slate-900 mb-5"
                 style={{ fontSize: "clamp(1.4rem, 3.8vw, 2.1rem)" }}
               >
-                <span className="sparkle-text-subtle">
-                  転職するか迷っていても、
-                  <br className="hidden sm:block" />
-                  まず相談だけでも大丈夫
-                </span>
+                転職するか迷っていても、
+                <br className="hidden sm:block" />
+                <OrangeLine>まず相談だけでも大丈夫</OrangeLine>
               </h2>
             </FadeInSection>
 
@@ -566,7 +710,7 @@ function ConsultSection() {
             </FadeInSection>
 
             <FadeInSection delay={0.2}>
-              <div className="flex flex-col gap-2 max-w-sm">
+              <div className="flex flex-col gap-2">
                 <CtaButton href={CTA_HREF} />
                 <p className="text-slate-400 text-xs text-center">
                   ※ 求職者は完全無料でご利用いただけます
@@ -581,7 +725,6 @@ function ConsultSection() {
 }
 
 // ── Section 8: Final CTA ─────────────────────────────────────────────────────
-
 function FinalCtaSection() {
   const benefits = [
     "建設・設備・プラント系の非公開求人を確認できる",
@@ -591,13 +734,22 @@ function FinalCtaSection() {
   ];
 
   return (
-    <section className="bg-slate-950 py-20 px-6" aria-labelledby="final-cta-heading">
-      <div className="max-w-xl mx-auto">
+    <section
+      className="py-20 px-5 relative overflow-hidden"
+      style={{ background: "linear-gradient(160deg, #0f172a 0%, #1e1b4b 40%, #0a0a08 100%)" }}
+      aria-labelledby="final-cta-heading"
+    >
+      {/* Ambient glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(249,115,22,0.09) 0%, transparent 70%)" }}
+        aria-hidden
+      />
+
+      <div className="max-w-xl mx-auto relative">
         <FadeInSection>
           <div className="text-center mb-8">
-            <p className="text-orange-400 text-xs font-bold tracking-[0.22em] uppercase mb-3">
-              最後の確認
-            </p>
+            <SectionLabel light>最後の確認</SectionLabel>
             <h2
               id="final-cta-heading"
               className="font-black leading-tight text-white mb-5"
@@ -607,7 +759,7 @@ function FinalCtaSection() {
               <br />
               まずは非公開求人を確認
             </h2>
-            <p className="text-slate-400 leading-relaxed text-sm md:text-base">
+            <p className="leading-relaxed text-sm md:text-base" style={{ color: "rgba(148,163,184,0.85)" }}>
               転職するかどうかは、求人を見てから決めれば大丈夫です。
               <br className="hidden sm:block" />
               今の会社より良い条件があるか、公式サイトで確認してみてください。
@@ -616,14 +768,21 @@ function FinalCtaSection() {
         </FadeInSection>
 
         <FadeInSection delay={0.1}>
-          <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 mb-8 space-y-3">
+          <div
+            className="rounded-2xl p-6 mb-8 space-y-3"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              boxShadow: "0 2px 16px rgba(0,0,0,0.20)",
+            }}
+          >
             {benefits.map((b) => (
               <div key={b} className="flex gap-3 items-start">
                 <svg
-                  className="w-4 h-4 shrink-0 text-amber-400 mt-0.5"
+                  className="w-4 h-4 shrink-0 mt-0.5"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="currentColor"
+                  stroke="#fb923c"
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -631,7 +790,9 @@ function FinalCtaSection() {
                 >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
-                <p className="text-slate-300 text-sm leading-relaxed">{b}</p>
+                <p className="text-sm leading-relaxed" style={{ color: "rgba(203,213,225,0.9)" }}>
+                  {b}
+                </p>
               </div>
             ))}
           </div>
@@ -640,7 +801,7 @@ function FinalCtaSection() {
         <FadeInSection delay={0.2}>
           <div className="flex flex-col items-center gap-3">
             <CtaButton href={CTA_HREF} large />
-            <p className="text-slate-500 text-xs">
+            <p className="text-xs" style={{ color: "rgba(100,116,139,0.75)" }}>
               ※ 求職者は完全無料でご利用いただけます
             </p>
           </div>
@@ -651,10 +812,13 @@ function FinalCtaSection() {
 }
 
 // ── Section 9: FAQ ────────────────────────────────────────────────────────────
-
 function FaqSection() {
   return (
-    <section className="bg-slate-50 py-20 px-6" aria-labelledby="faq-heading">
+    <section
+      className="py-20 px-5"
+      style={{ background: "#f8f8f6" }}
+      aria-labelledby="faq-heading"
+    >
       <div className="max-w-2xl mx-auto">
         <FadeInSection>
           <div className="text-center mb-10">
@@ -677,18 +841,20 @@ function FaqSection() {
 }
 
 // ── Footer ────────────────────────────────────────────────────────────────────
-
 function Footer() {
   return (
-    <footer className="bg-slate-900 border-t border-slate-800 py-10 px-6">
+    <footer
+      className="py-10 px-5"
+      style={{ background: "#0b1120", borderTop: "1px solid rgba(255,255,255,0.06)" }}
+    >
       <div className="max-w-2xl mx-auto text-center space-y-3">
-        <p className="text-slate-500 text-xs leading-relaxed">
+        <p className="text-xs leading-relaxed" style={{ color: "rgba(100,116,139,0.75)" }}>
           本ページはアフィリエイト広告を含みます。
         </p>
-        <p className="text-slate-600 text-xs leading-relaxed">
+        <p className="text-xs leading-relaxed" style={{ color: "rgba(71,85,105,0.65)" }}>
           掲載情報は変更になる場合があります。最新情報は公式サイトでご確認ください。
         </p>
-        <p className="text-slate-700 text-[10px]">
+        <p style={{ fontSize: 10, color: "rgba(51,65,85,0.55)" }}>
           © {new Date().getFullYear()} All rights reserved.
         </p>
       </div>
@@ -697,7 +863,6 @@ function Footer() {
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
-
 export default function SekouKanriPage() {
   return (
     <main className="bg-white">

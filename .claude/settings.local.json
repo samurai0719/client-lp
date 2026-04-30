@@ -14,7 +14,9 @@
       "Bash(grep -A 30 \"#### \\\\`fill\\\\`\" /Users/tsukamotoshuntaira/Desktop/client-lp/node_modules/next/dist/docs/01-app/03-api-reference/02-components/image.md)",
       "Bash(grep -A 20 \"#### \\\\`preload\\\\`\\\\|priority\" /Users/tsukamotoshuntaira/Desktop/client-lp/node_modules/next/dist/docs/01-app/03-api-reference/02-components/image.md)",
       "Bash(npx next *)",
-      "Bash(pkill -f \"next dev\")"
+      "Bash(pkill -f \"next dev\")",
+      "Bash(xargs ls *)",
+      "Bash(PORT=3001 npm run dev)"
     ]
   }
 }

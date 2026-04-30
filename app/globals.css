@@ -311,6 +311,73 @@ body {
   animation: shisetsuCta-shine 3.5s ease-in-out infinite;
 }
 
+/* ── Sekou Kanri LP CTA (orange) ────────────────────────────────── */
+@keyframes sekouCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 5px 0 rgba(180, 60, 0, 0.35),
+      0 12px 28px rgba(249, 115, 22, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow:
+      0 7px 0 rgba(180, 60, 0, 0.28),
+      0 18px 36px rgba(249, 115, 22, 0.46),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes sekouCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.sekou-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(155deg, #ff9a47 0%, #f97316 44%, #e55d0a 100%);
+  border: 1px solid rgba(210, 72, 0, 0.42);
+  animation: sekouCta-float 2.8s ease-in-out infinite;
+}
+
+.sekou-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.sekou-cta-btn:hover .sekou-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.sekou-cta-btn:active .sekou-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.sekou-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: sekouCta-shine 3.5s ease-in-out infinite;
+}
+
 /* Reduced motion: disable all decorative animations */
 @media (prefers-reduced-motion: reduce) {
   .hero-enter  { animation: none; opacity: 1; transform: none; }
@@ -330,6 +397,8 @@ body {
   .nurse-cta-shine { animation: none !important; display: none; }
   .shisetsu-cta-btn   { animation: none !important; }
   .shisetsu-cta-shine { animation: none !important; display: none; }
+  .sekou-cta-btn   { animation: none !important; }
+  .sekou-cta-shine { animation: none !important; display: none; }
 }
 
 /* Section fade-in (JS-driven via IntersectionObserver) */

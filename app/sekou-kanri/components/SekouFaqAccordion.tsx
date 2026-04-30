@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 
+const ORANGE = "#f97316";
+const ORANGE_DARK = "#c25a0a";
+
 const faqs = [
   {
     q: "転職活動中であることは、今の職場に知られますか？",
@@ -33,53 +36,94 @@ export default function SekouFaqAccordion() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {faqs.map((faq, i) => (
         <div
           key={i}
-          className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm"
+          className="rounded-2xl border overflow-hidden"
+          style={{
+            borderColor: openIndex === i ? ORANGE : "#e5e7eb",
+            background: openIndex === i ? "rgba(249,115,22,0.04)" : "#fff",
+            boxShadow:
+              openIndex === i
+                ? "0 2px 16px rgba(249,115,22,0.10)"
+                : "0 1px 4px rgba(0,0,0,0.04)",
+            transition: "border-color 0.2s, background 0.2s, box-shadow 0.2s",
+          }}
         >
           <button
-            className="w-full flex items-start justify-between gap-3 px-5 py-4 text-left hover:bg-slate-50 active:bg-slate-100 transition-colors duration-150 cursor-pointer"
+            className="w-full flex items-start gap-3 px-5 py-4 text-left"
             onClick={() => setOpenIndex(openIndex === i ? null : i)}
             aria-expanded={openIndex === i}
           >
-            <span className="shrink-0 mt-0.5 w-7 h-7 rounded-full bg-orange-100 text-orange-600 text-xs font-bold flex items-center justify-center select-none">
-              {i + 1}
+            {/* Q Badge */}
+            <span
+              className="shrink-0 flex items-center justify-center w-6 h-6 rounded-full font-extrabold mt-0.5"
+              style={{
+                fontSize: 11,
+                background:
+                  openIndex === i
+                    ? `linear-gradient(135deg, ${ORANGE}, #ff9a47)`
+                    : "#f3f4f6",
+                color: openIndex === i ? "#fff" : "#9ca3af",
+                transition: "background 0.2s, color 0.2s",
+              }}
+            >
+              Q
             </span>
-            <span className="flex-1 text-sm md:text-base font-semibold text-slate-800 leading-relaxed text-left">
+
+            <span className="flex-1 font-bold text-sm md:text-base text-slate-800 leading-snug">
               {faq.q}
             </span>
-            <span
-              className={`shrink-0 mt-1 transition-transform duration-200 ${
-                openIndex === i ? "rotate-180 text-orange-500" : "text-slate-400"
-              }`}
+
+            {/* Chevron */}
+            <svg
+              className="shrink-0 mt-0.5"
+              style={{
+                transform: openIndex === i ? "rotate(180deg)" : "rotate(0deg)",
+                color: ORANGE,
+                transition: "transform 0.2s",
+              }}
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </span>
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
           </button>
 
+          {/* Answer */}
           <div
             className="grid transition-[grid-template-rows] duration-300 ease-in-out"
             style={{ gridTemplateRows: openIndex === i ? "1fr" : "0fr" }}
           >
             <div className="overflow-hidden">
-              <div className="px-5 pb-5 pt-3 border-t border-slate-100">
-                <p className="text-sm md:text-base text-slate-600 leading-relaxed">
-                  {faq.a}
-                </p>
+              <div
+                className="px-5 pb-5 pt-3 border-t"
+                style={{ borderColor: "rgba(249,115,22,0.12)" }}
+              >
+                <div className="flex gap-3">
+                  {/* A Badge */}
+                  <span
+                    className="shrink-0 flex items-center justify-center w-6 h-6 rounded-full font-extrabold mt-0.5"
+                    style={{
+                      fontSize: 11,
+                      background: "rgba(249,115,22,0.10)",
+                      color: ORANGE_DARK,
+                    }}
+                  >
+                    A
+                  </span>
+                  <p className="text-sm md:text-base text-slate-600 leading-relaxed flex-1">
+                    {faq.a}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
