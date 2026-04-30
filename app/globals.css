@@ -378,6 +378,80 @@ body {
   animation: sekouCta-shine 3.5s ease-in-out infinite;
 }
 
+/* ── Taxi Tenshoku LP CTA (yellow-black) ────────────────────────── */
+@keyframes taxiCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 6px 0 rgba(100, 70, 0, 0.38),
+      0 14px 30px rgba(220, 170, 0, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.50);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 8px 0 rgba(100, 70, 0, 0.30),
+      0 20px 38px rgba(220, 170, 0, 0.44),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+}
+
+@keyframes taxiCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.taxi-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #1a0f00;
+  text-decoration: none;
+  background: linear-gradient(
+    155deg,
+    #ffe047 0%,
+    #f5c000 22%,
+    #d4960a 48%,
+    #f0b800 70%,
+    #ffe047 100%
+  );
+  border: 1.5px solid rgba(160, 110, 0, 0.30);
+  animation: taxiCta-float 2.8s ease-in-out infinite;
+}
+
+.taxi-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.taxi-cta-btn:hover .taxi-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.taxi-cta-btn:active .taxi-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.taxi-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: taxiCta-shine 3.5s ease-in-out infinite;
+}
+
 /* Reduced motion: disable all decorative animations */
 @media (prefers-reduced-motion: reduce) {
   .hero-enter  { animation: none; opacity: 1; transform: none; }
@@ -399,6 +473,8 @@ body {
   .shisetsu-cta-shine { animation: none !important; display: none; }
   .sekou-cta-btn   { animation: none !important; }
   .sekou-cta-shine { animation: none !important; display: none; }
+  .taxi-cta-btn    { animation: none !important; }
+  .taxi-cta-shine  { animation: none !important; display: none; }
 }
 
 /* Section fade-in (JS-driven via IntersectionObserver) */
