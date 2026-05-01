@@ -3,7 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
-const CTA_URL = '#';
+const CTA_URL = 'https://px.a8.net/svt/ejp?a8mat=4B1HTK+EPVUPU+2JK4+5SECVM';
+const A8_BEACON = 'https://www14.a8.net/0.gif?a8mat=4B1HTK+EPVUPU+2JK4+5SECVM';
 
 /* ─────────────────────────────────────────────────────
    Hook: スクロール表示検知
@@ -93,7 +94,7 @@ function SectionImage({ src, alt = '' }: { src: string; alt?: string }) {
 /** CTAボタン */
 function CtaButton({ label, sub }: { label: string; sub?: string }) {
   return (
-    <a href={CTA_URL} className="taxi-cta-btn" target="_blank" rel="noopener noreferrer">
+    <a href={CTA_URL} className="taxi-cta-btn" rel="nofollow sponsored">
       <span className="taxi-cta-shine" aria-hidden="true" />
       <span className="taxi-cta-btn-inner">
         <span
@@ -1050,6 +1051,9 @@ export default function TaxiTenshokuContent() {
           <br />
           掲載情報は作成時点のものです。最新情報は公式サイトをご確認ください。
         </p>
+        {/* A8.net ビーコン */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img border={0} width={1} height={1} src={A8_BEACON} alt="" />
       </footer>
     </div>
   );
