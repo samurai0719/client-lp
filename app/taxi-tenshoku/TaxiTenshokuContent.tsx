@@ -36,39 +36,6 @@ function useReveal() {
    共通コンポーネント
 ───────────────────────────────────────────────────── */
 
-/** 画像プレースホルダー 12:9 */
-function ImagePlaceholder() {
-  return (
-    <div
-      className="relative w-full overflow-hidden"
-      style={{
-        aspectRatio: '12 / 9',
-        borderRadius: '16px',
-        background: 'linear-gradient(145deg, #f0f4fa 0%, #e4ecf7 50%, #eef2fa 100%)',
-        boxShadow: '0 4px 20px rgba(10, 30, 70, 0.08)',
-      }}
-    >
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-        <div
-          className="w-12 h-12 rounded-full flex items-center justify-center"
-          style={{ background: 'rgba(20, 60, 130, 0.12)' }}
-        >
-          <svg className="w-6 h-6" fill="rgba(20,60,130,0.5)" viewBox="0 0 20 20">
-            <path
-              fillRule="evenodd"
-              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 5 2-3.5L16 15z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-        <span style={{ color: '#7a90b4', fontSize: '0.875rem', fontWeight: 500 }}>
-          画像挿入予定
-        </span>
-      </div>
-    </div>
-  );
-}
-
 /** 実画像 12:9 */
 function SectionImage({ src, alt = '' }: { src: string; alt?: string }) {
   return (
@@ -77,7 +44,7 @@ function SectionImage({ src, alt = '' }: { src: string; alt?: string }) {
       style={{
         aspectRatio: '12 / 9',
         borderRadius: '16px',
-        boxShadow: '0 4px 20px rgba(10, 30, 70, 0.10)',
+        boxShadow: '0 4px 20px rgba(30, 60, 120, 0.10)',
       }}
     >
       <Image
@@ -164,8 +131,8 @@ function FeatureCard({
         background: '#fff',
         borderRadius: '14px',
         padding: '1.1rem 1.2rem',
-        boxShadow: '0 2px 12px rgba(10,30,70,0.07)',
-        border: '1.5px solid #e8eef8',
+        boxShadow: '0 2px 12px rgba(30, 60, 120, 0.07)',
+        border: '1.5px solid #ddeaf8',
         display: 'flex',
         alignItems: 'flex-start',
         gap: '0.8rem',
@@ -173,11 +140,11 @@ function FeatureCard({
     >
       <span style={{ fontSize: '1.6rem', lineHeight: 1, flexShrink: 0 }}>{icon}</span>
       <div>
-        <p style={{ fontWeight: 700, color: '#0f1e3d', fontSize: '0.95rem', lineHeight: 1.4 }}>
+        <p style={{ fontWeight: 700, color: '#1f2d3d', fontSize: '0.95rem', lineHeight: 1.4 }}>
           {title}
         </p>
         {desc && (
-          <p style={{ fontSize: '0.8rem', color: '#5a6a88', marginTop: '0.3rem', lineHeight: 1.5 }}>
+          <p style={{ fontSize: '0.8rem', color: '#5b7fa3', marginTop: '0.3rem', lineHeight: 1.5 }}>
             {desc}
           </p>
         )}
@@ -195,8 +162,8 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         background: '#fff',
         borderRadius: '12px',
         overflow: 'hidden',
-        border: '1.5px solid #e0e8f4',
-        boxShadow: '0 2px 8px rgba(10,30,70,0.05)',
+        border: '1.5px solid #d8e8f6',
+        boxShadow: '0 2px 8px rgba(30, 60, 120, 0.05)',
       }}
     >
       <button
@@ -222,7 +189,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
             gap: '0.55rem',
             fontSize: '0.9rem',
             fontWeight: 700,
-            color: '#0f1e3d',
+            color: '#1f2d3d',
             lineHeight: 1.5,
           }}
         >
@@ -232,7 +199,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
               fontWeight: 900,
               color: '#f5c000',
               fontSize: '1rem',
-              background: '#0f1e3d',
+              background: '#1f2d3d',
               borderRadius: '6px',
               padding: '0.05rem 0.4rem',
               lineHeight: 1.5,
@@ -248,7 +215,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
             width: '24px',
             height: '24px',
             borderRadius: '50%',
-            background: open ? '#0f1e3d' : '#f0f4fa',
+            background: open ? '#1a4099' : '#e8f0fb',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -264,7 +231,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
           >
             <path
               d="M2 4l4 4 4-4"
-              stroke={open ? '#f5c000' : '#0f1e3d'}
+              stroke={open ? '#f5c000' : '#1a4099'}
               strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -277,16 +244,16 @@ function FaqItem({ q, a }: { q: string; a: string }) {
           style={{
             padding: '0 1.1rem 1rem',
             fontSize: '0.875rem',
-            color: '#3a4a68',
+            color: '#4b5563',
             lineHeight: 1.7,
-            borderTop: '1px solid #eef2fa',
+            borderTop: '1px solid #e8f0fb',
           }}
         >
           <span
             style={{
               display: 'inline-block',
               fontWeight: 900,
-              color: '#0f1e3d',
+              color: '#1f2d3d',
               fontSize: '0.95rem',
               background: '#f5c000',
               borderRadius: '6px',
@@ -313,8 +280,8 @@ export default function TaxiTenshokuContent() {
       style={{
         fontFamily:
           '"Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif',
-        background: '#f8f9fc',
-        color: '#0f1e3d',
+        background: '#f5f9ff',
+        color: '#1f2d3d',
         overflowX: 'hidden',
       }}
     >
@@ -324,7 +291,7 @@ export default function TaxiTenshokuContent() {
       <header
         style={{
           position: 'relative',
-          background: 'linear-gradient(160deg, #0a1a3a 0%, #0f2650 45%, #1a3560 100%)',
+          background: 'linear-gradient(160deg, #eaf4ff 0%, #d8ecff 45%, #f0f7ff 100%)',
           overflow: 'hidden',
           paddingBottom: '2.5rem',
         }}
@@ -339,7 +306,7 @@ export default function TaxiTenshokuContent() {
             width: '260px',
             height: '260px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(245,192,0,0.18) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(91,127,163,0.12) 0%, transparent 70%)',
             pointerEvents: 'none',
           }}
         />
@@ -352,7 +319,7 @@ export default function TaxiTenshokuContent() {
             width: '200px',
             height: '200px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(245,192,0,0.10) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(245,192,0,0.12) 0%, transparent 70%)',
             pointerEvents: 'none',
           }}
         />
@@ -364,13 +331,12 @@ export default function TaxiTenshokuContent() {
               display: 'inline-block',
               fontSize: '0.62rem',
               fontWeight: 600,
-              color: '#5a6070',
-              background: 'rgba(240,242,248,0.18)',
-              border: '1px solid rgba(220,224,236,0.22)',
+              color: '#5b7fa3',
+              background: 'rgba(255,255,255,0.85)',
+              border: '1px solid rgba(91,127,163,0.2)',
               borderRadius: '4px',
               padding: '0.15rem 0.55rem',
               letterSpacing: '0.06em',
-              backdropFilter: 'blur(4px)',
             }}
           >
             PR レバジョブ
@@ -384,7 +350,7 @@ export default function TaxiTenshokuContent() {
             style={{
               fontSize: '0.8rem',
               fontWeight: 700,
-              color: '#f5c000',
+              color: '#1a4099',
               letterSpacing: '0.06em',
               marginBottom: '0.6rem',
               lineHeight: 1.4,
@@ -397,7 +363,7 @@ export default function TaxiTenshokuContent() {
             style={{
               fontSize: 'clamp(1.35rem, 5vw, 1.8rem)',
               fontWeight: 900,
-              color: '#ffffff',
+              color: '#1f2d3d',
               lineHeight: 1.35,
               letterSpacing: '-0.01em',
               animationDelay: '0.08s',
@@ -407,7 +373,7 @@ export default function TaxiTenshokuContent() {
             <br />
             タクシードライバーで
             <br />
-            <span style={{ color: '#f5c000' }}>月収50万円</span>を
+            <span style={{ color: '#c88500' }}>月収50万円</span>を
             <br />
             目指しませんか？
           </h1>
@@ -416,7 +382,7 @@ export default function TaxiTenshokuContent() {
             className="hero-enter"
             style={{
               fontSize: '0.82rem',
-              color: 'rgba(220,230,255,0.85)',
+              color: '#4b5563',
               lineHeight: 1.75,
               marginTop: '1rem',
               animationDelay: '0.18s',
@@ -431,7 +397,7 @@ export default function TaxiTenshokuContent() {
             まずは求人だけでも確認してみてください。
           </p>
 
-          {/* 画像プレースホルダー */}
+          {/* 画像 */}
           <div
             className="hero-enter"
             style={{ marginTop: '1.4rem', animationDelay: '0.22s' }}
@@ -457,7 +423,7 @@ export default function TaxiTenshokuContent() {
           <p
             style={{
               fontSize: '0.65rem',
-              color: 'rgba(255,255,255,0.35)',
+              color: '#8a9ab8',
               textAlign: 'center',
               marginTop: '0.9rem',
               lineHeight: 1.6,
@@ -482,7 +448,7 @@ export default function TaxiTenshokuContent() {
             style={{
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: '#f5c000',
+              color: '#5b7fa3',
               letterSpacing: '0.08em',
               textAlign: 'center',
               marginBottom: '0.5rem',
@@ -495,7 +461,7 @@ export default function TaxiTenshokuContent() {
               fontSize: 'clamp(1.2rem, 4.5vw, 1.55rem)',
               fontWeight: 900,
               textAlign: 'center',
-              color: '#0f1e3d',
+              color: '#1f2d3d',
               lineHeight: 1.4,
               marginBottom: '1.8rem',
             }}
@@ -530,14 +496,14 @@ export default function TaxiTenshokuContent() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.9rem',
-                  background: '#f4f7fd',
+                  background: '#f0f7ff',
                   borderRadius: '12px',
                   padding: '1rem 1.1rem',
                   borderLeft: '4px solid #1a4099',
                 }}
               >
                 <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{icon}</span>
-                <p style={{ fontSize: '0.88rem', fontWeight: 600, color: '#1a2a4a', lineHeight: 1.5 }}>
+                <p style={{ fontSize: '0.88rem', fontWeight: 600, color: '#1f2d3d', lineHeight: 1.5 }}>
                   {text}
                 </p>
               </div>
@@ -548,7 +514,7 @@ export default function TaxiTenshokuContent() {
             style={{
               marginTop: '1.8rem',
               padding: '1.2rem',
-              background: 'linear-gradient(135deg, #0f2650 0%, #1a3a6a 100%)',
+              background: 'linear-gradient(135deg, #1a4099 0%, #2255cc 100%)',
               borderRadius: '14px',
               textAlign: 'center',
             }}
@@ -567,7 +533,7 @@ export default function TaxiTenshokuContent() {
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <Section
         style={{
-          background: '#f4f7fd',
+          background: '#f7fbff',
           padding: '3rem 1.2rem',
         }}
       >
@@ -589,7 +555,7 @@ export default function TaxiTenshokuContent() {
               fontSize: 'clamp(1.1rem, 4vw, 1.4rem)',
               fontWeight: 900,
               textAlign: 'center',
-              color: '#0f1e3d',
+              color: '#1f2d3d',
               lineHeight: 1.45,
               marginBottom: '1.8rem',
             }}
@@ -640,10 +606,10 @@ export default function TaxiTenshokuContent() {
               padding: '0.9rem 1rem',
               background: '#fff',
               borderRadius: '10px',
-              border: '1px solid #e0e8f4',
+              border: '1px solid #d8e8f6',
             }}
           >
-            <p style={{ fontSize: '0.72rem', color: '#7a8aaa', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '0.72rem', color: '#8a9ab8', lineHeight: 1.7 }}>
               ※掲載求人により条件は異なります
               <br />
               ※月収・勤務日数は求人・勤務形態・勤務エリアにより異なります
@@ -673,7 +639,7 @@ export default function TaxiTenshokuContent() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.4rem',
-                background: 'linear-gradient(135deg, #0f2650 0%, #1a3a6a 100%)',
+                background: 'linear-gradient(135deg, #1a4099 0%, #2255cc 100%)',
                 borderRadius: '12px',
                 padding: '0.55rem 1.1rem',
               }}
@@ -685,7 +651,7 @@ export default function TaxiTenshokuContent() {
                   padding: '0.1rem 0.55rem',
                   fontWeight: 900,
                   fontSize: '0.8rem',
-                  color: '#0f1e3d',
+                  color: '#1f2d3d',
                 }}
               >
                 レバジョブ
@@ -698,7 +664,7 @@ export default function TaxiTenshokuContent() {
               fontSize: 'clamp(1.1rem, 4vw, 1.4rem)',
               fontWeight: 900,
               textAlign: 'center',
-              color: '#0f1e3d',
+              color: '#1f2d3d',
               lineHeight: 1.45,
               marginBottom: '1.4rem',
             }}
@@ -748,7 +714,7 @@ export default function TaxiTenshokuContent() {
                   display: 'flex',
                   gap: '1rem',
                   alignItems: 'flex-start',
-                  background: '#f4f7fd',
+                  background: '#f0f7ff',
                   borderRadius: '14px',
                   padding: '1.1rem 1.2rem',
                 }}
@@ -761,7 +727,7 @@ export default function TaxiTenshokuContent() {
                     color: '#f5c000',
                     lineHeight: 1,
                     textShadow: '0 1px 4px rgba(0,0,0,0.15)',
-                    background: '#0f1e3d',
+                    background: '#1a4099',
                     borderRadius: '8px',
                     padding: '0.2rem 0.5rem',
                   }}
@@ -769,12 +735,12 @@ export default function TaxiTenshokuContent() {
                   {num}
                 </span>
                 <div>
-                  <p style={{ fontWeight: 800, fontSize: '0.92rem', color: '#0f1e3d', marginBottom: '0.3rem' }}>
+                  <p style={{ fontWeight: 800, fontSize: '0.92rem', color: '#1f2d3d', marginBottom: '0.3rem' }}>
                     {title}
                   </p>
-                  <p style={{ fontSize: '0.8rem', color: '#4a5a78', lineHeight: 1.65 }}>{body}</p>
+                  <p style={{ fontSize: '0.8rem', color: '#4b5563', lineHeight: 1.65 }}>{body}</p>
                   {note && (
-                    <p style={{ fontSize: '0.65rem', color: '#7a8aaa', lineHeight: 1.6, marginTop: '0.35rem' }}>{note}</p>
+                    <p style={{ fontSize: '0.65rem', color: '#8a9ab8', lineHeight: 1.6, marginTop: '0.35rem' }}>{note}</p>
                   )}
                 </div>
               </div>
@@ -792,7 +758,7 @@ export default function TaxiTenshokuContent() {
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <Section
         style={{
-          background: 'linear-gradient(160deg, #0a1a3a 0%, #0f2650 100%)',
+          background: 'linear-gradient(160deg, #eaf4ff 0%, #f5f9ff 100%)',
           padding: '3rem 1.2rem',
         }}
       >
@@ -801,7 +767,7 @@ export default function TaxiTenshokuContent() {
             style={{
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: '#f5c000',
+              color: '#5b7fa3',
               letterSpacing: '0.08em',
               textAlign: 'center',
               marginBottom: '0.5rem',
@@ -814,7 +780,7 @@ export default function TaxiTenshokuContent() {
               fontSize: 'clamp(1.1rem, 4vw, 1.4rem)',
               fontWeight: 900,
               textAlign: 'center',
-              color: '#fff',
+              color: '#1f2d3d',
               lineHeight: 1.45,
               marginBottom: '1.8rem',
             }}
@@ -842,14 +808,15 @@ export default function TaxiTenshokuContent() {
               <div
                 key={label}
                 style={{
-                  background: 'rgba(255,255,255,0.07)',
-                  border: '1.5px solid rgba(245,192,0,0.25)',
+                  background: '#fff',
+                  border: '1.5px solid rgba(26,64,153,0.12)',
                   borderRadius: '12px',
                   padding: '1rem 0.9rem',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'flex-start',
                   gap: '0.5rem',
+                  boxShadow: '0 2px 8px rgba(30,60,120,0.06)',
                 }}
               >
                 <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{icon}</span>
@@ -857,7 +824,7 @@ export default function TaxiTenshokuContent() {
                   style={{
                     fontSize: '0.8rem',
                     fontWeight: 700,
-                    color: '#fff',
+                    color: '#1f2d3d',
                     lineHeight: 1.45,
                   }}
                 >
@@ -871,12 +838,12 @@ export default function TaxiTenshokuContent() {
             style={{
               marginTop: '1.1rem',
               padding: '0.8rem 1rem',
-              background: 'rgba(255,255,255,0.06)',
+              background: 'rgba(26,64,153,0.04)',
               borderRadius: '10px',
-              border: '1px solid rgba(255,255,255,0.12)',
+              border: '1px solid rgba(26,64,153,0.1)',
             }}
           >
-            <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '0.7rem', color: '#8a9ab8', lineHeight: 1.7 }}>
               ※掲載求人により条件は異なります
               <br />
               ※月収・勤務日数は求人・勤務形態・勤務エリアにより異なります
@@ -894,7 +861,7 @@ export default function TaxiTenshokuContent() {
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <Section
         style={{
-          background: '#f4f7fd',
+          background: '#f7fbff',
           padding: '3rem 1.2rem',
         }}
       >
@@ -916,7 +883,7 @@ export default function TaxiTenshokuContent() {
               fontSize: 'clamp(1.1rem, 4vw, 1.4rem)',
               fontWeight: 900,
               textAlign: 'center',
-              color: '#0f1e3d',
+              color: '#1f2d3d',
               lineHeight: 1.45,
               marginBottom: '1.8rem',
             }}
@@ -968,7 +935,7 @@ export default function TaxiTenshokuContent() {
             style={{
               fontSize: 'clamp(1.1rem, 4vw, 1.4rem)',
               fontWeight: 900,
-              color: '#0f1e3d',
+              color: '#1f2d3d',
               lineHeight: 1.5,
               marginBottom: '1rem',
             }}
@@ -983,7 +950,7 @@ export default function TaxiTenshokuContent() {
           <p
             style={{
               fontSize: '0.83rem',
-              color: '#4a5a78',
+              color: '#4b5563',
               lineHeight: 1.75,
               marginBottom: '1.8rem',
             }}
@@ -1007,7 +974,7 @@ export default function TaxiTenshokuContent() {
           <p
             style={{
               fontSize: '0.68rem',
-              color: '#aab4cc',
+              color: '#8a9ab8',
               marginTop: '1rem',
               lineHeight: 1.65,
             }}
@@ -1020,7 +987,7 @@ export default function TaxiTenshokuContent() {
       {/* フッター */}
       <footer
         style={{
-          background: '#0a1220',
+          background: '#1f2d3d',
           padding: '1.4rem 1.2rem',
           textAlign: 'center',
         }}
@@ -1040,13 +1007,13 @@ export default function TaxiTenshokuContent() {
               padding: '0.15rem 0.5rem',
               fontWeight: 900,
               fontSize: '0.75rem',
-              color: '#0f1e3d',
+              color: '#1f2d3d',
             }}
           >
             レバジョブ
           </span>
         </div>
-        <p style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>
           本ページはPR（広告）です。
           <br />
           掲載情報は作成時点のものです。最新情報は公式サイトをご確認ください。
