@@ -16,7 +16,8 @@
       "Bash(npx next *)",
       "Bash(pkill -f \"next dev\")",
       "Bash(xargs ls *)",
-      "Bash(PORT=3001 npm run dev)"
+      "Bash(PORT=3001 npm run dev)",
+      "Read(//private/tmp/**)"
     ]
   }
 }

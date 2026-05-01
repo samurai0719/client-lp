@@ -449,7 +449,7 @@ export default function TaxiTenshokuContent() {
               animationDelay: '0.28s',
             }}
           >
-            <CtaButton label="公式サイトで求人を見てみる" />
+            <CtaButton label="30秒の無料登録で求人を探しに行く" />
           </div>
 
           {/* 免責 */}
@@ -656,7 +656,7 @@ export default function TaxiTenshokuContent() {
       </Section>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          4. レバジョブタクシー紹介ブロック
+          4. レバジョブ紹介ブロック
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <Section
         style={{
@@ -703,16 +703,16 @@ export default function TaxiTenshokuContent() {
               marginBottom: '1.4rem',
             }}
           >
-            レバジョブタクシーなら、
+            レバジョブなら、
             <br />
-            タクシー求人を
+            非公開のタクシー求人を
             <br />
-            <span style={{ color: '#1a4099' }}>まとめて確認</span>できます
+            <span style={{ color: '#1a4099' }}>探すことが出来ます</span>
           </h2>
 
           <SectionImage
             src="https://static.wixstatic.com/media/5ebda9_d5a5c6b54e0642d689dcf92c849e9f7e~mv2.png"
-            alt="レバジョブタクシーでタクシー求人を確認するイメージ"
+            alt="レバジョブで非公開のタクシー求人を確認するイメージ"
           />
 
           <div
@@ -726,20 +726,27 @@ export default function TaxiTenshokuContent() {
             {[
               {
                 num: '01',
-                title: 'タクシー専門の転職サービス',
-                body: 'レバジョブタクシーは、タクシードライバーの求人に特化した転職支援サービスです。',
+                title: 'タクシー特化の転職サービス',
+                body: 'レバジョブは、タクシードライバーの求人に特化した転職支援サービスです。',
               },
               {
                 num: '02',
-                title: 'エリアから求人を探せる',
-                body: '東京・神奈川・千葉・埼玉・大阪など、働きたいエリアを絞って求人を探すことができます。',
+                title: '最短1週間で内定が目指せる',
+                body: '面接1回の非公開求人を多数保有。だからスピード転職が叶う',
+                note: '※レバジョブとしての2025年内定実績(登録~内定まで)',
               },
               {
                 num: '03',
                 title: '条件・こだわりで絞り込み',
                 body: '未経験歓迎・二種免許サポートあり・高収入など、希望条件に合った求人を確認できます。',
               },
-            ].map(({ num, title, body }) => (
+              {
+                num: '04',
+                title: 'プロが書類作成から転職をサポート',
+                body: '業界を知り尽くしたプロが面倒な書類作成を代行。未経験転職のポイントを網羅しトータルでサポート',
+                note: '※レバジョブとしての2025年内定実績(登録~内定まで)',
+              },
+            ].map(({ num, title, body, note }) => (
               <div
                 key={num}
                 style={{
@@ -771,13 +778,16 @@ export default function TaxiTenshokuContent() {
                     {title}
                   </p>
                   <p style={{ fontSize: '0.8rem', color: '#4a5a78', lineHeight: 1.65 }}>{body}</p>
+                  {note && (
+                    <p style={{ fontSize: '0.65rem', color: '#7a8aaa', lineHeight: 1.6, marginTop: '0.35rem' }}>{note}</p>
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
           <div style={{ marginTop: '1.8rem' }}>
-            <CtaButton label="公式サイトで求人を見てみる" />
+            <CtaButton label="30秒の無料登録で求人を探しに行く" />
           </div>
         </div>
       </Section>
@@ -1000,7 +1010,7 @@ export default function TaxiTenshokuContent() {
           />
 
           <div style={{ marginTop: '2rem' }}>
-            <CtaButton label="公式サイトで求人を見てみる" sub="レバジョブタクシーへ（無料）" />
+            <CtaButton label="30秒の無料登録で求人を探しに行く" sub="レバジョブへ（無料）" />
           </div>
 
           <p
