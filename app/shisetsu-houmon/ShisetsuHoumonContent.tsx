@@ -692,7 +692,7 @@ function NurseSenkaPromoSection() {
         className="grid grid-cols-3 gap-3 mb-7"
       >
         {[
-          { num: '20万件\n以上', label: '掲載求人数' },
+          { num: '24万件', label: '掲載求人数', note: '※2016年以降の\n取り扱い数累計' },
           { num: '第1位', label: '2026年\nオリコン顧客満足度®' },
           { num: '4年連続\nNo.1', label: '2023年〜2026年\n総合評価' },
         ].map((badge, i) => (
@@ -728,6 +728,17 @@ function NurseSenkaPromoSection() {
             >
               {badge.label}
             </p>
+            {'note' in badge && badge.note && (
+              <p
+                className="leading-tight whitespace-pre-line mt-0.5"
+                style={{
+                  fontSize: 7,
+                  color: '#94a3b8',
+                }}
+              >
+                {badge.note}
+              </p>
+            )}
           </motion.div>
         ))}
       </motion.div>
@@ -739,7 +750,7 @@ function NurseSenkaPromoSection() {
       >
         <p className="text-gray-700 mb-3">
           ナース専科 転職は、看護師向けの転職支援サービスです。
-          20万件以上の豊富な求人を扱っており、病院・クリニック・訪問看護・施設など、幅広い選択肢から求人を探せます。
+          24万件（2016年以降の取り扱い数累計）の豊富な求人を扱っており、病院・クリニック・訪問看護・施設など、幅広い選択肢から求人を探せます。
         </p>
         <p className="text-gray-700 mb-3">
           また、2026年 オリコン顧客満足度®調査 看護師転職で第1位を獲得しており、
