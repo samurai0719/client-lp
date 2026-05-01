@@ -427,14 +427,27 @@ body {
     #ffe047 100%
   );
   border: 1.5px solid rgba(160, 110, 0, 0.30);
+  box-shadow:
+    0 6px 0 rgba(100, 70, 0, 0.38),
+    0 14px 30px rgba(220, 170, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
   animation: taxiCta-float 2.8s ease-in-out infinite;
+}
+
+/* :visited/:link override — prevent browser visited-link color from bleeding through */
+.taxi-cta-btn:link,
+.taxi-cta-btn:visited,
+.taxi-cta-btn:hover,
+.taxi-cta-btn:active {
+  color: #1a0f00;
+  text-decoration: none;
 }
 
 .taxi-cta-btn-inner {
   display: block;
   position: relative;
   z-index: 1;
-  transition: transform 0.15s ease-out;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
 }
 
 .taxi-cta-btn:hover .taxi-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
@@ -473,7 +486,13 @@ body {
   .shisetsu-cta-shine { animation: none !important; display: none; }
   .sekou-cta-btn   { animation: none !important; }
   .sekou-cta-shine { animation: none !important; display: none; }
-  .taxi-cta-btn    { animation: none !important; }
+  .taxi-cta-btn    {
+    animation: none !important;
+    box-shadow:
+      0 6px 0 rgba(100, 70, 0, 0.38),
+      0 14px 30px rgba(220, 170, 0, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.50) !important;
+  }
   .taxi-cta-shine  { animation: none !important; display: none; }
 }
 
