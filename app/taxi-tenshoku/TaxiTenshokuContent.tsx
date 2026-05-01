@@ -689,7 +689,6 @@ export default function TaxiTenshokuContent() {
               >
                 レバジョブ
               </span>
-              <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.85rem' }}>タクシー</span>
             </div>
           </div>
 
@@ -737,11 +736,6 @@ export default function TaxiTenshokuContent() {
               },
               {
                 num: '03',
-                title: '条件・こだわりで絞り込み',
-                body: '未経験歓迎・二種免許サポートあり・高収入など、希望条件に合った求人を確認できます。',
-              },
-              {
-                num: '04',
                 title: 'プロが書類作成から転職をサポート',
                 body: '業界を知り尽くしたプロが面倒な書類作成を代行。未経験転職のポイントを網羅しトータルでサポート',
                 note: '※レバジョブとしての2025年内定実績(登録~内定まで)',
@@ -1054,7 +1048,6 @@ export default function TaxiTenshokuContent() {
           >
             レバジョブ
           </span>
-          <span style={{ color: '#ccd5ea', fontWeight: 600, fontSize: '0.78rem' }}>タクシー</span>
         </div>
         <p style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', lineHeight: 1.6 }}>
           本ページはPR（広告）です。
