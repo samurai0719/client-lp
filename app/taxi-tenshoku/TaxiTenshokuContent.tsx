@@ -1053,7 +1053,7 @@ export default function TaxiTenshokuContent() {
         </p>
         {/* A8.net ビーコン */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img border={0} width={1} height={1} src={A8_BEACON} alt="" />
+        <img width={1} height={1} src={A8_BEACON} alt="" style={{ display: 'none' }} />
       </footer>
     </div>
   );
