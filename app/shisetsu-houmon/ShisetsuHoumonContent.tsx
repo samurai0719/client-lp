@@ -417,7 +417,7 @@ function HeroSection() {
             <div className="relative aspect-[12/9] w-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://static.wixstatic.com/media/5ebda9_7cdafac75d1f4384b7f81909fea21a1e~mv2.jpg"
+                src="https://static.wixstatic.com/media/5ebda9_d5fa6407bc2142a4b6bca1b7efd8026c~mv2.jpg"
                 alt="施設訪問看護で働く看護師のイメージ"
                 className="h-full w-full object-contain"
               />
@@ -483,7 +483,7 @@ function EmpathySection() {
       {/* ── IMAGE SLOT 2: 共感ブロック ── */}
       <div className="mb-7">
         <SectionImage
-          src="https://static.wixstatic.com/media/5ebda9_99488e48beaa4a33884eacb004025715~mv2.jpg"
+          src="https://static.wixstatic.com/media/5ebda9_952cf9c1fd104040b7c93de660aa293d~mv2.jpg"
           alt="働き方に悩む看護師のイメージ"
         />
       </div>
@@ -573,7 +573,7 @@ function MeritsSection() {
       {/* ── IMAGE SLOT 4: メリット4選 ── */}
       <div className="mb-7">
         <SectionImage
-          src="https://static.wixstatic.com/media/5ebda9_43c7bc286f114a5f8e51c761951a4180~mv2.jpg"
+          src="https://static.wixstatic.com/media/5ebda9_640827fcc71c410099416b2201bf98ab~mv2.jpg"
           alt="一般的な訪問看護との違いを説明するイメージ"
         />
       </div>
@@ -963,7 +963,7 @@ export default function ShisetsuHoumonContent() {
         <section className="px-5 py-10" style={{ background: '#f8fafc' }}>
           <div className="max-w-xl mx-auto">
             <SectionImage
-              src="https://static.wixstatic.com/media/5ebda9_0698b8df08864cf5926f10641bcdf150~mv2.jpg"
+              src="https://static.wixstatic.com/media/5ebda9_2da087b9e08a4663be00696c2d6768a5~mv2.jpg"
               alt="施設訪問看護で働くメリットのイメージ"
             />
           </div>
