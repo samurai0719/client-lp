@@ -807,7 +807,7 @@ function NurseSenkaPromoSection() {
       {/* CTAボタン */}
       <CtaButton
         label="ナース専科 転職の公式サイトを見る"
-        href={PROMO_HREF}
+        href={CTA_HREF}
         target="_self"
         rel="nofollow sponsored"
       />
