@@ -263,20 +263,21 @@ function ImagePlaceholder({ label }: { label: string }) {
 function SectionImage({ src, alt }: { src: string; alt: string }) {
   return (
     <div
-      className="relative w-full overflow-hidden rounded-2xl"
+      className="overflow-hidden rounded-2xl"
       style={{
-        height: 'clamp(200px, 42vw, 360px)',
         boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
         border: '1px solid rgba(0,0,0,0.06)',
       }}
     >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover"
-        sizes="(max-width: 640px) 100vw, 640px"
-      />
+      <div className="relative aspect-[16/9] w-full">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, 640px"
+        />
+      </div>
     </div>
   );
 }
@@ -414,12 +415,12 @@ function HeroSection() {
         {/* ── IMAGE SLOT 1: ファーストビュー ── */}
         <motion.div variants={fadeUp} className="mb-7">
           <div className="mx-auto w-full max-w-[820px] overflow-hidden rounded-2xl shadow-lg" style={{ background: 'rgba(240,253,244,0.7)' }}>
-            <div className="relative aspect-[12/9] w-full">
+            <div className="relative aspect-[16/9] w-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://static.wixstatic.com/media/5ebda9_d5fa6407bc2142a4b6bca1b7efd8026c~mv2.jpg"
                 alt="施設訪問看護で働く看護師のイメージ"
-                className="h-full w-full object-contain"
+                className="h-full w-full object-cover"
               />
             </div>
           </div>
