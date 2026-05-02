@@ -38,6 +38,11 @@ export default function Page() {
           alt=""
         />
       </noscript>
+      <Script
+        id="ptengine-taxi"
+        src="https://js.ptengine.jp/16hrm5oj.js"
+        strategy="afterInteractive"
+      />
       <TaxiTenshokuContent />
     </>
   );
