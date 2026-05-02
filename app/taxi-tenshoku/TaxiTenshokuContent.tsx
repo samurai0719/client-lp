@@ -617,7 +617,7 @@ export default function TaxiTenshokuContent() {
           </div>
 
           <div style={{ marginTop: '1.8rem' }}>
-            <CtaButton label="求人を無料で確認する" sub="公式サイトへ移動します" />
+            <CtaButton label="30秒の無料登録で求人を探しに行く" />
           </div>
         </div>
       </Section>
@@ -703,7 +703,7 @@ export default function TaxiTenshokuContent() {
               },
               {
                 num: '03',
-                title: 'プロが書類作成から転職をサポート',
+                title: '内定した方の90%が未経験',
                 body: '業界を知り尽くしたプロが面倒な書類作成を代行。未経験転職のポイントを網羅しトータルでサポート',
                 note: '※レバジョブとしての2025年内定実績(登録~内定まで)',
               },
@@ -851,7 +851,7 @@ export default function TaxiTenshokuContent() {
           </div>
 
           <div style={{ marginTop: '1.8rem' }}>
-            <CtaButton label="条件に合う求人を確認する" sub="公式サイトへ移動します（無料）" />
+            <CtaButton label="30秒の無料登録で求人を探しに行く" />
           </div>
         </div>
       </Section>
