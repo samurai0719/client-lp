@@ -11,6 +11,10 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
+      <Script
+        src="https://js.ptengine.jp/46oubkdm.js"
+        strategy="afterInteractive"
+      />
       <Script id="meta-pixel-shisetsu-houmon" strategy="afterInteractive">
         {`
           !function(f,b,e,v,n,t,s)
