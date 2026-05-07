@@ -175,7 +175,15 @@ function PainPointsSection() {
               className="font-black leading-tight text-slate-900"
               style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}
             >
-              <OrangeLine>今の年収に、本当に満足していますか？</OrangeLine>
+              {/* Mobile: 2行に分けて各行にアンダーライン */}
+              <span className="md:hidden">
+                <span className="block"><OrangeLine>今の年収に、本当に</OrangeLine></span>
+                <span className="block"><OrangeLine>満足していますか？</OrangeLine></span>
+              </span>
+              {/* Desktop: 1行でアンダーライン */}
+              <span className="hidden md:inline">
+                <OrangeLine>今の年収に、本当に満足していますか？</OrangeLine>
+              </span>
             </h2>
           </div>
         </FadeInSection>
