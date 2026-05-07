@@ -422,6 +422,44 @@ function HeroSection() {
                 alt="施設訪問看護で働く看護師のイメージ"
                 className="h-full w-full object-cover"
               />
+              {/* 円形バッジ：画像内下部に横並び */}
+              <div className="absolute inset-x-0 bottom-3 sm:bottom-5 z-10 flex justify-center gap-2 sm:gap-4 px-3">
+                {(
+                  [
+                    { label: '年収', value: '540万円〜' },
+                    { label: '年間休日', value: '117日' },
+                    { label: '', value: '日勤のみ' },
+                  ] as { label: string; value: string }[]
+                ).map((card, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center justify-center w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full text-center shrink-0"
+                    style={{
+                      background:
+                        'linear-gradient(135deg, rgba(255,255,255,0.90) 0%, rgba(240,253,244,0.90) 100%)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      boxShadow: '0 4px 18px rgba(0,0,0,0.20)',
+                      border: '1.5px solid rgba(255,255,255,0.72)',
+                    }}
+                  >
+                    {card.label && (
+                      <p
+                        className="text-[8px] sm:text-[9px] font-bold leading-none mb-0.5"
+                        style={{ color: '#64748b' }}
+                      >
+                        {card.label}
+                      </p>
+                    )}
+                    <p
+                      className="text-[9px] sm:text-[12px] font-extrabold leading-snug px-1"
+                      style={{ color: GREEN_DARK }}
+                    >
+                      {card.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>
