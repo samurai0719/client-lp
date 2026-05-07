@@ -422,42 +422,44 @@ function HeroSection() {
                 alt="施設訪問看護で働く看護師のイメージ"
                 className="h-full w-full object-cover"
               />
-              {/* 長方形カード：画像内下部に横並び */}
-              <div className="absolute inset-x-0 bottom-4 sm:bottom-5 z-10 flex justify-center gap-2 sm:gap-3 px-3">
-                {(
-                  [
-                    { label: '年収', value: '540万円〜' },
-                    { label: '年間休日', value: '117日' },
-                    { label: '', value: '日勤のみ' },
-                  ] as { label: string; value: string }[]
-                ).map((card, i) => (
-                  <div
-                    key={i}
-                    className="flex flex-col items-center justify-center h-16 w-24 sm:h-20 sm:w-32 rounded-2xl text-center shrink-0"
-                    style={{
-                      background: 'rgba(255,255,255,0.92)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
-                      border: '1px solid rgba(255,255,255,0.8)',
-                    }}
-                  >
-                    {card.label && (
-                      <p
-                        className="text-[9px] sm:text-[11px] font-bold leading-none mb-1"
-                        style={{ color: '#64748b' }}
-                      >
-                        {card.label}
-                      </p>
-                    )}
-                    <p
-                      className="text-[12px] sm:text-[15px] font-extrabold leading-none"
-                      style={{ color: GREEN_DARK }}
+              {/* 長方形カード：画像内下部・横幅いっぱいに3枚並べる */}
+              <div className="absolute inset-x-0 bottom-5 sm:bottom-7 z-10 px-4 sm:px-6">
+                <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
+                  {(
+                    [
+                      { label: '年収', value: '540万円〜' },
+                      { label: '年間休日', value: '117日' },
+                      { label: '', value: '日勤のみ' },
+                    ] as { label: string; value: string }[]
+                  ).map((card, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-col items-center justify-center h-[4.5rem] sm:h-[5.5rem] rounded-2xl text-center"
+                      style={{
+                        background: 'rgba(255,255,255,0.93)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        boxShadow: '0 4px 18px rgba(0,0,0,0.20)',
+                        border: '1px solid rgba(255,255,255,0.85)',
+                      }}
                     >
-                      {card.value}
-                    </p>
-                  </div>
-                ))}
+                      {card.label && (
+                        <p
+                          className="text-[10px] sm:text-xs font-bold leading-none mb-1.5"
+                          style={{ color: '#64748b' }}
+                        >
+                          {card.label}
+                        </p>
+                      )}
+                      <p
+                        className="text-sm sm:text-lg font-extrabold leading-none"
+                        style={{ color: GREEN_DARK }}
+                      >
+                        {card.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
