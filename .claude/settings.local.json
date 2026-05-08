@@ -20,7 +20,9 @@
       "Read(//private/tmp/**)",
       "Bash(echo \"Dev server starting with PID $!\")",
       "Bash(ssh -T git@github.com)",
-      "Bash(gh auth *)"
+      "Bash(gh auth *)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(grep -v \"^$\")"
     ]
   }
 }

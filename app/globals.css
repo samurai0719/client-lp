@@ -465,6 +465,101 @@ body {
   animation: taxiCta-shine 3.5s ease-in-out infinite;
 }
 
+/* ── Gaiheki LP CTA (orange) ──────────────────────────────────────── */
+@keyframes gaihekiCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 5px 0 rgba(180, 60, 0, 0.35),
+      0 12px 28px rgba(249, 115, 22, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow:
+      0 7px 0 rgba(180, 60, 0, 0.28),
+      0 18px 36px rgba(249, 115, 22, 0.46),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes gaihekiCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.gaiheki-cta-btn {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 1rem;
+  padding: 1.2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(155deg, #ff9a47 0%, #f97316 44%, #e55d0a 100%);
+  animation: gaihekiCta-float 2.8s ease-in-out infinite;
+}
+
+.gaiheki-cta-btn:disabled {
+  animation: none !important;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.gaiheki-cta-btn:focus-visible {
+  outline: 3px solid rgba(249, 115, 22, 0.5);
+  outline-offset: 2px;
+}
+
+.gaiheki-cta-btn-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.gaiheki-cta-btn:hover:not(:disabled) .gaiheki-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.gaiheki-cta-btn:active:not(:disabled) .gaiheki-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.gaiheki-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: gaihekiCta-shine 3.5s ease-in-out infinite;
+}
+
+@keyframes gaihekiStepIn {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.gaiheki-step-in {
+  animation: gaihekiStepIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes gaihekiFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.gaiheki-fade-in {
+  animation: gaihekiFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Reduced motion: disable all decorative animations */
 @media (prefers-reduced-motion: reduce) {
   .hero-enter  { animation: none; opacity: 1; transform: none; }
@@ -494,6 +589,10 @@ body {
       inset 0 1px 0 rgba(255, 255, 255, 0.50) !important;
   }
   .taxi-cta-shine  { animation: none !important; display: none; }
+  .gaiheki-cta-btn   { animation: none !important; box-shadow: 0 5px 0 rgba(180, 60, 0, 0.35), 0 12px 28px rgba(249, 115, 22, 0.32) !important; }
+  .gaiheki-cta-shine { animation: none !important; display: none; }
+  .gaiheki-step-in   { animation: none !important; opacity: 1; transform: none; }
+  .gaiheki-fade-in   { animation: none !important; opacity: 1; transform: none; }
 }
 
 /* Section fade-in (JS-driven via IntersectionObserver) */
