@@ -67,15 +67,16 @@ function SectionLabel({
 }
 
 // ── Orange underline for headings ─────────────────────────────────────────────
-function OrangeLine({ children }: { children: ReactNode }) {
+function OrangeLine({ children, block = false }: { children: ReactNode; block?: boolean }) {
   return (
     <span
       style={{
+        display: block ? "inline-block" : undefined,
         backgroundImage: `linear-gradient(to right, ${ORANGE} 0%, rgba(249,163,86,0.5) 100%)`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 2.5px",
         backgroundPosition: "0 100%",
-        paddingBottom: 4,
+        paddingBottom: block ? 6 : 4,
       }}
     >
       {children}
@@ -176,8 +177,8 @@ function PainPointsSection() {
               style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)" }}
             >
               <span className="md:hidden">
-                <span className="block"><OrangeLine>今の年収に、本当に</OrangeLine></span>
-                <span className="block"><OrangeLine>満足していますか？</OrangeLine></span>
+                <span className="block mb-1.5"><OrangeLine block>今の年収に、本当に</OrangeLine></span>
+                <span className="block"><OrangeLine block>満足していますか？</OrangeLine></span>
               </span>
               <span className="hidden md:inline">
                 <OrangeLine>今の年収に、本当に満足していますか？</OrangeLine>
