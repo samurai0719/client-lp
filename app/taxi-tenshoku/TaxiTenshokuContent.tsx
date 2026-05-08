@@ -369,13 +369,9 @@ export default function TaxiTenshokuContent() {
               animationDelay: '0.08s',
             }}
           >
-            タクシードライバーへの転職を
-            <br />
-            考えているなら、
+            タクシードライバーの転職は
             <br />
             <span style={{ color: '#c88500' }}>非公開求人</span>から
-            <br />
-            探した方がいいかもしれません
           </h1>
 
           <p
@@ -1396,9 +1392,7 @@ export default function TaxiTenshokuContent() {
           >
             転職するかどうかは、
             <br />
-            <span style={{ color: '#1a4099' }}>非公開求人を見てから</span>
-            <br />
-            決めれば良いと思います
+            <span style={{ color: '#1a4099' }}>非公開求人を見てから</span>決めましょう
           </h2>
 
           <p
