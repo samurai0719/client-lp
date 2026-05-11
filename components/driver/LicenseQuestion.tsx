@@ -64,9 +64,6 @@ export default function LicenseQuestion({ stepNumber, affiliateUrl }: LicenseQue
         <h2 className="text-xl font-bold text-slate-800 leading-snug">
           どんな免許をお持ちですか？
         </h2>
-        <p className="mt-2 text-xs font-medium text-orange-500 bg-orange-50 inline-block px-3 py-1 rounded-full">
-          タップして求人情報ページへ進む
-        </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
