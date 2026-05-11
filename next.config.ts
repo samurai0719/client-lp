@@ -23,7 +23,11 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "www.golfprayer-joutatu.com" }],
           destination: "/rizap-golf",
         },
-
+        {
+          source: "/",
+          has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
+          destination: "/driver",
+        },
       ],
     };
   },

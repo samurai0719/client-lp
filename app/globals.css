@@ -605,3 +605,101 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ── Office Wellness LP CTA (gold) ──────────────────────────────── */
+@keyframes wellnessCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 6px 0 rgba(100, 72, 20, 0.35),
+      0 14px 32px rgba(180, 140, 60, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 8px 0 rgba(100, 72, 20, 0.28),
+      0 20px 40px rgba(180, 140, 60, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+}
+
+@keyframes wellnessCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.wellness-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  border-radius: 1rem;
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #1a0d00;
+  text-decoration: none;
+  background: linear-gradient(
+    155deg,
+    #e8c87a 0%,
+    #c9a040 20%,
+    #9a7028 48%,
+    #b88e38 68%,
+    #e0bc68 88%,
+    #9a7028 100%
+  );
+  border: 1px solid rgba(140, 100, 30, 0.30);
+  animation: wellnessCta-float 2.8s ease-in-out infinite;
+}
+
+.wellness-cta-btn:link,
+.wellness-cta-btn:visited,
+.wellness-cta-btn:hover,
+.wellness-cta-btn:active {
+  color: #1a0d00;
+  text-decoration: none;
+}
+
+.wellness-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.wellness-cta-btn:hover .wellness-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.wellness-cta-btn:active .wellness-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.wellness-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.30) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: wellnessCta-shine 3.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wellness-cta-btn   { animation: none !important; box-shadow: 0 6px 0 rgba(100,72,20,0.35), 0 14px 32px rgba(180,140,60,0.28) !important; }
+  .wellness-cta-shine { animation: none !important; display: none; }
+}
+
+/* ── Driver LP: 質問カードフェードイン ────────────────────────── */
+@keyframes driverFadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: driverFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in { animation: none !important; opacity: 1; transform: none; }
+}
