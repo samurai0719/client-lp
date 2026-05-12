@@ -1329,7 +1329,227 @@ export default function TaxiTenshokuContent() {
       </Section>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          9. 不安解消FAQ
+          9. 体験談セクション
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      <Section
+        style={{
+          background: '#fff',
+          padding: '3rem 1.2rem',
+          borderTop: '3px solid #eaf4ff',
+        }}
+      >
+        <div style={{ maxWidth: '480px', margin: '0 auto' }}>
+          <p
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: '#5b7fa3',
+              letterSpacing: '0.08em',
+              textAlign: 'center',
+              marginBottom: '0.5rem',
+            }}
+          >
+            転職した方の声
+          </p>
+          <h2
+            style={{
+              fontSize: 'clamp(1.1rem, 4vw, 1.4rem)',
+              fontWeight: 900,
+              textAlign: 'center',
+              color: '#1f2d3d',
+              lineHeight: 1.45,
+              marginBottom: '0.5rem',
+            }}
+          >
+            転職前と比べて、
+            <br />
+            <span style={{ color: '#1a4099' }}>働き方が大きく変わりました</span>
+          </h2>
+          <p
+            style={{
+              fontSize: '0.78rem',
+              color: '#5b7fa3',
+              textAlign: 'center',
+              marginBottom: '1.8rem',
+              lineHeight: 1.5,
+            }}
+          >
+            実際に転職して感じた変化の一例です
+          </p>
+
+          {/* 転職前後 比較カード */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '0.75rem',
+              marginBottom: '1.6rem',
+            }}
+          >
+            {/* 転職前 */}
+            <div
+              style={{
+                background: '#fdf4f4',
+                border: '2px solid #e8b4b4',
+                borderRadius: '14px',
+                padding: '1rem 0.9rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.6rem',
+              }}
+            >
+              <div
+                style={{
+                  textAlign: 'center',
+                  background: '#e8b4b4',
+                  borderRadius: '8px',
+                  padding: '0.4rem',
+                  fontSize: '0.73rem',
+                  fontWeight: 800,
+                  color: '#fff',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                😔 転職前
+              </div>
+              {[
+                '年収がなかなか上がらない',
+                '年間休日が少なく、しっかり休めない',
+                '疲れが取れず、仕事に行きたくない日が増えていた',
+                '自由な時間が少なく、趣味を楽しむ余裕もなかった',
+              ].map((item) => (
+                <div
+                  key={item}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.4rem',
+                    fontSize: '0.73rem',
+                    color: '#7a4040',
+                    lineHeight: 1.55,
+                    fontWeight: 600,
+                  }}
+                >
+                  <span style={{ color: '#c0392b', flexShrink: 0, marginTop: '0.1rem' }}>✕</span>
+                  {item}
+                </div>
+              ))}
+            </div>
+
+            {/* 転職後 */}
+            <div
+              style={{
+                background: '#f0f7ff',
+                border: '2px solid #1a4099',
+                borderRadius: '14px',
+                padding: '1rem 0.9rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.6rem',
+                boxShadow: '0 4px 16px rgba(26,64,153,0.1)',
+              }}
+            >
+              <div
+                style={{
+                  textAlign: 'center',
+                  background: '#1a4099',
+                  borderRadius: '8px',
+                  padding: '0.4rem',
+                  fontSize: '0.73rem',
+                  fontWeight: 800,
+                  color: '#f5c000',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                😊 転職後
+              </div>
+              {[
+                '給料が増えて、生活に少し余裕が出た',
+                '休みの感覚が変わり、以前よりリフレッシュしやすくなった',
+                '仕事だけで毎日が終わる感覚が減った',
+                '趣味に使える時間ができて、気持ちにも余裕が持てるようになった',
+              ].map((item) => (
+                <div
+                  key={item}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.4rem',
+                    fontSize: '0.73rem',
+                    color: '#1a3060',
+                    lineHeight: 1.55,
+                    fontWeight: 600,
+                  }}
+                >
+                  <span style={{ color: '#f5c000', flexShrink: 0, marginTop: '0.1rem' }}>✓</span>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 本文体験談 */}
+          <div
+            style={{
+              background: '#f7fbff',
+              borderRadius: '16px',
+              padding: '1.4rem 1.3rem',
+              borderLeft: '4px solid #1a4099',
+              position: 'relative',
+            }}
+          >
+            <span
+              style={{
+                position: 'absolute',
+                top: '-0.6rem',
+                left: '1rem',
+                fontSize: '2.4rem',
+                color: '#1a4099',
+                opacity: 0.18,
+                fontFamily: 'Georgia, serif',
+                lineHeight: 1,
+                pointerEvents: 'none',
+              }}
+              aria-hidden="true"
+            >
+              &ldquo;
+            </span>
+            <p
+              style={{
+                fontSize: '0.875rem',
+                color: '#2e3f5c',
+                lineHeight: 1.85,
+                fontWeight: 500,
+              }}
+            >
+              以前は、疲れが取れないまま仕事に行く日が多く、正直しんどさを感じていました。
+              年収も大きく変わらず、休みも少なくて、仕事以外の時間を楽しむ余裕があまりありませんでした。
+              <br /><br />
+              でも転職後は、以前より給料が増えて、生活に少し余裕が出ました。
+              趣味に使える時間もできて、仕事だけで毎日が終わる感覚が減ったのは大きかったです。
+              <br /><br />
+              <strong style={{ color: '#1a4099' }}>
+                もっと早く選択肢を広げておけばよかったと感じています。
+              </strong>
+            </p>
+          </div>
+
+          <p
+            style={{
+              fontSize: '0.67rem',
+              color: '#8a9ab8',
+              lineHeight: 1.65,
+              marginTop: '0.85rem',
+              textAlign: 'center',
+            }}
+          >
+            ※感じ方や働き方には個人差があり、求人や勤務先により異なります。
+          </p>
+        </div>
+      </Section>
+
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          10. 不安解消FAQ
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <Section
         style={{
