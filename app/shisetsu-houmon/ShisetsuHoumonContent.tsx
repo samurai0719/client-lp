@@ -37,6 +37,7 @@ const BLUE_BORDER = '#b3d9ee';
 // ─────────────────────────────────────────────────────────────────────────────
 type FaqItem = { q: string; a: string };
 type MeritItem = { icon: ReactNode; title: string; body: string };
+type SurveyStep = 1 | 2 | 3 | 4;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Animations
@@ -89,6 +90,12 @@ const RECOMMENDED: string[] = [
   '急性期より、落ち着いた看護がしたい',
   '施設看護や在宅系に興味がある',
   'でも一人で訪問するのは少し不安',
+];
+
+const SURVEY_QUESTIONS: string[] = [
+  '今の職場を1度でも辞めたいと思った事はありますか？',
+  '辞めたいと思った原因は、人間関係や残業時間ですか？',
+  '施設訪問看護の好条件求人を紹介してもらいたいですか？',
 ];
 
 const FAQ_ITEMS: FaqItem[] = [
@@ -355,6 +362,131 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Survey
+// ─────────────────────────────────────────────────────────────────────────────
+
+function SurveyCard() {
+  const [step, setStep] = useState<SurveyStep>(1);
+
+  const advance = () => {
+    setStep(s => {
+      if (s === 1) return 2;
+      if (s === 2) return 3;
+      return 4;
+    });
+  };
+
+  return (
+    <div
+      className="rounded-2xl shadow-lg bg-white overflow-hidden"
+      style={{ border: `1px solid ${GREEN_BORDER}` }}
+    >
+      {/* ヘッダー */}
+      <div
+        className="px-6 py-4 flex items-center gap-3"
+        style={{ background: GREEN_BG, borderBottom: `1px solid ${GREEN_BORDER}` }}
+      >
+        <span style={{ fontSize: 15, fontWeight: 800, color: GREEN_DARK, letterSpacing: '0.12em' }}>
+          簡単アンケート
+        </span>
+        <div className="flex gap-2 ml-auto">
+          {([1, 2, 3] as const).map(n => (
+            <div
+              key={n}
+              className="w-10 h-2.5 rounded-full"
+              style={{
+                background: n < step ? GREEN : n === step ? GREEN_DARK : '#d1fae5',
+                transition: 'background 0.3s',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="p-8">
+        <AnimatePresence mode="wait">
+          {step < 4 ? (
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -16 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+            >
+              <p
+                className="font-extrabold mb-3"
+                style={{ fontSize: 14, color: GREEN_DARK, letterSpacing: '0.05em' }}
+              >
+                Q{step} / 3問
+              </p>
+              <p className="text-2xl font-bold text-gray-800 mb-8 leading-relaxed">
+                {SURVEY_QUESTIONS[step - 1]}
+              </p>
+              <div className="flex gap-4">
+                <button
+                  onClick={advance}
+                  className="flex-1 h-16 flex items-center justify-center rounded-2xl font-extrabold text-xl text-white"
+                  style={{ background: `linear-gradient(135deg, ${GREEN_DARK} 0%, ${GREEN} 100%)` }}
+                >
+                  はい
+                </button>
+                <button
+                  onClick={advance}
+                  className="flex-1 h-16 flex items-center justify-center rounded-2xl font-extrabold text-xl"
+                  style={{ background: '#f1f5f9', color: '#64748b' }}
+                >
+                  いいえ
+                </button>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="complete"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              <p className="text-lg font-bold text-gray-800 text-center mb-6">
+                アンケートの回答ありがとうございます。
+              </p>
+              <div className="grid grid-cols-3 gap-3 mb-7">
+                {(
+                  [
+                    { label: '年収', value: '540万円〜' },
+                    { label: '年間休日', value: '117日' },
+                    { label: '残業', value: '少なめ' },
+                  ] as { label: string; value: string }[]
+                ).map((c, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center py-5 px-2 rounded-xl text-center"
+                    style={{ background: GREEN_BG, border: `1px solid ${GREEN_BORDER}` }}
+                  >
+                    <p style={{ fontSize: 12, color: '#64748b', marginBottom: 8, fontWeight: 600 }}>
+                      {c.label}
+                    </p>
+                    <p className="font-extrabold text-base" style={{ color: GREEN_DARK }}>
+                      {c.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <p
+                className="text-center font-bold mb-5"
+                style={{ fontSize: 15, color: GREEN_DARK }}
+              >
+                アンケートに回答してくれた方に特別にご案内
+              </p>
+              <CtaButton label="施設訪問看護の好条件求人を紹介してもらう" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Section components
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -465,6 +597,11 @@ function HeroSection() {
           </div>
         </motion.div>
 
+        {/* アンケート（モバイルのみ・ファーストビュー内） */}
+        <motion.div variants={fadeUp} className="mb-6 md:hidden">
+          <SurveyCard />
+        </motion.div>
+
         {/* サブコピー */}
         <motion.div
           variants={fadeUp}
@@ -482,13 +619,6 @@ function HeroSection() {
           </span>
         </motion.div>
 
-        {/* CTA → 注釈 */}
-        <motion.div variants={fadeUp}>
-          <CtaButton />
-          <p className="text-center mt-3 leading-relaxed" style={{ fontSize: 11, color: '#94a3b8' }}>
-            ※求人内容・勤務条件は施設や事業所により異なります。
-          </p>
-        </motion.div>
       </motion.div>
 
       {/* 装飾サークル */}
@@ -991,6 +1121,23 @@ export default function ShisetsuHoumonContent() {
 
       <main className="min-h-screen bg-white overflow-x-hidden">
         <HeroSection />
+
+        {/* アンケート（PC版・ファーストビュー直下） */}
+        <section
+          className="hidden md:block px-5 py-12"
+          style={{ background: GREEN_BG, borderBottom: `1px solid ${GREEN_BORDER}` }}
+        >
+          <div className="max-w-3xl mx-auto">
+            <p
+              className="text-[10px] font-extrabold uppercase tracking-[0.26em] mb-3"
+              style={{ color: GREEN_DARK }}
+            >
+              簡単アンケート（3問）
+            </p>
+            <SurveyCard />
+          </div>
+        </section>
+
         <EmpathySection />
         <WhatIsSection />
         <MeritsSection />
