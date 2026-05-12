@@ -153,9 +153,8 @@ function FeatureCard({
   );
 }
 
-/** FAQアイテム */
+/** FAQアイテム（回答常時表示） */
 function FaqItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
   return (
     <div
       style={{
@@ -166,21 +165,15 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         boxShadow: '0 2px 8px rgba(30, 60, 120, 0.05)',
       }}
     >
-      <button
-        onClick={() => setOpen((o) => !o)}
+      <div
         style={{
           width: '100%',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          alignItems: 'flex-start',
           gap: '0.8rem',
           padding: '1rem 1.1rem',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
           textAlign: 'left',
         }}
-        aria-expanded={open}
       >
         <span
           style={{
@@ -209,64 +202,33 @@ function FaqItem({ q, a }: { q: string; a: string }) {
           </span>
           {q}
         </span>
+      </div>
+      <div
+        style={{
+          padding: '0 1.1rem 1rem',
+          fontSize: '0.875rem',
+          color: '#4b5563',
+          lineHeight: 1.7,
+          borderTop: '1px solid #e8f0fb',
+        }}
+      >
         <span
           style={{
-            flexShrink: 0,
-            width: '24px',
-            height: '24px',
-            borderRadius: '50%',
-            background: open ? '#1a4099' : '#e8f0fb',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'background 0.2s',
+            display: 'inline-block',
+            fontWeight: 900,
+            color: '#1f2d3d',
+            fontSize: '0.95rem',
+            background: '#f5c000',
+            borderRadius: '6px',
+            padding: '0.05rem 0.4rem',
+            marginRight: '0.4rem',
+            lineHeight: 1.5,
           }}
         >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            style={{ transform: open ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.25s' }}
-          >
-            <path
-              d="M2 4l4 4 4-4"
-              stroke={open ? '#f5c000' : '#1a4099'}
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          A
         </span>
-      </button>
-      {open && (
-        <div
-          style={{
-            padding: '0 1.1rem 1rem',
-            fontSize: '0.875rem',
-            color: '#4b5563',
-            lineHeight: 1.7,
-            borderTop: '1px solid #e8f0fb',
-          }}
-        >
-          <span
-            style={{
-              display: 'inline-block',
-              fontWeight: 900,
-              color: '#1f2d3d',
-              fontSize: '0.95rem',
-              background: '#f5c000',
-              borderRadius: '6px',
-              padding: '0.05rem 0.4rem',
-              marginRight: '0.4rem',
-              lineHeight: 1.5,
-            }}
-          >
-            A
-          </span>
-          {a}
-        </div>
-      )}
+        {a}
+      </div>
     </div>
   );
 }
@@ -393,6 +355,25 @@ export default function TaxiTenshokuContent() {
             転職するかどうか判断してください。
           </p>
 
+          {/* 安心補足文 */}
+          <p
+            className="hero-enter"
+            style={{
+              fontSize: '0.8rem',
+              color: '#3d6a9a',
+              lineHeight: 1.75,
+              marginTop: '0.85rem',
+              padding: '0.8rem 1rem',
+              background: 'rgba(255,255,255,0.75)',
+              borderRadius: '10px',
+              border: '1px solid rgba(91,127,163,0.22)',
+              animationDelay: '0.23s',
+            }}
+          >
+            公開求人だけでは分からない情報もあるため、
+            非公開求人も合わせて見るのがおすすめです。
+          </p>
+
           {/* 画像 */}
           <div
             className="hero-enter"
@@ -429,6 +410,51 @@ export default function TaxiTenshokuContent() {
           </p>
         </div>
       </header>
+
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          FV直下 登録メリット3点バー
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      <div style={{ background: '#1a4099', padding: '1.5rem 1.2rem' }}>
+        <div style={{ maxWidth: '480px', margin: '0 auto' }}>
+          <p
+            style={{
+              color: '#f5c000',
+              fontWeight: 800,
+              fontSize: '0.72rem',
+              textAlign: 'center',
+              letterSpacing: '0.07em',
+              marginBottom: '1rem',
+            }}
+          >
+            登録すると、こんな求人が見られます
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+            {[
+              { icon: '🌱', text: '未経験歓迎の非公開求人あり' },
+              { icon: '📋', text: '二種免許取得サポートあり' },
+              { icon: '✅', text: '面接1回求人も確認可能' },
+            ].map(({ icon, text }) => (
+              <div
+                key={text}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.8rem',
+                  background: 'rgba(255,255,255,0.1)',
+                  borderRadius: '10px',
+                  padding: '0.75rem 1rem',
+                  border: '1px solid rgba(255,255,255,0.18)',
+                }}
+              >
+                <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>{icon}</span>
+                <p style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff', lineHeight: 1.35 }}>
+                  {text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           2. 共感ブロック
@@ -1101,11 +1127,11 @@ export default function TaxiTenshokuContent() {
               marginBottom: '0.8rem',
             }}
           >
-            ブラック求人を避けたいなら、
+            面接1回求人や未経験歓迎の
             <br />
-            <span style={{ color: '#1a4099' }}>レバジョブの非公開求人</span>から
+            <span style={{ color: '#1a4099' }}>非公開求人を探したいなら</span>、
             <br />
-            探すのが有力な選択肢です
+            レバジョブが有力です
           </h2>
 
           <p
@@ -1356,6 +1382,14 @@ export default function TaxiTenshokuContent() {
               q="登録したら、すぐに転職しないといけませんか？"
               a="そんなことはありません。まずは非公開求人を見て、条件が良ければ検討する、という流れで大丈夫です。登録後にしつこい営業を受けることもなく、転職するかどうかは自分のペースで決められます。"
             />
+            <FaqItem
+              q="求人を見るだけでも大丈夫ですか？"
+              a="はい、大丈夫です。登録後は求人の確認だけでも問題ありません。「どんな求人があるか知りたい」という段階での登録も歓迎しています。気になる求人が見つかってから、次のステップを検討してください。"
+            />
+            <FaqItem
+              q="しつこい連絡はありませんか？"
+              a="ご安心ください。レバジョブでは、担当者から一方的にしつこく連絡を送ることはありません。ご自身のペースで転職活動を進めていただけます。不要な場合は、サポートを一時停止する旨を伝えていただければ対応してもらえます。"
+            />
           </div>
         </div>
       </Section>
@@ -1451,7 +1485,54 @@ export default function TaxiTenshokuContent() {
             alt="転職を考えているドライバーのイメージ"
           />
 
-          <div style={{ marginTop: '2rem' }}>
+          {/* CTA直前 不安処理ボックス */}
+          <div
+            style={{
+              marginTop: '1.8rem',
+              background: '#fff8e1',
+              border: '2px solid #f5c000',
+              borderRadius: '14px',
+              padding: '1.2rem 1.3rem',
+              textAlign: 'left',
+            }}
+          >
+            <p
+              style={{
+                fontSize: '0.75rem',
+                fontWeight: 800,
+                color: '#c88500',
+                letterSpacing: '0.05em',
+                marginBottom: '0.7rem',
+              }}
+            >
+              登録前に確認してください
+            </p>
+            {[
+              '登録後すぐに応募ではありません',
+              'まずは求人確認だけでOKです',
+              '転職するかどうかは、あなたが決めます',
+            ].map((text, i, arr) => (
+              <div
+                key={text}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  padding: '0.5rem 0',
+                  borderBottom: i < arr.length - 1 ? '1px solid rgba(245,192,0,0.25)' : 'none',
+                  fontSize: '0.92rem',
+                  fontWeight: 700,
+                  color: '#1f2d3d',
+                  lineHeight: 1.4,
+                }}
+              >
+                <span style={{ color: '#f5c000', fontSize: '1.2rem', flexShrink: 0 }}>★</span>
+                {text}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: '1.4rem' }}>
             <CtaButton label="30秒の無料登録で求人を探しに行く" sub="レバジョブへ（無料）" />
           </div>
 
