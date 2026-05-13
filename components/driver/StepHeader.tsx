@@ -6,7 +6,7 @@ interface StepHeaderProps {
 
 export default function StepHeader({ currentStep, totalSteps }: StepHeaderProps) {
   const pct = Math.round((currentStep / totalSteps) * 100);
-  const remaining = totalSteps - currentStep + 1;
+  const remaining = totalSteps - currentStep;
 
   return (
     <header className="bg-white border-b border-slate-100 sticky top-0 z-20 shadow-sm">
@@ -32,16 +32,16 @@ export default function StepHeader({ currentStep, totalSteps }: StepHeaderProps)
         </div>
 
         {/* ステップドット */}
-        <div className="px-4 pb-2.5 flex items-center gap-1">
+        <div className="px-4 pb-2.5 flex items-center gap-0.5">
           {Array.from({ length: totalSteps }).map((_, i) => {
             const n = i + 1;
             const done = n < currentStep;
             const active = n === currentStep;
             return (
-              <div key={n} className="flex items-center gap-1">
+              <div key={n} className="flex items-center gap-0.5">
                 <div
                   className={
-                    'w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ' +
+                    'w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-all duration-300 shrink-0 ' +
                     (done
                       ? 'bg-blue-500 text-white'
                       : active
@@ -54,7 +54,7 @@ export default function StepHeader({ currentStep, totalSteps }: StepHeaderProps)
                 {i < totalSteps - 1 && (
                   <div
                     className={
-                      'h-0.5 w-6 rounded-full transition-all duration-300 ' +
+                      'h-0.5 w-3 rounded-full transition-all duration-300 shrink-0 ' +
                       (done ? 'bg-blue-400' : 'bg-slate-200')
                     }
                   />

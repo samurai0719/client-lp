@@ -52,7 +52,7 @@ export default function DriverContent({ affiliateUrl }: DriverContentProps) {
           ───────────────────────────────────────────────────────── */}
           {step >= 1 && (
             <>
-              <StepHeader currentStep={step} totalSteps={3} />
+              <StepHeader currentStep={step} totalSteps={7} />
 
               {step === 1 && (
                 <QuestionCard
