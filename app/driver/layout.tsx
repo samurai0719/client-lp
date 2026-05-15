@@ -17,6 +17,11 @@ export default function DriverLayout({ children }: { children: React.ReactNode }
           fbq('track', 'PageView');
         `}
       </Script>
+      <Script
+        id="ptengine"
+        src="https://js.ptengine.jp/79j40dus.js"
+        strategy="afterInteractive"
+      />
       <noscript>
         <img
           height="1"
