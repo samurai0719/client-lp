@@ -38,6 +38,12 @@ export default function SekouStickyCtaBar() {
         transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
       }}
     >
+      <p
+        className="text-[11px] font-bold tracking-wide text-center mb-1"
+        style={{ color: "#ea580c" }}
+      >
+        30秒で無料登録
+      </p>
       <a
         href={CTA_HREF}
         rel="nofollow"
@@ -46,12 +52,6 @@ export default function SekouStickyCtaBar() {
                    cursor-pointer touch-manipulation
                    active:scale-[0.97]"
         style={{
-          /*
-           * Three-layer button design:
-           *   1. Orange gradient (top-light to darker bottom) for depth
-           *   2. Inset top highlight line for a "lit from above" feel
-           *   3. Two-stage outer shadow (soft wide + tight near)
-           */
           background:
             "linear-gradient(170deg, #fb923c 0%, #f97316 40%, #ea580c 100%)",
           boxShadow:
@@ -89,13 +89,13 @@ export default function SekouStickyCtaBar() {
           公式サイト
         </span>
         <span
-          className="text-base font-extrabold leading-tight"
+          className="text-[0.9rem] font-extrabold leading-tight"
           style={{
             color: "#fff",
             textShadow: "0 1px 3px rgba(180,50,0,0.25)",
           }}
         >
-          非公開求人を見てみる
+          非公開求人を紹介してもらう
         </span>
       </a>
     </div>

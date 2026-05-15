@@ -191,8 +191,13 @@ export default function HeroSection() {
           </div>
 
           {/* CTA */}
-          {/* upper text: 11→12px, lower: 1rem→1.05rem */}
           <div id="hero-cta" className="flex flex-col gap-1.5 max-w-[288px] md:max-w-[300px]">
+            <p
+              className="text-sm font-bold tracking-wide text-center"
+              style={{ color: "#ea580c" }}
+            >
+              30秒で無料登録
+            </p>
             <a
               href={CTA_HREF}
               rel="nofollow"
@@ -200,7 +205,7 @@ export default function HeroSection() {
                          w-full min-h-[54px] md:min-h-[56px] rounded-2xl
                          cursor-pointer touch-manipulation active:scale-[0.96]"
               style={{
-                padding: "13px 28px",
+                padding: "13px 20px",
                 background:
                   "linear-gradient(174deg, #ff9a47 0%, #f97316 44%, #e55d0a 100%)",
                 boxShadow: CTA_REST,
@@ -232,13 +237,12 @@ export default function HeroSection() {
                 公式サイト
               </span>
               <span
-                className="block text-[1.05rem] font-extrabold leading-tight tracking-wide"
+                className="block text-[0.95rem] font-extrabold leading-tight tracking-wide"
                 style={{ color: "#fff", textShadow: "0 1px 4px rgba(130,35,0,0.28)" }}
               >
-                非公開求人を見てみる
+                非公開求人を紹介してもらう
               </span>
             </a>
-            {/* free note: 10→11px */}
             <p className="text-slate-500 text-[11px] text-center leading-relaxed">
               ※ 求職者は完全無料でご利用いただけます
             </p>

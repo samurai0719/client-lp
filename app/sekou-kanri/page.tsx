@@ -13,38 +13,49 @@ const ORANGE_DARK = "#c25a0a";
 // ── CTA Button ────────────────────────────────────────────────────────────────
 function CtaButton({ href, large = false }: { href: string; large?: boolean }) {
   return (
-    <a
-      href={href}
-      rel="nofollow"
-      className="sekou-cta-btn"
+    <div
+      className="flex flex-col items-center gap-1.5 w-full"
       style={{ maxWidth: large ? "22rem" : "20rem" }}
     >
-      <span className="sekou-cta-shine" aria-hidden="true" />
-      <span className="sekou-cta-btn-inner">
-        <span
-          className="block mb-0.5"
-          style={{
-            fontSize: 10,
-            letterSpacing: "0.24em",
-            color: "rgba(255,237,213,0.85)",
-            fontWeight: 600,
-          }}
-        >
-          公式サイト
+      <p
+        className="text-sm font-bold tracking-wide text-center"
+        style={{ color: "#fb923c" }}
+      >
+        30秒で無料登録
+      </p>
+      <a
+        href={href}
+        rel="nofollow"
+        className="sekou-cta-btn"
+        style={{ maxWidth: "100%" }}
+      >
+        <span className="sekou-cta-shine" aria-hidden="true" />
+        <span className="sekou-cta-btn-inner">
+          <span
+            className="block mb-0.5"
+            style={{
+              fontSize: 10,
+              letterSpacing: "0.24em",
+              color: "rgba(255,237,213,0.85)",
+              fontWeight: 600,
+            }}
+          >
+            公式サイト
+          </span>
+          <span
+            className="block leading-tight"
+            style={{
+              fontSize: large ? "1.05rem" : "0.95rem",
+              fontWeight: 800,
+              color: "#fff",
+              textShadow: "0 1px 4px rgba(130,35,0,0.28)",
+            }}
+          >
+            非公開求人を紹介してもらう
+          </span>
         </span>
-        <span
-          className="block leading-tight"
-          style={{
-            fontSize: large ? "1.1rem" : "1rem",
-            fontWeight: 800,
-            color: "#fff",
-            textShadow: "0 1px 4px rgba(130,35,0,0.28)",
-          }}
-        >
-          非公開求人を見てみる
-        </span>
-      </span>
-    </a>
+      </a>
+    </div>
   );
 }
 
