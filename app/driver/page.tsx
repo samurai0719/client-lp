@@ -5,7 +5,7 @@ import DriverContent from '@/components/driver/DriverContent';
 // A8アフィリエイトリンク管理
 // 遷移先URLはここで一元管理しています。変更する場合はこの定数を書き換えてください。
 // ─────────────────────────────────────────────────────────────────────────────
-const AFFILIATE_URL = 'https://px.a8.net/svt/ejp?a8mat=4B1HTK+EPVUPU+2JK4+5SEKLE';
+const AFFILIATE_URL = 'https://px.a8.net/svt/ejp?a8mat=4B1HTK+EPVUPU+2JK4+5SLUXU';
 
 export const metadata: Metadata = {
   title: 'ドライバー転職ナビ | 高収入・未経験歓迎の求人を無料確認',
