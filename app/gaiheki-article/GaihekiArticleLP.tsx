@@ -772,18 +772,9 @@ export default function GaihekiArticleLP() {
 
                     {/* ── テキストエリア ── */}
                     <div className="flex-1 min-w-0 pt-1">
-                      {/* タイトル：オレンジ系マーカー風アンダーライン（文字の下半分に被る）
-                          z-index 不要：background は span 自身の背景、テキストは常に前面 */}
+                      {/* タイトル：::after でオレンジマーカーを文字の背面に配置 */}
                       <p className="text-sm font-bold mb-2 leading-snug">
-                        <span
-                          style={{
-                            backgroundImage: 'linear-gradient(transparent 52%, rgba(249,115,22,0.42) 52%)',
-                            WebkitBoxDecorationBreak: 'clone',
-                            boxDecorationBreak: 'clone',
-                            padding: '0 2px 3px',
-                            color: '#1e293b',
-                          }}
-                        >
+                        <span className="gaiheki-title-underline">
                           {title}
                         </span>
                       </p>
