@@ -26,7 +26,9 @@
       "Bash(lsof -ti:3000)",
       "Bash(lsof -ti:3001)",
       "Read(//Users/tsukamotoshuntaira/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/.claude/skills/ui-ux-pro-max/**)",
-      "Bash(python3 scripts/search.py \"home exterior painting service local trust article landing page\" --design-system -p \"PaintNet Article LP\" -f markdown)"
+      "Bash(python3 scripts/search.py \"home exterior painting service local trust article landing page\" --design-system -p \"PaintNet Article LP\" -f markdown)",
+      "Bash(kill 59317)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }
