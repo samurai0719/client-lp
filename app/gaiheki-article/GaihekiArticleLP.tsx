@@ -772,9 +772,18 @@ export default function GaihekiArticleLP() {
 
                     {/* ── テキストエリア ── */}
                     <div className="flex-1 min-w-0 pt-1">
-                      {/* タイトル：::after でオレンジマーカーを文字の背面に配置 */}
+                      {/* タイトル：linear-gradient で各行にマーカーを描画 */}
                       <p className="text-sm font-bold mb-2 leading-snug">
-                        <span className="gaiheki-title-underline">
+                        <span
+                          style={{
+                            display: 'inline',
+                            background: 'linear-gradient(transparent 58%, rgba(249,115,22,0.32) 58%, rgba(249,115,22,0.32) 88%, transparent 88%)',
+                            WebkitBoxDecorationBreak: 'clone',
+                            boxDecorationBreak: 'clone',
+                            padding: '0 0.08em',
+                            color: '#1e293b',
+                          }}
+                        >
                           {title}
                         </span>
                       </p>

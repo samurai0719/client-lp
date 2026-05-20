@@ -595,26 +595,6 @@ body {
   .gaiheki-fade-in   { animation: none !important; opacity: 1; transform: none; }
 }
 
-/* ── Gaiheki section-4 title underline (::after marker) ─────────────── */
-.gaiheki-title-underline {
-  position: relative;
-  display: inline;
-  z-index: 1;
-  color: #1e293b;
-}
-
-.gaiheki-title-underline::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0.08em;
-  height: 0.35em;
-  background: rgba(249, 115, 22, 0.38);
-  z-index: -1;
-  border-radius: 999px;
-}
-
 /* Section fade-in (JS-driven via IntersectionObserver) */
 .section-fade {
   opacity: 0;
