@@ -28,7 +28,13 @@
       "Read(//Users/tsukamotoshuntaira/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/.claude/skills/ui-ux-pro-max/**)",
       "Bash(python3 scripts/search.py \"home exterior painting service local trust article landing page\" --design-system -p \"PaintNet Article LP\" -f markdown)",
       "Bash(kill 59317)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "WebFetch(domain:api.anthropic.com)",
+      "WebFetch(domain:claude.ai)",
+      "Bash(cp \"/Users/tsukamotoshuntaira/.claude/projects/-Users-tsukamotoshuntaira-Desktop-client-lp/d40d73d0-8ebe-4395-a4d7-7b41f58cf193/tool-results/webfetch-1779344512457-j2pygk.bin\" /tmp/design.gz)",
+      "Bash(gunzip -c /tmp/design.gz)",
+      "Bash(tar -xf - -C /tmp/)",
+      "Bash(tar -xzf archive.tar.gz)"
     ]
   }
 }

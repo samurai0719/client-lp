@@ -465,35 +465,11 @@ body {
   animation: taxiCta-shine 3.5s ease-in-out infinite;
 }
 
-/* ── Gaiheki LP CTA (orange) ──────────────────────────────────────── */
-@keyframes gaihekiCta-float {
-  0%, 100% {
-    transform: translateY(0);
-    box-shadow:
-      0 5px 0 rgba(180, 60, 0, 0.35),
-      0 12px 28px rgba(249, 115, 22, 0.32),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  }
-  50% {
-    transform: translateY(-2px);
-    box-shadow:
-      0 7px 0 rgba(180, 60, 0, 0.28),
-      0 18px 36px rgba(249, 115, 22, 0.46),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  }
-}
-
-@keyframes gaihekiCta-shine {
-  0%          { transform: translateX(-140%) skewX(-20deg); }
-  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
-}
-
+/* ── Gaiheki LP CTA (orange) — デザイン仕様準拠 ──────────────────── */
 .gaiheki-cta-btn {
   display: block;
   width: 100%;
-  border: none;
-  border-radius: 1rem;
-  padding: 1.2rem 1.5rem;
+  padding: 1.15rem 1.5rem;
   text-align: center;
   cursor: pointer;
   touch-action: manipulation;
@@ -501,14 +477,33 @@ body {
   position: relative;
   overflow: hidden;
   font-weight: 800;
+  font-size: 1.06rem;
+  letter-spacing: 0.04em;
   color: #fff;
   text-decoration: none;
-  background: linear-gradient(155deg, #ff9a47 0%, #f97316 44%, #e55d0a 100%);
-  animation: gaihekiCta-float 2.8s ease-in-out infinite;
+  background: linear-gradient(180deg, #f7833a 0%, #e96a1f 55%, #d6571a 100%);
+  border: 1px solid #c9501a;
+  border-radius: 999px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 -3px 0 rgba(0, 0, 0, 0.18) inset,
+    0 10px 22px -6px rgba(233, 106, 31, 0.55),
+    0 4px 10px -2px rgba(201, 80, 26, 0.4);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.gaiheki-cta-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.gaiheki-cta-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.18) inset,
+    0 4px 10px -4px rgba(233, 106, 31, 0.5);
 }
 
 .gaiheki-cta-btn:disabled {
-  animation: none !important;
   opacity: 0.65;
   cursor: not-allowed;
 }
@@ -526,22 +521,10 @@ body {
   gap: 0.2rem;
   position: relative;
   z-index: 1;
-  transition: transform 0.15s ease-out;
 }
 
-.gaiheki-cta-btn:hover:not(:disabled) .gaiheki-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
-.gaiheki-cta-btn:active:not(:disabled) .gaiheki-cta-btn-inner { transform: translateY(2px) scale(0.995); }
-
 .gaiheki-cta-shine {
-  position: absolute;
-  top: -10%;
-  left: 0;
-  width: 45%;
-  height: 120%;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%);
-  pointer-events: none;
-  z-index: 2;
-  animation: gaihekiCta-shine 3.5s ease-in-out infinite;
+  display: none; /* 廃止: 3層シャドウで立体感を表現 */
 }
 
 @keyframes gaihekiStepIn {
@@ -589,8 +572,7 @@ body {
       inset 0 1px 0 rgba(255, 255, 255, 0.50) !important;
   }
   .taxi-cta-shine  { animation: none !important; display: none; }
-  .gaiheki-cta-btn   { animation: none !important; box-shadow: 0 5px 0 rgba(180, 60, 0, 0.35), 0 12px 28px rgba(249, 115, 22, 0.32) !important; }
-  .gaiheki-cta-shine { animation: none !important; display: none; }
+  .gaiheki-cta-btn   { transition: none; }
   .gaiheki-step-in   { animation: none !important; opacity: 1; transform: none; }
   .gaiheki-fade-in   { animation: none !important; opacity: 1; transform: none; }
 }
@@ -690,6 +672,66 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .wellness-cta-btn   { animation: none !important; box-shadow: 0 6px 0 rgba(100,72,20,0.35), 0 14px 32px rgba(180,140,60,0.28) !important; }
   .wellness-cta-shine { animation: none !important; display: none; }
+}
+
+/* ── Gaiheki Article LP: タイポグラフィ基盤 (v3 design spec) ─── */
+.gaiheki-article-lp {
+  font-feature-settings: "palt" 1;
+  color: #28292a;
+}
+.gaiheki-article-lp p,
+.gaiheki-article-lp li {
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+}
+
+/* 明朝見出し (Shippori Mincho B1 / Noto Serif JP フォールバック) */
+.gaiheki-font-mincho {
+  font-family: "Shippori Mincho B1", "Noto Serif JP", "YuMincho", "游明朝", "Hiragino Mincho ProN", serif;
+  font-feature-settings: "palt" 1;
+}
+
+/* セクション見出し英語ラベル (.sec-title .en 相当) */
+.gaiheki-sec-en {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Manrope", "Noto Sans JP", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #c9501a;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.gaiheki-sec-en::before,
+.gaiheki-sec-en::after {
+  content: "";
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  background: #e96a1f;
+  flex-shrink: 0;
+}
+.gaiheki-sec-en-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Manrope", "Noto Sans JP", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #c9501a;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.gaiheki-sec-en-left::before {
+  content: "";
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  background: #e96a1f;
+  flex-shrink: 0;
 }
 
 /* ── Driver LP: 質問カードフェードイン ────────────────────────── */

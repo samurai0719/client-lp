@@ -115,7 +115,7 @@ function ImgPlaceholder({
             WebkitBackdropFilter: 'blur(8px)',
           }}
         >
-          <Camera className="w-6 h-6 text-slate-400" />
+          <Camera className="w-6 h-6 text-[#8a8f9a]" />
         </div>
         <span
           className="text-xs font-medium tracking-wide px-3 py-1 rounded-full"
@@ -128,22 +128,18 @@ function ImgPlaceholder({
   );
 }
 
-// ─── セクションラベル（オレンジ縦線 + テキスト）────────────────────────────
-function Label({ children }: { children: ReactNode }) {
+// ─── セクションラベル（英文ラベル — .sec-title .en パターン）────────────────
+function Label({ children, center = true }: { children: ReactNode; center?: boolean }) {
   return (
-    <div className="flex items-center justify-center gap-2 mb-3">
-      <div
-        className="w-1 h-5 rounded-full"
-        style={{ background: 'linear-gradient(to bottom, #f97316, #ea580c)' }}
-      />
-      <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#ea580c' }}>
+    <div className={`flex ${center ? 'justify-center' : ''} mb-3`}>
+      <span className={center ? 'gaiheki-sec-en' : 'gaiheki-sec-en-left'}>
         {children}
       </span>
     </div>
   );
 }
 
-// ─── セクション見出し ────────────────────────────────────────────────────────
+// ─── セクション見出し（Shippori Mincho B1 + h-markアンダーライン）──────────
 function H2({
   children,
   light = false,
@@ -155,8 +151,12 @@ function H2({
 }) {
   return (
     <h2
-      className={`text-[1.65rem] sm:text-[1.9rem] font-black leading-tight tracking-tight ${center ? 'text-center' : ''}`}
-      style={{ color: light ? '#ffffff' : '#0a1628' }}
+      className={`gaiheki-font-mincho text-[1.65rem] sm:text-[1.9rem] leading-snug ${center ? 'text-center' : ''}`}
+      style={{
+        color: light ? '#ffffff' : '#28292a',
+        fontWeight: 500,
+        letterSpacing: '0.12em',
+      }}
     >
       {children}
     </h2>
@@ -194,51 +194,64 @@ function CtaLink({ label, light = false }: { label: string; light?: boolean }) {
   );
 }
 
-// ─── FAQ アコーディオン ──────────────────────────────────────────────────────
+// ─── FAQ アコーディオン（デザイン仕様準拠）──────────────────────────────────
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div
-      className="overflow-hidden rounded-2xl transition-colors duration-200"
-      style={{
-        border: `1.5px solid ${open ? '#ea580c' : '#e2e8f0'}`,
-        backgroundColor: open ? '#fffbf7' : '#ffffff',
-      }}
-    >
+    <div style={{ borderBottom: '1px solid #ece6dc' }}>
       <button
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer"
+        className="w-full flex items-start justify-between gap-3 py-[18px] text-left cursor-pointer bg-transparent border-0"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
       >
-        <div className="flex items-center gap-3">
-          <span
-            className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black transition-colors duration-200"
+        {/* Q マーク — Manrope風、オレンジ、背景なし */}
+        <span
+          className="shrink-0 text-[20px] font-black leading-[1.4]"
+          style={{ color: '#e96a1f', fontFamily: '"Manrope", system-ui, sans-serif', letterSpacing: '-0.01em' }}
+          aria-hidden
+        >
+          Q
+        </span>
+        <span className="flex-1 text-sm font-bold leading-snug text-left" style={{ color: '#28292a', lineHeight: 1.6 }}>
+          {q}
+        </span>
+        {/* 円形シェブロン */}
+        <span
+          className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300"
+          style={{
+            border: open ? 'none' : '1.5px solid #d8cebd',
+            background: open ? '#e96a1f' : 'transparent',
+            color: open ? '#fff' : '#5a5f6c',
+            transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+          }}
+          aria-hidden
+        >
+          <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="2 4 6 8 10 4" />
+          </svg>
+        </span>
+      </button>
+      {/* グリッドアニメーションで展開 */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateRows: open ? '1fr' : '0fr',
+          transition: 'grid-template-rows 0.28s ease',
+        }}
+      >
+        <div style={{ overflow: 'hidden' }}>
+          <p
+            className="text-sm leading-relaxed"
             style={{
-              backgroundColor: open ? '#ea580c' : '#f1f5f9',
-              color: open ? '#ffffff' : '#94a3b8',
+              color: '#5a5f6c',
+              lineHeight: 1.9,
+              padding: open ? '0 0 20px 32px' : '0 0 0 32px',
             }}
           >
-            Q
-          </span>
-          <span className="text-sm font-semibold text-slate-800 leading-snug">{q}</span>
+            {a}
+          </p>
         </div>
-        {open
-          ? <ChevronUp className="shrink-0 w-4 h-4 text-orange-500" />
-          : <ChevronDown className="shrink-0 w-4 h-4 text-slate-400" />}
-      </button>
-      {open && (
-        <div className="px-5 pb-5">
-          <div className="flex items-start gap-3 border-t border-orange-100 pt-4">
-            <span
-              className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black"
-              style={{ backgroundColor: '#fff0e6', color: '#ea580c' }}
-            >
-              A
-            </span>
-            <p className="text-sm text-slate-600 leading-relaxed">{a}</p>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -334,7 +347,17 @@ function BeforeAfterSlider() {
 // ════════════════════════════════════════════════════════════════════════════
 export default function GaihekiArticleLP() {
   return (
-    <div className="min-h-dvh bg-white text-slate-800 antialiased overflow-x-hidden">
+    <div className="gaiheki-article-lp min-h-dvh bg-white antialiased overflow-x-hidden" style={{ color: '#28292a' }}>
+      {/* Shippori Mincho B1 + Manrope フォント — React 19 link hoisting */}
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+        rel="stylesheet"
+      />
 
       {/* ── ヘッダー ────────────────────────────────────────────────────── */}
       <header
@@ -411,13 +434,13 @@ export default function GaihekiArticleLP() {
                 className="w-[140px] sm:w-[195px] h-auto object-contain shrink-0"
               />
               <p
-                className="text-2xl sm:text-3xl font-black tracking-tight whitespace-nowrap"
-                style={{ color: '#0a1628' }}
+                className="gaiheki-font-mincho text-2xl sm:text-3xl whitespace-nowrap"
+                style={{ color: '#28292a', fontWeight: 600, letterSpacing: '0.1em' }}
               >
                 の強み
               </p>
             </div>
-            <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               東海エリアでの外壁塗装をサポートする、Paint Netならではのポイントをご紹介します。
             </p>
           </div>
@@ -457,36 +480,29 @@ export default function GaihekiArticleLP() {
             ].map(({ n, icon: Icon, title, desc }, i) => (
               <FadeUp key={n} delay={i * 70} className={n === '05' ? 'sm:col-span-2' : ''}>
                 <div
-                  className="relative overflow-hidden rounded-2xl p-5 sm:p-6 border hover:border-orange-200 hover:shadow-md transition-all duration-200 h-full"
+                  className="relative overflow-hidden rounded-lg p-5 sm:p-6 border hover:border-orange-200 hover:shadow-md transition-all duration-200 h-full"
                   style={{
-                    borderColor: '#e4ecf6',
-                    background: 'linear-gradient(135deg, #fafcff 0%, #f2f7ff 100%)',
+                    borderColor: '#d8cebd',
+                    backgroundColor: '#fff',
+                    boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
                   }}
                 >
                   <span
-                    className="absolute -top-3 -right-1 text-8xl font-black opacity-[0.05] tabular-nums leading-none select-none pointer-events-none"
-                    style={{ color: '#1a3a6b' }}
+                    className="absolute -top-3 -right-1 text-8xl font-black opacity-[0.04] tabular-nums leading-none select-none pointer-events-none"
+                    style={{ fontFamily: '"Manrope", system-ui, sans-serif', color: '#e96a1f' }}
                   >
                     {n}
                   </span>
                   <div className="flex items-start gap-4">
                     <div
-                      className="shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center shadow-sm"
-                      style={{ background: 'linear-gradient(135deg, #1a3a6b 0%, #0a1628 100%)' }}
+                      className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center shadow-sm"
+                      style={{ background: 'linear-gradient(135deg, #e96a1f 0%, #c9501a 100%)' }}
                     >
                       <Icon className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <span
-                          className="text-[11px] font-extrabold px-2 py-0.5 rounded-full tabular-nums shrink-0"
-                          style={{ background: '#fff3e0', color: '#ea580c' }}
-                        >
-                          {n}
-                        </span>
-                        <p className="text-sm font-bold text-slate-800 leading-snug">{title}</p>
-                      </div>
-                      <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+                      <p className="text-sm font-bold leading-snug mb-1.5" style={{ color: '#28292a' }}>{title}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: '#5a5f6c' }}>{desc}</p>
                     </div>
                   </div>
                 </div>
@@ -531,11 +547,11 @@ export default function GaihekiArticleLP() {
             ].map((text, i) => (
               <FadeUp key={i} delay={i * 60}>
                 <div
-                  className="flex items-center gap-4 rounded-2xl px-5 py-4 border"
+                  className="flex items-center gap-4 rounded-lg px-5 py-4 border"
                   style={{
-                    background: 'linear-gradient(135deg, #f0f5fb 0%, #eaf1fa 100%)',
-                    borderColor: '#dce8f4',
-                    boxShadow: '0 2px 10px rgba(10,22,40,0.06)',
+                    background: '#fbf8f4',
+                    borderColor: '#d8cebd',
+                    boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
                   }}
                 >
                   {/* オレンジチェックアイコン */}
@@ -547,7 +563,7 @@ export default function GaihekiArticleLP() {
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
-                  <p className="text-sm sm:text-base font-semibold leading-snug" style={{ color: '#0f2040' }}>
+                  <p className="text-sm sm:text-base font-semibold leading-snug" style={{ color: '#28292a' }}>
                     {text}
                   </p>
                 </div>
@@ -639,7 +655,7 @@ export default function GaihekiArticleLP() {
                         }}
                       >
                         <Camera className="w-8 h-8 text-slate-300" />
-                        <span className="text-xs font-medium text-slate-400 tracking-wide">画像を挿入予定</span>
+                        <span className="text-xs font-medium text-[#8a8f9a] tracking-wide">画像を挿入予定</span>
                       </div>
                     </div>
                   )}
@@ -654,7 +670,7 @@ export default function GaihekiArticleLP() {
                     <h3 className="text-base sm:text-[1.05rem] font-bold mb-2 leading-snug" style={{ color: '#0a1628' }}>
                       {title}
                     </h3>
-                    <p className="text-sm text-slate-500 leading-relaxed">{body}</p>
+                    <p className="text-sm text-[#5a5f6c] leading-relaxed">{body}</p>
                     {cta && (
                       <a
                         href={cta.href}
@@ -745,16 +761,20 @@ export default function GaihekiArticleLP() {
               ].map(({ title, desc, iconSrc }, i) => (
                 <FadeUp key={i} delay={i * 60}>
                   <div
-                    className="flex items-start gap-4 rounded-2xl p-4 sm:p-5 border hover:border-orange-200 hover:shadow-sm transition-all duration-200"
-                    style={{ borderColor: '#e4ecf6', backgroundColor: 'rgba(248, 250, 252, 0.88)' }}
+                    className="flex items-start gap-4 rounded-lg p-4 sm:p-5 border transition-all duration-200"
+                    style={{
+                      borderColor: '#d8cebd',
+                      backgroundColor: '#ffffff',
+                      boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
+                    }}
                   >
-                    {/* ── アイコンエリア（76×76px）白背景 ── iconSrc に URL を入れると画像表示 */}
+                    {/* ── アイコンエリア（76×76px）── iconSrc に URL を入れると画像表示 */}
                     <div
-                      className="shrink-0 w-[76px] h-[76px] rounded-2xl overflow-hidden flex items-center justify-center p-1"
+                      className="shrink-0 w-[76px] h-[76px] overflow-hidden flex items-center justify-center p-1"
                       style={{
-                        backgroundColor: '#ffffff',
-                        border: '1px solid #e8edf2',
-                        boxShadow: '0 2px 8px rgba(10,22,40,0.08)',
+                        borderRadius: '18px',
+                        background: '#ffffff',
+                        border: '1px solid #d8cebd',
                       }}
                     >
                       {iconSrc ? (
@@ -772,22 +792,23 @@ export default function GaihekiArticleLP() {
 
                     {/* ── テキストエリア ── */}
                     <div className="flex-1 min-w-0 pt-1">
-                      {/* タイトル：linear-gradient で各行にマーカーを描画 */}
+                      {/* タイトル：h-mark.strong 仕様 — rgba(233,106,31,0.45) 58%-95% */}
                       <p className="text-sm font-bold mb-2 leading-snug">
                         <span
                           style={{
                             display: 'inline',
-                            background: 'linear-gradient(transparent 58%, rgba(249,115,22,0.32) 58%, rgba(249,115,22,0.32) 88%, transparent 88%)',
+                            backgroundImage: 'linear-gradient(transparent 58%, rgba(233,106,31,0.45) 58%, rgba(233,106,31,0.45) 95%, transparent 95%)',
+                            backgroundRepeat: 'no-repeat',
                             WebkitBoxDecorationBreak: 'clone',
                             boxDecorationBreak: 'clone',
                             padding: '0 0.08em',
-                            color: '#1e293b',
+                            color: '#28292a',
                           }}
                         >
                           {title}
                         </span>
                       </p>
-                      <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+                      <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
                     </div>
                   </div>
                 </FadeUp>
@@ -806,11 +827,12 @@ export default function GaihekiArticleLP() {
                     zIndex: -1,
                   }}
                 />
-                {/* [IMAGE_3: 業者との打ち合わせ・説明シーン] */}
-                <ImgPlaceholder
-                  aspect="3/4"
-                  label="業者打ち合わせイメージ"
-                  className="shadow-xl"
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://static.wixstatic.com/media/5ebda9_cde1eeda171946b784bdfbc98ad03fd1~mv2.png"
+                  alt="信頼できる外壁塗装会社の特徴"
+                  className="w-full h-auto rounded-2xl shadow-xl object-contain"
+                  loading="lazy"
                 />
                 <div
                   className="absolute top-4 -left-3 sm:-left-5 z-10 bg-white rounded-2xl px-4 py-3 shadow-xl border"
@@ -824,8 +846,8 @@ export default function GaihekiArticleLP() {
                       <CheckCircle className="w-4 h-4 text-orange-500" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-slate-800">地域密着の実績あり</p>
-                      <p className="text-[10px] text-slate-400">東海エリア対応</p>
+                      <p className="text-xs font-bold text-[#28292a]">地域密着の実績あり</p>
+                      <p className="text-[10px] text-[#8a8f9a]">東海エリア対応</p>
                     </div>
                   </div>
                 </div>
@@ -834,6 +856,30 @@ export default function GaihekiArticleLP() {
           </div>
         </div>
       </section>
+
+      {/* ── 5-A. セクション5直後 追加画像 ①② ─────────────────────────────── */}
+      <div className="bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8">
+          <FadeUp>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://static.wixstatic.com/media/5ebda9_1f907cc4851044ffa60cf22237cd911f~mv2.png"
+              alt=""
+              className="w-full h-auto rounded-xl shadow-md object-contain"
+              loading="lazy"
+            />
+          </FadeUp>
+          <FadeUp delay={80}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://static.wixstatic.com/media/5ebda9_0e6ee6f23c9e4c99ac827795c36833be~mv2.png"
+              alt=""
+              className="w-full h-auto rounded-xl shadow-md object-contain"
+              loading="lazy"
+            />
+          </FadeUp>
+        </div>
+      </div>
 
       {/* ── 6. 費用・塗料・時期 ──────────────────────────────────────────── */}
       <section
@@ -845,7 +891,7 @@ export default function GaihekiArticleLP() {
           <div className="text-center mb-8">
             <Label>基礎知識</Label>
             <H2 center>費用・塗料・時期について知っておきたいこと</H2>
-            <p className="mt-4 text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               外壁塗装を検討するうえで、最初に押さえておきたい基本情報です。
             </p>
           </div>
@@ -867,12 +913,13 @@ export default function GaihekiArticleLP() {
             ].map(({ n, orange, title, body }, i) => (
               <FadeUp key={n} delay={i * 80}>
                 <div
-                  className="grid items-start rounded-2xl p-5 sm:p-7 border hover:shadow-sm transition-shadow duration-200"
+                  className="grid items-start rounded-lg p-5 sm:p-7 border transition-shadow duration-200"
                   style={{
                     gridTemplateColumns: 'auto 1fr',
                     gap: '1.25rem',
-                    backgroundColor: orange ? '#fffbf7' : '#ffffff',
-                    borderColor: orange ? '#fed7aa' : '#e4ecf6',
+                    backgroundColor: orange ? '#fff3e8' : '#ffffff',
+                    borderColor: '#d8cebd',
+                    boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
                   }}
                 >
                   <span
@@ -889,8 +936,8 @@ export default function GaihekiArticleLP() {
                     {n}
                   </span>
                   <div className="pt-1">
-                    <p className="text-base font-bold text-slate-800 mb-2">{title}</p>
-                    <p className="text-sm text-slate-500 leading-relaxed">{body}</p>
+                    <p className="text-base font-bold text-[#28292a] mb-2">{title}</p>
+                    <p className="text-sm text-[#5a5f6c] leading-relaxed">{body}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -906,7 +953,7 @@ export default function GaihekiArticleLP() {
           <div className="text-center mb-8">
             <Label>劣化サイン</Label>
             <H2 center>こんな症状があるなら、早めの確認がおすすめ</H2>
-            <p className="mt-4 text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               外壁・屋根の以下のサインは、塗装時期が近づいているサインかもしれません。
             </p>
           </div>
@@ -932,20 +979,21 @@ export default function GaihekiArticleLP() {
             ].map(({ icon: Icon, label, desc }, i) => (
               <FadeUp key={label} delay={i * 55}>
                 <div
-                  className="relative overflow-hidden rounded-2xl p-5 sm:p-6 border hover:border-orange-200 hover:shadow-md transition-all duration-200"
+                  className="relative overflow-hidden rounded-lg p-5 sm:p-6 border hover:border-orange-200 hover:shadow-md transition-all duration-200"
                   style={{
-                    borderColor: '#e4ecf6',
-                    background: 'linear-gradient(135deg, #fafcff 0%, #f2f7ff 100%)',
+                    borderColor: '#d8cebd',
+                    backgroundColor: '#fff',
+                    boxShadow: '0 1px 4px rgba(0,0,0,.06)',
                   }}
                 >
                   <div
-                    className="w-11 h-11 rounded-2xl flex items-center justify-center mb-4 shadow-sm"
+                    className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-sm"
                     style={{ backgroundColor: '#fff3e8' }}
                   >
                     <Icon className="w-5 h-5 text-orange-500" />
                   </div>
-                  <p className="text-sm font-bold text-slate-800 mb-1.5">{label}</p>
-                  <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+                  <p className="text-sm font-bold text-[#28292a] mb-1.5">{label}</p>
+                  <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
                 </div>
               </FadeUp>
             ))}
@@ -953,8 +1001,8 @@ export default function GaihekiArticleLP() {
 
           <FadeUp delay={200}>
             <div
-              className="mt-8 rounded-2xl p-5 sm:p-6 flex items-start gap-4 border"
-              style={{ backgroundColor: '#fff8f2', borderColor: '#fed7aa' }}
+              className="mt-8 rounded-lg p-5 sm:p-6 flex items-start gap-4 border"
+              style={{ backgroundColor: '#fff8f2', borderColor: '#f5c79b' }}
             >
               <AlertTriangle className="shrink-0 w-5 h-5 text-orange-500 mt-0.5" />
               <div>
@@ -974,13 +1022,13 @@ export default function GaihekiArticleLP() {
       {/* ── 8. ビフォーアフター ──────────────────────────────────────────── */}
       <section
         className="py-16 sm:py-24"
-        style={{ background: 'linear-gradient(160deg, #f0f5fb 0%, #f6f9ff 100%)' }}
+        style={{ backgroundColor: '#fbf8f4' }}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
             <Label>施工事例</Label>
             <H2 center>ビフォーアフター</H2>
-            <p className="mt-4 text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               スライダーを左右に動かして、施工前後の変化を比較してみてください。
             </p>
           </div>
@@ -999,11 +1047,15 @@ export default function GaihekiArticleLP() {
               ].map(({ label, value }) => (
                 <div
                   key={label}
-                  className="rounded-2xl p-4 text-center border"
-                  style={{ backgroundColor: '#ffffff', borderColor: '#dce8f4' }}
+                  className="rounded-lg p-4 text-center border"
+                  style={{
+                    backgroundColor: '#ffffff',
+                    borderColor: '#d8cebd',
+                    boxShadow: '0 1px 4px rgba(0,0,0,.06)',
+                  }}
                 >
-                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">{label}</p>
-                  <p className="text-sm font-bold text-slate-800">{value}</p>
+                  <p className="text-[11px] font-bold text-[#8a8f9a] uppercase tracking-wider mb-1.5">{label}</p>
+                  <p className="text-sm font-bold text-[#28292a]">{value}</p>
                 </div>
               ))}
             </div>
@@ -1017,7 +1069,7 @@ export default function GaihekiArticleLP() {
           <div className="text-center mb-8">
             <Label>お客様の声</Label>
             <H2 center>実際に利用されたお客様の口コミ</H2>
-            <p className="mt-4 text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               東海エリアで外壁塗装を行ったお客様からいただいた率直なご感想です。
             </p>
           </div>
@@ -1048,11 +1100,11 @@ export default function GaihekiArticleLP() {
             ].map(({ initial, name, area, rating, text }, i) => (
               <FadeUp key={name} delay={i * 80}>
                 <div
-                  className="rounded-2xl p-6 border flex flex-col gap-4 h-full hover:shadow-md transition-shadow duration-200"
+                  className="rounded-lg p-6 border flex flex-col gap-4 h-full transition-shadow duration-200"
                   style={{
                     backgroundColor: '#ffffff',
-                    borderColor: '#e4ecf6',
-                    boxShadow: '0 2px 14px rgba(10,22,40,0.07)',
+                    borderColor: '#d8cebd',
+                    boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
                   }}
                 >
                   {/* 星評価 */}
@@ -1064,7 +1116,7 @@ export default function GaihekiArticleLP() {
                     ))}
                   </div>
                   {/* 口コミ本文 */}
-                  <p className="text-sm text-slate-600 leading-relaxed flex-1">
+                  <p className="text-sm text-[#5a5f6c] leading-relaxed flex-1">
                     「{text}」
                   </p>
                   {/* 投稿者 */}
@@ -1079,8 +1131,8 @@ export default function GaihekiArticleLP() {
                       {initial}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-800">{name}</p>
-                      <p className="text-xs text-slate-400">{area}</p>
+                      <p className="text-sm font-bold text-[#28292a]">{name}</p>
+                      <p className="text-xs text-[#8a8f9a]">{area}</p>
                     </div>
                   </div>
                 </div>
@@ -1134,7 +1186,7 @@ export default function GaihekiArticleLP() {
       </section>
 
       {/* ── 11. FAQ ──────────────────────────────────────────────────────── */}
-      <section className="py-16 sm:py-24" style={{ backgroundColor: '#f8fafc' }}>
+      <section className="py-14 sm:py-24" style={{ backgroundColor: '#fbf8f4' }}>
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
             <Label>よくある質問</Label>
@@ -1218,7 +1270,7 @@ export default function GaihekiArticleLP() {
       </section>
 
       {/* ── フッター ─────────────────────────────────────────────────────── */}
-      <footer className="border-t py-8" style={{ borderColor: '#e2e8f0', backgroundColor: '#f8fafc' }}>
+      <footer className="border-t py-8" style={{ borderColor: '#ece6dc', backgroundColor: '#fbf8f4' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <div className="flex items-center justify-center gap-2.5 mb-3">
             <div
@@ -1229,7 +1281,7 @@ export default function GaihekiArticleLP() {
             </div>
             <span className="font-black text-sm" style={{ color: '#0a1628' }}>Paint Net</span>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-[#8a8f9a] leading-relaxed">
             東海エリアの外壁塗装をサポートする情報サービスです。
             <br />© 2024 Paint Net. All rights reserved.
           </p>
