@@ -861,20 +861,38 @@ export default function GaihekiArticleLP() {
       <div className="bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8">
           <FadeUp>
+            {/* PC版 */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://static.wixstatic.com/media/5ebda9_1f907cc4851044ffa60cf22237cd911f~mv2.png"
               alt=""
-              className="w-full h-auto rounded-xl shadow-md object-contain"
+              className="hidden md:block w-full h-auto rounded-xl shadow-md object-contain"
+              loading="lazy"
+            />
+            {/* モバイル版 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://static.wixstatic.com/media/5ebda9_0a2881d6bdf1404f934d61b1c90e8a58~mv2.png"
+              alt=""
+              className="block md:hidden w-full h-auto rounded-xl shadow-md object-contain"
               loading="lazy"
             />
           </FadeUp>
           <FadeUp delay={80}>
+            {/* PC版 */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://static.wixstatic.com/media/5ebda9_0e6ee6f23c9e4c99ac827795c36833be~mv2.png"
               alt=""
-              className="w-full h-auto rounded-xl shadow-md object-contain"
+              className="hidden md:block w-full h-auto rounded-xl shadow-md object-contain"
+              loading="lazy"
+            />
+            {/* モバイル版 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://static.wixstatic.com/media/5ebda9_b96f6e2d460f4d9383290a3628e96b40~mv2.png"
+              alt=""
+              className="block md:hidden w-full h-auto rounded-xl shadow-md object-contain"
               loading="lazy"
             />
           </FadeUp>
