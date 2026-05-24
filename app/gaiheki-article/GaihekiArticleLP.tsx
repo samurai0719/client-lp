@@ -24,8 +24,8 @@ const DESTINATION_LP_URL = '/gaiheki';
 const HERO_IMG_DESKTOP = 'https://static.wixstatic.com/media/5ebda9_7e6c91edccdd4a78bb86a0a1b573fcb6~mv2.png';
 const HERO_IMG_MOBILE  = 'https://static.wixstatic.com/media/5ebda9_6241eb02d83749be949dec2810da37ec~mv2.png';
 
-const BEFORE_IMG = 'https://static.wixstatic.com/media/5ebda9_173d632532d4472eb1e82ebbc8186348~mv2.jpg';
-const AFTER_IMG  = 'https://static.wixstatic.com/media/5ebda9_7edcb11055b74ec8ba666390d99a9aa4~mv2.jpg';
+const BEFORE_IMG = 'https://static.wixstatic.com/media/5ebda9_c94aba7955a84b01b6e6cda114ec6d9a~mv2.png';
+const AFTER_IMG  = 'https://static.wixstatic.com/media/5ebda9_06c8eaff4d3b45fcb0f524ab67c50ec0~mv2.png';
 const LOGO_IMG   = 'https://static.wixstatic.com/media/5ebda9_759ae5aecbce476d806bbc03c12629a0~mv2.png';
 
 // ─── スクロールフェードアップ (globals.css の section-fade / in-view を使用) ──
@@ -908,7 +908,11 @@ export default function GaihekiArticleLP() {
 
           <div className="text-center mb-8">
             <Label>基礎知識</Label>
-            <H2 center>費用・塗料・時期について知っておきたいこと</H2>
+            <H2 center>
+              <span>費用・塗料・時期について</span>
+              <br className="md:hidden" />
+              <span>知っておきたいこと</span>
+            </H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               外壁塗装を検討するうえで、最初に押さえておきたい基本情報です。
             </p>
@@ -970,52 +974,95 @@ export default function GaihekiArticleLP() {
 
           <div className="text-center mb-8">
             <Label>劣化サイン</Label>
-            <H2 center>こんな症状があるなら、早めの確認がおすすめ</H2>
+            <H2 center>
+              <span>こんな症状があるなら、</span>
+              <br className="md:hidden" />
+              <span>早めの確認がおすすめ</span>
+            </H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               外壁・屋根の以下のサインは、塗装時期が近づいているサインかもしれません。
             </p>
           </div>
 
-          {/* [IMAGE_4: 外壁の劣化症状 — ひび割れ・チョーキング・コケなどのイメージ] */}
-          {/* ↓ ここに劣化サインを示す横長画像を差し込む */}
-          <FadeUp delay={80} className="mb-10">
-            <ImgPlaceholder
-              aspect="21/9"
-              label="外壁の劣化サインイメージ"
-              className="shadow-md"
-            />
-          </FadeUp>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-            {[
-              { icon: Sun,           label: '色あせ・くすみ',       desc: '外壁の色が褪せてきたら、塗膜の保護機能が落ちているサインです。' },
-              { icon: AlertTriangle, label: 'ひび割れ（クラック）', desc: '細かいひびでも雨水が侵入し、下地の腐食につながる場合があります。' },
-              { icon: Droplets,      label: 'コケ・カビの発生',     desc: '湿気がたまりやすい北面などに多く見られます。塗膜が劣化しているサインです。' },
-              { icon: Home,          label: 'チョーキング（白い粉）', desc: '外壁を触ったときに白い粉がつく状態。塗料の寿命が近づいています。' },
-              { icon: Shield,        label: '雨漏り・防水の不安',   desc: '天井のシミや水まわりの湿気が気になる場合、外壁や屋根の防水性を確認することをおすすめします。' },
-              { icon: Search,        label: '外壁の浮き・剥がれ',   desc: '塗膜が浮いていたり剥がれている場合は、下地までダメージが及んでいる可能性があります。' },
-            ].map(({ icon: Icon, label, desc }, i) => (
-              <FadeUp key={label} delay={i * 55}>
+          {/* 劣化サイン 6カード — PC: 3列グリッド / モバイル: 横スクロール(scroll-snap) */}
+          <FadeUp delay={80}>
+            <div
+              className="flex flex-nowrap overflow-x-auto gap-4 pb-4 -mx-4 px-[7.5vw] sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3 lg:gap-5"
+              style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+            >
+              {[
+                {
+                  icon: Sun,
+                  label: '色あせ・くすみ',
+                  desc: '外壁の色が褪せてきたら、塗膜の保護機能が落ちているサインです。',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_8c869e549ced431a88586252a279042b~mv2.png',
+                },
+                {
+                  icon: AlertTriangle,
+                  label: 'ひび割れ（クラック）',
+                  desc: '細かいひびでも雨水が侵入し、下地の腐食につながる場合があります。',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_8e3547e6e19149328120f9c5c11f3dc5~mv2.png',
+                },
+                {
+                  icon: Droplets,
+                  label: 'コケ・カビの発生',
+                  desc: '湿気がたまりやすい北面などに多く見られます。塗膜が劣化しているサインです。',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_1142950534184f00b6e657fba7b33c93~mv2.png',
+                },
+                {
+                  icon: Home,
+                  label: 'チョーキング（白い粉）',
+                  desc: '外壁を触ったときに白い粉がつく状態。塗料の寿命が近づいています。',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_4f9d1a87d9a848b785832c952033b37d~mv2.png',
+                },
+                {
+                  icon: Shield,
+                  label: '雨漏り・防水の不安',
+                  desc: '天井のシミや水まわりの湿気が気になる場合、外壁や屋根の防水性を確認することをおすすめします。',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_cf57b1abd4974fddae593241b083937f~mv2.png',
+                },
+                {
+                  icon: Search,
+                  label: '外壁の浮き・剥がれ',
+                  desc: '塗膜が浮いていたり剥がれている場合は、下地までダメージが及んでいる可能性があります。',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_8f3d0842e9944bbf982d25b8211e4774~mv2.png',
+                },
+              ].map(({ icon: Icon, label, desc, imgSrc }) => (
                 <div
-                  className="relative overflow-hidden rounded-lg p-5 sm:p-6 border hover:border-orange-200 hover:shadow-md transition-all duration-200"
+                  key={label}
+                  className="flex-none w-[85vw] sm:w-auto overflow-hidden rounded-xl border hover:border-orange-200 hover:shadow-md transition-all duration-200"
                   style={{
                     borderColor: '#d8cebd',
                     backgroundColor: '#fff',
                     boxShadow: '0 1px 4px rgba(0,0,0,.06)',
+                    scrollSnapAlign: 'center',
                   }}
                 >
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-sm"
-                    style={{ backgroundColor: '#fff3e8' }}
-                  >
-                    <Icon className="w-5 h-5 text-orange-500" />
+                  {/* カード上部: 画像 (16:9) */}
+                  <div className="w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={imgSrc}
+                      alt={label}
+                      className="w-full h-full object-cover object-center"
+                      loading="lazy"
+                    />
                   </div>
-                  <p className="text-sm font-bold text-[#28292a] mb-1.5">{label}</p>
-                  <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
+                  {/* カード下部: アイコン・タイトル・説明文 */}
+                  <div className="p-4 sm:p-5">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-sm"
+                      style={{ backgroundColor: '#fff3e8' }}
+                    >
+                      <Icon className="w-5 h-5 text-orange-500" />
+                    </div>
+                    <p className="text-sm font-bold text-[#28292a] mb-1.5">{label}</p>
+                    <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
+                  </div>
                 </div>
-              </FadeUp>
-            ))}
-          </div>
+              ))}
+            </div>
+          </FadeUp>
 
           <FadeUp delay={200}>
             <div
@@ -1058,8 +1105,8 @@ export default function GaihekiArticleLP() {
           <FadeUp delay={160}>
             <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: '建物規模', value: '30坪前後' },
-                { label: '施工価格', value: '約90万円' },
+                { label: '建物規模', value: '40坪' },
+                { label: '施工価格', value: '110万円' },
                 { label: '屋根塗装', value: 'なし' },
                 { label: '使用塗料', value: 'シリコン塗料' },
               ].map(({ label, value }) => (
