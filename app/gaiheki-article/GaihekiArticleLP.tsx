@@ -257,7 +257,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 // ─── ビフォーアフタースライダー ──────────────────────────────────────────────
-function BeforeAfterSlider() {
+function BeforeAfterSlider({ beforeImg, afterImg }: { beforeImg: string; afterImg: string }) {
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -288,11 +288,11 @@ function BeforeAfterSlider() {
     >
       {/* アフター画像（ベース） */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={AFTER_IMG} alt="施工後（アフター）" className="absolute inset-0 w-full h-full object-cover pointer-events-none" draggable={false} />
+      <img src={afterImg} alt="施工後（アフター）" className="absolute inset-0 w-full h-full object-cover pointer-events-none" draggable={false} />
       {/* ビフォー画像（クリップ） */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={BEFORE_IMG}
+        src={beforeImg}
         alt="施工前（ビフォー）"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
@@ -1001,13 +1001,13 @@ export default function GaihekiArticleLP() {
                   icon: AlertTriangle,
                   label: 'ひび割れ（クラック）',
                   desc: '細かいひびでも雨水が侵入し、下地の腐食につながる場合があります。',
-                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_8e3547e6e19149328120f9c5c11f3dc5~mv2.png',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_1142950534184f00b6e657fba7b33c93~mv2.png',
                 },
                 {
                   icon: Droplets,
                   label: 'コケ・カビの発生',
                   desc: '湿気がたまりやすい北面などに多く見られます。塗膜が劣化しているサインです。',
-                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_1142950534184f00b6e657fba7b33c93~mv2.png',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_8f3d0842e9944bbf982d25b8211e4774~mv2.png',
                 },
                 {
                   icon: Home,
@@ -1025,7 +1025,7 @@ export default function GaihekiArticleLP() {
                   icon: Search,
                   label: '外壁の浮き・剥がれ',
                   desc: '塗膜が浮いていたり剥がれている場合は、下地までダメージが及んでいる可能性があります。',
-                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_8f3d0842e9944bbf982d25b8211e4774~mv2.png',
+                  imgSrc: 'https://static.wixstatic.com/media/5ebda9_8e3547e6e19149328120f9c5c11f3dc5~mv2.png',
                 },
               ].map(({ icon: Icon, label, desc, imgSrc }) => (
                 <div
@@ -1098,29 +1098,153 @@ export default function GaihekiArticleLP() {
             </p>
           </div>
 
-          <FadeUp delay={80}>
-            <BeforeAfterSlider />
-          </FadeUp>
-
-          <FadeUp delay={160}>
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {[
+          {[
+            {
+              beforeImg: 'https://static.wixstatic.com/media/5ebda9_173d632532d4472eb1e82ebbc8186348~mv2.jpg',
+              afterImg:  'https://static.wixstatic.com/media/5ebda9_7edcb11055b74ec8ba666390d99a9aa4~mv2.jpg',
+              meta: [
+                { label: '建物規模', value: '30坪前後' },
+                { label: '施工価格', value: '約90万円' },
+                { label: '屋根塗装', value: 'なし' },
+                { label: '使用塗料', value: 'シリコン塗料' },
+              ],
+            },
+            {
+              beforeImg: BEFORE_IMG,
+              afterImg:  AFTER_IMG,
+              meta: [
                 { label: '建物規模', value: '40坪' },
                 { label: '施工価格', value: '110万円' },
                 { label: '屋根塗装', value: 'なし' },
                 { label: '使用塗料', value: 'シリコン塗料' },
-              ].map(({ label, value }) => (
+              ],
+            },
+            {
+              beforeImg: 'https://static.wixstatic.com/media/5ebda9_4ba7e7b8af4f4a7d845983808fd79f7a~mv2.jpg',
+              afterImg:  'https://static.wixstatic.com/media/5ebda9_a3a23d7598434ac8a4054b6d64e67c6b~mv2.jpg',
+              meta: [
+                { label: '建物規模', value: '40坪' },
+                { label: '施工価格', value: '110万円' },
+                { label: '屋根塗装', value: 'なし' },
+                { label: '使用塗料', value: 'シリコン塗料' },
+              ],
+            },
+          ].map(({ beforeImg, afterImg, meta }, caseIdx) => (
+            <div key={caseIdx} className={caseIdx > 0 ? 'mt-16 sm:mt-20' : ''}>
+              <FadeUp delay={80}>
+                <BeforeAfterSlider beforeImg={beforeImg} afterImg={afterImg} />
+              </FadeUp>
+              <FadeUp delay={160}>
+                <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {meta.map(({ label, value }) => (
+                    <div
+                      key={label}
+                      className="rounded-lg p-4 text-center border"
+                      style={{
+                        backgroundColor: '#ffffff',
+                        borderColor: '#d8cebd',
+                        boxShadow: '0 1px 4px rgba(0,0,0,.06)',
+                      }}
+                    >
+                      <p className="text-[11px] font-bold text-[#8a8f9a] uppercase tracking-wider mb-1.5">{label}</p>
+                      <p className="text-sm font-bold text-[#28292a]">{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </FadeUp>
+            </div>
+          ))}
+
+          {/* ── 施工中の確認体制ギャラリー ──────────────────────────────────── */}
+          <FadeUp delay={120} className="mt-20 sm:mt-28">
+            <div className="text-center mb-8 sm:mb-10">
+              <Label>施工中の確認体制</Label>
+              <H2 center>施工中も、毎日しっかり確認</H2>
+              <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
+                Paint Netでは、毎日職人さんとやりとりしながら、しっかり塗装されているかを確認しています。
+                お客様にも安心していただけるよう、施工中の写真も共有しています。
+              </p>
+            </div>
+
+            {/* PC版: 大1枚(2列) + 右縦 + 下3枚 */}
+            <div className="hidden sm:grid sm:grid-cols-3 sm:gap-3 lg:gap-4">
+              {/* Photo 1: 横長・2列スパン */}
+              <div
+                className="sm:col-span-2 overflow-hidden rounded-2xl"
+                style={{ aspectRatio: '16/9', boxShadow: '0 6px 24px rgba(0,0,0,.13)' }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://static.wixstatic.com/media/5ebda9_1fa62fdbcb624c2ca60610428642a680~mv2.jpg"
+                  alt="施工中の確認①"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              {/* Photo 2: 右縦・高さはPhoto 1に合わせてグリッドが自動調整 */}
+              <div
+                className="overflow-hidden rounded-2xl"
+                style={{ boxShadow: '0 6px 24px rgba(0,0,0,.13)' }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://static.wixstatic.com/media/5ebda9_aff0a15cae5f4801aa9595b40e82e256~mv2.jpg"
+                  alt="施工中の確認②"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              {/* Photos 3–5: 3列均等 */}
+              {[
+                { src: 'https://static.wixstatic.com/media/5ebda9_f441a414f6c341c69ecee68493c03523~mv2.jpg', alt: '施工中の確認③' },
+                { src: 'https://static.wixstatic.com/media/5ebda9_2199224b2c924ff2bb3dfb4a007dd2f7~mv2.jpg', alt: '施工中の確認④' },
+                { src: 'https://static.wixstatic.com/media/5ebda9_d83b87c756884854b2f4f0e61cb2088b~mv2.jpg', alt: '施工中の確認⑤' },
+              ].map(({ src, alt }) => (
                 <div
-                  key={label}
-                  className="rounded-lg p-4 text-center border"
+                  key={alt}
+                  className="overflow-hidden rounded-2xl"
+                  style={{ aspectRatio: '4/3', boxShadow: '0 6px 24px rgba(0,0,0,.13)' }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={src}
+                    alt={alt}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* スマホ版: 横スクロール */}
+            <div
+              className="sm:hidden flex gap-3 overflow-x-auto pb-3 -mx-4 px-[5vw]"
+              style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
+            >
+              {[
+                'https://static.wixstatic.com/media/5ebda9_1fa62fdbcb624c2ca60610428642a680~mv2.jpg',
+                'https://static.wixstatic.com/media/5ebda9_aff0a15cae5f4801aa9595b40e82e256~mv2.jpg',
+                'https://static.wixstatic.com/media/5ebda9_f441a414f6c341c69ecee68493c03523~mv2.jpg',
+                'https://static.wixstatic.com/media/5ebda9_2199224b2c924ff2bb3dfb4a007dd2f7~mv2.jpg',
+                'https://static.wixstatic.com/media/5ebda9_d83b87c756884854b2f4f0e61cb2088b~mv2.jpg',
+              ].map((src, i) => (
+                <div
+                  key={i}
+                  className="flex-none overflow-hidden rounded-2xl"
                   style={{
-                    backgroundColor: '#ffffff',
-                    borderColor: '#d8cebd',
-                    boxShadow: '0 1px 4px rgba(0,0,0,.06)',
+                    width: '78vw',
+                    aspectRatio: '4/3',
+                    boxShadow: '0 4px 16px rgba(0,0,0,.12)',
+                    scrollSnapAlign: 'center',
                   }}
                 >
-                  <p className="text-[11px] font-bold text-[#8a8f9a] uppercase tracking-wider mb-1.5">{label}</p>
-                  <p className="text-sm font-bold text-[#28292a]">{value}</p>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={src}
+                    alt={`施工中の確認${i + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
               ))}
             </div>
