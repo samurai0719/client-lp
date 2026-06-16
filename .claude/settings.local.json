@@ -37,7 +37,8 @@
       "Bash(tar -xzf archive.tar.gz)",
       "Bash(security find-internet-password *)",
       "Bash(vercel whoami *)",
-      "Bash(npx vercel *)"
+      "Bash(npx vercel *)",
+      "Bash(python3 *)"
     ]
   }
 }
