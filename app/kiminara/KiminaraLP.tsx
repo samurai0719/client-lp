@@ -88,11 +88,18 @@ function SafeCircleImage({
   );
 }
 
+const A8_URL = 'https://px.a8.net/svt/ejp?a8mat=4B5WGB+4XF8LE+5WMQ+5YJRM';
+
 /* ─── CTA Button ─── */
 function CTAButton({ label = '無料で相談してみる' }: { label?: string }) {
   return (
     <div className="cta-wrap">
-      <a href="#contact" className="cta-btn">
+      <a
+        href={A8_URL}
+        target="_blank"
+        rel="nofollow sponsored noopener noreferrer"
+        className="cta-btn"
+      >
         {label}
       </a>
     </div>
@@ -315,18 +322,6 @@ export default function KiminaraLP() {
         @media (min-width: 768px) {
           .cta-btn { max-width: 520px; min-height: 72px; font-size: 22px; padding: 22px 32px; }
         }
-
-        /* ── Header ── */
-        .header {
-          background: #fff; border-bottom: 2px solid #e8f1ff;
-          position: sticky; top: 0; z-index: 100; padding: 14px 20px;
-        }
-        .header-inner {
-          max-width: 1100px; margin: 0 auto;
-          display: flex; align-items: center; justify-content: center;
-        }
-        .logo { font-size: 22px; font-weight: 900; color: #1e3a5f; letter-spacing: -0.02em; }
-        .logo span { color: #3b7dd8; }
 
         /* ── FV（背景画像 スマホ/PC切替） ── */
         .fv {
@@ -573,13 +568,6 @@ export default function KiminaraLP() {
         /* ── CTA divider ── */
         .cta-section { background: #fff; padding: 48px 20px 16px; text-align: center; }
       `}</style>
-
-      {/* ─── HEADER ─── */}
-      <header className="header">
-        <div className="header-inner">
-          <div className="logo">キミ<span>ナラ</span></div>
-        </div>
-      </header>
 
       {/* ═══════════════════════════════════
           1. FIRST VIEW
