@@ -35,7 +35,9 @@
       "Bash(gunzip -c /tmp/design.gz)",
       "Bash(tar -xf - -C /tmp/)",
       "Bash(tar -xzf archive.tar.gz)",
-      "Bash(security find-internet-password *)"
+      "Bash(security find-internet-password *)",
+      "Bash(vercel whoami *)",
+      "Bash(npx vercel *)"
     ]
   }
 }
