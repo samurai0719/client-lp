@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import GaihekiArticleLP from './gaiheki-article/GaihekiArticleLP';
+import KiminaraLP from './kiminara/KiminaraLP';
 
 export const metadata: Metadata = {
-  title: '外壁塗装で失敗しないために知っておきたい7つのポイント | Paint Net',
+  title: 'キミナラ | 20代向け転職エージェント紹介サービス',
   description:
-    '外壁塗装の費用・塗料の選び方・相見積もりの重要性を分かりやすく解説。東海エリア（岐阜・愛知・三重）で外壁塗装を検討中の方は、まずこの記事をお読みください。',
+    'キミナラは、あなたに合う転職エージェントを紹介する20代向け転職支援サービスです。希望や性格に合うキャリアアドバイザーを紹介します。',
 };
 
 export default function HomePage() {
-  return <GaihekiArticleLP />;
+  return <KiminaraLP />;
 }
