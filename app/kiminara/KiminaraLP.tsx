@@ -228,7 +228,7 @@ export default function KiminaraLP() {
   /* 転職事例 */
   const cases = [
     {
-      img: '/images/case-01-engineer.webp',
+      img: '/images/case-01-engineer\.png',
       name: '24歳女性',
       from: '事務職',
       to: 'エンジニア職',
@@ -236,7 +236,7 @@ export default function KiminaraLP() {
       a: '未経験でもエンジニア業界への紹介実績のあるエージェントをご紹介。',
     },
     {
-      img: '/images/case-02-marketer.webp',
+      img: '/images/case-02-marketer\.png',
       name: '27歳女性',
       from: '広告運用',
       to: 'SaaS会社のマーケター',
@@ -244,7 +244,7 @@ export default function KiminaraLP() {
       a: 'IT専門のエージェントをご紹介。',
     },
     {
-      img: '/images/case-03-btob-consultant.webp',
+      img: '/images/case-03-btob-consultant\.png',
       name: '22歳女性',
       from: '事務職',
       to: 'BtoBコンサルタント',
@@ -252,7 +252,7 @@ export default function KiminaraLP() {
       a: '若手特化の転職アドバイザーを紹介。',
     },
     {
-      img: '/images/case-04-hr-consultant.webp',
+      img: '/images/case-04-hr-consultant\.png',
       name: '27歳男性',
       from: 'メーカー系営業',
       to: '人材コンサルタント',
@@ -260,7 +260,7 @@ export default function KiminaraLP() {
       a: 'HR専門のアドバイザーをご紹介。',
     },
     {
-      img: '/images/case-05-it-sales.webp',
+      img: '/images/case-05-it-sales\.png',
       name: '24歳男性',
       from: '未経験',
       to: '最新ITシステムの営業',
@@ -271,10 +271,10 @@ export default function KiminaraLP() {
 
   /* カウンセラー */
   const counselors = [
-    { img: '/images/counselor-01.webp', name: '20代転職に強いアドバイザー' },
-    { img: '/images/counselor-02.webp', name: '未経験転職に強いアドバイザー' },
-    { img: '/images/counselor-03.webp', name: 'IT・営業職に強いアドバイザー' },
-    { img: '/images/counselor-04.webp', name: '女性の転職相談に強いアドバイザー' },
+    { img: '/images/counselor-01\.png', name: '20代転職に強いアドバイザー' },
+    { img: '/images/counselor-02\.png', name: '未経験転職に強いアドバイザー' },
+    { img: '/images/counselor-03\.png', name: 'IT・営業職に強いアドバイザー' },
+    { img: '/images/counselor-04\.png', name: '女性の転職相談に強いアドバイザー' },
   ];
 
   /* ステップ */
@@ -361,13 +361,13 @@ export default function KiminaraLP() {
         .fv {
           position: relative;
           background-color: #1a2f52;
-          background-image: url('/images/fv-mobile.webp');
+          background-image: url('/images/fv-mobile\.png');
           background-size: cover; background-position: center top;
           min-height: 88vh; display: flex; align-items: center;
           padding: 64px 0 60px;
         }
         @media (min-width: 768px) {
-          .fv { background-image: url('/images/fv-desktop.webp'); }
+          .fv { background-image: url('/images/fv-desktop\.png'); }
         }
         .fv-overlay {
           position: absolute; inset: 0;
@@ -602,8 +602,8 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           1. FIRST VIEW
-          画像: /public/images/fv-mobile.webp（スマホ）
-                /public/images/fv-desktop.webp（PC）
+          画像: /public/images/fv-mobile\.png（スマホ）
+                /public/images/fv-desktop\.png（PC）
       ═══════════════════════════════════ */}
       <section className="fv">
         <div className="fv-overlay" />
@@ -631,7 +631,7 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           2. SERVICE DESCRIPTION
-          画像: /public/images/service-overview.webp
+          画像: /public/images/service-overview\.png
       ═══════════════════════════════════ */}
       <section className="section" style={{ background: '#fff' }}>
         <div className="container">
@@ -654,7 +654,7 @@ export default function KiminaraLP() {
 
           <div style={{ marginTop: '36px' }}>
             <SafeImage
-              src="/images/service-overview.webp"
+              src="/images/service-overview\.png"
               alt="サービス説明画像を配置してください"
               className="service-image-placeholder"
               height="clamp(220px, 30vw, 320px)"
@@ -705,7 +705,7 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           4. NEEDS SECTION
-          画像: /public/images/needs-section.webp
+          画像: /public/images/needs-section\.png
       ═══════════════════════════════════ */}
       <section className="section need-section">
         <div className="container">
@@ -729,7 +729,7 @@ export default function KiminaraLP() {
             </div>
             <div className="need-image-col" style={{ width: '100%' }}>
               <SafeImage
-                src="/images/needs-section.webp"
+                src="/images/needs-section\.png"
                 alt="共感イメージ画像を配置してください"
                 className="empathy-image-placeholder"
                 height="clamp(260px, 40vw, 360px)"
@@ -818,7 +818,7 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           7. CASE STUDIES
-          画像: /public/images/case-01-engineer.webp 〜 case-05-it-sales.webp
+          画像: /public/images/case-01-engineer\.png 〜 case-05-it-sales\.png
       ═══════════════════════════════════ */}
       <section className="section" style={{ background: '#f9fbff' }}>
         <div className="container">
@@ -865,7 +865,7 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           8. COUNSELORS
-          画像: /public/images/counselor-01.webp 〜 counselor-04.webp
+          画像: /public/images/counselor-01\.png 〜 counselor-04\.png
       ═══════════════════════════════════ */}
       <section className="section counselor-section">
         <div className="container">
@@ -952,11 +952,11 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           11. FINAL CTA
-          画像: /public/images/final-cta.webp
+          画像: /public/images/final-cta\.png
       ═══════════════════════════════════ */}
       <section style={{ background: '#fff', paddingBottom: 0 }}>
         <SafeImage
-          src="/images/final-cta.webp"
+          src="/images/final-cta\.png"
           alt="最終CTAイメージ画像を配置してください"
           className="final-cta-image-placeholder"
           height="clamp(300px, 35vw, 420px)"
