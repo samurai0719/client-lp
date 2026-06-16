@@ -38,7 +38,9 @@
       "Bash(security find-internet-password *)",
       "Bash(vercel whoami *)",
       "Bash(npx vercel *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(cp /Users/tsukamotoshuntaira/Downloads/6fb0b286-80d7-4557-a487-4f99052c2016.png /Users/tsukamotoshuntaira/Desktop/client-lp/public/images/counselor-03.png)",
+      "Bash(cp /Users/tsukamotoshuntaira/Downloads/6e39a7eb-8b10-462c-8930-cf860d4b0fe8.png /Users/tsukamotoshuntaira/Desktop/client-lp/public/images/counselor-04.png)"
     ]
   }
 }

@@ -15,8 +15,8 @@ function EmojiIcon({ emoji }: { emoji: string }) {
 }
 
 /* ─────────────────────────────────────
-   画像コンポーネント（next/image + プレースホルダー）
-   /public/images/ にファイルを置けば自動で表示されます。
+   画像コンポーネント（next/image）
+   画像が未配置の場合はシンプルな薄い背景を表示
 ───────────────────────────────────── */
 function SafeImage({
   src,
@@ -24,12 +24,14 @@ function SafeImage({
   className = '',
   height,
   sizes = '(max-width: 768px) 100vw, 50vw',
+  objectPosition = 'center center',
 }: {
   src: string;
   alt: string;
   className?: string;
   height: string;
   sizes?: string;
+  objectPosition?: string;
 }) {
   return (
     <div
@@ -38,34 +40,18 @@ function SafeImage({
         position: 'relative',
         width: '100%',
         height,
-        background: '#f3f6fb',
-        border: '2px dashed #b8c7dd',
+        background: '#f0f5fb',
         borderRadius: '16px',
         overflow: 'hidden',
         flexShrink: 0,
       }}
     >
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#b8c7dd',
-        fontSize: '13px',
-        fontWeight: 500,
-        textAlign: 'center',
-        padding: '12px',
-        zIndex: 0,
-      }}>
-        {alt}
-      </div>
       <Image
         src={src}
         alt={alt}
         fill
         sizes={sizes}
-        style={{ objectFit: 'cover', zIndex: 1 }}
+        style={{ objectFit: 'cover', objectPosition }}
       />
     </div>
   );
@@ -87,31 +73,16 @@ function SafeCircleImage({
       width: size,
       height: size,
       borderRadius: '50%',
-      background: '#f3f6fb',
-      border: '2px dashed #b8c7dd',
+      background: '#f0f5fb',
       overflow: 'hidden',
       flexShrink: 0,
     }}>
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#b8c7dd',
-        fontSize: '10px',
-        fontWeight: 500,
-        textAlign: 'center',
-        zIndex: 0,
-      }}>
-        {alt}
-      </div>
       <Image
         src={src}
         alt={alt}
         fill
         sizes={`${size}px`}
-        style={{ objectFit: 'cover', zIndex: 1 }}
+        style={{ objectFit: 'cover', objectPosition: 'center top' }}
       />
     </div>
   );
@@ -362,12 +333,22 @@ export default function KiminaraLP() {
           position: relative;
           background-color: #1a2f52;
           background-image: url('/images/fv-mobile.png');
-          background-size: cover; background-position: center top;
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
           min-height: 88vh; display: flex; align-items: center;
           padding: 64px 0 60px;
         }
+        @media (max-width: 767px) {
+          .fv {
+            background-position: center bottom;
+          }
+        }
         @media (min-width: 768px) {
-          .fv { background-image: url('/images/fv-desktop.png'); }
+          .fv {
+            background-image: url('/images/fv-desktop.png');
+            background-position: center center;
+          }
         }
         .fv-overlay {
           position: absolute; inset: 0;
@@ -602,8 +583,6 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           1. FIRST VIEW
-          画像: /public/images/fv-mobile.png（スマホ）
-                /public/images/fv-desktop.png（PC）
       ═══════════════════════════════════ */}
       <section className="fv">
         <div className="fv-overlay" />
@@ -623,15 +602,11 @@ export default function KiminaraLP() {
             <p>希望や性格に合うキャリアアドバイザーを紹介</p>
           </div>
           <CTAButton />
-          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '-16px' }}>
-            ※完全無料・登録3分
-          </p>
         </div>
       </section>
 
       {/* ═══════════════════════════════════
           2. SERVICE DESCRIPTION
-          画像: /public/images/service-overview.png
       ═══════════════════════════════════ */}
       <section className="section" style={{ background: '#fff' }}>
         <div className="container">
@@ -655,10 +630,10 @@ export default function KiminaraLP() {
           <div style={{ marginTop: '36px' }}>
             <SafeImage
               src="/images/service-overview.png"
-              alt="サービス説明画像を配置してください"
-              className="service-image-placeholder"
-              height="clamp(220px, 30vw, 320px)"
+              alt="サービス説明"
+              height="clamp(240px, 32vw, 360px)"
               sizes="(max-width: 1100px) 100vw, 1100px"
+              objectPosition="center center"
             />
           </div>
 
@@ -705,7 +680,6 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           4. NEEDS SECTION
-          画像: /public/images/needs-section.png
       ═══════════════════════════════════ */}
       <section className="section need-section">
         <div className="container">
@@ -730,10 +704,10 @@ export default function KiminaraLP() {
             <div className="need-image-col" style={{ width: '100%' }}>
               <SafeImage
                 src="/images/needs-section.png"
-                alt="共感イメージ画像を配置してください"
-                className="empathy-image-placeholder"
-                height="clamp(260px, 40vw, 360px)"
+                alt="共感イメージ"
+                height="clamp(280px, 42vw, 380px)"
                 sizes="(max-width: 768px) 100vw, 50vw"
+                objectPosition="center top"
               />
             </div>
           </div>
@@ -818,7 +792,6 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           7. CASE STUDIES
-          画像: /public/images/case-01-engineer.png 〜 case-05-it-sales.png
       ═══════════════════════════════════ */}
       <section className="section" style={{ background: '#f9fbff' }}>
         <div className="container">
@@ -834,10 +807,10 @@ export default function KiminaraLP() {
               <div key={i} className="case-card">
                 <SafeImage
                   src={c.img}
-                  alt={`転職事例 ${c.name} の画像を配置してください`}
-                  className="case-image-placeholder"
-                  height="clamp(200px, 28vw, 240px)"
+                  alt={`転職事例 ${c.name}`}
+                  height="clamp(240px, 32vw, 300px)"
                   sizes="(max-width: 768px) 100vw, 50vw"
+                  objectPosition="center top"
                 />
                 <div className="case-profile">
                   <div>
@@ -865,7 +838,6 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           8. COUNSELORS
-          画像: /public/images/counselor-01.png 〜 counselor-04.png
       ═══════════════════════════════════ */}
       <section className="section counselor-section">
         <div className="container">
@@ -887,8 +859,8 @@ export default function KiminaraLP() {
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <SafeCircleImage
                     src={c.img}
-                    alt={`カウンセラー${i + 1}の画像を配置してください`}
-                    size={120}
+                    alt={c.name}
+                    size={140}
                   />
                 </div>
                 <p className="counselor-name">{c.name}</p>
@@ -952,15 +924,14 @@ export default function KiminaraLP() {
 
       {/* ═══════════════════════════════════
           11. FINAL CTA
-          画像: /public/images/final-cta.png
       ═══════════════════════════════════ */}
       <section style={{ background: '#fff', paddingBottom: 0 }}>
         <SafeImage
           src="/images/final-cta.png"
-          alt="最終CTAイメージ画像を配置してください"
-          className="final-cta-image-placeholder"
-          height="clamp(300px, 35vw, 420px)"
+          alt="最終CTAイメージ"
+          height="clamp(300px, 38vw, 460px)"
           sizes="100vw"
+          objectPosition="center top"
         />
       </section>
 
@@ -975,9 +946,6 @@ export default function KiminaraLP() {
             まずは無料相談から始めてみませんか？
           </p>
           <CTAButton />
-          <p style={{ marginTop: '-12px', fontSize: '13px', opacity: 0.65 }}>
-            ※完全無料・登録3分・オンライン対応
-          </p>
         </div>
       </section>
 
