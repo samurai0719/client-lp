@@ -34,7 +34,8 @@
       "Bash(cp \"/Users/tsukamotoshuntaira/.claude/projects/-Users-tsukamotoshuntaira-Desktop-client-lp/d40d73d0-8ebe-4395-a4d7-7b41f58cf193/tool-results/webfetch-1779344512457-j2pygk.bin\" /tmp/design.gz)",
       "Bash(gunzip -c /tmp/design.gz)",
       "Bash(tar -xf - -C /tmp/)",
-      "Bash(tar -xzf archive.tar.gz)"
+      "Bash(tar -xzf archive.tar.gz)",
+      "Bash(security find-internet-password *)"
     ]
   }
 }
