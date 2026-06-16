@@ -587,6 +587,7 @@ export default function KiminaraLP() {
       <section className="fv">
         <div className="fv-overlay" />
         <div className="fv-inner">
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: '4px', padding: '2px 8px', marginBottom: '12px', letterSpacing: '0.04em' }}>【PR】</p>
           <div className="fv-tag">20代の転職に</div>
           <h1 className="fv-headline">
             20代の転職、<br />
@@ -925,16 +926,6 @@ export default function KiminaraLP() {
       {/* ═══════════════════════════════════
           11. FINAL CTA
       ═══════════════════════════════════ */}
-      <section style={{ background: '#fff', paddingBottom: 0 }}>
-        <SafeImage
-          src="/images/final-cta.png"
-          alt="最終CTAイメージ"
-          height="clamp(300px, 38vw, 460px)"
-          sizes="100vw"
-          objectPosition="center top"
-        />
-      </section>
-
       <section className="final-cta" id="contact">
         <div style={{ maxWidth: '760px', margin: '0 auto' }}>
           <h2 className="final-cta-title">
