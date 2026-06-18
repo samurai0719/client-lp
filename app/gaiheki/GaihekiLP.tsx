@@ -142,9 +142,9 @@ const SEGMENT_CONFIG: Record<
 > = {
   active: {
     badge: '今すぐ動けるタイミング',
-    title: '無料見積もりで最適な業者を見つけましょう',
-    body: 'ご回答の内容から、今すぐ無料見積もりを取ることをおすすめします。地域の優良業者から最大3社の見積もりを比較できます。',
-    cta: '無料見積もりへ進む',
+    title: '一級塗装技能士に無料相談してみましょう',
+    body: 'ご回答の内容から、今すぐ一級塗装技能士へのご相談をおすすめします。国家資格を持つ職人・業者を厳選してご紹介します。',
+    cta: '一級塗装技能士に相談する',
     icon: '🔥',
     bgClass: 'bg-gradient-to-br from-orange-50 to-amber-50',
     borderClass: 'border-orange-200',
@@ -152,9 +152,9 @@ const SEGMENT_CONFIG: Record<
   },
   middle: {
     badge: '計画的に進めるのがベスト',
-    title: '事前に地域の優良業者を確認しておきましょう',
-    body: '工事時期に備えて地域の業者を比較しておくことをおすすめします。複数社を比較することで最適な選択ができます。',
-    cta: '地域対応の会社を確認する',
+    title: '事前に一級塗装技能士を確認しておきましょう',
+    body: '工事時期に備えて、国家資格を持つ職人・業者を確認しておくことをおすすめします。技術力を重視して選ぶことができます。',
+    cta: '一級塗装技能士を確認する',
     icon: '📋',
     bgClass: 'bg-gradient-to-br from-blue-50 to-sky-50',
     borderClass: 'border-blue-200',
@@ -163,7 +163,7 @@ const SEGMENT_CONFIG: Record<
   passive: {
     badge: 'まずは情報収集から',
     title: '相場と進め方を把握するところから始めましょう',
-    body: '外壁塗装の相場・適切な時期・信頼できる業者の選び方など、基本情報を整理するところから始めましょう。',
+    body: '外壁塗装の相場・適切な時期・一級塗装技能士の選び方など、基本情報を整理するところから始めましょう。',
     cta: '相場と進め方を確認する',
     icon: '📚',
     bgClass: 'bg-gradient-to-br from-emerald-50 to-teal-50',
@@ -357,7 +357,7 @@ export default function GaihekiLP() {
             </div>
             <div>
               <p className="text-white font-extrabold text-sm leading-none">外壁塗装 無料診断</p>
-              <p className="text-blue-300 text-[10px] mt-0.5">岐阜・愛知・三重対応</p>
+              <p className="text-blue-300 text-[10px] mt-0.5">一級塗装技能士を厳選紹介</p>
             </div>
           </div>
           {step === 'quiz' && (
@@ -401,7 +401,7 @@ export default function GaihekiLP() {
                 className="inline-block text-[11px] font-extrabold tracking-widest px-4 py-1.5 rounded-full"
                 style={{ background: '#fff3e0', color: '#ea580c', border: '1px solid #fed7aa' }}
               >
-                東海に強い外壁塗装会社
+                国家資格「一級塗装技能士」だけを厳選紹介
               </span>
             </div>
 
@@ -410,21 +410,21 @@ export default function GaihekiLP() {
               <h1 className="text-[1.5rem] font-extrabold leading-[1.3] tracking-tight text-slate-900">
                 外壁塗装を検討中の方へ
                 <br />
-                <span style={{ color: '#1e3a5f' }}>8つの質問で最適な</span>
+                <span style={{ color: '#1e3a5f' }}>一級塗装技能士に</span>
                 <br />
-                <span style={{ color: '#1e3a5f' }}>進め方が分かります</span>
+                <span style={{ color: '#1e3a5f' }}>相談すべきか診断します</span>
               </h1>
             </div>
 
             {/* サブコピー */}
             <p className="text-sm text-slate-500 text-center leading-relaxed mb-5">
-              相場・塗装時期・見積もりの進め方を、<br />
+              資格を持つ職人への相談が向いているか、<br />
               <span className="font-semibold text-slate-700">約1分</span>で確認できます。
             </p>
 
             {/* 信頼バッジ */}
             <div className="flex flex-wrap justify-center gap-2 mb-7">
-              {['完全無料', 'しつこい営業なし', '地域対応会社を確認可能'].map((b) => (
+              {['完全無料', 'しつこい営業なし', '一級塗装技能士のみ紹介'].map((b) => (
                 <span
                   key={b}
                   className="flex items-center gap-1.5 text-xs font-medium rounded-full px-3 py-1.5"
@@ -822,7 +822,7 @@ export default function GaihekiLP() {
         <div className="max-w-lg mx-auto">
           <div className="mb-5">
             <p className="font-extrabold text-white text-sm mb-1">外壁塗装 無料診断</p>
-            <p className="text-xs text-slate-400 leading-relaxed">岐阜・愛知・三重エリアの外壁塗装相談窓口</p>
+            <p className="text-xs text-slate-400 leading-relaxed">一級塗装技能士を厳選紹介する、岐阜・愛知・三重エリアの外壁塗装相談窓口</p>
           </div>
 
           <div

@@ -151,7 +151,7 @@ function H2({
 }) {
   return (
     <h2
-      className={`gaiheki-font-mincho text-[1.65rem] sm:text-[1.9rem] leading-snug ${center ? 'text-center' : ''}`}
+      className={`gaiheki-font-mincho text-balance break-keep text-[1.65rem] sm:text-[1.9rem] leading-snug ${center ? 'text-center' : ''}`}
       style={{
         color: light ? '#ffffff' : '#28292a',
         fontWeight: 500,
@@ -342,6 +342,207 @@ function BeforeAfterSlider({ beforeImg, afterImg }: { beforeImg: string; afterIm
   );
 }
 
+// ─── 装飾用 inline SVG（背景の有機的シェイプ＋資格・職人イラスト群） ──────────
+// 配色: ネイビー #1E3A5F / オレンジ #F97316 / 薄ブルー #EAF5FF / 薄オレンジ #FFF3E8 / 薄グレー #F8FAFC / 白
+const SVG_NAVY = '#1E3A5F';
+const SVG_ORANGE = '#F97316';
+const SVG_BLUE_BG = '#EAF5FF';
+const SVG_BEIGE_BG = '#FFF3E8';
+const SVG_GRAY_BG = '#F8FAFC';
+const SVG_WHITE = '#FFFFFF';
+
+// セクション背景に敷く大きな波形（淡い色を重ねた柔らかいレイヤー）
+function SoftWaveBg({
+  className = 'w-full h-auto',
+  tone = 'light',
+}: {
+  className?: string;
+  tone?: 'light' | 'navy';
+}) {
+  if (tone === 'navy') {
+    return (
+      <svg className={className} viewBox="0 0 800 400" fill="none" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 120C140 50 240 95 380 120C530 147 620 60 800 100V400H0V120Z" fill={SVG_WHITE} opacity="0.05" />
+        <path d="M0 190C150 130 260 175 400 145C550 113 660 168 800 120V400H0V190Z" fill={SVG_ORANGE} opacity="0.10" />
+        <path d="M30 260C170 210 300 275 450 225C580 182 690 200 770 175" stroke={SVG_WHITE} strokeWidth="3" strokeLinecap="round" opacity="0.16" />
+      </svg>
+    );
+  }
+  return (
+    <svg className={className} viewBox="0 0 800 500" fill="none" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 120C120 40 220 80 340 110C480 145 560 40 800 90V500H0V120Z" fill={SVG_BLUE_BG} opacity="0.75" />
+      <path d="M0 210C130 140 250 190 390 160C540 128 640 190 800 130V500H0V210Z" fill={SVG_BEIGE_BG} opacity="0.8" />
+      <path d="M40 310C180 250 300 330 450 270C570 220 680 240 760 210" stroke={SVG_WHITE} strokeWidth="8" strokeLinecap="round" opacity="0.9" />
+    </svg>
+  );
+}
+
+// セクション角に添える柔らかいblob形状（低opacityで背景の邪魔をしない）
+function OrganicBlob({
+  className = 'w-64 h-64',
+  color = SVG_BLUE_BG,
+  opacity = 0.5,
+}: {
+  className?: string;
+  color?: string;
+  opacity?: number;
+}) {
+  return (
+    <svg className={className} viewBox="0 0 400 400" fill="none" aria-hidden="true">
+      <path
+        d="M200 40C260 35 330 70 355 130C380 190 365 265 310 310C255 355 175 365 120 330C65 295 35 225 45 160C55 95 140 45 200 40Z"
+        fill={color}
+        opacity={opacity}
+      />
+    </svg>
+  );
+}
+
+// ファーストビュー: 資格バッジ（メダル＋リボン＋チェック）
+function CertificationBadgeSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 160 160" fill="none" aria-hidden="true">
+      <circle cx="80" cy="70" r="46" fill={SVG_BEIGE_BG} />
+      <circle cx="80" cy="70" r="34" fill="none" stroke={SVG_NAVY} strokeWidth="5" />
+      <path d="M64 70L75 81L98 56" fill="none" stroke={SVG_ORANGE} strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M62 110L52 146L80 130L108 146L98 110" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="4" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// 悩みセクション: 家＋クエスチョン＋見積書＋虫眼鏡
+function InspectionHouseSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 220 180" fill="none" aria-hidden="true">
+      <path d="M20 86L86 30L152 86" stroke={SVG_NAVY} strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M38 82V148H134V82" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="7" strokeLinejoin="round" />
+      <path d="M70 148V112H102V148" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="6" strokeLinejoin="round" />
+      <path d="M68 50c0 -9 7 -15 14 -15c8 0 14 5.5 14 12.5c0 7 -5.5 9.5 -9.5 12.5c-3 2.2 -4.5 5 -4.5 8.5" fill="none" stroke={SVG_ORANGE} strokeWidth="6" strokeLinecap="round" />
+      <circle cx="82" cy="86" r="3.6" fill={SVG_ORANGE} />
+      <circle cx="168" cy="120" r="26" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="7" />
+      <line x1="187" y1="139" x2="206" y2="158" stroke={SVG_NAVY} strokeWidth="8" strokeLinecap="round" />
+      <rect x="156" y="106" width="24" height="28" rx="2" fill={SVG_WHITE} stroke={SVG_ORANGE} strokeWidth="3" />
+      <line x1="161" y1="114" x2="175" y2="114" stroke={SVG_ORANGE} strokeWidth="2.4" strokeLinecap="round" />
+      <line x1="161" y1="121" x2="175" y2="121" stroke={SVG_ORANGE} strokeWidth="2.4" strokeLinecap="round" />
+      <line x1="161" y1="128" x2="171" y2="128" stroke={SVG_ORANGE} strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// 解決セクション: 家＋盾＋チェック＋職人ヘルメット
+function CraftsmanShieldSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 220 180" fill="none" aria-hidden="true">
+      <path d="M14 78L62 40L110 78" stroke={SVG_NAVY} strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="34" y="76" width="56" height="50" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="7" strokeLinejoin="round" />
+      <path d="M150 22L196 38V78C196 108 174 126 150 138C126 126 104 108 104 78V38Z" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="7" strokeLinejoin="round" />
+      <path d="M128 80L144 98L176 58" fill="none" stroke={SVG_ORANGE} strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M40 158a22 18 0 0 1 44 0Z" fill={SVG_NAVY} />
+      <rect x="34" y="156" width="56" height="8" rx="4" fill={SVG_NAVY} />
+    </svg>
+  );
+}
+
+// 劣化サインセクション: ひび割れた壁＋虫眼鏡＋チェック（写真が主役のため控えめに使用）
+function CrackInspectionSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 220 180" fill="none" aria-hidden="true">
+      <rect x="14" y="20" width="130" height="110" rx="6" fill={SVG_GRAY_BG} stroke={SVG_NAVY} strokeWidth="5" />
+      <line x1="14" y1="55" x2="144" y2="55" stroke={SVG_NAVY} strokeWidth="2" opacity="0.25" />
+      <line x1="14" y1="90" x2="144" y2="90" stroke={SVG_NAVY} strokeWidth="2" opacity="0.25" />
+      <path d="M38 20L56 55L40 80L62 110L50 130" fill="none" stroke={SVG_ORANGE} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="156" cy="118" r="34" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="7" />
+      <path d="M142 118L153 129L174 102" fill="none" stroke={SVG_ORANGE} strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="180" y1="142" x2="204" y2="166" stroke={SVG_NAVY} strokeWidth="8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// 信頼できる特徴セクション: 資格証＋リボン＋チェックリスト
+function TrustFeatureSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 220 180" fill="none" aria-hidden="true">
+      <rect x="16" y="14" width="92" height="120" rx="6" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="6" />
+      <line x1="32" y1="34" x2="92" y2="34" stroke={SVG_NAVY} strokeWidth="3" strokeLinecap="round" opacity="0.6" />
+      <line x1="32" y1="46" x2="92" y2="46" stroke={SVG_NAVY} strokeWidth="3" strokeLinecap="round" opacity="0.6" />
+      <circle cx="62" cy="84" r="22" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="5" />
+      <path d="M62 70L70 84L62 98L54 84Z" fill={SVG_ORANGE} />
+      <path d="M48 134L40 162L62 150L84 162L76 134" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="4" strokeLinejoin="round" />
+      <rect x="124" y="40" width="84" height="92" rx="6" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="6" />
+      <path d="M138 64l6 6 12 -14" fill="none" stroke={SVG_ORANGE} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="164" y1="64" x2="196" y2="64" stroke={SVG_NAVY} strokeWidth="3" strokeLinecap="round" opacity="0.5" />
+      <path d="M138 92l6 6 12 -14" fill="none" stroke={SVG_ORANGE} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="164" y1="92" x2="196" y2="92" stroke={SVG_NAVY} strokeWidth="3" strokeLinecap="round" opacity="0.5" />
+      <path d="M138 112l6 6 12 -14" fill="none" stroke={SVG_ORANGE} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="164" y1="112" x2="188" y2="112" stroke={SVG_NAVY} strokeWidth="3" strokeLinecap="round" opacity="0.5" />
+    </svg>
+  );
+}
+
+// 費用セクション: 見積書＋電卓＋チェック
+function EstimateDocumentSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 220 180" fill="none" aria-hidden="true">
+      <rect x="20" y="16" width="78" height="108" rx="3" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="6" />
+      <line x1="34" y1="38" x2="84" y2="38" stroke={SVG_NAVY} strokeWidth="4" strokeLinecap="round" opacity="0.55" />
+      <line x1="34" y1="54" x2="84" y2="54" stroke={SVG_NAVY} strokeWidth="4" strokeLinecap="round" opacity="0.55" />
+      <line x1="34" y1="70" x2="70" y2="70" stroke={SVG_NAVY} strokeWidth="4" strokeLinecap="round" opacity="0.55" />
+      <path d="M30 100l8 -10 9 6 7 -9 9 12" fill="none" stroke={SVG_ORANGE} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="118" y="58" width="76" height="92" rx="8" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="6" />
+      <g stroke={SVG_NAVY} strokeWidth="3.6" strokeLinecap="round" opacity="0.7">
+        <line x1="138" y1="78" x2="150" y2="94" />
+        <line x1="162" y1="78" x2="150" y2="94" />
+        <line x1="150" y1="94" x2="150" y2="110" />
+        <line x1="142" y1="98" x2="158" y2="98" />
+        <line x1="142" y1="104" x2="158" y2="104" />
+      </g>
+      <circle cx="186" cy="130" r="22" fill={SVG_ORANGE} />
+      <path d="M176 130l7 7 14 -16" fill="none" stroke={SVG_WHITE} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// 費用カードの背景ウォーターマーク: ペイント缶＋筆
+function PaintCanLineSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 160 160" fill="none" aria-hidden="true">
+      <path d="M46 64L114 64L106 138a8 8 0 0 1 -8 7H62a8 8 0 0 1 -8 -7Z" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="6" strokeLinejoin="round" />
+      <path d="M40 64C40 52 58 44 80 44C102 44 120 52 120 64" fill="none" stroke={SVG_NAVY} strokeWidth="6" strokeLinecap="round" />
+      <path d="M64 44L70 20L98 20L96 44" fill="none" stroke={SVG_ORANGE} strokeWidth="5" strokeLinejoin="round" />
+      <line x1="58" y1="88" x2="102" y2="88" stroke={SVG_ORANGE} strokeWidth="5" strokeLinecap="round" opacity="0.6" />
+      <line x1="58" y1="108" x2="96" y2="108" stroke={SVG_ORANGE} strokeWidth="5" strokeLinecap="round" opacity="0.6" />
+    </svg>
+  );
+}
+
+// 費用カードの背景ウォーターマーク: 円マーク＋チェック
+function YenCoinCheckSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 160 160" fill="none" aria-hidden="true">
+      <circle cx="68" cy="76" r="48" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="6" />
+      <g stroke={SVG_NAVY} strokeWidth="5" strokeLinecap="round">
+        <line x1="50" y1="54" x2="68" y2="78" />
+        <line x1="86" y1="54" x2="68" y2="78" />
+        <line x1="68" y1="78" x2="68" y2="100" />
+        <line x1="54" y1="84" x2="82" y2="84" />
+        <line x1="54" y1="92" x2="82" y2="92" />
+      </g>
+      <circle cx="118" cy="112" r="24" fill={SVG_ORANGE} />
+      <path d="M107 112L115 120L130 102" fill="none" stroke={SVG_WHITE} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// CTAボタン横の小さな矢印アクセント
+function ArrowNudgeSvg({ className = 'w-8 h-8' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 60 60" fill="none" aria-hidden="true">
+      <path d="M8 40C20 44 36 38 50 18" stroke={SVG_ORANGE} strokeWidth="4" strokeLinecap="round" fill="none" opacity="0.8" />
+      <path d="M38 14L51 17L47 30" fill="none" stroke={SVG_ORANGE} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity="0.8" />
+    </svg>
+  );
+}
+
 // ════════════════════════════════════════════════════════════════════════════
 // メインコンポーネント
 // ════════════════════════════════════════════════════════════════════════════
@@ -387,7 +588,7 @@ export default function GaihekiArticleLP() {
               boxShadow: '0 2px 12px rgba(234,88,12,0.35)',
             }}
           >
-            無料診断へ →
+            無料で相談する →
           </a>
         </div>
       </header>
@@ -408,6 +609,49 @@ export default function GaihekiArticleLP() {
           className="block lg:hidden w-full h-auto"
           loading="eager"
         />
+      </section>
+
+      {/* ── 1-A. ファーストビュー直下: 新コンセプトの見出し ───────────────── */}
+      <section className="relative bg-white pt-10 pb-16 sm:pt-14 sm:pb-24 overflow-hidden">
+        <SoftWaveBg className="absolute inset-x-0 top-0 w-full h-auto pointer-events-none" />
+        <OrganicBlob
+          className="absolute -top-16 -right-20 w-64 h-64 sm:w-96 sm:h-96 pointer-events-none"
+          color={SVG_BLUE_BG}
+          opacity={0.6}
+        />
+        <OrganicBlob
+          className="absolute -bottom-24 -left-16 w-56 h-56 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.65}
+        />
+        <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 text-center">
+          <FadeUp>
+            <span
+              className="inline-flex items-center gap-2 text-xs font-bold tracking-wide px-4 py-1.5 rounded-full mb-5"
+              style={{ background: 'rgba(255,255,255,0.8)', color: SVG_NAVY, border: '1px solid #c8d8ec' }}
+            >
+              <CertificationBadgeSvg className="w-4 h-4 shrink-0" />
+              国家資格「一級塗装技能士」だけを厳選紹介
+            </span>
+            <h1 className="gaiheki-font-mincho text-balance break-keep text-[1.55rem] sm:text-[2.1rem] leading-snug tracking-wide" style={{ color: '#28292a', fontWeight: 600 }}>
+              一級塗装技能士だけを、厳選紹介。
+              <br />
+              価格だけで選ばない、品質重視の外壁塗装。
+            </h1>
+            <p className="mt-5 text-sm sm:text-base text-[#5a5f6c] leading-relaxed text-balance break-keep">
+              外壁塗装は、誰に任せるかで仕上がりが変わります。
+              <br className="md:hidden" />
+              Paint Netでは、一級塗装技能士を持つ職人・業者を中心に、
+              <br className="md:hidden" />
+              品質を重視した外壁塗装をご案内します。
+            </p>
+            <div className="mt-8 flex justify-center">
+              <div style={{ minWidth: '240px', width: '100%', maxWidth: '320px' }}>
+                <CtaPrimary label="一級塗装技能士に相談する" sub="登録不要・完全無料" />
+              </div>
+            </div>
+          </FadeUp>
+        </div>
       </section>
 
       {/* ── 2. ペイントネットの強み ──────────────────────────────────────── */}
@@ -441,7 +685,7 @@ export default function GaihekiArticleLP() {
               </p>
             </div>
             <p className="text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
-              東海エリアでの外壁塗装をサポートする、Paint Netならではのポイントをご紹介します。
+              国家資格である一級塗装技能士を持つ職人・業者を厳選してご紹介する、Paint Netならではのポイントをご紹介します。
             </p>
           </div>
 
@@ -450,14 +694,14 @@ export default function GaihekiArticleLP() {
               {
                 n: '01',
                 icon: Home,
-                title: '地域密着で外壁塗装の相談がしやすい',
-                desc: '岐阜・愛知・三重エリアに精通した地域密着型のサポートで、気軽にご相談いただける環境を整えています。',
+                title: '地域密着で、一級塗装技能士に相談がしやすい',
+                desc: '岐阜・愛知・三重エリアに精通した地域密着型のサポートで、資格を持つ職人に気軽にご相談いただける環境を整えています。',
               },
               {
                 n: '02',
                 icon: Star,
-                title: '一級塗装技能士など、技術力のある職人をご紹介可能',
-                desc: '高い技術を持つ職人が在籍する実績ある業者をご紹介します。安心して工事をお任せいただけます。',
+                title: '一級塗装技能士を持つ職人だけをご紹介',
+                desc: '国家資格である一級塗装技能士を保有し、技術力に実績のある職人・業者だけを厳選してご紹介します。安心して工事をお任せいただけます。',
               },
               {
                 n: '03',
@@ -523,6 +767,12 @@ export default function GaihekiArticleLP() {
         }}
       >
         <div className="absolute inset-0 bg-white/65 pointer-events-none" />
+        <OrganicBlob
+          className="absolute -bottom-10 -right-10 w-56 h-56 sm:w-72 sm:h-72 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.35}
+        />
+        <InspectionHouseSvg className="hidden lg:block absolute -top-10 -left-10 w-40 h-40 opacity-[0.14] pointer-events-none" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
 
           {/* セクションタイトル画像「こんなお悩みありませんか？」 */}
@@ -539,11 +789,11 @@ export default function GaihekiArticleLP() {
           {/* チェックリスト */}
           <div className="max-w-2xl mx-auto space-y-3">
             {[
-              '塗装業者がありすぎて、どこに頼んだらいいかわからない',
-              '悪質な業者に騙されそうで怖い',
-              '地域密着店で優良店にお願いしたい',
-              '適切な価格で外壁を塗装してもらいたい',
-              '家を長持ちさせたい',
+              '安さだけで選んで、手抜き工事にならないか不安',
+              'どの業者の技術力が高いのか分からない',
+              '見積もりの金額だけで比較していいか迷っている',
+              '職人さんの腕や資格まで確認できない',
+              '信頼できる職人に直接相談したい',
             ].map((text, i) => (
               <FadeUp key={i} delay={i * 60}>
                 <div
@@ -584,6 +834,12 @@ export default function GaihekiArticleLP() {
         }}
       >
         <div className="absolute inset-0 bg-white/60 pointer-events-none" />
+        <OrganicBlob
+          className="absolute -top-12 -left-12 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BLUE_BG}
+          opacity={0.4}
+        />
+        <CraftsmanShieldSvg className="hidden lg:block absolute -bottom-10 -right-10 w-44 h-44 opacity-[0.14] pointer-events-none" />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
 
           {/* セクション3タイトル画像 */}
@@ -597,33 +853,47 @@ export default function GaihekiArticleLP() {
             />
           </div>
 
+          <FadeUp>
+            <div className="text-center mb-10">
+              <H2 center>
+                <span>一級塗装技能士を持つ職人だから、</span>
+                <br className="md:hidden" />
+                <span>品質面でも相談しやすい</span>
+              </H2>
+              <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
+                Paint Netでは、外壁塗装の品質を重視したい方に向けて、一級塗装技能士を持つ職人・業者を中心にご紹介しています。
+                価格だけでなく、技術力・説明の丁寧さ・施工後の安心感まで考えて選びたい方に向いています。
+              </p>
+            </div>
+          </FadeUp>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
               {
-                title: '地域密着の優良店のみをご紹介',
-                body: '一級塗装技能士の職人や、外壁塗装歴10年以上のベテラン職人など、技術力と実績のある優良店をご紹介します。',
+                title: '一級塗装技能士を持つ職人だけをご紹介',
+                body: '国家資格である一級塗装技能士の職人や、外壁塗装歴10年以上のベテラン職人など、技術力と実績を厳選してご紹介します。',
                 // ▼ 画像を差し替える場合: src を変更してください
                 imgSrc: 'https://static.wixstatic.com/media/5ebda9_24f40d7d07e34c6bae724890486dc288~mv2.png',
-                imgAlt: '地域密着の優良店のみをご紹介',
+                imgAlt: '一級塗装技能士を持つ職人だけをご紹介',
                 cta: null,
               },
               {
                 title: '岐阜のIT企業が運営',
-                body: '大手企業との取引実績や提携実績がある岐阜のIT企業が運営しているため、悪質な塗装店をご紹介することはありません。安心してご相談いただけます。',
+                body: '大手企業との取引実績や提携実績がある岐阜のIT企業が運営しているため、資格を持たない業者や悪質な塗装店をご紹介することはありません。安心してご相談いただけます。',
                 imgSrc: 'https://static.wixstatic.com/media/5ebda9_3dff8aaf91f84704b911db4531e67f77~mv2.png',
                 imgAlt: '岐阜のIT企業が運営',
                 cta: { label: '運営企業の実績を見てみる', href: '/works' },
               },
               {
-                title: 'ご自宅に合った適正価格をご案内',
-                body: '安すぎる塗装店には注意が必要です。弊社では「高すぎず、安すぎず」を大切にし、お客様と相談しながら、ご自宅に合った適正価格をご案内します。',
+                title: '価格だけで選ばない、適正価格をご案内',
+                body: '安さだけを基準にすると、必要な工程が省かれてしまう場合があります。一級塗装技能士の技術力を踏まえたうえで、お客様と相談しながらご自宅に合った適正価格をご案内します。',
                 imgSrc: 'https://static.wixstatic.com/media/5ebda9_9507f0f37b9a43afade26f41bc20f676~mv2.png',
-                imgAlt: 'ご自宅に合った適正価格をご案内',
+                imgAlt: '価格だけで選ばない、適正価格をご案内',
                 cta: null,
               },
               {
                 title: '塗料は最低でもシリコン以上をご提案',
-                body: '外壁を長持ちさせるためには、品質面を考えてもシリコン以上の塗料を使用することが大切です。耐久性も踏まえたうえで、適切な塗料をご提案します。',
+                body: '外壁を長持ちさせるためには、品質面を考えてもシリコン以上の塗料を使用することが大切です。職人の技術力と耐久性を踏まえたうえで、適切な塗料をご提案します。',
                 imgSrc: 'https://static.wixstatic.com/media/5ebda9_2eda3a35968f49c28561d1f1987b06c7~mv2.png',
                 imgAlt: '塗料は最低でもシリコン以上をご提案',
                 cta: null,
@@ -667,7 +937,7 @@ export default function GaihekiArticleLP() {
                       className="w-8 h-1 rounded-full mb-3"
                       style={{ background: 'linear-gradient(90deg, #f97316, #ea580c)' }}
                     />
-                    <h3 className="text-base sm:text-[1.05rem] font-bold mb-2 leading-snug" style={{ color: '#0a1628' }}>
+                    <h3 className="text-balance break-keep text-base sm:text-[1.05rem] font-bold mb-2 leading-snug" style={{ color: '#0a1628' }}>
                       {title}
                     </h3>
                     <p className="text-sm text-[#5a5f6c] leading-relaxed">{body}</p>
@@ -715,6 +985,12 @@ export default function GaihekiArticleLP() {
           className="absolute inset-0 pointer-events-none"
           style={{ backgroundColor: 'rgba(255, 255, 255, 0.45)' }}
         />
+        <OrganicBlob
+          className="absolute -top-10 -right-10 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.4}
+        />
+        <TrustFeatureSvg className="hidden lg:block absolute -bottom-12 -left-12 w-44 h-44 opacity-[0.14] pointer-events-none" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
 
           {/* セクション4タイトル画像 */}
@@ -728,34 +1004,43 @@ export default function GaihekiArticleLP() {
             />
           </div>
 
+          <FadeUp>
+            <div className="text-center mb-10">
+              <H2 center>信頼できる一級塗装技能士の5つの特徴</H2>
+              <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
+                資格の有無だけでなく、説明の丁寧さや見積もりの透明性まで含めて、安心して相談できる職人かどうかを確認しましょう。
+              </p>
+            </div>
+          </FadeUp>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
             {/* 左: チェックリスト */}
             <div className="space-y-3">
               {[
                 {
-                  title: '説明が分かりやすく、質問に丁寧に答えてくれる',
-                  desc: '専門用語を多用せず、施主目線で話せる担当者かどうか確認しましょう。',
+                  title: '一級塗装技能士などの資格を持っている',
+                  desc: '国家資格を保有しているかどうかは、技術力を見極める分かりやすい指標です。',
                   iconSrc: 'https://static.wixstatic.com/media/5ebda9_0659303679724573b8b2ab61832229cd~mv2.png', // icon1
                 },
                 {
-                  title: '見積もりの内訳が細かく記載されている',
-                  desc: '「一式○○円」だけの見積もりは要注意。材料名・数量・単価が明記されているか確認を。',
+                  title: '劣化状況を見たうえで、必要な工事を説明してくれる',
+                  desc: '専門用語を多用せず、施主目線で分かりやすく状態を説明してくれるか確認しましょう。',
                   iconSrc: 'https://static.wixstatic.com/media/5ebda9_289ce999043d496395b6c70f179edfca~mv2.png', // icon2
                 },
                 {
-                  title: '施工後の保証・アフターフォローが明確',
-                  desc: '保証期間、対応範囲、連絡先がはっきりしているか。口頭だけでなく書面で確認しましょう。',
+                  title: '見積もりの内訳が細かく、塗料や工程が分かりやすい',
+                  desc: '「一式○○円」だけの見積もりは要注意。材料名・数量・単価が明記されているか確認を。',
                   iconSrc: 'https://static.wixstatic.com/media/5ebda9_e4cdf06f766c4442b7f37bf674b49bc4~mv2.png', // icon3
                 },
                 {
-                  title: '地域での施工実績がある',
-                  desc: '地元の気候・建材・規制を知っている業者は、より適切な提案をしやすい傾向があります。',
+                  title: '施工中の写真や進捗を共有してくれる',
+                  desc: '見えにくい工程も、写真で共有してくれる職人なら安心して任せられます。',
                   iconSrc: 'https://static.wixstatic.com/media/5ebda9_e50da6ed8be84e539a2bb6d271238cc7~mv2.png', // icon4
                 },
                 {
-                  title: '無理な営業・即決プレッシャーをかけない',
-                  desc: '「今日だけの特別価格」などの言葉には注意。じっくり検討できる環境を大切にしてください。',
+                  title: '契約を急かさず、比較検討をすすめてくれる',
+                  desc: '「今日だけの特別価格」など即決を迫る言葉には注意。じっくり検討できる環境を大切にしている職人を選びましょう。',
                   iconSrc: 'https://static.wixstatic.com/media/5ebda9_505ea8ebff114121b5ff65de4a9c9147~mv2.png', // icon5
                 },
               ].map(({ title, desc, iconSrc }, i) => (
@@ -846,8 +1131,8 @@ export default function GaihekiArticleLP() {
                       <CheckCircle className="w-4 h-4 text-orange-500" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-[#28292a]">地域密着の実績あり</p>
-                      <p className="text-[10px] text-[#8a8f9a]">東海エリア対応</p>
+                      <p className="text-xs font-bold text-[#28292a]">一級塗装技能士 在籍</p>
+                      <p className="text-[10px] text-[#8a8f9a]">国家資格保有の実績</p>
                     </div>
                   </div>
                 </div>
@@ -901,10 +1186,15 @@ export default function GaihekiArticleLP() {
 
       {/* ── 6. 費用・塗料・時期 ──────────────────────────────────────────── */}
       <section
-        className="py-16 sm:py-24"
+        className="relative overflow-hidden py-16 sm:py-24"
         style={{ background: 'linear-gradient(160deg, #fffbf7 0%, #fff6ee 50%, #fffbf7 100%)' }}
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <OrganicBlob
+          className="absolute -bottom-16 -left-16 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BLUE_BG}
+          opacity={0.4}
+        />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
 
           <div className="text-center mb-8">
             <Label>基礎知識</Label>
@@ -915,27 +1205,28 @@ export default function GaihekiArticleLP() {
             </H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               外壁塗装を検討するうえで、最初に押さえておきたい基本情報です。
+              金額の安さだけで選ぶと、必要な工程が省かれてしまう場合があります。塗料の種類・下地処理・塗装回数・職人の技術力まで含めて比較することが大切です。
             </p>
           </div>
 
           <div className="space-y-4">
             {[
-              { n: '1', orange: true,
+              { n: '1', orange: true, icon: YenCoinCheckSvg,
                 title: '工事費用は家の条件によって大きく変わる',
-                body: '建物の大きさ・外壁の状態・使用する塗料によって、費用は数十万〜百万円以上の幅があります。「相場が分からない」という方こそ、複数社で比較することが大切です。' },
-              { n: '2', orange: false,
+                body: '建物の大きさ・外壁の状態・使用する塗料によって、費用は数十万〜百万円以上の幅があります。「相場が分からない」という方こそ、塗料・工程・職人の技術力まで含めて比較することが大切です。' },
+              { n: '2', orange: false, icon: PaintCanLineSvg,
                 title: '塗料の種類で耐久年数が変わる',
                 body: 'シリコン・フッ素・無機など、塗料によって耐久年数は5〜20年以上と大きく異なります。コストと耐久性のバランスを、専門家に相談しながら選ぶのがおすすめです。' },
-              { n: '3', orange: false,
+              { n: '3', orange: false, icon: EstimateDocumentSvg,
                 title: '早めの確認が補修費を抑えるポイント',
-                body: '外壁の劣化は放置すると下地まで傷みが広がり、補修費用が増加しやすくなります。「まだ大丈夫かな」という段階で専門家に確認してもらうのが賢い選択です。' },
-              { n: '4', orange: false,
-                title: '時期よりも業者選びの方が結果を左右する',
-                body: '塗装は年間を通じて施工可能です。「いつ塗るか」よりも「どの業者に頼むか」の方が、仕上がりや満足度に大きく影響します。' },
-            ].map(({ n, orange, title, body }, i) => (
+                body: '外壁の劣化は放置すると下地まで傷みが広がり、補修費用が増加しやすくなります。「まだ大丈夫かな」という段階で、資格を持つ職人に確認してもらうのが賢い選択です。' },
+              { n: '4', orange: false, icon: CertificationBadgeSvg,
+                title: '時期よりも職人選びの方が結果を左右する',
+                body: '塗装は年間を通じて施工可能です。「いつ塗るか」よりも「どの職人に頼むか」の方が、仕上がりや満足度に大きく影響します。' },
+            ].map(({ n, orange, icon: CardIcon, title, body }, i) => (
               <FadeUp key={n} delay={i * 80}>
                 <div
-                  className="grid items-start rounded-lg p-5 sm:p-7 border transition-shadow duration-200"
+                  className="relative overflow-hidden grid items-start rounded-lg p-5 sm:p-7 border transition-shadow duration-200"
                   style={{
                     gridTemplateColumns: 'auto 1fr',
                     gap: '1.25rem',
@@ -944,6 +1235,7 @@ export default function GaihekiArticleLP() {
                     boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
                   }}
                 >
+                  <CardIcon className="hidden sm:block absolute -bottom-4 -right-4 w-24 h-24 opacity-[0.08] pointer-events-none" />
                   <span
                     className="text-5xl sm:text-6xl font-black leading-none tabular-nums"
                     style={{
@@ -969,8 +1261,9 @@ export default function GaihekiArticleLP() {
       </section>
 
       {/* ── 7. 症状チェック ──────────────────────────────────────────────── */}
-      <section className="bg-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <section className="relative overflow-hidden bg-white py-16 sm:py-24">
+        <CrackInspectionSvg className="hidden lg:block absolute -top-10 -right-10 w-40 h-40 opacity-[0.13] pointer-events-none" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
 
           <div className="text-center mb-8">
             <Label>劣化サイン</Label>
@@ -1077,6 +1370,8 @@ export default function GaihekiArticleLP() {
                 <p className="text-xs text-orange-700 leading-relaxed">
                   外壁の劣化は時間が経つほど補修の範囲・費用が増えやすくなります。
                   まずは無料診断で現状をチェックしてみましょう。
+                  <br />
+                  このような症状がある場合、塗装の知識や施工経験がある職人に状態を確認してもらうことが大切です。Paint Netでは、一級塗装技能士を持つ職人・業者への相談が可能です。
                 </p>
               </div>
             </div>
@@ -1086,15 +1381,25 @@ export default function GaihekiArticleLP() {
 
       {/* ── 8. ビフォーアフター ──────────────────────────────────────────── */}
       <section
-        className="py-16 sm:py-24"
+        className="relative overflow-hidden py-16 sm:py-24"
         style={{ backgroundColor: '#fbf8f4' }}
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <OrganicBlob
+          className="absolute -top-10 -right-10 w-56 h-56 sm:w-72 sm:h-72 pointer-events-none"
+          color={SVG_BLUE_BG}
+          opacity={0.3}
+        />
+        <OrganicBlob
+          className="absolute -bottom-16 -right-16 w-64 h-64 sm:w-96 sm:h-96 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.35}
+        />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
             <Label>施工事例</Label>
             <H2 center>ビフォーアフター</H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
-              スライダーを左右に動かして、施工前後の変化を比較してみてください。
+              スライダーを左右に動かして、施工前後の変化を比較してみてください。一級塗装技能士による施工事例です。
             </p>
           </div>
 
@@ -1159,10 +1464,14 @@ export default function GaihekiArticleLP() {
           <FadeUp delay={120} className="mt-20 sm:mt-28">
             <div className="text-center mb-8 sm:mb-10">
               <Label>施工中の確認体制</Label>
-              <H2 center>施工中も、毎日しっかり確認</H2>
-              <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
-                Paint Netでは、毎日職人さんとやりとりしながら、しっかり塗装されているかを確認しています。
-                お客様にも安心していただけるよう、施工中の写真も共有しています。
+              <H2 center>
+                <span>一級塗装技能士による施工品質を、</span>
+                <br className="md:hidden" />
+                <span>写真で確認</span>
+              </H2>
+              <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep">
+                Paint Netでは、施工中も職人さんとやりとりしながら、作業状況を確認します。
+                お客様にも安心していただけるよう、施工中の写真を共有し、見えにくい工程も分かりやすくお伝えします。
               </p>
             </div>
 
@@ -1253,11 +1562,20 @@ export default function GaihekiArticleLP() {
       </section>
 
       {/* ── 9. お客様の口コミ ─────────────────────────────────────────────── */}
-      <section className="bg-white py-16 sm:py-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <section className="relative overflow-hidden bg-white py-16 sm:py-24">
+        <OrganicBlob
+          className="absolute -top-12 -left-12 w-56 h-56 sm:w-72 sm:h-72 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.3}
+        />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
             <Label>お客様の声</Label>
-            <H2 center>実際に利用されたお客様の口コミ</H2>
+            <H2 center>
+              <span>実際に利用された</span>
+              <br className="md:hidden" />
+              <span>お客様の口コミ</span>
+            </H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               東海エリアで外壁塗装を行ったお客様からいただいた率直なご感想です。
             </p>
@@ -1351,22 +1669,25 @@ export default function GaihekiArticleLP() {
             backgroundSize: '60px 60px',
           }}
         />
-        <div className="relative max-w-2xl mx-auto px-4 sm:px-6 text-center">
+        <SoftWaveBg tone="navy" className="absolute inset-x-0 bottom-0 w-full h-auto pointer-events-none" />
+        <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <FadeUp>
             <span className="inline-block text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#fb923c' }}>
-              無料診断 / Free Diagnosis
+              一級塗装技能士紹介 / Certified Craftsman
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight mb-5">
-              東海エリアで対応できる
-              <br />外壁塗装会社を確認する
+            <h2 className="text-balance break-keep text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight mb-5">
+              一級塗装技能士に
+              <br />相談してみませんか？
             </h2>
-            <p className="text-base text-blue-100 leading-relaxed mb-8">
-              30秒・7問のかんたん診断で、
-              <br />あなたに合った進め方をご案内します。
+            <p className="text-balance break-keep text-base text-blue-100 leading-relaxed mb-8">
+              外壁の状態や費用感が分からない方も、まずはお気軽にご相談ください。
+              <br className="md:hidden" />
+              Paint Netが、品質を重視した外壁塗装の相談先をご案内します。
             </p>
             <div className="flex flex-col items-center gap-4">
-              <div style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
-                <CtaPrimary label="無料で診断をはじめる" sub="登録不要・完全無料" />
+              <div className="relative" style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
+                <ArrowNudgeSvg className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-14 w-10 h-10 opacity-60 scale-x-[-1] pointer-events-none" />
+                <CtaPrimary label="一級塗装技能士を紹介してもらう" sub="登録不要・完全無料" />
               </div>
               <CtaLink label="相場と進め方を先に確認する" light />
             </div>
@@ -1375,11 +1696,20 @@ export default function GaihekiArticleLP() {
       </section>
 
       {/* ── 11. FAQ ──────────────────────────────────────────────────────── */}
-      <section className="py-14 sm:py-24" style={{ backgroundColor: '#fbf8f4' }}>
-        <div className="max-w-2xl mx-auto px-4 sm:px-6">
+      <section className="relative overflow-hidden py-14 sm:py-24" style={{ backgroundColor: '#fbf8f4' }}>
+        <OrganicBlob
+          className="absolute -bottom-14 -right-14 w-56 h-56 sm:w-72 sm:h-72 pointer-events-none"
+          color={SVG_BLUE_BG}
+          opacity={0.3}
+        />
+        <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
             <Label>よくある質問</Label>
-            <H2 center>はじめての方からよくいただくご質問</H2>
+            <H2 center>
+              <span>はじめての方から</span>
+              <br className="md:hidden" />
+              <span>よくいただくご質問</span>
+            </H2>
           </div>
           <div className="space-y-3">
             {[
@@ -1425,15 +1755,17 @@ export default function GaihekiArticleLP() {
                     'radial-gradient(circle at 20% 80%, rgba(249,115,22,0.12) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(59,130,246,0.12) 0%, transparent 40%)',
                 }}
               />
-              <div className="relative">
+              <SoftWaveBg tone="navy" className="absolute inset-x-0 bottom-0 w-full h-auto pointer-events-none" />
+              <div className="relative z-10">
                 <span className="inline-block text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#fb923c' }}>
                   Next Step
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight mb-3">
-                  記事を読んで、次の一歩へ
+                <h2 className="text-balance break-keep text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight mb-3">
+                  一級塗装技能士に
+                  <br />相談してみませんか？
                 </h2>
-                <p className="text-sm text-blue-100 leading-relaxed mb-8 max-w-sm mx-auto">
-                  かんたんな診断に答えるだけで、東海エリアで対応できる会社と相場の目安が分かります。
+                <p className="text-balance break-keep text-sm text-blue-100 leading-relaxed mb-8 max-w-sm mx-auto">
+                  外壁の状態や費用感が分からない方も、まずはお気軽にご相談ください。Paint Netが、品質を重視した外壁塗装の相談先をご案内します。
                 </p>
                 <div className="flex justify-center gap-6 text-xs text-blue-200 mb-8">
                   {['登録不要', '完全無料', '営業なし'].map((t) => (
@@ -1444,8 +1776,9 @@ export default function GaihekiArticleLP() {
                   ))}
                 </div>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <div style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
-                    <CtaPrimary label="東海で対応できる会社を確認する" sub="30秒・7問のかんたん診断" />
+                  <div className="relative" style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
+                    <ArrowNudgeSvg className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-14 w-10 h-10 opacity-60 scale-x-[-1] pointer-events-none" />
+                    <CtaPrimary label="一級塗装技能士を紹介してもらう" sub="登録不要・完全無料" />
                   </div>
                   <CtaLink label="相場と進め方を先に確認する" light />
                 </div>
@@ -1471,7 +1804,7 @@ export default function GaihekiArticleLP() {
             <span className="font-black text-sm" style={{ color: '#0a1628' }}>Paint Net</span>
           </div>
           <p className="text-xs text-[#8a8f9a] leading-relaxed">
-            東海エリアの外壁塗装をサポートする情報サービスです。
+            一級塗装技能士を持つ職人・業者を厳選してご紹介する、東海エリアの外壁塗装サポートサービスです。
             <br />© 2024 Paint Net. All rights reserved.
           </p>
         </div>
