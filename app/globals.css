@@ -734,6 +734,35 @@ body {
   flex-shrink: 0;
 }
 
+/* ── Gaiheki Article LP: 見出しのマーカー風アンダーライン ──────────
+   複数行になっても各行に自然に付くよう、行（span）ごとに適用する想定。
+   box-decoration-break: clone で、1つのspanが折り返した場合も追従する。 */
+.heading-highlight {
+  background-image: linear-gradient(
+    transparent 68%,
+    rgba(249, 115, 22, 0.28) 68%,
+    rgba(249, 115, 22, 0.28) 88%,
+    transparent 88%
+  );
+  background-repeat: no-repeat;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.08em;
+}
+
+.heading-highlight-blue {
+  background-image: linear-gradient(
+    transparent 68%,
+    rgba(147, 197, 253, 0.4) 68%,
+    rgba(147, 197, 253, 0.4) 88%,
+    transparent 88%
+  );
+  background-repeat: no-repeat;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.08em;
+}
+
 /* ── Driver LP: 質問カードフェードイン ────────────────────────── */
 @keyframes driverFadeIn {
   from { opacity: 0; transform: translateY(14px); }

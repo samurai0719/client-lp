@@ -19,6 +19,19 @@ import {
 
 // ─── CTAリンク先 — ここを変えるだけで全CTAが差し替わる ─────────────────────
 const DESTINATION_LP_URL = '/gaiheki';
+const CTA_LABEL = '一級塗装技能士を紹介してもらう';
+const CTA_NOTICE = '※一級塗装技能士の数には限りがあります。人気なサービスのためお待ちいただく可能性があります。';
+
+function CtaNotice({ light = false }: { light?: boolean }) {
+  return (
+    <p
+      className="mb-3 text-xs sm:text-sm text-center leading-relaxed"
+      style={{ color: light ? 'rgba(219,234,254,0.85)' : '#5a5f6c' }}
+    >
+      {CTA_NOTICE}
+    </p>
+  );
+}
 
 // ─── ファーストビュー画像 — PC/スマホを個別に差し替え可能 ───────────────────
 const HERO_IMG_DESKTOP = 'https://static.wixstatic.com/media/5ebda9_7e6c91edccdd4a78bb86a0a1b573fcb6~mv2.png';
@@ -151,7 +164,7 @@ function H2({
 }) {
   return (
     <h2
-      className={`gaiheki-font-mincho text-balance break-keep text-[1.65rem] sm:text-[1.9rem] leading-snug ${center ? 'text-center' : ''}`}
+      className={`gaiheki-font-mincho text-balance break-keep [overflow-wrap:normal] text-[1.65rem] sm:text-[1.9rem] leading-[1.5] ${center ? 'text-center' : ''}`}
       style={{
         color: light ? '#ffffff' : '#28292a',
         fontWeight: 500,
@@ -160,6 +173,25 @@ function H2({
     >
       {children}
     </h2>
+  );
+}
+
+// ─── 見出しテキスト: モバイルは行ごとに改行＋マーカー、PCは1本のマーカーで連続表示 ──
+// lines: モバイルで表示する自然な改行単位（各行に均等にマーカーが付く）
+// full: PCで1行に収まる場合の全文（マーカーが途切れず連続する）
+function HeadingLines({ lines, full }: { lines: string[]; full: string }) {
+  return (
+    <>
+      <span className="md:hidden">
+        {lines.flatMap((line, i) => [
+          i > 0 ? <br key={`br-${line}`} /> : null,
+          <span key={line} className="heading-highlight inline-block w-fit">
+            {line}
+          </span>,
+        ])}
+      </span>
+      <span className="heading-highlight hidden md:inline-block md:w-fit">{full}</span>
+    </>
   );
 }
 
@@ -543,6 +575,94 @@ function ArrowNudgeSvg({ className = 'w-8 h-8' }: { className?: string }) {
   );
 }
 
+// ─── 「一級塗装技能士とは」セクション群: 図解用アイコン ──────────────────────
+
+// 国家検定・受検資格・実務経験のあかし（証書＋認定シール）
+function CertDocIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="9" y="6" width="36" height="46" rx="3" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.5" />
+      <line x1="15" y1="16" x2="39" y2="16" stroke={SVG_NAVY} strokeWidth="2" strokeLinecap="round" opacity="0.55" />
+      <line x1="15" y1="23" x2="39" y2="23" stroke={SVG_NAVY} strokeWidth="2" strokeLinecap="round" opacity="0.55" />
+      <line x1="15" y1="30" x2="31" y2="30" stroke={SVG_NAVY} strokeWidth="2" strokeLinecap="round" opacity="0.55" />
+      <circle cx="44" cy="42" r="12" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="2.4" />
+      <path d="M39 42l3.4 3.4 7-7.4" fill="none" stroke={SVG_ORANGE} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// 実務経験のあかし（積み重ね＋時計）
+function ExperienceIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <circle cx="27" cy="25" r="17" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.4" />
+      <path d="M27 15v10l7 5.5" fill="none" stroke={SVG_NAVY} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="13" y="48" width="38" height="6" rx="3" fill={SVG_ORANGE} opacity="0.85" />
+      <rect x="18" y="40" width="28" height="6" rx="3" fill={SVG_ORANGE} opacity="0.55" />
+    </svg>
+  );
+}
+
+// 実技＋学科試験のあかし（試験用紙＋採点チェック）
+function ExamPaperIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="11" y="7" width="32" height="44" rx="3" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="2.4" />
+      <path d="M18 19l3 3 5-6" fill="none" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="29" y1="19" x2="37" y2="19" stroke={SVG_NAVY} strokeWidth="2" strokeLinecap="round" opacity="0.45" />
+      <path d="M18 31l3 3 5-6" fill="none" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="29" y1="31" x2="37" y2="31" stroke={SVG_NAVY} strokeWidth="2" strokeLinecap="round" opacity="0.45" />
+      <line x1="18" y1="41" x2="37" y2="41" stroke={SVG_NAVY} strokeWidth="2" strokeLinecap="round" opacity="0.25" />
+      <path d="M39 46l9-9 4 4-9 9h-4z" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// 現場経験のあかし（職人ヘルメット）
+function HelmetIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M13 41a19 16 0 0 1 38 0Z" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.4" strokeLinejoin="round" />
+      <rect x="9" y="39" width="46" height="7" rx="3.5" fill={SVG_NAVY} />
+      <path d="M32 10v9" stroke={SVG_ORANGE} strokeWidth="2.4" strokeLinecap="round" />
+      <circle cx="32" cy="9" r="2.4" fill={SVG_ORANGE} />
+    </svg>
+  );
+}
+
+// 技能のあかし（ペイントブラシ＋チェック）
+function BrushCheckIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M17 47L37 27" stroke={SVG_NAVY} strokeWidth="3.2" strokeLinecap="round" />
+      <path d="M34 24l10-10c2.4-2.4 5.8-2.4 7.8 0 2 2.4 2.4 5.4 0 7.8L42 32Z" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="2.3" strokeLinejoin="round" />
+      <path d="M14 50c-2 2-2 5.5 1 7s6-1 5.6-4.2" fill="none" stroke={SVG_ORANGE} strokeWidth="2.3" strokeLinecap="round" />
+      <circle cx="46" cy="46" r="11" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.2" />
+      <path d="M41 46l3.4 3.4 7-7" fill="none" stroke={SVG_ORANGE} strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// 品質のあかし（盾＋星）
+function ShieldStarIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M32 7l19 6.5v16.5c0 14.5-9.5 21.5-19 25.5-9.5-4-19-11-19-25.5V13.5Z" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.4" strokeLinejoin="round" />
+      <path d="M32 19l3.6 7.2 8 1.1-5.8 5.6 1.4 7.9-7.2-3.8-7.2 3.8 1.4-7.9-5.8-5.6 8-1.1Z" fill={SVG_ORANGE} />
+    </svg>
+  );
+}
+
+// ステップをつなぐ矢印（→ がデフォルト。rotate-90 で ↓ にも使える）
+function ArrowConnectorSvg({ className = 'w-6 h-6' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <line x1="4" y1="16" x2="23" y2="16" stroke={SVG_ORANGE} strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M18 8l9 8-9 8" fill="none" stroke={SVG_ORANGE} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 // ════════════════════════════════════════════════════════════════════════════
 // メインコンポーネント
 // ════════════════════════════════════════════════════════════════════════════
@@ -582,13 +702,13 @@ export default function GaihekiArticleLP() {
           </div>
           <a
             href={DESTINATION_LP_URL}
-            className="text-sm font-bold text-white px-5 py-2.5 rounded-xl cursor-pointer transition-all duration-150 hover:opacity-90 active:scale-95"
+            className="text-[11px] sm:text-sm font-bold text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl cursor-pointer transition-all duration-150 hover:opacity-90 active:scale-95 whitespace-nowrap shrink-0"
             style={{
               background: 'linear-gradient(135deg, #f97316, #ea580c)',
               boxShadow: '0 2px 12px rgba(234,88,12,0.35)',
             }}
           >
-            無料で相談する →
+            {CTA_LABEL}
           </a>
         </div>
       </header>
@@ -627,27 +747,30 @@ export default function GaihekiArticleLP() {
         <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <FadeUp>
             <span
-              className="inline-flex items-center gap-2 text-xs font-bold tracking-wide px-4 py-1.5 rounded-full mb-5"
+              className="inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-bold tracking-wide px-3 sm:px-4 py-1.5 rounded-full mb-5 whitespace-nowrap"
               style={{ background: 'rgba(255,255,255,0.8)', color: SVG_NAVY, border: '1px solid #c8d8ec' }}
             >
               <CertificationBadgeSvg className="w-4 h-4 shrink-0" />
               国家資格「一級塗装技能士」だけを厳選紹介
             </span>
-            <h1 className="gaiheki-font-mincho text-balance break-keep text-[1.55rem] sm:text-[2.1rem] leading-snug tracking-wide" style={{ color: '#28292a', fontWeight: 600 }}>
-              一級塗装技能士だけを、厳選紹介。
+            <h1 className="gaiheki-font-mincho break-keep [overflow-wrap:normal] text-[1.55rem] sm:text-[2.1rem] leading-[1.5] tracking-wide" style={{ color: '#28292a', fontWeight: 600 }}>
+              <span className="heading-highlight inline-block w-fit">一級塗装技能士だけを、厳選紹介。</span>
               <br />
-              価格だけで選ばない、品質重視の外壁塗装。
+              <span className="heading-highlight inline-block w-fit">価格だけで選ばない、</span>
+              <br />
+              <span className="heading-highlight inline-block w-fit">品質重視の外壁塗装。</span>
             </h1>
-            <p className="mt-5 text-sm sm:text-base text-[#5a5f6c] leading-relaxed text-balance break-keep">
+            <p className="mt-5 text-sm sm:text-base text-[#5a5f6c] leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
               外壁塗装は、誰に任せるかで仕上がりが変わります。
               <br className="md:hidden" />
               Paint Netでは、一級塗装技能士を持つ職人・業者を中心に、
               <br className="md:hidden" />
               品質を重視した外壁塗装をご案内します。
             </p>
-            <div className="mt-8 flex justify-center">
+            <div className="mt-8 flex flex-col items-center">
               <div style={{ minWidth: '240px', width: '100%', maxWidth: '320px' }}>
-                <CtaPrimary label="一級塗装技能士に相談する" sub="登録不要・完全無料" />
+                <CtaNotice />
+                <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
               </div>
             </div>
           </FadeUp>
@@ -745,7 +868,9 @@ export default function GaihekiArticleLP() {
                       <Icon className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold leading-snug mb-1.5" style={{ color: '#28292a' }}>{title}</p>
+                      <p className="text-sm font-bold leading-[1.45] mb-1.5 text-balance break-keep [overflow-wrap:anywhere]" style={{ color: '#28292a' }}>
+                        <span className="heading-highlight">{title}</span>
+                      </p>
                       <p className="text-xs leading-relaxed" style={{ color: '#5a5f6c' }}>{desc}</p>
                     </div>
                   </div>
@@ -856,9 +981,10 @@ export default function GaihekiArticleLP() {
           <FadeUp>
             <div className="text-center mb-10">
               <H2 center>
-                <span>一級塗装技能士を持つ職人だから、</span>
-                <br className="md:hidden" />
-                <span>品質面でも相談しやすい</span>
+                <HeadingLines
+                  lines={['一級塗装技能士を持つ', '職人だから、', '品質面でも相談しやすい']}
+                  full="一級塗装技能士を持つ職人だから、品質面でも相談しやすい"
+                />
               </H2>
               <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
                 Paint Netでは、外壁塗装の品質を重視したい方に向けて、一級塗装技能士を持つ職人・業者を中心にご紹介しています。
@@ -937,8 +1063,8 @@ export default function GaihekiArticleLP() {
                       className="w-8 h-1 rounded-full mb-3"
                       style={{ background: 'linear-gradient(90deg, #f97316, #ea580c)' }}
                     />
-                    <h3 className="text-balance break-keep text-base sm:text-[1.05rem] font-bold mb-2 leading-snug" style={{ color: '#0a1628' }}>
-                      {title}
+                    <h3 className="text-balance break-keep [overflow-wrap:anywhere] text-base sm:text-[1.05rem] font-bold mb-2 leading-[1.45]" style={{ color: '#0a1628' }}>
+                      <span className="heading-highlight">{title}</span>
                     </h3>
                     <p className="text-sm text-[#5a5f6c] leading-relaxed">{body}</p>
                     {cta && (
@@ -960,10 +1086,11 @@ export default function GaihekiArticleLP() {
             ))}
           </div>
 
-          <FadeUp delay={200} className="mt-10 text-center">
-            <div className="flex justify-center">
+          <FadeUp delay={200} className="mt-10">
+            <div className="flex flex-col items-center">
               <div style={{ minWidth: '240px', width: '100%', maxWidth: '300px' }}>
-                <CtaPrimary label="無料で相談する" sub="登録不要・完全無料" />
+                <CtaNotice />
+                <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
               </div>
             </div>
           </FadeUp>
@@ -1006,7 +1133,12 @@ export default function GaihekiArticleLP() {
 
           <FadeUp>
             <div className="text-center mb-10">
-              <H2 center>信頼できる一級塗装技能士の5つの特徴</H2>
+              <H2 center>
+                <HeadingLines
+                  lines={['信頼できる', '一級塗装技能士の', '5つの特徴']}
+                  full="信頼できる一級塗装技能士の5つの特徴"
+                />
+              </H2>
               <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
                 資格の有無だけでなく、説明の丁寧さや見積もりの透明性まで含めて、安心して相談できる職人かどうかを確認しましょう。
               </p>
@@ -1184,6 +1316,261 @@ export default function GaihekiArticleLP() {
         </div>
       </div>
 
+      {/* ── 5-B. 一級塗装技能士とは？ ─────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-white py-16 sm:py-24">
+        <OrganicBlob
+          className="absolute -top-16 -right-16 w-64 h-64 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BLUE_BG}
+          opacity={0.35}
+        />
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10">
+            <Label>一級塗装技能士とは</Label>
+            <H2 center>
+              <span className="heading-highlight">一級塗装技能士とは？</span>
+            </H2>
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
+              国家検定に合格した、塗装技能の証です
+            </p>
+          </div>
+
+          <FadeUp>
+            <div
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center rounded-2xl border p-6 sm:p-10"
+              style={{
+                borderColor: '#d8cebd',
+                backgroundColor: '#fbf8f4',
+                boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
+              }}
+            >
+              {/* 図解: 国家検定＋実務経験＋実技学科 → 合格バッジ */}
+              <div>
+                <div className="grid grid-cols-1 gap-3 max-w-xs mx-auto">
+                  {[
+                    { Icon: CertDocIcon, label: '国家検定' },
+                    { Icon: ExperienceIcon, label: '塗装の実務経験' },
+                    { Icon: ExamPaperIcon, label: '実技＋学科' },
+                  ].map(({ Icon, label }) => (
+                    <div
+                      key={label}
+                      className="flex items-center gap-3 rounded-xl border bg-white px-4 py-3"
+                      style={{ borderColor: '#d8cebd' }}
+                    >
+                      <Icon className="w-9 h-9 shrink-0" />
+                      <span className="text-sm font-bold text-[#28292a]">{label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-center my-3">
+                  <ArrowConnectorSvg className="w-6 h-6 rotate-90 opacity-80" />
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <CertificationBadgeSvg className="w-20 h-20" />
+                  <span className="text-sm font-extrabold text-center text-balance break-keep [overflow-wrap:anywhere]" style={{ color: SVG_NAVY }}>
+                    合格 → 一級塗装技能士
+                  </span>
+                </div>
+              </div>
+
+              {/* 説明文 */}
+              <div>
+                <p className="text-sm sm:text-base text-[#5a5f6c] leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
+                  一級塗装技能士は、厚生労働省の技能検定制度に基づく国家資格のひとつです。
+                  塗装に関する知識だけでなく、実務経験と技能の両方が求められ、合格者は「技能士」と名乗ることができます。
+                  外壁塗装では、こうした資格を持つ職人に相談できるかどうかが、安心感のひとつになります。
+                </p>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ── 5-C. どうやって取得するの？ ───────────────────────────────────── */}
+      <section className="relative overflow-hidden py-16 sm:py-24" style={{ backgroundColor: '#fbf8f4' }}>
+        <OrganicBlob
+          className="absolute -bottom-16 -left-16 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.4}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <Label>取得プロセス</Label>
+            <H2 center>
+              <HeadingLines
+                lines={['どうやって', '一級塗装技能士に', 'なるの？']}
+                full="どうやって一級塗装技能士になるの？"
+              />
+            </H2>
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
+              経験を積み、実技と学科の両方をクリアして取得します
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-4">
+            {[
+              { Icon: HelmetIcon, title: '現場経験を積む', desc: '塗装の現場で実務経験を重ねます。' },
+              { Icon: CertDocIcon, title: '受検資格を満たす', desc: '実務経験などの受検条件を満たします。' },
+              { Icon: ExamPaperIcon, title: '実技試験・学科試験を受ける', desc: '技能と知識の両方が試されます。' },
+              { Icon: CertificationBadgeSvg, title: '両方合格で一級塗装技能士', desc: '実技・学科の両方に合格して認定されます。' },
+            ].map(({ Icon, title, desc }, i, arr) => (
+              <FadeUp key={title} delay={i * 70} className="relative">
+                <div
+                  className="h-full flex flex-col items-center text-center gap-3 rounded-2xl border bg-white p-6"
+                  style={{ borderColor: '#d8cebd', boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)' }}
+                >
+                  <span className="text-xs font-extrabold tracking-widest" style={{ color: SVG_ORANGE }}>
+                    STEP {i + 1}
+                  </span>
+                  <Icon className="w-12 h-12" />
+                  <p className="text-sm font-bold text-[#28292a] leading-[1.45] text-balance break-keep [overflow-wrap:anywhere]">
+                    <span className="heading-highlight">{title}</span>
+                  </p>
+                  <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
+                </div>
+                {i < arr.length - 1 && (
+                  <div className="lg:hidden flex justify-center my-2">
+                    <ArrowConnectorSvg className="w-6 h-6 rotate-90 opacity-70" />
+                  </div>
+                )}
+                {i < arr.length - 1 && (
+                  <div className="hidden lg:flex absolute top-1/2 -right-5 -translate-y-1/2 z-10">
+                    <ArrowConnectorSvg className="w-5 h-5 opacity-70" />
+                  </div>
+                )}
+              </FadeUp>
+            ))}
+          </div>
+
+          <p className="mt-10 text-xs text-[#8a8f9a] leading-relaxed text-center max-w-2xl mx-auto">
+            ※実務経験のみの場合、1級受検の目安は7年以上です。学歴や職業訓練歴などで短縮される場合があります。
+            <br className="md:hidden" />
+            ※実技試験は100点満点中60点以上、学科試験は100点満点中65点以上が合格の目安です（都道府県職業能力開発協会が実施する職種の場合）。
+          </p>
+        </div>
+      </section>
+
+      {/* ── 5-D. なぜ一級塗装技能士だと安心なの？ ─────────────────────────── */}
+      <section className="relative overflow-hidden bg-white py-16 sm:py-24">
+        <OrganicBlob
+          className="absolute -top-14 -left-14 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.35}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <Label>3つの安心理由</Label>
+            <H2 center>
+              <HeadingLines
+                lines={['なぜ一級塗装技能士', 'だと安心なの？']}
+                full="なぜ一級塗装技能士だと安心なの？"
+              />
+            </H2>
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
+              資格そのものが、経験と技能のひとつの目安になります
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              {
+                tag: '経験', Icon: ExperienceIcon, bg: SVG_BLUE_BG,
+                title: '実務経験を前提にしている',
+                desc: '一級塗装技能士は、いきなり誰でも取れる資格ではありません。一定の実務経験が必要なため、現場経験の蓄積が前提になっています。',
+              },
+              {
+                tag: '技能', Icon: BrushCheckIcon, bg: SVG_BEIGE_BG,
+                title: '実技と学科の両方が必要',
+                desc: '知識だけでなく、実際の施工技能も評価されます。そのため、現場での対応力も含めた技能の目安になります。',
+              },
+              {
+                tag: '品質', Icon: ShieldStarIcon, bg: SVG_GRAY_BG,
+                title: '品質向上の考え方と相性が良い',
+                desc: '公共工事の標準的な仕様の考え方では、1級などの技能者が現場で作業しながら、他の技能者に作業指導を行い、施工品質の向上を図るとされています。一級塗装技能士は、こうした品質を高める役割が期待されるレベルの技能者といえます。',
+              },
+            ].map(({ tag, Icon, bg, title, desc }, i) => (
+              <FadeUp key={tag} delay={i * 80}>
+                <div
+                  className="h-full rounded-2xl border p-6 flex flex-col gap-4"
+                  style={{
+                    borderColor: '#d8cebd',
+                    backgroundColor: bg,
+                    boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-white">
+                      <Icon className="w-8 h-8" />
+                    </div>
+                    <span className="text-xs font-extrabold tracking-widest" style={{ color: SVG_ORANGE }}>
+                      理由{i + 1}・{tag}
+                    </span>
+                  </div>
+                  <p className="text-sm font-bold text-[#28292a] leading-[1.45] text-balance break-keep [overflow-wrap:anywhere]">
+                    <span className="heading-highlight">{title}</span>
+                  </p>
+                  <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5-E. なぜ一級塗装技能士は限られるの？ ─────────────────────────── */}
+      <section className="relative overflow-hidden py-16 sm:py-24" style={{ backgroundColor: '#fbf8f4' }}>
+        <OrganicBlob
+          className="absolute -bottom-14 -right-14 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BLUE_BG}
+          opacity={0.3}
+        />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <Label>取得のハードル</Label>
+            <H2 center>
+              <HeadingLines
+                lines={['なぜ一級塗装技能士は', '限られるの？']}
+                full="なぜ一級塗装技能士は限られるの？"
+              />
+            </H2>
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
+              取得までのハードルが高いため、誰でもすぐに名乗れる資格ではありません
+            </p>
+          </div>
+
+          {/* 図解: 3つのハードルが階段状に積み上がるイメージ */}
+          <div className="flex items-end justify-center gap-3 sm:gap-6 mb-10">
+            {[
+              { Icon: CertDocIcon, label: '実務経験が必要', h: 'h-28 sm:h-32' },
+              { Icon: ExamPaperIcon, label: '実技と学科の\n両方が必要', h: 'h-36 sm:h-44' },
+              { Icon: CertificationBadgeSvg, label: '継続して技能を\n磨く必要がある', h: 'h-44 sm:h-56' },
+            ].map(({ Icon, label, h }, i) => (
+              <FadeUp key={i} delay={i * 80} className="flex flex-col items-center gap-2 flex-1 max-w-[140px]">
+                <Icon className="w-10 h-10 sm:w-12 sm:h-12" />
+                <p className="text-[11px] sm:text-xs font-bold text-[#28292a] text-center leading-snug whitespace-pre-line text-balance break-keep [overflow-wrap:anywhere]">
+                  {label}
+                </p>
+                <div
+                  className={`w-full rounded-t-xl ${h}`}
+                  style={{ background: 'linear-gradient(180deg, #f97316 0%, #ea580c 100%)', opacity: 0.85 }}
+                />
+              </FadeUp>
+            ))}
+          </div>
+
+          <FadeUp>
+            <p className="text-sm sm:text-base text-[#5a5f6c] leading-relaxed text-balance break-keep [overflow-wrap:anywhere] max-w-2xl mx-auto text-center">
+              一級塗装技能士が限られる理由は、取得条件の厳しさにあります。
+              原則として長い実務経験が必要で、さらに実技試験と学科試験の両方に合格しなければなりません。
+              そのため、現場経験・知識・技能を継続して積み重ねた人だけが取得しやすい資格です。
+            </p>
+          </FadeUp>
+
+          <p className="mt-10 text-[11px] text-[#8a8f9a] text-center">
+            ※技能検定制度・JAVADA公開情報をもとに構成
+          </p>
+        </div>
+      </section>
+
       {/* ── 6. 費用・塗料・時期 ──────────────────────────────────────────── */}
       <section
         className="relative overflow-hidden py-16 sm:py-24"
@@ -1199,9 +1586,10 @@ export default function GaihekiArticleLP() {
           <div className="text-center mb-8">
             <Label>基礎知識</Label>
             <H2 center>
-              <span>費用・塗料・時期について</span>
-              <br className="md:hidden" />
-              <span>知っておきたいこと</span>
+              <HeadingLines
+                lines={['費用・塗料・時期について', '知っておきたいこと']}
+                full="費用・塗料・時期について知っておきたいこと"
+              />
             </H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               外壁塗装を検討するうえで、最初に押さえておきたい基本情報です。
@@ -1250,7 +1638,9 @@ export default function GaihekiArticleLP() {
                     {n}
                   </span>
                   <div className="pt-1">
-                    <p className="text-base font-bold text-[#28292a] mb-2">{title}</p>
+                    <p className="text-base font-bold text-[#28292a] mb-2 leading-[1.45] text-balance break-keep [overflow-wrap:anywhere]">
+                      <span className="heading-highlight">{title}</span>
+                    </p>
                     <p className="text-sm text-[#5a5f6c] leading-relaxed">{body}</p>
                   </div>
                 </div>
@@ -1268,9 +1658,10 @@ export default function GaihekiArticleLP() {
           <div className="text-center mb-8">
             <Label>劣化サイン</Label>
             <H2 center>
-              <span>こんな症状があるなら、</span>
-              <br className="md:hidden" />
-              <span>早めの確認がおすすめ</span>
+              <HeadingLines
+                lines={['こんな症状があるなら、', '早めの確認がおすすめ']}
+                full="こんな症状があるなら、早めの確認がおすすめ"
+              />
             </H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               外壁・屋根の以下のサインは、塗装時期が近づいているサインかもしれません。
@@ -1397,7 +1788,9 @@ export default function GaihekiArticleLP() {
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
             <Label>施工事例</Label>
-            <H2 center>ビフォーアフター</H2>
+            <H2 center>
+              <span className="heading-highlight">ビフォーアフター</span>
+            </H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               スライダーを左右に動かして、施工前後の変化を比較してみてください。一級塗装技能士による施工事例です。
             </p>
@@ -1465,11 +1858,12 @@ export default function GaihekiArticleLP() {
             <div className="text-center mb-8 sm:mb-10">
               <Label>施工中の確認体制</Label>
               <H2 center>
-                <span>一級塗装技能士による施工品質を、</span>
-                <br className="md:hidden" />
-                <span>写真で確認</span>
+                <HeadingLines
+                  lines={['一級塗装技能士による', '施工品質を、', '写真で確認']}
+                  full="一級塗装技能士による施工品質を、写真で確認"
+                />
               </H2>
-              <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep">
+              <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
                 Paint Netでは、施工中も職人さんとやりとりしながら、作業状況を確認します。
                 お客様にも安心していただけるよう、施工中の写真を共有し、見えにくい工程も分かりやすくお伝えします。
               </p>
@@ -1572,9 +1966,10 @@ export default function GaihekiArticleLP() {
           <div className="text-center mb-8">
             <Label>お客様の声</Label>
             <H2 center>
-              <span>実際に利用された</span>
-              <br className="md:hidden" />
-              <span>お客様の口コミ</span>
+              <HeadingLines
+                lines={['実際に利用された', 'お客様の口コミ']}
+                full="実際に利用されたお客様の口コミ"
+              />
             </H2>
             <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
               東海エリアで外壁塗装を行ったお客様からいただいた率直なご感想です。
@@ -1675,11 +2070,10 @@ export default function GaihekiArticleLP() {
             <span className="inline-block text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#fb923c' }}>
               一級塗装技能士紹介 / Certified Craftsman
             </span>
-            <h2 className="text-balance break-keep text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight mb-5">
-              一級塗装技能士に
-              <br />相談してみませんか？
+            <h2 className="break-keep [overflow-wrap:normal] text-2xl sm:text-3xl font-black text-white leading-[1.45] tracking-tight mb-5">
+              <HeadingLines lines={['一級塗装技能士に', '相談してみませんか？']} full="一級塗装技能士に相談してみませんか？" />
             </h2>
-            <p className="text-balance break-keep text-base text-blue-100 leading-relaxed mb-8">
+            <p className="text-balance break-keep [overflow-wrap:anywhere] text-base text-blue-100 leading-relaxed mb-8">
               外壁の状態や費用感が分からない方も、まずはお気軽にご相談ください。
               <br className="md:hidden" />
               Paint Netが、品質を重視した外壁塗装の相談先をご案内します。
@@ -1687,7 +2081,8 @@ export default function GaihekiArticleLP() {
             <div className="flex flex-col items-center gap-4">
               <div className="relative" style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
                 <ArrowNudgeSvg className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-14 w-10 h-10 opacity-60 scale-x-[-1] pointer-events-none" />
-                <CtaPrimary label="一級塗装技能士を紹介してもらう" sub="登録不要・完全無料" />
+                <CtaNotice light />
+                <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
               </div>
               <CtaLink label="相場と進め方を先に確認する" light />
             </div>
@@ -1706,9 +2101,10 @@ export default function GaihekiArticleLP() {
           <div className="text-center mb-8">
             <Label>よくある質問</Label>
             <H2 center>
-              <span>はじめての方から</span>
-              <br className="md:hidden" />
-              <span>よくいただくご質問</span>
+              <HeadingLines
+                lines={['はじめての方から', 'よくいただくご質問']}
+                full="はじめての方からよくいただくご質問"
+              />
             </H2>
           </div>
           <div className="space-y-3">
@@ -1760,11 +2156,10 @@ export default function GaihekiArticleLP() {
                 <span className="inline-block text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#fb923c' }}>
                   Next Step
                 </span>
-                <h2 className="text-balance break-keep text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight mb-3">
-                  一級塗装技能士に
-                  <br />相談してみませんか？
+                <h2 className="break-keep [overflow-wrap:normal] text-2xl sm:text-3xl font-black text-white leading-[1.45] tracking-tight mb-3">
+                  <HeadingLines lines={['一級塗装技能士に', '相談してみませんか？']} full="一級塗装技能士に相談してみませんか？" />
                 </h2>
-                <p className="text-balance break-keep text-sm text-blue-100 leading-relaxed mb-8 max-w-sm mx-auto">
+                <p className="text-balance break-keep [overflow-wrap:anywhere] text-sm text-blue-100 leading-relaxed mb-8 max-w-sm mx-auto">
                   外壁の状態や費用感が分からない方も、まずはお気軽にご相談ください。Paint Netが、品質を重視した外壁塗装の相談先をご案内します。
                 </p>
                 <div className="flex justify-center gap-6 text-xs text-blue-200 mb-8">
@@ -1778,7 +2173,8 @@ export default function GaihekiArticleLP() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <div className="relative" style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
                     <ArrowNudgeSvg className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-14 w-10 h-10 opacity-60 scale-x-[-1] pointer-events-none" />
-                    <CtaPrimary label="一級塗装技能士を紹介してもらう" sub="登録不要・完全無料" />
+                    <CtaNotice light />
+                    <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
                   </div>
                   <CtaLink label="相場と進め方を先に確認する" light />
                 </div>

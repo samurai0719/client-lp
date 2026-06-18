@@ -48,7 +48,10 @@
       "Bash(npx --no-install playwright install --dry-run chromium)",
       "Read(//Users/tsukamotoshuntaira/Library/Caches/ms-playwright/**)",
       "Bash(npm ls *)",
-      "Bash(jobs -l)"
+      "Bash(jobs -l)",
+      "Read(//Users/tsukamotoshuntaira/Desktop/gaiheki-lp/**)",
+      "Read(//Users/tsukamotoshuntaira/Desktop/**)",
+      "Bash(find / -maxdepth 4 -iname \"*claude*upload*\" -o -iname \"*claude*tmp*\")"
     ]
   }
 }
