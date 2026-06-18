@@ -382,6 +382,8 @@ const SVG_BLUE_BG = '#EAF5FF';
 const SVG_BEIGE_BG = '#FFF3E8';
 const SVG_GRAY_BG = '#F8FAFC';
 const SVG_WHITE = '#FFFFFF';
+const SVG_BEIGE_LIGHT = '#FFFBF5';
+const SVG_GRAY_LINE = '#64748B';
 
 // セクション背景に敷く大きな波形（淡い色を重ねた柔らかいレイヤー）
 function SoftWaveBg({
@@ -660,6 +662,593 @@ function ArrowConnectorSvg({ className = 'w-6 h-6' }: { className?: string }) {
       <line x1="4" y1="16" x2="23" y2="16" stroke={SVG_ORANGE} strokeWidth="2.6" strokeLinecap="round" />
       <path d="M18 8l9 8-9 8" fill="none" stroke={SVG_ORANGE} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  );
+}
+
+// ─── 「ペイントネットの強み」セクション: 図解用 inline SVG ───────────────────
+
+// ペンキ缶
+function PaintBucketSvg({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M16 22h32l-4 30a4 4 0 0 1-4 3.5H24a4 4 0 0 1-4-3.5Z" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.4" strokeLinejoin="round" />
+      <ellipse cx="32" cy="22" rx="16" ry="5" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="2.4" />
+      <path d="M22 22c0 2.8 4.5 5 10 5s10-2.2 10-5" fill="none" stroke={SVG_ORANGE} strokeWidth="2" strokeLinecap="round" />
+      <path d="M27 11l1.5-5M37 11l-1.5-5" stroke={SVG_NAVY} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// ペイントローラー
+function PaintRollerSvg({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="10" y="14" width="32" height="14" rx="4" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="2.4" />
+      <line x1="26" y1="28" x2="26" y2="38" stroke={SVG_NAVY} strokeWidth="2.4" strokeLinecap="round" />
+      <line x1="26" y1="38" x2="40" y2="50" stroke={SVG_NAVY} strokeWidth="2.4" strokeLinecap="round" />
+      <line x1="34" y1="50" x2="46" y2="50" stroke={SVG_NAVY} strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// ペイントブラシ
+function BrushSvg({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M20 44L38 26" stroke={SVG_NAVY} strokeWidth="3" strokeLinecap="round" />
+      <path d="M35 23l9-9c2.2-2.2 5.4-2.2 7.4 0 2 2 2 5.2 0 7.4l-9 9Z" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinejoin="round" />
+      <path d="M17 47c-2 2-2 5.5 1 7s6-1 5.5-4" fill="none" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// 家
+function HouseSvg({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M10 30L32 12l22 18" stroke={SVG_NAVY} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16 27v23h32V27" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="27" y="36" width="10" height="14" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="2" />
+    </svg>
+  );
+}
+
+// 職人（ヘルメット＋ブラシ）
+function CraftsmanSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 120 140" fill="none" aria-hidden="true">
+      {/* 上半身（作業服） */}
+      <path
+        d="M28 130c0-28 12-44 32-44s32 16 32 44"
+        fill={SVG_WHITE}
+        stroke={SVG_NAVY}
+        strokeWidth="2.6"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      {/* 襟・ファスナー */}
+      <path d="M60 88v40" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.4" />
+      <path d="M48 90c3 5 21 5 24 0" fill="none" stroke={SVG_NAVY} strokeWidth="1.6" strokeLinecap="round" opacity="0.4" />
+      {/* 首 */}
+      <rect x="53" y="46" width="14" height="12" rx="4" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2" />
+      {/* 顔 */}
+      <circle cx="60" cy="38" r="19" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2.6" />
+      <circle cx="53" cy="39" r="1.8" fill={SVG_NAVY} />
+      <circle cx="67" cy="39" r="1.8" fill={SVG_NAVY} />
+      <path d="M52 46c3.5 3.5 12.5 3.5 16 0" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      {/* ヘルメット */}
+      <path d="M39 30a21 17 0 0 1 42 0Z" fill={SVG_ORANGE} stroke={SVG_NAVY} strokeWidth="2.4" strokeLinejoin="round" />
+      <path d="M37 30h46" stroke={SVG_NAVY} strokeWidth="2.4" strokeLinecap="round" />
+      <circle cx="60" cy="15" r="2.2" fill={SVG_NAVY} />
+      {/* 腕＋刷毛 */}
+      <path d="M82 102l17-19" stroke={SVG_NAVY} strokeWidth="2.6" strokeLinecap="round" />
+      <path
+        d="M97 85l12-12c2.2-2.2 5.4-2.2 7.4 0 2 2 2 5.2 0 7.4l-12 12Z"
+        fill={SVG_BEIGE_BG}
+        stroke={SVG_ORANGE}
+        strokeWidth="2.2"
+        strokeLinejoin="round"
+      />
+      <path d="M28 112c-3 3-3 8 1.5 10.5s9.5-1 8.5-6.5" fill="none" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// オペレーター（ヘッドセットの女性）
+function OperatorSvg({ className = 'w-16 h-16' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 120 140" fill="none" aria-hidden="true">
+      {/* 上半身（ブラウス） */}
+      <path
+        d="M30 132c0-28 12-44 30-44s30 16 30 44"
+        fill={SVG_WHITE}
+        stroke={SVG_NAVY}
+        strokeWidth="2.6"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <path d="M44 92c0 4.5 5 8 16 8s16-3.5 16-8" fill="none" stroke={SVG_NAVY} strokeWidth="1.6" strokeLinecap="round" opacity="0.4" />
+      {/* 髪（後ろ） */}
+      <path
+        d="M37 42c0-15 10-26 23-26s23 11 23 26c0 4-1 7-2 10H39c-1-3-2-6-2-10Z"
+        fill={SVG_NAVY}
+      />
+      {/* 顔 */}
+      <circle cx="60" cy="42" r="19" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2.6" />
+      <circle cx="53" cy="43" r="1.8" fill={SVG_NAVY} />
+      <circle cx="67" cy="43" r="1.8" fill={SVG_NAVY} />
+      <path d="M52 50c3.5 3.5 12.5 3.5 16 0" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      {/* 前髪 */}
+      <path d="M42 34c4-7 12-11 18-11s14 4 18 11c-6-3-12-4-18-4s-12 1-18 4Z" fill={SVG_NAVY} />
+      {/* ヘッドセット */}
+      <path d="M35 38a25 25 0 0 1 50 0" fill="none" stroke={SVG_ORANGE} strokeWidth="2.6" strokeLinecap="round" />
+      <circle cx="35" cy="42" r="4.5" fill={SVG_ORANGE} stroke={SVG_NAVY} strokeWidth="1.4" />
+      <path d="M35 46.5v5c0 2.8 2.2 5 5 5h4" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" fill="none" />
+    </svg>
+  );
+}
+
+// 盾＋チェック
+function ShieldCheckSvg({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M32 7l19 6.5v16.5c0 14.5-9.5 21.5-19 25.5-9.5-4-19-11-19-25.5V13.5Z" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.4" strokeLinejoin="round" />
+      <path d="M23 31l7 7 12-14" fill="none" stroke={SVG_ORANGE} strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// 電卓
+function CalculatorSvg({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="14" y="8" width="36" height="48" rx="4" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="2.4" />
+      <rect x="19" y="14" width="26" height="10" rx="2" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="1.6" />
+      <g fill={SVG_ORANGE} opacity="0.75">
+        <rect x="19" y="29" width="7" height="6" rx="1.5" />
+        <rect x="28.5" y="29" width="7" height="6" rx="1.5" />
+        <rect x="38" y="29" width="7" height="6" rx="1.5" />
+        <rect x="19" y="38" width="7" height="6" rx="1.5" />
+        <rect x="28.5" y="38" width="7" height="6" rx="1.5" />
+        <rect x="38" y="38" width="7" height="6" rx="1.5" />
+        <rect x="19" y="47" width="7" height="6" rx="1.5" />
+        <rect x="28.5" y="47" width="7" height="6" rx="1.5" />
+        <rect x="38" y="47" width="7" height="6" rx="1.5" />
+      </g>
+    </svg>
+  );
+}
+
+// 積み重ねコスト（小アイコン）
+function CostStackSvg({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="12" y="40" width="40" height="12" rx="3" fill={SVG_ORANGE} opacity="0.85" />
+      <rect x="12" y="26" width="40" height="12" rx="3" fill={SVG_NAVY} opacity="0.55" />
+      <rect x="12" y="12" width="40" height="12" rx="3" fill={SVG_NAVY} opacity="0.25" />
+    </svg>
+  );
+}
+
+// オレンジ丸チェック
+function CheckCircleSvg({ className = 'w-6 h-6' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <circle cx="16" cy="16" r="14" fill={SVG_ORANGE} />
+      <path d="M10 16l4 4 8-9" fill="none" stroke={SVG_WHITE} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// 吹き出し（小アイコン）
+function SpeechBubbleSvg({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M10 14h36a8 8 0 0 1 8 8v14a8 8 0 0 1-8 8H30l-10 9v-9h-10a8 8 0 0 1-8-8V22a8 8 0 0 1 8-8Z" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2.4" strokeLinejoin="round" />
+      <circle cx="20" cy="29" r="2.4" fill={SVG_ORANGE} />
+      <circle cx="30" cy="29" r="2.4" fill={SVG_ORANGE} />
+      <circle cx="40" cy="29" r="2.4" fill={SVG_ORANGE} />
+    </svg>
+  );
+}
+
+// 葉っぱの装飾
+function LeafDecorationSvg({ className = 'w-12 h-12' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M8 56C8 30 26 10 56 8c2 28-16 46-48 48Z" fill={SVG_BLUE_BG} opacity="0.7" stroke={SVG_NAVY} strokeWidth="1.4" strokeLinejoin="round" />
+      <path d="M14 50C20 36 30 24 50 14" stroke={SVG_NAVY} strokeWidth="1.3" strokeLinecap="round" opacity="0.5" />
+    </svg>
+  );
+}
+
+// 水彩風の背景ブロブ（淡い色の重なり）
+function WatercolorBlobSvg({
+  className = 'w-64 h-64',
+  tone = 'orange',
+}: {
+  className?: string;
+  tone?: 'orange' | 'navy';
+}) {
+  const c1 = tone === 'orange' ? SVG_BEIGE_BG : SVG_BLUE_BG;
+  const c2 = tone === 'orange' ? '#FFE8D5' : '#DCEAFB';
+  return (
+    <svg className={className} viewBox="0 0 400 400" fill="none" aria-hidden="true">
+      <path
+        d="M190 50C250 45 320 90 340 150C360 215 330 290 270 330C205 372 120 360 75 305C32 252 35 175 80 120C115 78 145 55 190 50Z"
+        fill={c1}
+        opacity="0.55"
+      />
+      <path
+        d="M210 90C255 95 290 140 295 185C300 235 265 280 220 295C175 310 125 295 100 255C77 218 85 165 120 130C150 100 175 87 210 90Z"
+        fill={c2}
+        opacity="0.5"
+      />
+    </svg>
+  );
+}
+
+// ─── 「ペイントネットの強み」セクション: 比較カード（左右1組） ───────────────
+function ComparisonSideCard({
+  tone,
+  label,
+  points,
+  boxTitle,
+  rows,
+  tag,
+  footerText,
+}: {
+  tone: 'orange' | 'navy';
+  label: string;
+  points: string[];
+  boxTitle: string;
+  rows: { text: string; highlight?: boolean }[];
+  tag?: string;
+  footerText: string;
+}) {
+  const isOrange = tone === 'orange';
+  const accent = isOrange ? '#f3c08a' : '#9db8d8';
+  const mutedBg = isOrange ? '#FBDCB8' : '#CFE2F5';
+  return (
+    <div
+      className="relative rounded-3xl p-6 sm:p-7 h-full flex flex-col"
+      style={{
+        border: `2px dashed ${accent}`,
+        background: isOrange
+          ? 'linear-gradient(160deg, #FFFBF5 0%, #FFF3E8 100%)'
+          : 'linear-gradient(160deg, #FBFDFF 0%, #EAF5FF 100%)',
+      }}
+    >
+      <span
+        className="inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-sm sm:text-base font-extrabold mb-4 text-balance break-keep [overflow-wrap:normal]"
+        style={{ background: isOrange ? SVG_ORANGE : SVG_NAVY, color: '#fff' }}
+      >
+        {isOrange ? <PaintBucketSvg className="w-5 h-5 shrink-0" /> : <HouseSvg className="w-5 h-5 shrink-0" />}
+        {label}
+      </span>
+      <ul className="space-y-1 mb-5 text-xs sm:text-sm text-[#5a5f6c] leading-relaxed">
+        {points.map((p) => (
+          <li key={p}>{p}</li>
+        ))}
+      </ul>
+
+      {/* 積み上げ式コスト構造図: 上に乗るほど削られ、最下段が実際に施工へ回る金額 */}
+      <div className="mb-4 flex-1">
+        <div className="flex items-center gap-1.5 mb-2">
+          <CostStackSvg className="w-5 h-5 shrink-0" />
+          <p className="text-xs font-bold" style={{ color: SVG_NAVY }}>
+            {boxTitle}
+          </p>
+        </div>
+        <div className="rounded-2xl overflow-hidden" style={{ border: `1.5px solid ${accent}` }}>
+          {rows.map((row, i) => (
+            <div
+              key={row.text}
+              className={`text-center font-bold ${row.highlight ? 'py-4 sm:py-5 text-sm sm:text-base' : 'py-2 text-[11px] sm:text-xs'}`}
+              style={{
+                background: row.highlight ? (isOrange ? SVG_ORANGE : SVG_NAVY) : mutedBg,
+                color: row.highlight ? '#fff' : SVG_NAVY,
+                opacity: row.highlight ? 1 : 0.85,
+                borderTop: i > 0 ? '2px solid #fff' : 'none',
+              }}
+            >
+              {row.text}
+            </div>
+          ))}
+        </div>
+        {tag && (
+          <div
+            className="mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold"
+            style={{ background: SVG_BEIGE_BG, color: SVG_NAVY }}
+          >
+            <CheckCircleSvg className="w-4 h-4 shrink-0" />
+            {tag}
+          </div>
+        )}
+      </div>
+
+      <p
+        className="text-sm sm:text-base font-extrabold text-center text-balance break-keep [overflow-wrap:normal]"
+        style={{ color: isOrange ? SVG_ORANGE : SVG_NAVY }}
+      >
+        {footerText}
+      </p>
+    </div>
+  );
+}
+
+// ─── 「ペイントネットの強み」セクション: 会社依頼 vs ペイントネット 簡易比較 ──
+function MiniCostCompare() {
+  return (
+    <div className="rounded-2xl p-4 sm:p-6" style={{ background: SVG_GRAY_BG }}>
+      <div className="flex items-center gap-3 sm:gap-5">
+        <div className="flex-1 rounded-2xl p-4 sm:p-5 text-center bg-white" style={{ border: '2px dashed #c7d0db' }}>
+          <p className="text-xs sm:text-sm font-bold mb-3" style={{ color: SVG_GRAY_LINE }}>
+            会社依頼
+          </p>
+          <div className="space-y-2">
+            <div className="rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs font-bold break-keep [overflow-wrap:normal]" style={{ background: '#e2e8f0', color: SVG_GRAY_LINE }}>
+              会社の利益
+            </div>
+            <div className="rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs font-bold break-keep [overflow-wrap:normal]" style={{ background: '#e2e8f0', color: SVG_GRAY_LINE }}>
+              中間マージン
+            </div>
+            <div className="rounded-lg px-1.5 py-2.5 text-xs sm:text-sm font-extrabold break-keep [overflow-wrap:normal]" style={{ background: SVG_BLUE_BG, color: SVG_NAVY }}>
+              職人の費用
+            </div>
+          </div>
+        </div>
+        <ArrowConnectorSvg className="w-7 h-7 sm:w-9 sm:h-9 shrink-0" />
+        <div className="flex-1 rounded-2xl p-4 sm:p-5 text-center" style={{ background: SVG_BEIGE_BG, border: `2px solid ${SVG_ORANGE}` }}>
+          <p className="text-xs sm:text-sm font-extrabold mb-3" style={{ color: SVG_ORANGE }}>
+            ペイントネット
+          </p>
+          <div className="space-y-2">
+            <div
+              className="rounded-lg px-1.5 py-2.5 text-[11px] sm:text-xs font-bold bg-white break-keep [overflow-wrap:normal]"
+              style={{ color: SVG_NAVY, border: `1.5px dashed ${SVG_ORANGE}` }}
+            >
+              中間マージンなし
+            </div>
+            <div className="rounded-lg px-1.5 py-3 text-sm sm:text-base font-extrabold break-keep [overflow-wrap:normal]" style={{ background: SVG_ORANGE, color: '#fff' }}>
+              職人の費用
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── 「ペイントネットの強み」セクション: 吹き出し付きの一言メモ ─────────────
+function BubbleNote({ text }: { text: string }) {
+  return (
+    <div className="inline-flex items-start gap-2 rounded-2xl px-4 py-2.5" style={{ background: SVG_BLUE_BG }}>
+      <SpeechBubbleSvg className="w-5 h-5 shrink-0 mt-0.5" />
+      <span className="text-xs sm:text-sm font-bold leading-snug" style={{ color: SVG_NAVY }}>
+        {text}
+      </span>
+    </div>
+  );
+}
+
+// ─── 「ペイントネットの強み」セクション: 番号付き特徴カード ──────────────────
+// visual: 職人・オペレーターなどの人物イラスト（横並びレイアウト）
+// diagram: 会社依頼との比較図など、横幅いっぱいで見せたい図解
+function NumberedFeatureCard({
+  number,
+  title,
+  body,
+  bubble,
+  visual,
+  diagram,
+}: {
+  number: number;
+  title: string;
+  body: string;
+  bubble: string;
+  visual?: ReactNode;
+  diagram?: ReactNode;
+}) {
+  return (
+    <div
+      className="rounded-3xl p-6 sm:p-8"
+      style={{
+        border: '1px solid #d8cebd',
+        backgroundColor: '#fff',
+        boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
+      }}
+    >
+      <div className="flex items-center gap-3 mb-5">
+        <span
+          className="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-extrabold text-base sm:text-lg"
+          style={{ background: SVG_ORANGE }}
+        >
+          {number}
+        </span>
+        <h4
+          className="text-lg sm:text-xl font-extrabold leading-[1.5] break-keep [overflow-wrap:normal]"
+          style={{ color: SVG_NAVY }}
+        >
+          <span className="heading-highlight">{title}</span>
+        </h4>
+      </div>
+
+      {visual && (
+        <div className="grid grid-cols-1 sm:grid-cols-[136px_1fr] gap-5 sm:gap-7 items-center">
+          <div className="flex justify-center sm:justify-start">
+            <div
+              className="w-32 h-32 sm:w-36 sm:h-36 rounded-2xl flex items-center justify-center"
+              style={{ background: SVG_BLUE_BG }}
+            >
+              {visual}
+            </div>
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm text-[#5a5f6c] leading-relaxed mb-4">{body}</p>
+            <BubbleNote text={bubble} />
+          </div>
+        </div>
+      )}
+
+      {diagram && (
+        <div>
+          <p className="text-sm text-[#5a5f6c] leading-relaxed mb-5">{body}</p>
+          <div className="mb-5">{diagram}</div>
+          <BubbleNote text={bubble} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── 「ペイントネットの強み」セクション本体 ─────────────────────────────────
+function StrengthSection() {
+  return (
+    <section className="relative overflow-hidden py-16 sm:py-24" style={{ background: SVG_BEIGE_LIGHT }}>
+      <WatercolorBlobSvg
+        className="hidden lg:block absolute -top-16 -right-16 w-72 h-72 pointer-events-none"
+        tone="orange"
+      />
+      <WatercolorBlobSvg
+        className="hidden lg:block absolute -bottom-20 -left-16 w-72 h-72 pointer-events-none"
+        tone="navy"
+      />
+      <LeafDecorationSvg className="hidden md:block absolute top-10 left-6 w-16 h-16 opacity-60 pointer-events-none" />
+
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-14 sm:mb-20">
+          <Label>ペイントネットの強み</Label>
+          <h2
+            className="gaiheki-font-mincho text-balance break-keep [overflow-wrap:normal] text-[2.1rem] sm:text-[2.75rem] leading-[1.4] tracking-wide text-center"
+            style={{ color: '#28292a', fontWeight: 600 }}
+          >
+            <span className="heading-highlight">ペイントネットの強み</span>
+          </h2>
+          <p className="mt-5 text-sm sm:text-base text-[#5a5f6c] max-w-xl mx-auto leading-[1.9] text-balance break-keep [overflow-wrap:normal]">
+            一級塗装技能士を紹介するだけでなく、費用のわかりやすさや紹介後の安心感までサポートします。
+          </p>
+        </div>
+
+        {/* ── ブロック1: なぜしっかり工事しやすい？ ── */}
+        <FadeUp>
+          <div className="text-center mb-10 sm:mb-12">
+            <h3 className="gaiheki-font-mincho text-balance break-keep [overflow-wrap:normal] text-[1.4rem] sm:text-[1.85rem] leading-[1.5]" style={{ color: '#28292a', fontWeight: 600 }}>
+              <HeadingLines
+                lines={['ペイントネットはなぜ、', 'しっかり工事しやすい？']}
+                full="ペイントネットはなぜ、しっかり工事しやすい？"
+              />
+            </h3>
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
+              中間コストを抑えやすい仕組みだから、施工に必要な費用を確保しやすくなります。
+            </p>
+          </div>
+
+          <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+            <ComparisonSideCard
+              tone="orange"
+              label="ペイントネットの場合"
+              points={['中間会社への費用が少ないから', '施工に回しやすい']}
+              boxTitle="必要な運営コスト"
+              rows={[{ text: '施工費・材料費', highlight: true }]}
+              tag="職人の手間を確保"
+              footerText="工事に必要な費用を確保しやすい！"
+            />
+
+            <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-20 h-20 rounded-full items-center justify-center text-base font-extrabold text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #1a3a6b, #0a1628)', border: '4px solid #fff' }}>
+              比較
+            </div>
+            <div className="lg:hidden flex justify-center -my-2 relative z-20">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center text-sm font-extrabold text-white shadow-lg" style={{ background: 'linear-gradient(135deg, #1a3a6b, #0a1628)', border: '4px solid #fff' }}>
+                比較
+              </div>
+            </div>
+
+            <ComparisonSideCard
+              tone="navy"
+              label="一般的な紹介・会社依頼の場合"
+              points={['中間会社への支払いが増えるほど', '施工に回る分が減りやすい']}
+              boxTitle="必要な運営コスト"
+              rows={[
+                { text: '紹介会社の利益' },
+                { text: '営業会社の利益' },
+                { text: '下請けの利益' },
+                { text: '施工費・材料費', highlight: true },
+              ]}
+              footerText="工事に回せる費用が減りやすい…"
+            />
+          </div>
+        </FadeUp>
+
+        {/* ── ブロック2: 安心して頼める3つの特徴 ①② ── */}
+        <FadeUp delay={80} className="mt-20 sm:mt-28">
+          <div className="text-center mb-10 sm:mb-12">
+            <h3 className="gaiheki-font-mincho text-balance break-keep [overflow-wrap:normal] text-[1.4rem] sm:text-[1.85rem] leading-[1.5]" style={{ color: '#28292a', fontWeight: 600 }}>
+              <span className="heading-highlight">安心して頼める3つの特徴</span>
+            </h3>
+          </div>
+
+          <div className="space-y-6">
+            <NumberedFeatureCard
+              number={1}
+              title="一級塗装技能士を直接紹介"
+              body="経験豊富な一級塗装技能士とつながりやすいから、技術力を見極めやすく、余計な伝言も少なく、話がスムーズです。"
+              bubble="余計な伝言が少なく、話が伝わりやすい"
+              visual={<CraftsmanSvg className="w-20 h-20 sm:w-24 sm:h-24" />}
+            />
+            <NumberedFeatureCard
+              number={2}
+              title="会社依頼より価格を抑えやすい"
+              body="中間会社が少ないぶん、余計な費用がかかりにくく、必要な費用がわかりやすい仕組みです。"
+              bubble="必要な費用がわかりやすい"
+              diagram={<MiniCostCompare />}
+            />
+          </div>
+        </FadeUp>
+
+        {/* ── ブロック3: 紹介後もペイントネットが対応 ③＋まとめ ── */}
+        <FadeUp delay={120} className="mt-6">
+          <NumberedFeatureCard
+            number={3}
+            title="紹介後もペイントネットが対応"
+            body="直接紹介でも、紹介して終わりではありません。万一のトラブル時も、ペイントネットが窓口となって対応します。"
+            bubble="紹介後の安心感も大切にします"
+            visual={<OperatorSvg className="w-20 h-20 sm:w-24 sm:h-24" />}
+          />
+
+          <div
+            className="mt-8 rounded-3xl p-6 sm:p-8"
+            style={{ background: SVG_BEIGE_BG, border: '1px solid #f0e0c8' }}
+          >
+            <div className="flex justify-center mb-4">
+              <ShieldCheckSvg className="w-10 h-10" />
+            </div>
+            <h4 className="text-center text-base sm:text-lg font-extrabold mb-5 leading-[1.5] break-keep [overflow-wrap:normal]" style={{ color: SVG_NAVY }}>
+              <span className="heading-highlight">ペイントネットの3つの強みまとめ</span>
+            </h4>
+            <ul className="space-y-3 max-w-md mx-auto mb-6">
+              {[
+                '一級塗装技能士とつながりやすい',
+                '価格がわかりやすく抑えやすい',
+                'トラブル時はペイントネットが対応',
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 rounded-xl bg-white px-4 py-2.5">
+                  <CheckCircleSvg className="w-6 h-6 shrink-0" />
+                  <span className="text-sm font-bold text-[#28292a]">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-sm text-[#5a5f6c] leading-relaxed text-center">
+              ペイントネットが、あなたの外壁塗装を
+              <span className="font-bold" style={{ color: SVG_ORANGE }}>
+                安心・納得の価格
+              </span>
+              でサポートします。
+            </p>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
   );
 }
 
@@ -1274,47 +1863,8 @@ export default function GaihekiArticleLP() {
         </div>
       </section>
 
-      {/* ── 5-A. セクション5直後 追加画像 ①② ─────────────────────────────── */}
-      <div className="bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-8">
-          <FadeUp>
-            {/* PC版 */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://static.wixstatic.com/media/5ebda9_1f907cc4851044ffa60cf22237cd911f~mv2.png"
-              alt=""
-              className="hidden md:block w-full h-auto rounded-xl shadow-md object-contain"
-              loading="lazy"
-            />
-            {/* モバイル版 */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://static.wixstatic.com/media/5ebda9_0a2881d6bdf1404f934d61b1c90e8a58~mv2.png"
-              alt=""
-              className="block md:hidden w-full h-auto rounded-xl shadow-md object-contain"
-              loading="lazy"
-            />
-          </FadeUp>
-          <FadeUp delay={80}>
-            {/* PC版 */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://static.wixstatic.com/media/5ebda9_0e6ee6f23c9e4c99ac827795c36833be~mv2.png"
-              alt=""
-              className="hidden md:block w-full h-auto rounded-xl shadow-md object-contain"
-              loading="lazy"
-            />
-            {/* モバイル版 */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://static.wixstatic.com/media/5ebda9_b96f6e2d460f4d9383290a3628e96b40~mv2.png"
-              alt=""
-              className="block md:hidden w-full h-auto rounded-xl shadow-md object-contain"
-              loading="lazy"
-            />
-          </FadeUp>
-        </div>
-      </div>
+      {/* ── 5-A. ペイントネットの強み（コードベース・inline SVG） ───────────── */}
+      <StrengthSection />
 
       {/* ── 5-B. 一級塗装技能士とは？ ─────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-white py-16 sm:py-24">

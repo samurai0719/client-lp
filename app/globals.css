@@ -739,10 +739,10 @@ body {
    box-decoration-break: clone で、1つのspanが折り返した場合も追従する。 */
 .heading-highlight {
   background-image: linear-gradient(
-    transparent 68%,
-    rgba(249, 115, 22, 0.28) 68%,
-    rgba(249, 115, 22, 0.28) 88%,
-    transparent 88%
+    transparent 70%,
+    rgba(249, 115, 22, 0.20) 70%,
+    rgba(249, 115, 22, 0.20) 86%,
+    transparent 86%
   );
   background-repeat: no-repeat;
   box-decoration-break: clone;
