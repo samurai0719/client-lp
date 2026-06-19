@@ -38,7 +38,7 @@ const HERO_IMG_DESKTOP = 'https://static.wixstatic.com/media/5ebda9_7e6c91edccdd
 const HERO_IMG_MOBILE  = 'https://static.wixstatic.com/media/5ebda9_6241eb02d83749be949dec2810da37ec~mv2.png';
 
 const BEFORE_IMG = 'https://static.wixstatic.com/media/5ebda9_c94aba7955a84b01b6e6cda114ec6d9a~mv2.png';
-const AFTER_IMG  = 'https://static.wixstatic.com/media/5ebda9_06c8eaff4d3b45fcb0f524ab67c50ec0~mv2.png';
+const AFTER_IMG  = 'https://static.wixstatic.com/media/5ebda9_837a33b2523f44e69904a1d7092d798b~mv2.png';
 const LOGO_IMG   = 'https://static.wixstatic.com/media/5ebda9_759ae5aecbce476d806bbc03c12629a0~mv2.png';
 
 // ─── スクロールフェードアップ (globals.css の section-fade / in-view を使用) ──
