@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // iCloud同期(Desktop & Documents)が .next/dev/cache/turbopack の永続キャッシュファイルと
+    // 競合し、開発サーバーがクラッシュする問題を避けるため無効化
+    turbopackFileSystemCacheForDev: false,
+  },
   images: {
     remotePatterns: [
       {

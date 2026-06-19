@@ -41,6 +41,13 @@ const BEFORE_IMG = 'https://static.wixstatic.com/media/5ebda9_c94aba7955a84b01b6
 const AFTER_IMG  = 'https://static.wixstatic.com/media/5ebda9_837a33b2523f44e69904a1d7092d798b~mv2.png';
 const LOGO_IMG   = 'https://static.wixstatic.com/media/5ebda9_759ae5aecbce476d806bbc03c12629a0~mv2.png';
 
+// ─── 「ペイントネットの強み」セクション背景の控えめな職人写真アクセント ─────────
+const STRENGTH_BG_PATTERN_IMG = 'https://static.wixstatic.com/media/5ebda9_909f09146d354b629e732b00dda1e325~mv2.png';
+
+// ─── 「施工中の確認体制」セクション追加写真 — 準備〜施工の様子（全体表示・contain） ──
+const PREP_PHOTO_IMG    = 'https://static.wixstatic.com/media/5ebda9_59fde646b4cd47509014fca067fe5dcb~mv2.png';
+const PAINTING_PHOTO_IMG = 'https://static.wixstatic.com/media/5ebda9_5cc308a312c841bd8ff99d2769519443~mv2.png';
+
 // ─── スクロールフェードアップ (globals.css の section-fade / in-view を使用) ──
 function useFadeUp() {
   const ref = useRef<HTMLDivElement>(null);
@@ -1161,6 +1168,24 @@ function NumberedFeatureCard({
 function StrengthSection() {
   return (
     <section className="relative overflow-hidden py-16 sm:py-24" style={{ background: SVG_BEIGE_LIGHT }}>
+      {/* 背景パターンオーバーレイ: モバイル版のみ。セクション上部〜中ほどに薄く重ねる */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 block md:hidden"
+        style={{
+          backgroundImage: `url(${STRENGTH_BG_PATTERN_IMG})`,
+          backgroundSize: '140% auto',
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.18,
+        }}
+      />
+      {/* 文字の可読性を確保するための淡いベージュの半透明オーバーレイ */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[1] block md:hidden"
+        style={{ backgroundColor: 'rgba(255,251,245,0.6)' }}
+      />
       <WatercolorBlobSvg
         className="hidden lg:block absolute -top-16 -right-16 w-72 h-72 pointer-events-none"
         tone="orange"
@@ -1420,17 +1445,24 @@ export default function GaihekiArticleLP() {
       </section>
 
       {/* ── 2. ペイントネットの強み ──────────────────────────────────────── */}
-      <section
-        className="relative py-14 sm:py-24"
-        style={{
-          backgroundImage: 'url(https://static.wixstatic.com/media/5ebda9_d91c62c59e6c4bc6aef3cb0848c36058~mv2.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
-        {/* 文字を読みやすくする薄い白オーバーレイ */}
-        <div className="absolute inset-0 bg-white/70 pointer-events-none" />
+      <section className="relative isolate overflow-hidden py-14 sm:py-24">
+        {/* PC・タブレット: 既存の背景画像（変更なし） */}
+        <div
+          aria-hidden="true"
+          className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(https://static.wixstatic.com/media/5ebda9_d91c62c59e6c4bc6aef3cb0848c36058~mv2.png)' }}
+        />
+        {/* モバイル: 指定の背景画像のみ表示 */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={STRENGTH_BG_PATTERN_IMG}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 block h-full w-full object-cover object-top opacity-30 md:hidden"
+        />
+        {/* 文字を読みやすくする薄い白オーバーレイ（PC/モバイルで強度を分ける） */}
+        <div className="hidden md:block absolute inset-0 z-[1] bg-white/70 pointer-events-none" />
+        <div className="block md:hidden absolute inset-0 z-[1] bg-white/45 pointer-events-none" />
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
 
           <div className="text-center mb-8">
@@ -2579,6 +2611,33 @@ export default function GaihekiArticleLP() {
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
+                </div>
+              ))}
+            </div>
+
+            {/* 準備〜施工の様子: 画像全体をそのまま見せる(object-contain) */}
+            <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              {[
+                { src: PREP_PHOTO_IMG, alt: '施工前の道具・材料の準備の様子', caption: '丁寧な準備からはじまる施工' },
+                { src: PAINTING_PHOTO_IMG, alt: '一級塗装技能士による外壁塗装の様子', caption: '一級塗装技能士による塗装作業' },
+              ].map(({ src, alt, caption }) => (
+                <div
+                  key={alt}
+                  className="mx-auto w-full max-w-5xl rounded-2xl"
+                  style={{ backgroundColor: '#fbf8f4', boxShadow: '0 6px 24px rgba(0,0,0,.08)' }}
+                >
+                  <div className="p-2.5 sm:p-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={src}
+                      alt={alt}
+                      className="block h-auto w-full max-w-full object-contain rounded-xl"
+                      loading="lazy"
+                    />
+                  </div>
+                  <p className="px-4 pb-4 text-xs sm:text-sm text-center font-bold text-balance break-keep [overflow-wrap:anywhere]" style={{ color: '#5a5f6c' }}>
+                    {caption}
+                  </p>
                 </div>
               ))}
             </div>
