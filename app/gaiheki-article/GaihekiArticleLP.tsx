@@ -201,7 +201,16 @@ function CtaPrimary({ label, sub }: { label: string; sub?: string }) {
     <a href={DESTINATION_LP_URL} className="gaiheki-cta-btn">
       <span className="gaiheki-cta-shine" aria-hidden />
       <span className="gaiheki-cta-btn-inner">
-        <span className="text-[15px] leading-snug">{label}</span>
+        <span className="text-[15px] leading-snug text-center break-keep [overflow-wrap:anywhere]">
+          {label === CTA_LABEL ? (
+            <>
+              <span className="inline-block">一級塗装技能士を</span>
+              <span className="inline-block">紹介してもらう</span>
+            </>
+          ) : (
+            label
+          )}
+        </span>
         {sub && <span className="text-xs font-normal opacity-80 mt-0.5">{sub}</span>}
       </span>
     </a>
@@ -665,6 +674,53 @@ function ArrowConnectorSvg({ className = 'w-6 h-6' }: { className?: string }) {
   );
 }
 
+// ─── 「なぜ限られるの？」3ステップ図 専用アイコン ───────────────────────────
+
+// 実務経験が必要: 書類＋チェック＋実績バッジ（リボン付き）
+function ExperienceCredentialIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="11" y="7" width="30" height="40" rx="3" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="2.2" />
+      <line x1="17" y1="17" x2="35" y2="17" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.4" />
+      <line x1="17" y1="24" x2="35" y2="24" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.4" />
+      <line x1="17" y1="31" x2="28" y2="31" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.4" />
+      <circle cx="43" cy="40" r="14" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="2.2" />
+      <path d="M37 40l4 4 8-9" fill="none" stroke={SVG_ORANGE} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M37 53l-2.5 6.5 8.5-4 8.5 4-2.5-6.5" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="1.6" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// 実技と学科の両方が必要: 採点済み答案＋実技ツールのバランス構成
+function PracticalExamIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="9" y="9" width="28" height="38" rx="3" fill={SVG_WHITE} stroke={SVG_NAVY} strokeWidth="2.2" />
+      <path d="M15 20l2.6 2.6 4.4-5.2" fill="none" stroke={SVG_ORANGE} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="25" y1="20" x2="32" y2="20" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.4" />
+      <path d="M15 30l2.6 2.6 4.4-5.2" fill="none" stroke={SVG_ORANGE} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="25" y1="30" x2="32" y2="30" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.4" />
+      <line x1="15" y1="40" x2="32" y2="40" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.25" />
+      <path d="M35 51l16-16 5.5 5.5-16 16h-5.5z" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinejoin="round" />
+      <path d="M47.5 39.5l5.5 5.5" stroke={SVG_NAVY} strokeWidth="1.6" strokeLinecap="round" opacity="0.5" />
+    </svg>
+  );
+}
+
+// 継続して技能を磨く必要がある: メダル＋リボン＋きらめき（上質感）
+function MasteryMedalIcon({ className = 'w-10 h-10' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <circle cx="32" cy="25" r="18" fill={SVG_BEIGE_BG} stroke={SVG_ORANGE} strokeWidth="2.4" />
+      <circle cx="32" cy="25" r="12.5" fill="none" stroke={SVG_NAVY} strokeWidth="1.6" strokeDasharray="2.4 3.2" opacity="0.7" />
+      <path d="M24.5 25.5l5 5L41.5 16.5" fill="none" stroke={SVG_ORANGE} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M22 40l-5 17 15-8 15 8-5-17" fill={SVG_BLUE_BG} stroke={SVG_NAVY} strokeWidth="2" strokeLinejoin="round" />
+      <path d="M47 10.5l2.6 2.6-2.6 2.6-2.6-2.6Z" fill={SVG_ORANGE} opacity="0.85" />
+      <path d="M14 14l1.8 1.8-1.8 1.8-1.8-1.8Z" fill={SVG_ORANGE} opacity="0.6" />
+    </svg>
+  );
+}
+
 // ─── 「ペイントネットの強み」セクション: 図解用 inline SVG ───────────────────
 
 // ペンキ缶
@@ -717,9 +773,9 @@ function HouseSvg({ className = 'w-10 h-10' }: { className?: string }) {
 function CraftsmanSvg({ className = 'w-16 h-16' }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 120 140" fill="none" aria-hidden="true">
-      {/* 上半身（作業服） */}
+      {/* 上半身（作業服）: 首の付け根(y=64)でなめらかに繋がる山型 */}
       <path
-        d="M28 130c0-28 12-44 32-44s32 16 32 44"
+        d="M24 132C24 98 38 64 60 64C82 64 96 98 96 132"
         fill={SVG_WHITE}
         stroke={SVG_NAVY}
         strokeWidth="2.6"
@@ -727,29 +783,29 @@ function CraftsmanSvg({ className = 'w-16 h-16' }: { className?: string }) {
         strokeLinecap="round"
       />
       {/* 襟・ファスナー */}
-      <path d="M60 88v40" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.4" />
-      <path d="M48 90c3 5 21 5 24 0" fill="none" stroke={SVG_NAVY} strokeWidth="1.6" strokeLinecap="round" opacity="0.4" />
-      {/* 首 */}
-      <rect x="53" y="46" width="14" height="12" rx="4" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2" />
+      <path d="M60 72v54" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" opacity="0.4" />
+      <path d="M48 74c3 5 21 5 24 0" fill="none" stroke={SVG_NAVY} strokeWidth="1.6" strokeLinecap="round" opacity="0.4" />
+      {/* 首（顔の下端と肩の頂点をつなぐ） */}
+      <rect x="52" y="50" width="16" height="15" rx="4" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2" />
       {/* 顔 */}
-      <circle cx="60" cy="38" r="19" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2.6" />
-      <circle cx="53" cy="39" r="1.8" fill={SVG_NAVY} />
-      <circle cx="67" cy="39" r="1.8" fill={SVG_NAVY} />
-      <path d="M52 46c3.5 3.5 12.5 3.5 16 0" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      <circle cx="60" cy="36" r="18" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2.6" />
+      <circle cx="53" cy="37" r="1.8" fill={SVG_NAVY} />
+      <circle cx="67" cy="37" r="1.8" fill={SVG_NAVY} />
+      <path d="M52 44c3.5 3.5 12.5 3.5 16 0" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" fill="none" />
       {/* ヘルメット */}
-      <path d="M39 30a21 17 0 0 1 42 0Z" fill={SVG_ORANGE} stroke={SVG_NAVY} strokeWidth="2.4" strokeLinejoin="round" />
-      <path d="M37 30h46" stroke={SVG_NAVY} strokeWidth="2.4" strokeLinecap="round" />
-      <circle cx="60" cy="15" r="2.2" fill={SVG_NAVY} />
-      {/* 腕＋刷毛 */}
-      <path d="M82 102l17-19" stroke={SVG_NAVY} strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M39 28a21 16 0 0 1 42 0Z" fill={SVG_ORANGE} stroke={SVG_NAVY} strokeWidth="2.4" strokeLinejoin="round" />
+      <path d="M37 28h46" stroke={SVG_NAVY} strokeWidth="2.4" strokeLinecap="round" />
+      <circle cx="60" cy="13" r="2.2" fill={SVG_NAVY} />
+      {/* 腕＋刷毛（肩の輪郭から自然に伸びる） */}
+      <path d="M78 75l20-21" stroke={SVG_NAVY} strokeWidth="2.6" strokeLinecap="round" />
       <path
-        d="M97 85l12-12c2.2-2.2 5.4-2.2 7.4 0 2 2 2 5.2 0 7.4l-12 12Z"
+        d="M95 56l12-12c2.2-2.2 5.4-2.2 7.4 0 2 2 2 5.2 0 7.4l-12 12Z"
         fill={SVG_BEIGE_BG}
         stroke={SVG_ORANGE}
         strokeWidth="2.2"
         strokeLinejoin="round"
       />
-      <path d="M28 112c-3 3-3 8 1.5 10.5s9.5-1 8.5-6.5" fill="none" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M26 114c-3 3-3 8 1.5 10.5s9.5-1 8.5-6.5" fill="none" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -758,32 +814,31 @@ function CraftsmanSvg({ className = 'w-16 h-16' }: { className?: string }) {
 function OperatorSvg({ className = 'w-16 h-16' }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 120 140" fill="none" aria-hidden="true">
-      {/* 上半身（ブラウス） */}
+      {/* 上半身（ブラウス）: 首の付け根(y=64)でなめらかに繋がる山型 */}
       <path
-        d="M30 132c0-28 12-44 30-44s30 16 30 44"
+        d="M24 132C24 98 38 64 60 64C82 64 96 98 96 132"
         fill={SVG_WHITE}
         stroke={SVG_NAVY}
         strokeWidth="2.6"
         strokeLinejoin="round"
         strokeLinecap="round"
       />
-      <path d="M44 92c0 4.5 5 8 16 8s16-3.5 16-8" fill="none" stroke={SVG_NAVY} strokeWidth="1.6" strokeLinecap="round" opacity="0.4" />
+      <path d="M44 76c0 4.5 5 8 16 8s16-3.5 16-8" fill="none" stroke={SVG_NAVY} strokeWidth="1.6" strokeLinecap="round" opacity="0.4" />
+      {/* 首（顔の下端と肩の頂点をつなぐ） */}
+      <rect x="52" y="50" width="16" height="15" rx="4" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2" />
       {/* 髪（後ろ） */}
-      <path
-        d="M37 42c0-15 10-26 23-26s23 11 23 26c0 4-1 7-2 10H39c-1-3-2-6-2-10Z"
-        fill={SVG_NAVY}
-      />
+      <path d="M39 36c0-14 9-24 21-24s21 10 21 24c0 5-1 9-3 13H42c-2-4-3-8-3-13Z" fill={SVG_NAVY} />
       {/* 顔 */}
-      <circle cx="60" cy="42" r="19" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2.6" />
-      <circle cx="53" cy="43" r="1.8" fill={SVG_NAVY} />
-      <circle cx="67" cy="43" r="1.8" fill={SVG_NAVY} />
-      <path d="M52 50c3.5 3.5 12.5 3.5 16 0" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" fill="none" />
+      <circle cx="60" cy="36" r="18" fill={SVG_BEIGE_BG} stroke={SVG_NAVY} strokeWidth="2.6" />
+      <circle cx="53" cy="37" r="1.8" fill={SVG_NAVY} />
+      <circle cx="67" cy="37" r="1.8" fill={SVG_NAVY} />
+      <path d="M52 44c3.5 3.5 12.5 3.5 16 0" stroke={SVG_NAVY} strokeWidth="1.8" strokeLinecap="round" fill="none" />
       {/* 前髪 */}
-      <path d="M42 34c4-7 12-11 18-11s14 4 18 11c-6-3-12-4-18-4s-12 1-18 4Z" fill={SVG_NAVY} />
+      <path d="M42 28c4-7 12-11 18-11s14 4 18 11c-6-3-12-4-18-4s-12 1-18 4Z" fill={SVG_NAVY} />
       {/* ヘッドセット */}
-      <path d="M35 38a25 25 0 0 1 50 0" fill="none" stroke={SVG_ORANGE} strokeWidth="2.6" strokeLinecap="round" />
-      <circle cx="35" cy="42" r="4.5" fill={SVG_ORANGE} stroke={SVG_NAVY} strokeWidth="1.4" />
-      <path d="M35 46.5v5c0 2.8 2.2 5 5 5h4" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      <path d="M35 32a25 25 0 0 1 50 0" fill="none" stroke={SVG_ORANGE} strokeWidth="2.6" strokeLinecap="round" />
+      <circle cx="35" cy="36" r="4.5" fill={SVG_ORANGE} stroke={SVG_NAVY} strokeWidth="1.4" />
+      <path d="M35 40.5v5c0 2.8 2.2 5 5 5h4" stroke={SVG_ORANGE} strokeWidth="2.2" strokeLinecap="round" fill="none" />
     </svg>
   );
 }
@@ -1044,7 +1099,7 @@ function NumberedFeatureCard({
   diagram,
 }: {
   number: number;
-  title: string;
+  title: ReactNode;
   body: string;
   bubble: string;
   visual?: ReactNode;
@@ -1067,10 +1122,10 @@ function NumberedFeatureCard({
           {number}
         </span>
         <h4
-          className="text-lg sm:text-xl font-extrabold leading-[1.5] break-keep [overflow-wrap:normal]"
+          className="min-w-0 flex-1 text-base sm:text-xl font-extrabold leading-[1.5] break-keep [overflow-wrap:anywhere]"
           style={{ color: SVG_NAVY }}
         >
-          <span className="heading-highlight">{title}</span>
+          {title}
         </h4>
       </div>
 
@@ -1117,16 +1172,10 @@ function StrengthSection() {
       <LeafDecorationSvg className="hidden md:block absolute top-10 left-6 w-16 h-16 opacity-60 pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-14 sm:mb-20">
+        <div className="text-center mb-12 sm:mb-16">
           <Label>ペイントネットの強み</Label>
-          <h2
-            className="gaiheki-font-mincho text-balance break-keep [overflow-wrap:normal] text-[2.1rem] sm:text-[2.75rem] leading-[1.4] tracking-wide text-center"
-            style={{ color: '#28292a', fontWeight: 600 }}
-          >
-            <span className="heading-highlight">ペイントネットの強み</span>
-          </h2>
-          <p className="mt-5 text-sm sm:text-base text-[#5a5f6c] max-w-xl mx-auto leading-[1.9] text-balance break-keep [overflow-wrap:normal]">
-            一級塗装技能士を紹介するだけでなく、費用のわかりやすさや紹介後の安心感までサポートします。
+          <p className="mt-2 text-sm sm:text-base text-[#5a5f6c] max-w-xl mx-auto leading-[1.9] text-balance break-keep [overflow-wrap:anywhere]">
+            <span className="inline-block">一級塗装技能士</span>を紹介するだけでなく、費用のわかりやすさや紹介後の安心感まで<span className="inline-block">サポート</span>します。
           </p>
         </div>
 
@@ -1191,14 +1240,14 @@ function StrengthSection() {
           <div className="space-y-6">
             <NumberedFeatureCard
               number={1}
-              title="一級塗装技能士を直接紹介"
+              title={<HeadingLines lines={['一級塗装技能士を', '直接紹介']} full="一級塗装技能士を直接紹介" />}
               body="経験豊富な一級塗装技能士とつながりやすいから、技術力を見極めやすく、余計な伝言も少なく、話がスムーズです。"
               bubble="余計な伝言が少なく、話が伝わりやすい"
               visual={<CraftsmanSvg className="w-20 h-20 sm:w-24 sm:h-24" />}
             />
             <NumberedFeatureCard
               number={2}
-              title="会社依頼より価格を抑えやすい"
+              title={<HeadingLines lines={['会社依頼より', '価格を抑えやすい']} full="会社依頼より価格を抑えやすい" />}
               body="中間会社が少ないぶん、余計な費用がかかりにくく、必要な費用がわかりやすい仕組みです。"
               bubble="必要な費用がわかりやすい"
               diagram={<MiniCostCompare />}
@@ -1210,7 +1259,7 @@ function StrengthSection() {
         <FadeUp delay={120} className="mt-6">
           <NumberedFeatureCard
             number={3}
-            title="紹介後もペイントネットが対応"
+            title={<HeadingLines lines={['紹介後も', 'ペイントネットが対応']} full="紹介後もペイントネットが対応" />}
             body="直接紹介でも、紹介して終わりではありません。万一のトラブル時も、ペイントネットが窓口となって対応します。"
             bubble="紹介後の安心感も大切にします"
             visual={<OperatorSvg className="w-20 h-20 sm:w-24 sm:h-24" />}
@@ -1223,27 +1272,33 @@ function StrengthSection() {
             <div className="flex justify-center mb-4">
               <ShieldCheckSvg className="w-10 h-10" />
             </div>
-            <h4 className="text-center text-base sm:text-lg font-extrabold mb-5 leading-[1.5] break-keep [overflow-wrap:normal]" style={{ color: SVG_NAVY }}>
-              <span className="heading-highlight">ペイントネットの3つの強みまとめ</span>
+            <h4 className="text-center text-base sm:text-lg font-extrabold mb-5 leading-[1.5] break-keep [overflow-wrap:anywhere]" style={{ color: SVG_NAVY }}>
+              <span className="heading-highlight">
+                <span className="inline-block">ペイントネット</span>の3つの強みまとめ
+              </span>
             </h4>
             <ul className="space-y-3 max-w-md mx-auto mb-6">
               {[
-                '一級塗装技能士とつながりやすい',
-                '価格がわかりやすく抑えやすい',
-                'トラブル時はペイントネットが対応',
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-3 rounded-xl bg-white px-4 py-2.5">
+                <>
+                  <span className="inline-block">一級塗装技能士</span>とつながりやすい
+                </>,
+                <>価格がわかりやすく抑えやすい</>,
+                <>
+                  トラブル時は<span className="inline-block">ペイントネット</span>が対応
+                </>,
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 rounded-xl bg-white px-4 py-2.5">
                   <CheckCircleSvg className="w-6 h-6 shrink-0" />
-                  <span className="text-sm font-bold text-[#28292a]">{item}</span>
+                  <span className="text-sm font-bold text-[#28292a] break-keep [overflow-wrap:anywhere]">{item}</span>
                 </li>
               ))}
             </ul>
             <p className="text-sm text-[#5a5f6c] leading-relaxed text-center">
-              ペイントネットが、あなたの外壁塗装を
+              <span className="inline-block">ペイントネット</span>が、あなたの<span className="inline-block">外壁塗装</span>を
               <span className="font-bold" style={{ color: SVG_ORANGE }}>
                 安心・納得の価格
               </span>
-              でサポートします。
+              で<span className="inline-block">サポートします。</span>
             </p>
           </div>
         </FadeUp>
@@ -1342,17 +1397,15 @@ export default function GaihekiArticleLP() {
               <CertificationBadgeSvg className="w-4 h-4 shrink-0" />
               国家資格「一級塗装技能士」だけを厳選紹介
             </span>
-            <h1 className="gaiheki-font-mincho break-keep [overflow-wrap:normal] text-[1.55rem] sm:text-[2.1rem] leading-[1.5] tracking-wide" style={{ color: '#28292a', fontWeight: 600 }}>
-              <span className="heading-highlight inline-block w-fit">一級塗装技能士だけを、厳選紹介。</span>
+            <h1 className="gaiheki-font-mincho break-keep [overflow-wrap:normal] text-[1.55rem] sm:text-[2.1rem] leading-[1.5] tracking-wide text-center" style={{ color: '#28292a', fontWeight: 600 }}>
+              <span className="heading-highlight inline-block w-fit">一級塗装技能士だけを</span>
               <br />
-              <span className="heading-highlight inline-block w-fit">価格だけで選ばない、</span>
-              <br />
-              <span className="heading-highlight inline-block w-fit">品質重視の外壁塗装。</span>
+              <span className="heading-highlight inline-block w-fit">厳選紹介。</span>
             </h1>
             <p className="mt-5 text-sm sm:text-base text-[#5a5f6c] leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
               外壁塗装は、誰に任せるかで仕上がりが変わります。
               <br className="md:hidden" />
-              Paint Netでは、一級塗装技能士を持つ職人・業者を中心に、
+              <span className="whitespace-nowrap">Paint Net</span>では、一級塗装技能士を持つ職人・業者を中心に、
               <br className="md:hidden" />
               品質を重視した外壁塗装をご案内します。
             </p>
@@ -1397,7 +1450,7 @@ export default function GaihekiArticleLP() {
               </p>
             </div>
             <p className="text-sm sm:text-base text-[#5a5f6c] max-w-md mx-auto leading-relaxed">
-              国家資格である一級塗装技能士を持つ職人・業者を厳選してご紹介する、Paint Netならではのポイントをご紹介します。
+              <span className="inline-block">国家資格</span>である<span className="inline-block">一級塗装技能士</span>を持つ職人・業者を<span className="inline-block">厳選</span>してご紹介する、<span className="whitespace-nowrap">Paint Net</span>ならではのポイントをご紹介します。
             </p>
           </div>
 
@@ -1576,7 +1629,7 @@ export default function GaihekiArticleLP() {
                 />
               </H2>
               <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
-                Paint Netでは、外壁塗装の品質を重視したい方に向けて、一級塗装技能士を持つ職人・業者を中心にご紹介しています。
+                <span className="whitespace-nowrap">Paint Net</span>では、外壁塗装の品質を重視したい方に向けて、一級塗装技能士を持つ職人・業者を中心にご紹介しています。
                 価格だけでなく、技術力・説明の丁寧さ・施工後の安心感まで考えて選びたい方に向いています。
               </p>
             </div>
@@ -1722,13 +1775,7 @@ export default function GaihekiArticleLP() {
 
           <FadeUp>
             <div className="text-center mb-10">
-              <H2 center>
-                <HeadingLines
-                  lines={['信頼できる', '一級塗装技能士の', '5つの特徴']}
-                  full="信頼できる一級塗装技能士の5つの特徴"
-                />
-              </H2>
-              <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
+              <p className="text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
                 資格の有無だけでなく、説明の丁寧さや見積もりの透明性まで含めて、安心して相談できる職人かどうかを確認しましょう。
               </p>
             </div>
@@ -2088,21 +2135,55 @@ export default function GaihekiArticleLP() {
           </div>
 
           {/* 図解: 3つのハードルが階段状に積み上がるイメージ */}
-          <div className="flex items-end justify-center gap-3 sm:gap-6 mb-10">
+          <div className="relative flex items-end justify-center gap-4 sm:gap-8 mb-10">
+            {/* 3段をつなぐ、うっすらとした動線 */}
+            <div
+              className="hidden sm:block absolute left-[12%] right-[12%] bottom-0 h-px pointer-events-none"
+              style={{ borderTop: '2px dashed #f3c08a', opacity: 0.6 }}
+            />
             {[
-              { Icon: CertDocIcon, label: '実務経験が必要', h: 'h-28 sm:h-32' },
-              { Icon: ExamPaperIcon, label: '実技と学科の\n両方が必要', h: 'h-36 sm:h-44' },
-              { Icon: CertificationBadgeSvg, label: '継続して技能を\n磨く必要がある', h: 'h-44 sm:h-56' },
-            ].map(({ Icon, label, h }, i) => (
-              <FadeUp key={i} delay={i * 80} className="flex flex-col items-center gap-2 flex-1 max-w-[140px]">
-                <Icon className="w-10 h-10 sm:w-12 sm:h-12" />
+              { Icon: ExperienceCredentialIcon, label: '実務経験が必要', h: 'h-28 sm:h-32', watermark: CheckCircleSvg },
+              { Icon: PracticalExamIcon, label: '実技と学科の\n両方が必要', h: 'h-36 sm:h-44', watermark: ExamPaperIcon },
+              { Icon: MasteryMedalIcon, label: '継続して技能を\n磨く必要がある', h: 'h-44 sm:h-56', watermark: ShieldCheckSvg },
+            ].map(({ Icon, label, h, watermark: Watermark }, i, arr) => (
+              <FadeUp key={i} delay={i * 80} className="relative flex flex-col items-center gap-3 flex-1 max-w-[150px]">
+                {/* 淡い丸背景＋アイコン */}
+                <div
+                  className="relative w-[72px] h-[72px] sm:w-20 sm:h-20 rounded-full flex items-center justify-center pointer-events-none"
+                  style={{ background: `radial-gradient(circle, ${i === 2 ? SVG_BEIGE_BG : SVG_BLUE_BG} 0%, rgba(255,255,255,0) 72%)` }}
+                >
+                  <div
+                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center bg-white"
+                    style={{ border: '1.5px solid #f0e3d0', boxShadow: '0 4px 14px -6px rgba(28,29,32,0.18)' }}
+                  >
+                    <Icon className="w-8 h-8 sm:w-9 sm:h-9" />
+                  </div>
+                </div>
+
                 <p className="text-[11px] sm:text-xs font-bold text-[#28292a] text-center leading-snug whitespace-pre-line text-balance break-keep [overflow-wrap:anywhere]">
                   {label}
                 </p>
+
+                {/* 段差カード（土台） */}
                 <div
-                  className={`w-full rounded-t-xl ${h}`}
-                  style={{ background: 'linear-gradient(180deg, #f97316 0%, #ea580c 100%)', opacity: 0.85 }}
-                />
+                  className={`relative w-full rounded-t-2xl overflow-hidden ${h}`}
+                  style={{
+                    background: 'linear-gradient(165deg, #fdba74 0%, #f97316 45%, #ea580c 100%)',
+                    boxShadow: '0 10px 22px -8px rgba(234,88,12,0.45), inset 0 2px 0 rgba(255,255,255,0.35)',
+                  }}
+                >
+                  <div className="absolute inset-x-0 top-0 h-2.5" style={{ background: 'rgba(255,255,255,0.28)' }} />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-[0.16] pointer-events-none">
+                    <Watermark className="w-9 h-9 sm:w-10 sm:h-10" />
+                  </div>
+                  <span className="absolute top-2 left-1/2 -translate-x-1/2 text-[10px] font-extrabold tracking-wider text-white/90">
+                    STEP {i + 1}
+                  </span>
+                </div>
+
+                {i < arr.length - 1 && (
+                  <ArrowConnectorSvg className="hidden sm:block absolute -right-7 bottom-12 w-5 h-5 opacity-50 rotate-[-28deg] pointer-events-none" />
+                )}
               </FadeUp>
             ))}
           </div>
@@ -2312,7 +2393,7 @@ export default function GaihekiArticleLP() {
                   外壁の劣化は時間が経つほど補修の範囲・費用が増えやすくなります。
                   まずは無料診断で現状をチェックしてみましょう。
                   <br />
-                  このような症状がある場合、塗装の知識や施工経験がある職人に状態を確認してもらうことが大切です。Paint Netでは、一級塗装技能士を持つ職人・業者への相談が可能です。
+                  このような症状がある場合、塗装の知識や施工経験がある職人に状態を確認してもらうことが大切です。<span className="whitespace-nowrap">Paint Net</span>では、一級塗装技能士を持つ職人・業者への相談が可能です。
                 </p>
               </div>
             </div>
@@ -2414,7 +2495,7 @@ export default function GaihekiArticleLP() {
                 />
               </H2>
               <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
-                Paint Netでは、施工中も職人さんとやりとりしながら、作業状況を確認します。
+                <span className="whitespace-nowrap">Paint Net</span>では、施工中も職人さんとやりとりしながら、作業状況を確認します。
                 お客様にも安心していただけるよう、施工中の写真を共有し、見えにくい工程も分かりやすくお伝えします。
               </p>
             </div>
@@ -2595,46 +2676,52 @@ export default function GaihekiArticleLP() {
       </section>
 
       {/* ── 10. メインCTA ────────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden py-16 sm:py-24"
-        style={{ background: 'linear-gradient(160deg, #0a1628 0%, #1a3a6b 55%, #1e4a8a 100%)' }}
-      >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 75% 50%, rgba(249,115,22,0.18) 0%, transparent 55%), radial-gradient(circle at 25% 50%, rgba(59,130,246,0.18) 0%, transparent 55%)',
-          }}
+      <section className="relative overflow-hidden py-16 sm:py-24" style={{ backgroundColor: SVG_BEIGE_LIGHT }}>
+        <OrganicBlob
+          className="hidden lg:block absolute -top-16 -left-16 w-72 h-72 pointer-events-none"
+          color={SVG_BLUE_BG}
+          opacity={0.4}
         />
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.05]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
+        <OrganicBlob
+          className="hidden lg:block absolute -bottom-20 -right-16 w-72 h-72 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.5}
         />
-        <SoftWaveBg tone="navy" className="absolute inset-x-0 bottom-0 w-full h-auto pointer-events-none" />
-        <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 text-center">
+        <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6">
           <FadeUp>
-            <span className="inline-block text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#fb923c' }}>
-              一級塗装技能士紹介 / Certified Craftsman
-            </span>
-            <h2 className="break-keep [overflow-wrap:normal] text-2xl sm:text-3xl font-black text-white leading-[1.45] tracking-tight mb-5">
-              <HeadingLines lines={['一級塗装技能士に', '相談してみませんか？']} full="一級塗装技能士に相談してみませんか？" />
-            </h2>
-            <p className="text-balance break-keep [overflow-wrap:anywhere] text-base text-blue-100 leading-relaxed mb-8">
-              外壁の状態や費用感が分からない方も、まずはお気軽にご相談ください。
-              <br className="md:hidden" />
-              Paint Netが、品質を重視した外壁塗装の相談先をご案内します。
-            </p>
-            <div className="flex flex-col items-center gap-4">
-              <div className="relative" style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
-                <ArrowNudgeSvg className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-14 w-10 h-10 opacity-60 scale-x-[-1] pointer-events-none" />
-                <CtaNotice light />
-                <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
+            <div
+              className="relative overflow-hidden rounded-[28px] p-8 sm:p-12 text-center"
+              style={{
+                background: 'linear-gradient(135deg, #FFF7ED 0%, #FFFFFF 55%, #EFF6FF 100%)',
+                border: '1px solid #FED7AA',
+                boxShadow: '0 18px 45px rgba(15,23,42,0.08)',
+              }}
+            >
+              <SoftWaveBg className="absolute inset-x-0 bottom-0 w-full h-auto pointer-events-none opacity-80" />
+              <div className="relative z-10">
+                <span className="inline-block text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#ea580c' }}>
+                  一級塗装技能士紹介 / Certified Craftsman
+                </span>
+                <h2
+                  className="break-keep [overflow-wrap:normal] text-2xl sm:text-3xl font-black leading-[1.45] tracking-tight mb-5"
+                  style={{ color: SVG_NAVY }}
+                >
+                  <HeadingLines lines={['一級塗装技能士に', '相談してみませんか？']} full="一級塗装技能士に相談してみませんか？" />
+                </h2>
+                <p className="text-balance break-keep [overflow-wrap:anywhere] text-base text-[#5a5f6c] leading-relaxed mb-8">
+                  外壁の状態や費用感が分からない方も、まずはお気軽にご相談ください。
+                  <br className="md:hidden" />
+                  <span className="whitespace-nowrap">Paint Net</span>が、品質を重視した外壁塗装の相談先をご案内します。
+                </p>
+                <div className="flex flex-col items-center gap-4">
+                  <div className="relative" style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
+                    <ArrowNudgeSvg className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-14 w-10 h-10 opacity-60 scale-x-[-1] pointer-events-none" />
+                    <CtaNotice />
+                    <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
+                  </div>
+                  <CtaLink label="相場と進め方を先に確認する" />
+                </div>
               </div>
-              <CtaLink label="相場と進め方を先に確認する" light />
             </div>
           </FadeUp>
         </div>
@@ -2690,32 +2777,36 @@ export default function GaihekiArticleLP() {
             <div
               className="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center"
               style={{
-                background: 'linear-gradient(145deg, #0a1628 0%, #1a3a6b 55%, #1e4a8a 100%)',
-                boxShadow: '0 20px 60px rgba(10,22,40,0.28), 0 4px 16px rgba(10,22,40,0.12)',
+                background: 'linear-gradient(135deg, #FFF7ED 0%, #FFFFFF 55%, #EFF6FF 100%)',
+                border: '1px solid #FED7AA',
+                boxShadow: '0 18px 45px rgba(15,23,42,0.08)',
               }}
             >
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   backgroundImage:
-                    'radial-gradient(circle at 20% 80%, rgba(249,115,22,0.12) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(59,130,246,0.12) 0%, transparent 40%)',
+                    'radial-gradient(circle at 20% 80%, rgba(249,115,22,0.07) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(59,130,246,0.07) 0%, transparent 40%)',
                 }}
               />
-              <SoftWaveBg tone="navy" className="absolute inset-x-0 bottom-0 w-full h-auto pointer-events-none" />
+              <SoftWaveBg className="absolute inset-x-0 bottom-0 w-full h-auto pointer-events-none opacity-80" />
               <div className="relative z-10">
-                <span className="inline-block text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#fb923c' }}>
+                <span className="inline-block text-xs font-bold tracking-widest uppercase mb-4" style={{ color: '#ea580c' }}>
                   Next Step
                 </span>
-                <h2 className="break-keep [overflow-wrap:normal] text-2xl sm:text-3xl font-black text-white leading-[1.45] tracking-tight mb-3">
+                <h2
+                  className="break-keep [overflow-wrap:normal] text-2xl sm:text-3xl font-black leading-[1.45] tracking-tight mb-3"
+                  style={{ color: SVG_NAVY }}
+                >
                   <HeadingLines lines={['一級塗装技能士に', '相談してみませんか？']} full="一級塗装技能士に相談してみませんか？" />
                 </h2>
-                <p className="text-balance break-keep [overflow-wrap:anywhere] text-sm text-blue-100 leading-relaxed mb-8 max-w-sm mx-auto">
-                  外壁の状態や費用感が分からない方も、まずはお気軽にご相談ください。Paint Netが、品質を重視した外壁塗装の相談先をご案内します。
+                <p className="text-balance break-keep [overflow-wrap:anywhere] text-sm text-[#5a5f6c] leading-relaxed mb-8 max-w-sm mx-auto">
+                  外壁の状態や費用感が分からない方も、まずはお気軽にご相談ください。<span className="whitespace-nowrap">Paint Net</span>が、品質を重視した外壁塗装の相談先をご案内します。
                 </p>
-                <div className="flex justify-center gap-6 text-xs text-blue-200 mb-8">
+                <div className="flex justify-center gap-6 text-xs text-[#5a5f6c] mb-8">
                   {['登録不要', '完全無料', '営業なし'].map((t) => (
                     <span key={t} className="flex items-center gap-1.5">
-                      <CheckCircle className="w-3.5 h-3.5 text-orange-400" />
+                      <CheckCircle className="w-3.5 h-3.5 text-orange-500" />
                       {t}
                     </span>
                   ))}
@@ -2723,12 +2814,12 @@ export default function GaihekiArticleLP() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <div className="relative" style={{ minWidth: '260px', width: '100%', maxWidth: '320px' }}>
                     <ArrowNudgeSvg className="hidden lg:block absolute top-1/2 -translate-y-1/2 -left-14 w-10 h-10 opacity-60 scale-x-[-1] pointer-events-none" />
-                    <CtaNotice light />
+                    <CtaNotice />
                     <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
                   </div>
-                  <CtaLink label="相場と進め方を先に確認する" light />
+                  <CtaLink label="相場と進め方を先に確認する" />
                 </div>
-                <p className="mt-6 text-xs text-blue-300 opacity-60">
+                <p className="mt-6 text-xs text-[#8a8f9a]">
                   岐阜・愛知・三重エリアに対応しています
                 </p>
               </div>
@@ -2750,8 +2841,8 @@ export default function GaihekiArticleLP() {
             <span className="font-black text-sm" style={{ color: '#0a1628' }}>Paint Net</span>
           </div>
           <p className="text-xs text-[#8a8f9a] leading-relaxed">
-            一級塗装技能士を持つ職人・業者を厳選してご紹介する、東海エリアの外壁塗装サポートサービスです。
-            <br />© 2024 Paint Net. All rights reserved.
+            <span className="inline-block">一級塗装技能士</span>を持つ職人・業者を厳選してご紹介する、東海エリアの<span className="inline-block">外壁塗装</span>サポートサービスです。
+            <br />© 2024 <span className="whitespace-nowrap">Paint Net</span>. All rights reserved.
           </p>
         </div>
       </footer>

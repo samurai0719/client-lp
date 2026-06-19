@@ -54,7 +54,19 @@
       "Bash(find / -maxdepth 4 -iname \"*claude*upload*\" -o -iname \"*claude*tmp*\")",
       "Bash(cp ~/Downloads/fb96294d-5f83-452f-a125-9e0a3af74437.png public/images/paintnet/paintnet-strength-cost.png)",
       "Bash(cp ~/Downloads/81841241-f84f-477a-b7eb-e2b2d5802b46.png public/images/paintnet/paintnet-strength-feature-01-02.png)",
-      "Bash(cp ~/Downloads/d88025f0-e8ad-4fd4-b9df-fb7e8e0114a8.png public/images/paintnet/paintnet-strength-feature-03-summary.png)"
+      "Bash(cp ~/Downloads/d88025f0-e8ad-4fd4-b9df-fb7e8e0114a8.png public/images/paintnet/paintnet-strength-feature-03-summary.png)",
+      "Bash(pkill -f \"next-server\")",
+      "Bash(brctl status *)",
+      "Bash(xattr -l /Users/tsukamotoshuntaira/Desktop/client-lp)",
+      "Bash(defaults read *)",
+      "Bash(echo \"started pid $!\")",
+      "Bash(timeout 30 bash -c 'until curl -sf -o /dev/null http://localhost:3000/; do sleep 0.5; done')",
+      "Bash(mkdir -p /Users/tsukamotoshuntaira/Library/Caches/client-lp-next-cache)",
+      "Bash(ln -s /Users/tsukamotoshuntaira/Library/Caches/client-lp-next-cache .next)",
+      "Bash(rm -f .next)",
+      "Bash(rm -rf /Users/tsukamotoshuntaira/Library/Caches/client-lp-next-cache)",
+      "Read(//Users/tsukamotoshuntaira/Library/Caches/client-lp-next-cache/**)",
+      "Bash(ln -s /Users/tsukamotoshuntaira/Desktop/client-lp/node_modules /Users/tsukamotoshuntaira/Library/Caches/client-lp-next-cache/node_modules)"
     ]
   }
 }
