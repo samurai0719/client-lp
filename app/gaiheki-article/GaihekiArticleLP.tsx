@@ -959,6 +959,7 @@ function ComparisonSideCard({
   points,
   boxTitle,
   rows,
+  topSpacerWeight,
   tag,
   footerText,
 }: {
@@ -966,7 +967,8 @@ function ComparisonSideCard({
   label: string;
   points: string[];
   boxTitle: string;
-  rows: { text: string; highlight?: boolean }[];
+  rows: { text: string; highlight?: boolean; weight?: number }[];
+  topSpacerWeight?: number;
   tag?: string;
   footerText: string;
 }) {
@@ -1006,17 +1008,18 @@ function ComparisonSideCard({
           </p>
         </div>
         <div
-          className="grid grid-rows-4 min-h-[200px] sm:min-h-[260px] flex-1 rounded-2xl overflow-hidden"
+          className="flex flex-col min-h-[200px] sm:min-h-[260px] flex-1 rounded-2xl overflow-hidden"
           style={{ border: `1.5px solid ${accent}` }}
         >
-          {rows.length < 4 && (
-            <div aria-hidden="true" style={{ gridRow: `span ${4 - rows.length}` }} />
+          {topSpacerWeight && (
+            <div aria-hidden="true" style={{ flexGrow: topSpacerWeight }} />
           )}
           {rows.map((row, i) => (
             <div
               key={row.text}
               className={`flex items-center justify-center text-center font-bold ${row.highlight ? 'text-sm sm:text-base' : 'text-[11px] sm:text-xs'}`}
               style={{
+                flexGrow: row.weight ?? (row.highlight ? 2 : 1),
                 background: row.highlight ? (isOrange ? SVG_ORANGE : SVG_NAVY) : mutedBg,
                 color: row.highlight ? '#fff' : SVG_NAVY,
                 opacity: row.highlight ? 1 : 0.85,
@@ -1215,7 +1218,11 @@ function StrengthSection() {
               label="ペイントネットの場合"
               points={['中間会社への費用が少ないから', '施工に回しやすい']}
               boxTitle="必要な運営コスト"
-              rows={[{ text: '施工費・材料費', highlight: true }]}
+              topSpacerWeight={1.3}
+              rows={[
+                { text: 'ペイントネットの運用費', weight: 1 },
+                { text: '施工費・材料費', highlight: true, weight: 2.4 },
+              ]}
               tag="職人の手間を確保"
               footerText="工事に必要な費用を確保しやすい！"
             />
