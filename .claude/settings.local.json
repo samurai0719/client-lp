@@ -131,7 +131,13 @@
       "Bash(cp /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx /tmp/GaihekiArticleLP_BACKUP2.tsx)",
       "Bash(cp /tmp/GaihekiArticleLP_NEW2.tsx /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx)",
       "Bash(cp /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx /tmp/GaihekiArticleLP_BACKUP3.tsx)",
-      "Bash(cp /tmp/GaihekiArticleLP_NEW3.tsx /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx)"
+      "Bash(cp /tmp/GaihekiArticleLP_NEW3.tsx /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Read(//Users/tsukamotoshuntaira/Downloads/**)",
+      "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/名称未設定のデザイン-316.png\" cat-boy-cheer.png)",
+      "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/名称未設定のデザイン-317.png\" cat-boy-peace-sitting.png)",
+      "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/名称未設定のデザイン-318.png\" cat-boy-wave.png)",
+      "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/名称未設定のデザイン-319.png\" cat-boy-thumbsup.png)",
+      "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/名称未設定のデザイン-321.png\" cat-girl-yay.png)"
     ]
   }
 }

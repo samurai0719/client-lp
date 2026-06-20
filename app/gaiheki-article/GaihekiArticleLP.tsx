@@ -997,18 +997,25 @@ function ComparisonSideCard({
       </ul>
 
       {/* 積み上げ式コスト構造図: 上に乗るほど削られ、最下段が実際に施工へ回る金額 */}
-      <div className="mb-4 flex-1">
+      {/* 比較エリアは左右で同じ4行分の高さを確保し、施工費・材料費ブロックの下端をそろえる */}
+      <div className="mb-4 flex-1 flex flex-col">
         <div className="flex items-center gap-1.5 mb-2">
           <CostStackSvg className="w-5 h-5 shrink-0" />
           <p className="text-xs font-bold" style={{ color: SVG_NAVY }}>
             {boxTitle}
           </p>
         </div>
-        <div className="rounded-2xl overflow-hidden" style={{ border: `1.5px solid ${accent}` }}>
+        <div
+          className="grid grid-rows-4 min-h-[200px] sm:min-h-[260px] flex-1 rounded-2xl overflow-hidden"
+          style={{ border: `1.5px solid ${accent}` }}
+        >
+          {rows.length < 4 && (
+            <div aria-hidden="true" style={{ gridRow: `span ${4 - rows.length}` }} />
+          )}
           {rows.map((row, i) => (
             <div
               key={row.text}
-              className={`text-center font-bold ${row.highlight ? 'py-4 sm:py-5 text-sm sm:text-base' : 'py-2 text-[11px] sm:text-xs'}`}
+              className={`flex items-center justify-center text-center font-bold ${row.highlight ? 'text-sm sm:text-base' : 'text-[11px] sm:text-xs'}`}
               style={{
                 background: row.highlight ? (isOrange ? SVG_ORANGE : SVG_NAVY) : mutedBg,
                 color: row.highlight ? '#fff' : SVG_NAVY,
