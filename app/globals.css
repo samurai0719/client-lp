@@ -469,7 +469,7 @@ body {
 .gaiheki-cta-btn {
   display: block;
   width: 100%;
-  padding: 1.15rem 1.5rem;
+  padding: 1.5rem 1.5rem;
   text-align: center;
   cursor: pointer;
   touch-action: manipulation;
@@ -518,13 +518,19 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  gap: 0.3rem;
   position: relative;
   z-index: 1;
 }
 
 .gaiheki-cta-shine {
   display: none; /* 廃止: 3層シャドウで立体感を表現 */
+}
+
+@media (min-width: 768px) {
+  .gaiheki-cta-btn {
+    padding: 1.25rem 1.75rem;
+  }
 }
 
 @keyframes gaihekiStepIn {

@@ -110,7 +110,21 @@
       "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,duration -of default=noprint_wrappers=1 /Users/tsukamotoshuntaira/Desktop/adofy-site/public/fv-robot.mp4)",
       "Bash(ps -p 49223 -o pid,ppid,command)",
       "Bash(xargs -r kill -9)",
-      "Bash(brctl help *)"
+      "Bash(brctl help *)",
+      "Bash(grep -n \"function Cta\\\\|CtaPrimary\\\\|CtaLink\\\\|CtaNotice\\\\|gaiheki-cta-btn\\\\|<a$\\\\|fixed.*bottom\\\\|sticky\" app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>1{print $2}')",
+      "Bash(xargs -r kill)",
+      "Bash(awk 'NR==2884,NR==2891{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(cd *)",
+      "Bash(awk 'NR>=2438 && NR<=2470{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>=2643 && NR<=2650{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>=1548 && NR<=1559{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>=2425 && NR<=2437{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>=2225 && NR<=2238{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>=2555 && NR<=2570{print NR\": \"$0}' /tmp/GaihekiArticleLP_NEW.tsx)",
+      "Bash(awk 'NR>=2685 && NR<=2700{print NR\": \"$0}' /tmp/GaihekiArticleLP_NEW.tsx)",
+      "Bash(cp /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx /tmp/GaihekiArticleLP_BACKUP_before_reorder.tsx)",
+      "Bash(cp /tmp/GaihekiArticleLP_NEW.tsx /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx)"
     ]
   }
 }
