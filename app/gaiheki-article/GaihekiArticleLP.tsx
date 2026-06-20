@@ -36,8 +36,8 @@ function CtaNotice({ light = false }: { light?: boolean }) {
 }
 
 // ─── ファーストビュー画像 — PC/スマホを個別に差し替え可能 ───────────────────
-const HERO_IMG_DESKTOP = 'https://static.wixstatic.com/media/5ebda9_7e6c91edccdd4a78bb86a0a1b573fcb6~mv2.png';
-const HERO_IMG_MOBILE  = 'https://static.wixstatic.com/media/5ebda9_6241eb02d83749be949dec2810da37ec~mv2.png';
+const HERO_IMG_DESKTOP = 'https://static.wixstatic.com/media/5ebda9_2c6720f518e84b18a9effd28d3b29944~mv2.png';
+const HERO_IMG_MOBILE  = 'https://static.wixstatic.com/media/5ebda9_af7b870f6ff8427ea38ebeda8b99021e~mv2.png';
 
 const BEFORE_IMG = 'https://static.wixstatic.com/media/5ebda9_c94aba7955a84b01b6e6cda114ec6d9a~mv2.png';
 const AFTER_IMG  = 'https://static.wixstatic.com/media/5ebda9_837a33b2523f44e69904a1d7092d798b~mv2.png';
@@ -1428,6 +1428,243 @@ export default function GaihekiArticleLP() {
         </div>
       </section>
 
+      {/* ── 3. よくある失敗 ──────────────────────────────────────────────── */}
+      <section
+        className="relative py-14 sm:py-20"
+        style={{
+          backgroundImage: 'url(https://static.wixstatic.com/media/5ebda9_b84350cba9754741ba1ad76461c6d345~mv2.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="absolute inset-0 bg-white/65 pointer-events-none" />
+        <OrganicBlob
+          className="absolute -bottom-10 -right-10 w-56 h-56 sm:w-72 sm:h-72 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.35}
+        />
+        <InspectionHouseSvg className="hidden lg:block absolute -top-10 -left-10 w-40 h-40 opacity-[0.14] pointer-events-none" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+
+          {/* セクションタイトル画像「こんなお悩みありませんか？」 */}
+          <div className="flex justify-center mb-8 px-2 sm:px-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://static.wixstatic.com/media/5ebda9_031e9f734b9142f6add320141ab4faf4~mv2.png"
+              alt="こんなお悩みありませんか？"
+              className="w-full max-w-[900px] sm:max-w-[1000px] h-auto object-contain"
+              loading="lazy"
+            />
+          </div>
+
+          {/* チェックリスト */}
+          <div className="max-w-2xl mx-auto space-y-3">
+            {[
+              '安さだけで選んで、手抜き工事にならないか不安',
+              'どの業者の技術力が高いのか分からない',
+              '見積もりの金額だけで比較していいか迷っている',
+              '職人さんの腕や資格まで確認できない',
+              '信頼できる職人に直接相談したい',
+            ].map((text, i) => (
+              <FadeUp key={i} delay={i * 60}>
+                <div
+                  className="flex items-center gap-4 rounded-lg px-5 py-4 border"
+                  style={{
+                    background: '#fbf8f4',
+                    borderColor: '#d8cebd',
+                    boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
+                  }}
+                >
+                  {/* オレンジチェックアイコン */}
+                  <div
+                    className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)' }}
+                  >
+                    <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <p className="text-sm sm:text-base font-semibold leading-snug" style={{ color: '#28292a' }}>
+                    {text}
+                  </p>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. 業者の見極め ──────────────────────────────────────────────── */}
+      <section
+        className="relative py-16 sm:py-24"
+        style={{
+          backgroundImage: 'url(https://static.wixstatic.com/media/5ebda9_1dc8203348f343d89fc51b2a24eb20b4~mv2.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        {/* オーバーレイ: Tailwind の opacity modifier の代わりに inline style で確実に適用 */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ backgroundColor: 'rgba(255, 255, 255, 0.45)' }}
+        />
+        <OrganicBlob
+          className="absolute -top-10 -right-10 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.4}
+        />
+        <TrustFeatureSvg className="hidden lg:block absolute -bottom-12 -left-12 w-44 h-44 opacity-[0.14] pointer-events-none" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+
+          {/* セクション4タイトル画像 */}
+          <div className="flex justify-center mb-8 px-2 sm:px-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://static.wixstatic.com/media/5ebda9_41213cde587d4344b552e043139c9cfe~mv2.png"
+              alt="信頼できる外壁塗装会社の選び方"
+              className="w-full max-w-[900px] sm:max-w-[1000px] h-auto object-contain"
+              loading="lazy"
+            />
+          </div>
+
+          <FadeUp>
+            <div className="text-center mb-10">
+              <p className="text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
+                資格の有無だけでなく、説明の丁寧さや見積もりの透明性まで含めて、安心して相談できる職人かどうかを確認しましょう。
+              </p>
+            </div>
+          </FadeUp>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+
+            {/* 左: チェックリスト */}
+            <div className="space-y-3">
+              {[
+                {
+                  title: '一級塗装技能士などの資格を持っている',
+                  desc: '国家資格を保有しているかどうかは、技術力を見極める分かりやすい指標です。',
+                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_0659303679724573b8b2ab61832229cd~mv2.png', // icon1
+                },
+                {
+                  title: '劣化状況を見たうえで、必要な工事を説明してくれる',
+                  desc: '専門用語を多用せず、施主目線で分かりやすく状態を説明してくれるか確認しましょう。',
+                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_289ce999043d496395b6c70f179edfca~mv2.png', // icon2
+                },
+                {
+                  title: '見積もりの内訳が細かく、塗料や工程が分かりやすい',
+                  desc: '「一式○○円」だけの見積もりは要注意。材料名・数量・単価が明記されているか確認を。',
+                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_e4cdf06f766c4442b7f37bf674b49bc4~mv2.png', // icon3
+                },
+                {
+                  title: '施工中の写真や進捗を共有してくれる',
+                  desc: '見えにくい工程も、写真で共有してくれる職人なら安心して任せられます。',
+                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_e50da6ed8be84e539a2bb6d271238cc7~mv2.png', // icon4
+                },
+                {
+                  title: '契約を急かさず、比較検討をすすめてくれる',
+                  desc: '「今日だけの特別価格」など即決を迫る言葉には注意。じっくり検討できる環境を大切にしている職人を選びましょう。',
+                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_505ea8ebff114121b5ff65de4a9c9147~mv2.png', // icon5
+                },
+              ].map(({ title, desc, iconSrc }, i) => (
+                <FadeUp key={i} delay={i * 60}>
+                  <div
+                    className="flex items-start gap-4 rounded-lg p-4 sm:p-5 border transition-all duration-200"
+                    style={{
+                      borderColor: '#d8cebd',
+                      backgroundColor: '#ffffff',
+                      boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
+                    }}
+                  >
+                    {/* ── アイコンエリア（76×76px）── iconSrc に URL を入れると画像表示 */}
+                    <div
+                      className="shrink-0 w-[76px] h-[76px] overflow-hidden flex items-center justify-center p-1"
+                      style={{
+                        borderRadius: '18px',
+                        background: '#ffffff',
+                        border: '1px solid #d8cebd',
+                      }}
+                    >
+                      {iconSrc ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={iconSrc} alt={title} className="w-full h-full object-contain" />
+                      ) : (
+                        /* プレースホルダー（空白状態） */
+                        <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none" aria-hidden>
+                          <rect x="4" y="4" width="24" height="24" rx="4" stroke="#c8d8e8" strokeWidth="1.5" strokeDasharray="3 2" />
+                          <circle cx="12" cy="13" r="3" stroke="#c8d8e8" strokeWidth="1.5" />
+                          <path d="M4 24l7-7 5 5 4-4 8 7" stroke="#c8d8e8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      )}
+                    </div>
+
+                    {/* ── テキストエリア ── */}
+                    <div className="flex-1 min-w-0 pt-1">
+                      {/* タイトル：h-mark.strong 仕様 — rgba(233,106,31,0.45) 58%-95% */}
+                      <p className="text-sm font-bold mb-2 leading-snug">
+                        <span
+                          style={{
+                            display: 'inline',
+                            backgroundImage: 'linear-gradient(transparent 58%, rgba(233,106,31,0.45) 58%, rgba(233,106,31,0.45) 95%, transparent 95%)',
+                            backgroundRepeat: 'no-repeat',
+                            WebkitBoxDecorationBreak: 'clone',
+                            boxDecorationBreak: 'clone',
+                            padding: '0 0.08em',
+                            color: '#28292a',
+                          }}
+                        >
+                          {title}
+                        </span>
+                      </p>
+                      <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
+                    </div>
+                  </div>
+                </FadeUp>
+              ))}
+            </div>
+
+            {/* 右: 画像 [IMAGE_3] */}
+            {/* ↓ ここに業者との打ち合わせ・丁寧な説明シーンを差し込む */}
+            <FadeUp delay={120}>
+              <div className="relative" style={{ isolation: 'isolate' }}>
+                <div
+                  className="absolute inset-0 rounded-3xl pointer-events-none"
+                  style={{
+                    backgroundColor: '#d8e6f0',
+                    transform: 'translate(14px, 14px)',
+                    zIndex: -1,
+                  }}
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://static.wixstatic.com/media/5ebda9_cde1eeda171946b784bdfbc98ad03fd1~mv2.png"
+                  alt="信頼できる外壁塗装会社の特徴"
+                  className="w-full h-auto rounded-2xl shadow-xl object-contain"
+                  loading="lazy"
+                />
+                <div
+                  className="absolute top-4 -left-3 sm:-left-5 z-10 bg-white rounded-2xl px-4 py-3 shadow-xl border"
+                  style={{ borderColor: '#e2eaf4' }}
+                >
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: '#fff0e6' }}
+                    >
+                      <CheckCircle className="w-4 h-4 text-orange-500" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-[#28292a]">一級塗装技能士 在籍</p>
+                      <p className="text-[10px] text-[#8a8f9a]">国家資格保有の実績</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeUp>
+          </div>
+        </div>
+      </section>
       {/* ── 4. 解決できる内容（旧:相見積もり） ──────────────────────────── */}
       <section
         className="relative py-16 sm:py-24"
@@ -1771,14 +2008,6 @@ export default function GaihekiArticleLP() {
             </div>
           ))}
 
-          <FadeUp delay={200} className="mt-14">
-            <div className="flex flex-col items-center">
-              <div className={CTA_WRAPPER_CLASS}>
-                <CtaNotice />
-                <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
-              </div>
-            </div>
-          </FadeUp>
         </div>
       </section>
       {/* ── 7. 症状チェック ──────────────────────────────────────────────── */}
@@ -1879,289 +2108,11 @@ export default function GaihekiArticleLP() {
             </div>
           </FadeUp>
 
-          <FadeUp delay={200}>
-            <div
-              className="mt-8 rounded-lg p-5 sm:p-6 flex items-start gap-4 border"
-              style={{ backgroundColor: '#fff8f2', borderColor: '#f5c79b' }}
-            >
-              <AlertTriangle className="shrink-0 w-5 h-5 text-orange-500 mt-0.5" />
-              <div>
-                <p className="text-sm font-bold text-orange-800 mb-1">
-                  1つでも当てはまるなら、早めの確認をおすすめします
-                </p>
-                <p className="text-xs text-orange-700 leading-relaxed">
-                  外壁の劣化は時間が経つほど補修の範囲・費用が増えやすくなります。
-                  まずは無料診断で現状をチェックしてみましょう。
-                  <br />
-                  このような症状がある場合、塗装の知識や施工経験がある職人に状態を確認してもらうことが大切です。<span className="whitespace-nowrap">Paint Net</span>では、一級塗装技能士を持つ職人・業者への相談が可能です。
-                </p>
-              </div>
-            </div>
-          </FadeUp>
-          <FadeUp delay={200} className="mt-10">
-            <div className="flex flex-col items-center">
-              <div className={CTA_WRAPPER_CLASS}>
-                <CtaNotice />
-                <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
-              </div>
-            </div>
-          </FadeUp>
         </div>
       </section>
 
-      {/* ── 3. よくある失敗 ──────────────────────────────────────────────── */}
-      <section
-        className="relative py-14 sm:py-20"
-        style={{
-          backgroundImage: 'url(https://static.wixstatic.com/media/5ebda9_b84350cba9754741ba1ad76461c6d345~mv2.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
-        <div className="absolute inset-0 bg-white/65 pointer-events-none" />
-        <OrganicBlob
-          className="absolute -bottom-10 -right-10 w-56 h-56 sm:w-72 sm:h-72 pointer-events-none"
-          color={SVG_BEIGE_BG}
-          opacity={0.35}
-        />
-        <InspectionHouseSvg className="hidden lg:block absolute -top-10 -left-10 w-40 h-40 opacity-[0.14] pointer-events-none" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-
-          {/* セクションタイトル画像「こんなお悩みありませんか？」 */}
-          <div className="flex justify-center mb-8 px-2 sm:px-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://static.wixstatic.com/media/5ebda9_031e9f734b9142f6add320141ab4faf4~mv2.png"
-              alt="こんなお悩みありませんか？"
-              className="w-full max-w-[900px] sm:max-w-[1000px] h-auto object-contain"
-              loading="lazy"
-            />
-          </div>
-
-          {/* チェックリスト */}
-          <div className="max-w-2xl mx-auto space-y-3">
-            {[
-              '安さだけで選んで、手抜き工事にならないか不安',
-              'どの業者の技術力が高いのか分からない',
-              '見積もりの金額だけで比較していいか迷っている',
-              '職人さんの腕や資格まで確認できない',
-              '信頼できる職人に直接相談したい',
-            ].map((text, i) => (
-              <FadeUp key={i} delay={i * 60}>
-                <div
-                  className="flex items-center gap-4 rounded-lg px-5 py-4 border"
-                  style={{
-                    background: '#fbf8f4',
-                    borderColor: '#d8cebd',
-                    boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
-                  }}
-                >
-                  {/* オレンジチェックアイコン */}
-                  <div
-                    className="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)' }}
-                  >
-                    <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  </div>
-                  <p className="text-sm sm:text-base font-semibold leading-snug" style={{ color: '#28292a' }}>
-                    {text}
-                  </p>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 5. 業者の見極め ──────────────────────────────────────────────── */}
-      <section
-        className="relative py-16 sm:py-24"
-        style={{
-          backgroundImage: 'url(https://static.wixstatic.com/media/5ebda9_1dc8203348f343d89fc51b2a24eb20b4~mv2.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
-        {/* オーバーレイ: Tailwind の opacity modifier の代わりに inline style で確実に適用 */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ backgroundColor: 'rgba(255, 255, 255, 0.45)' }}
-        />
-        <OrganicBlob
-          className="absolute -top-10 -right-10 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
-          color={SVG_BEIGE_BG}
-          opacity={0.4}
-        />
-        <TrustFeatureSvg className="hidden lg:block absolute -bottom-12 -left-12 w-44 h-44 opacity-[0.14] pointer-events-none" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-
-          {/* セクション4タイトル画像 */}
-          <div className="flex justify-center mb-8 px-2 sm:px-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://static.wixstatic.com/media/5ebda9_41213cde587d4344b552e043139c9cfe~mv2.png"
-              alt="信頼できる外壁塗装会社の選び方"
-              className="w-full max-w-[900px] sm:max-w-[1000px] h-auto object-contain"
-              loading="lazy"
-            />
-          </div>
-
-          <FadeUp>
-            <div className="text-center mb-10">
-              <p className="text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed">
-                資格の有無だけでなく、説明の丁寧さや見積もりの透明性まで含めて、安心して相談できる職人かどうかを確認しましょう。
-              </p>
-            </div>
-          </FadeUp>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-
-            {/* 左: チェックリスト */}
-            <div className="space-y-3">
-              {[
-                {
-                  title: '一級塗装技能士などの資格を持っている',
-                  desc: '国家資格を保有しているかどうかは、技術力を見極める分かりやすい指標です。',
-                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_0659303679724573b8b2ab61832229cd~mv2.png', // icon1
-                },
-                {
-                  title: '劣化状況を見たうえで、必要な工事を説明してくれる',
-                  desc: '専門用語を多用せず、施主目線で分かりやすく状態を説明してくれるか確認しましょう。',
-                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_289ce999043d496395b6c70f179edfca~mv2.png', // icon2
-                },
-                {
-                  title: '見積もりの内訳が細かく、塗料や工程が分かりやすい',
-                  desc: '「一式○○円」だけの見積もりは要注意。材料名・数量・単価が明記されているか確認を。',
-                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_e4cdf06f766c4442b7f37bf674b49bc4~mv2.png', // icon3
-                },
-                {
-                  title: '施工中の写真や進捗を共有してくれる',
-                  desc: '見えにくい工程も、写真で共有してくれる職人なら安心して任せられます。',
-                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_e50da6ed8be84e539a2bb6d271238cc7~mv2.png', // icon4
-                },
-                {
-                  title: '契約を急かさず、比較検討をすすめてくれる',
-                  desc: '「今日だけの特別価格」など即決を迫る言葉には注意。じっくり検討できる環境を大切にしている職人を選びましょう。',
-                  iconSrc: 'https://static.wixstatic.com/media/5ebda9_505ea8ebff114121b5ff65de4a9c9147~mv2.png', // icon5
-                },
-              ].map(({ title, desc, iconSrc }, i) => (
-                <FadeUp key={i} delay={i * 60}>
-                  <div
-                    className="flex items-start gap-4 rounded-lg p-4 sm:p-5 border transition-all duration-200"
-                    style={{
-                      borderColor: '#d8cebd',
-                      backgroundColor: '#ffffff',
-                      boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)',
-                    }}
-                  >
-                    {/* ── アイコンエリア（76×76px）── iconSrc に URL を入れると画像表示 */}
-                    <div
-                      className="shrink-0 w-[76px] h-[76px] overflow-hidden flex items-center justify-center p-1"
-                      style={{
-                        borderRadius: '18px',
-                        background: '#ffffff',
-                        border: '1px solid #d8cebd',
-                      }}
-                    >
-                      {iconSrc ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={iconSrc} alt={title} className="w-full h-full object-contain" />
-                      ) : (
-                        /* プレースホルダー（空白状態） */
-                        <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none" aria-hidden>
-                          <rect x="4" y="4" width="24" height="24" rx="4" stroke="#c8d8e8" strokeWidth="1.5" strokeDasharray="3 2" />
-                          <circle cx="12" cy="13" r="3" stroke="#c8d8e8" strokeWidth="1.5" />
-                          <path d="M4 24l7-7 5 5 4-4 8 7" stroke="#c8d8e8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      )}
-                    </div>
-
-                    {/* ── テキストエリア ── */}
-                    <div className="flex-1 min-w-0 pt-1">
-                      {/* タイトル：h-mark.strong 仕様 — rgba(233,106,31,0.45) 58%-95% */}
-                      <p className="text-sm font-bold mb-2 leading-snug">
-                        <span
-                          style={{
-                            display: 'inline',
-                            backgroundImage: 'linear-gradient(transparent 58%, rgba(233,106,31,0.45) 58%, rgba(233,106,31,0.45) 95%, transparent 95%)',
-                            backgroundRepeat: 'no-repeat',
-                            WebkitBoxDecorationBreak: 'clone',
-                            boxDecorationBreak: 'clone',
-                            padding: '0 0.08em',
-                            color: '#28292a',
-                          }}
-                        >
-                          {title}
-                        </span>
-                      </p>
-                      <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
-                    </div>
-                  </div>
-                </FadeUp>
-              ))}
-            </div>
-
-            {/* 右: 画像 [IMAGE_3] */}
-            {/* ↓ ここに業者との打ち合わせ・丁寧な説明シーンを差し込む */}
-            <FadeUp delay={120}>
-              <div className="relative" style={{ isolation: 'isolate' }}>
-                <div
-                  className="absolute inset-0 rounded-3xl pointer-events-none"
-                  style={{
-                    backgroundColor: '#d8e6f0',
-                    transform: 'translate(14px, 14px)',
-                    zIndex: -1,
-                  }}
-                />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://static.wixstatic.com/media/5ebda9_cde1eeda171946b784bdfbc98ad03fd1~mv2.png"
-                  alt="信頼できる外壁塗装会社の特徴"
-                  className="w-full h-auto rounded-2xl shadow-xl object-contain"
-                  loading="lazy"
-                />
-                <div
-                  className="absolute top-4 -left-3 sm:-left-5 z-10 bg-white rounded-2xl px-4 py-3 shadow-xl border"
-                  style={{ borderColor: '#e2eaf4' }}
-                >
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: '#fff0e6' }}
-                    >
-                      <CheckCircle className="w-4 h-4 text-orange-500" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-[#28292a]">一級塗装技能士 在籍</p>
-                      <p className="text-[10px] text-[#8a8f9a]">国家資格保有の実績</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </FadeUp>
-          </div>
-        </div>
-      </section>
       {/* ── 5-A. ペイントネットの強み（コードベース・inline SVG） ───────────── */}
       <StrengthSection />
-
-      {/* ── 5-A2. 区切りCTA（紹介理由のまとめ） ───────────────────────────── */}
-      <section className="relative overflow-hidden bg-white py-12 sm:py-16">
-        <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6">
-          <FadeUp>
-            <div className="flex flex-col items-center">
-              <div className={CTA_WRAPPER_CLASS}>
-                <CtaNotice />
-                <CtaPrimary label={CTA_LABEL} sub="登録不要・完全無料" />
-              </div>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
 
       {/* ── 5-B. 一級塗装技能士とは？ ─────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-white py-16 sm:py-24">
@@ -2232,70 +2183,6 @@ export default function GaihekiArticleLP() {
         </div>
       </section>
 
-      {/* ── 5-C. どうやって取得するの？ ───────────────────────────────────── */}
-      <section className="relative overflow-hidden py-16 sm:py-24" style={{ backgroundColor: '#fbf8f4' }}>
-        <OrganicBlob
-          className="absolute -bottom-16 -left-16 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
-          color={SVG_BEIGE_BG}
-          opacity={0.4}
-        />
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <Label>取得プロセス</Label>
-            <H2 center>
-              <HeadingLines
-                lines={['どうやって', '一級塗装技能士に', 'なるの？']}
-                full="どうやって一級塗装技能士になるの？"
-              />
-            </H2>
-            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
-              経験を積み、実技と学科の両方をクリアして取得します
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-4">
-            {[
-              { Icon: HelmetIcon, title: '現場経験を積む', desc: '塗装の現場で実務経験を重ねます。' },
-              { Icon: CertDocIcon, title: '受検資格を満たす', desc: '実務経験などの受検条件を満たします。' },
-              { Icon: ExamPaperIcon, title: '実技試験・学科試験を受ける', desc: '技能と知識の両方が試されます。' },
-              { Icon: CertificationBadgeSvg, title: '両方合格で一級塗装技能士', desc: '実技・学科の両方に合格して認定されます。' },
-            ].map(({ Icon, title, desc }, i, arr) => (
-              <FadeUp key={title} delay={i * 70} className="relative">
-                <div
-                  className="h-full flex flex-col items-center text-center gap-3 rounded-2xl border bg-white p-6"
-                  style={{ borderColor: '#d8cebd', boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)' }}
-                >
-                  <span className="text-xs font-extrabold tracking-widest" style={{ color: SVG_ORANGE }}>
-                    STEP {i + 1}
-                  </span>
-                  <Icon className="w-12 h-12" />
-                  <p className="text-sm font-bold text-[#28292a] leading-[1.45] text-balance break-keep [overflow-wrap:anywhere]">
-                    <span className="heading-highlight">{title}</span>
-                  </p>
-                  <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
-                </div>
-                {i < arr.length - 1 && (
-                  <div className="lg:hidden flex justify-center my-2">
-                    <ArrowConnectorSvg className="w-6 h-6 rotate-90 opacity-70" />
-                  </div>
-                )}
-                {i < arr.length - 1 && (
-                  <div className="hidden lg:flex absolute top-1/2 -right-5 -translate-y-1/2 z-10">
-                    <ArrowConnectorSvg className="w-5 h-5 opacity-70" />
-                  </div>
-                )}
-              </FadeUp>
-            ))}
-          </div>
-
-          <p className="mt-10 text-xs text-[#8a8f9a] leading-relaxed text-center max-w-2xl mx-auto">
-            ※実務経験のみの場合、1級受検の目安は7年以上です。学歴や職業訓練歴などで短縮される場合があります。
-            <br className="md:hidden" />
-            ※実技試験は100点満点中60点以上、学科試験は100点満点中65点以上が合格の目安です（都道府県職業能力開発協会が実施する職種の場合）。
-          </p>
-        </div>
-      </section>
-
       {/* ── 5-D. なぜ一級塗装技能士だと安心なの？ ─────────────────────────── */}
       <section className="relative overflow-hidden bg-white py-16 sm:py-24">
         <OrganicBlob
@@ -2360,6 +2247,70 @@ export default function GaihekiArticleLP() {
               </FadeUp>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── 5-C. どうやって取得するの？ ───────────────────────────────────── */}
+      <section className="relative overflow-hidden py-16 sm:py-24" style={{ backgroundColor: '#fbf8f4' }}>
+        <OrganicBlob
+          className="absolute -bottom-16 -left-16 w-60 h-60 sm:w-80 sm:h-80 pointer-events-none"
+          color={SVG_BEIGE_BG}
+          opacity={0.4}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <Label>取得プロセス</Label>
+            <H2 center>
+              <HeadingLines
+                lines={['どうやって', '一級塗装技能士に', 'なるの？']}
+                full="どうやって一級塗装技能士になるの？"
+              />
+            </H2>
+            <p className="mt-4 text-sm sm:text-base text-[#5a5f6c] max-w-lg mx-auto leading-relaxed text-balance break-keep [overflow-wrap:anywhere]">
+              経験を積み、実技と学科の両方をクリアして取得します
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-4">
+            {[
+              { Icon: HelmetIcon, title: '現場経験を積む', desc: '塗装の現場で実務経験を重ねます。' },
+              { Icon: CertDocIcon, title: '受検資格を満たす', desc: '実務経験などの受検条件を満たします。' },
+              { Icon: ExamPaperIcon, title: '実技試験・学科試験を受ける', desc: '技能と知識の両方が試されます。' },
+              { Icon: CertificationBadgeSvg, title: '両方合格で一級塗装技能士', desc: '実技・学科の両方に合格して認定されます。' },
+            ].map(({ Icon, title, desc }, i, arr) => (
+              <FadeUp key={title} delay={i * 70} className="relative">
+                <div
+                  className="h-full flex flex-col items-center text-center gap-3 rounded-2xl border bg-white p-6"
+                  style={{ borderColor: '#d8cebd', boxShadow: '0 1px 1px rgba(28,29,32,.03), 0 6px 18px -14px rgba(28,29,32,.18)' }}
+                >
+                  <span className="text-xs font-extrabold tracking-widest" style={{ color: SVG_ORANGE }}>
+                    STEP {i + 1}
+                  </span>
+                  <Icon className="w-12 h-12" />
+                  <p className="text-sm font-bold text-[#28292a] leading-[1.45] text-balance break-keep [overflow-wrap:anywhere]">
+                    <span className="heading-highlight">{title}</span>
+                  </p>
+                  <p className="text-xs text-[#5a5f6c] leading-relaxed">{desc}</p>
+                </div>
+                {i < arr.length - 1 && (
+                  <div className="lg:hidden flex justify-center my-2">
+                    <ArrowConnectorSvg className="w-6 h-6 rotate-90 opacity-70" />
+                  </div>
+                )}
+                {i < arr.length - 1 && (
+                  <div className="hidden lg:flex absolute top-1/2 -right-5 -translate-y-1/2 z-10">
+                    <ArrowConnectorSvg className="w-5 h-5 opacity-70" />
+                  </div>
+                )}
+              </FadeUp>
+            ))}
+          </div>
+
+          <p className="mt-10 text-xs text-[#8a8f9a] leading-relaxed text-center max-w-2xl mx-auto">
+            ※実務経験のみの場合、1級受検の目安は7年以上です。学歴や職業訓練歴などで短縮される場合があります。
+            <br className="md:hidden" />
+            ※実技試験は100点満点中60点以上、学科試験は100点満点中65点以上が合格の目安です（都道府県職業能力開発協会が実施する職種の場合）。
+          </p>
         </div>
       </section>
 
@@ -2973,6 +2924,7 @@ export default function GaihekiArticleLP() {
           </FadeUp>
         </div>
       </section>
+
 
       {/* ── フッター ─────────────────────────────────────────────────────── */}
       <footer className="border-t py-8" style={{ borderColor: '#ece6dc', backgroundColor: '#fbf8f4' }}>

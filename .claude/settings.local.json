@@ -124,7 +124,14 @@
       "Bash(awk 'NR>=2555 && NR<=2570{print NR\": \"$0}' /tmp/GaihekiArticleLP_NEW.tsx)",
       "Bash(awk 'NR>=2685 && NR<=2700{print NR\": \"$0}' /tmp/GaihekiArticleLP_NEW.tsx)",
       "Bash(cp /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx /tmp/GaihekiArticleLP_BACKUP_before_reorder.tsx)",
-      "Bash(cp /tmp/GaihekiArticleLP_NEW.tsx /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx)"
+      "Bash(cp /tmp/GaihekiArticleLP_NEW.tsx /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>=2149 && NR<=2167{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>=1770 && NR<=1783{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(awk 'NR>=1897 && NR<=1911{print NR\": \"$0}' app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(cp /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx /tmp/GaihekiArticleLP_BACKUP2.tsx)",
+      "Bash(cp /tmp/GaihekiArticleLP_NEW2.tsx /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx)",
+      "Bash(cp /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx /tmp/GaihekiArticleLP_BACKUP3.tsx)",
+      "Bash(cp /tmp/GaihekiArticleLP_NEW3.tsx /Users/tsukamotoshuntaira/Desktop/client-lp/app/gaiheki-article/GaihekiArticleLP.tsx)"
     ]
   }
 }
