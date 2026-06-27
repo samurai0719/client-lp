@@ -1,0 +1,276 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   /gaikou 専用スタイル。クラス名はすべて gaikou- プレフィックスで他ページから分離。
+   ───────────────────────────────────────────────────────────────────────── */
+
+.gaikou-lp {
+  --gaikou-green-deep: #10302a;
+  --gaikou-green: #1f4d3d;
+  --gaikou-green-bright: #2f7d5a;
+  --gaikou-orange: #d9601a;
+  --gaikou-beige: #f9f7f1;
+  --gaikou-cream: #fdfbf6;
+  background: var(--gaikou-cream);
+  color: #243b34;
+  position: relative;
+  isolation: isolate;
+}
+
+/* ── 和紙風の背景（施工事例セクション） ───────────────────────────── */
+
+.gaikou-washi-bg {
+  position: relative;
+  background-color: #4a4640;
+  background-image:
+    radial-gradient(ellipse 480px 360px at 12% 18%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 520px 400px at 85% 12%, rgba(0, 0, 0, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 600px 420px at 75% 85%, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 500px 380px at 18% 88%, rgba(0, 0, 0, 0.10) 0%, transparent 60%);
+}
+.gaikou-washi-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018 0.09' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+.gaikou-washi-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' seed='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+/* ── 見出しの装飾 ─────────────────────────────────────────────────── */
+
+.gaikou-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--gaikou-green-bright);
+  text-transform: uppercase;
+}
+.gaikou-eyebrow-dark {
+  color: #d4af6a;
+}
+.gaikou-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  background: var(--gaikou-orange);
+  border-radius: 2px;
+}
+
+.gaikou-heading-line {
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin-top: 14px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gaikou-green-bright), var(--gaikou-orange));
+  transform-origin: left center;
+}
+
+/* ── CTAボタン ───────────────────────────────────────────────────── */
+
+@keyframes gaikouCtaGlow {
+  0%, 100% { box-shadow: 0 10px 24px -8px rgba(217, 96, 26, 0.45), 0 0 0 0 rgba(217, 96, 26, 0); }
+  50%      { box-shadow: 0 12px 30px -6px rgba(217, 96, 26, 0.55), 0 0 24px 2px rgba(217, 96, 26, 0.18); }
+}
+
+.gaikou-cta-btn {
+  display: inline-block;
+  width: 100%;
+  max-width: 26rem;
+  padding: 1.15rem 1.75rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid #c2530f;
+  background: linear-gradient(160deg, #f08a3c 0%, var(--gaikou-orange) 55%, #c2530f 100%);
+  animation: gaikouCtaGlow 3.2s ease-in-out infinite;
+  transition: transform 0.15s ease;
+}
+.gaikou-cta-btn:hover { transform: translateY(-2px); }
+.gaikou-cta-btn:active { transform: translateY(1px); }
+.gaikou-cta-btn:focus-visible {
+  outline: 3px solid rgba(217, 96, 26, 0.45);
+  outline-offset: 3px;
+}
+.gaikou-cta-btn-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* ── 背景レイヤー（fixed / 本文の背面） ─────────────────────────────── */
+
+.gaikou-bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gaikou-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  will-change: transform;
+}
+.gaikou-blob-1 {
+  width: 420px;
+  height: 420px;
+  top: -120px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(47, 125, 90, 0.22), transparent 70%);
+  animation: gaikouFloat1 22s ease-in-out infinite;
+}
+.gaikou-blob-2 {
+  width: 380px;
+  height: 380px;
+  top: 38%;
+  right: -140px;
+  background: radial-gradient(circle, rgba(217, 96, 26, 0.12), transparent 70%);
+  animation: gaikouFloat2 26s ease-in-out infinite;
+}
+.gaikou-blob-3 {
+  width: 460px;
+  height: 460px;
+  bottom: -160px;
+  left: 12%;
+  background: radial-gradient(circle, rgba(201, 184, 130, 0.20), transparent 70%);
+  animation: gaikouFloat1 30s ease-in-out infinite reverse;
+}
+
+@keyframes gaikouFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(30px, 40px); }
+}
+@keyframes gaikouFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-36px, 26px); }
+}
+
+.gaikou-pattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.gaikou-pattern-dots { opacity: 0.05; }
+.gaikou-pattern-contour { opacity: 0.06; }
+
+.gaikou-mouse-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(
+    480px circle at var(--gaikou-mx, 50%) var(--gaikou-my, 50%),
+    rgba(47, 125, 90, 0.10),
+    transparent 70%
+  );
+}
+@media (min-width: 1024px) and (pointer: fine) {
+  .gaikou-mouse-glow { opacity: 1; }
+}
+
+.gaikou-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* ── 悩み→解決策カードの Before/After 画像エリア ─────────────────── */
+
+.gaikou-solution-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "worry worry worry"
+    "before arrow after"
+    "solution solution solution";
+  align-items: center;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+.gaikou-solution-worry { grid-area: worry; }
+.gaikou-solution-before { grid-area: before; justify-self: center; }
+.gaikou-solution-arrow { grid-area: arrow; }
+.gaikou-solution-solution { grid-area: solution; }
+.gaikou-solution-after { grid-area: after; justify-self: center; }
+
+@media (min-width: 640px) {
+  .gaikou-solution-row {
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "worry   arrow solution"
+      "before  arrow after";
+    row-gap: 18px;
+    column-gap: 16px;
+  }
+}
+
+.gaikou-photo-slot {
+  position: relative;
+  display: block;
+  width: clamp(126px, 38vw, 174px);
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f1ece0;
+}
+@media (min-width: 640px) {
+  .gaikou-photo-slot {
+    width: min(100%, 260px);
+  }
+}
+
+.gaikou-photo-slot-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #a39d8c;
+}
+
+/* ── セクション間の曲線ディバイダー ──────────────────────────────── */
+
+.gaikou-divider {
+  position: relative;
+  margin-top: -1px;
+  line-height: 0;
+}
+.gaikou-divider-flip { transform: scaleY(-1); }
+
+/* ── reduced motion ──────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .gaikou-blob { animation: none !important; }
+  .gaikou-cta-btn { animation: none !important; }
+  .gaikou-mouse-glow { display: none !important; }
+}
