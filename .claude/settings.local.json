@@ -201,7 +201,9 @@
       "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/f037b401-b29e-4ef2-a75f-a5ae19142ba3.png\" \"/Users/tsukamotoshuntaira/Desktop/client-lp/public/images/gaikou/solutions/solution6-after.png\")",
       "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/06d0b75f-3687-4e69-9699-2c90a4a4c636.png\" \"/Users/tsukamotoshuntaira/Desktop/client-lp/public/images/gaikou/solutions/solution7-before.png\")",
       "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/0769e91c-689e-4985-abf8-92db2bc623d3.png\" \"/Users/tsukamotoshuntaira/Desktop/client-lp/public/images/gaikou/solutions/solution7-after.png\")",
-      "Bash(grep -E \"\\\\.\\(png|jpg|jpeg|webp\\)$\")"
+      "Bash(grep -E \"\\\\.\\(png|jpg|jpeg|webp\\)$\")",
+      "Bash(rm \".git/logs/refs/remotes/origin/HEAD 2\")",
+      "Bash(rm \".git/refs/remotes/origin/HEAD\")"
     ]
   }
 }
