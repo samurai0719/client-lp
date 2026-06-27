@@ -111,18 +111,19 @@ export const works: WorkItem[] = [
 export type ProblemItem = {
   iconKey: string;
   text: string;
+  image?: string;
 };
 
 export const problems: ProblemItem[] = [
-  { iconKey: "wind", text: "砂利が道路や玄関に飛び散る" },
-  { iconKey: "cloud-rain", text: "雨の日に駐車場がぬかるむ" },
-  { iconKey: "sprout", text: "毎年の草むしりが大変" },
-  { iconKey: "car-front", text: "子どもの車が増えて駐車場が足りない" },
-  { iconKey: "tree-deciduous", text: "庭木や庭石の管理が大変" },
-  { iconKey: "eye", text: "外からの視線が気になる" },
-  { iconKey: "warehouse", text: "カーポートを付けたい" },
-  { iconKey: "circle-help", text: "外構工事の適正価格が分からない" },
-  { iconKey: "shield-check", text: "ちゃんと施工してくれる会社へ頼みたい" },
+  { iconKey: "wind", text: "砂利が道路や玄関に飛び散る", image: "/images/gaikou/problems/problem-1.png" },
+  { iconKey: "cloud-rain", text: "雨の日に駐車場がぬかるむ", image: "/images/gaikou/problems/problem-2.png" },
+  { iconKey: "sprout", text: "毎年の草むしりが大変", image: "/images/gaikou/problems/problem-3.png" },
+  { iconKey: "car-front", text: "子どもの車が増えて駐車場が足りない", image: "/images/gaikou/problems/problem-4.png" },
+  { iconKey: "tree-deciduous", text: "庭木や庭石の管理が大変", image: "/images/gaikou/problems/problem-5.png" },
+  { iconKey: "eye", text: "外からの視線が気になる", image: "/images/gaikou/problems/problem-6.png" },
+  { iconKey: "warehouse", text: "カーポートを付けたい", image: "/images/gaikou/problems/problem-7.png" },
+  { iconKey: "circle-help", text: "外構工事の適正価格が分からない", image: "/images/gaikou/problems/problem-8.png" },
+  { iconKey: "shield-check", text: "ちゃんと施工してくれる会社へ頼みたい", image: "/images/gaikou/problems/problem-9.png" },
 ];
 
 export type SolutionItem = {

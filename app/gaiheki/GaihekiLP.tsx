@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import GaihekiColorSimulator, { type SimulationData } from './components/GaihekiColorSimulator';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -244,6 +245,8 @@ export default function GaihekiLP() {
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [simulationData, setSimulationData] = useState<SimulationData | null>(null);
+  const formSectionRef = useRef<HTMLDivElement>(null);
 
   const segment: Segment =
     step === 'form' || step === 'success' ? getSegment(answers) : 'passive';
@@ -309,6 +312,28 @@ export default function GaihekiLP() {
       setStep('intro');
     }
     scrollTop();
+  }
+
+  function handleSimulationQuote(data: SimulationData) {
+    setSimulationData(data);
+    const colorDesc = [
+      data.paintPattern !== 'roof-only' ? `外壁${data.paintPattern.includes('twoTone') ? '1' : ''}：${data.wallColor1.name}（${data.wallColor1.hex}）` : null,
+      data.wallColor2 ? `外壁2：${data.wallColor2.name}（${data.wallColor2.hex}）` : null,
+      data.roofColor ? `屋根：${data.roofColor.name}（${data.roofColor.hex}）` : null,
+      data.simulationId ? `シミュレーションID：${data.simulationId}` : null,
+    ].filter(Boolean).join(' / ');
+    setFormData((d) => ({
+      ...d,
+      comment: d.comment
+        ? `${d.comment}\n\n【カラーシミュレーション情報】\n${colorDesc}`
+        : `【カラーシミュレーション情報】\n${colorDesc}`,
+    }));
+    if (step !== 'form') {
+      setStep('form');
+    }
+    setTimeout(() => {
+      formSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   }
 
   function validateForm(): boolean {
@@ -625,7 +650,7 @@ export default function GaihekiLP() {
 
         {/* ══════════ FORM ══════════ */}
         {step === 'form' && (
-          <div className="gaiheki-fade-in">
+          <div className="gaiheki-fade-in" ref={formSectionRef}>
 
             {/* 結果バナー */}
             <div className={`rounded-2xl border ${segCfg.borderClass} ${segCfg.bgClass} p-5 mb-6 shadow-sm`}>
@@ -656,6 +681,36 @@ export default function GaihekiLP() {
                 ))}
               </div>
             </div>
+
+            {/* シミュレーション情報（引き継ぎ時のみ表示） */}
+            {simulationData && (
+              <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4 mb-6">
+                <p className="text-xs font-bold text-orange-600 mb-3">カラーシミュレーション情報</p>
+                <div className="space-y-2">
+                  {simulationData.paintPattern !== 'roof-only' && (
+                    <div className="flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-md border border-black/10 shrink-0" style={{ backgroundColor: simulationData.wallColor1.hex }} />
+                      <span className="text-xs text-slate-700">外壁{simulationData.paintPattern.includes('twoTone') ? '1' : ''}：{simulationData.wallColor1.name} ({simulationData.wallColor1.hex})</span>
+                    </div>
+                  )}
+                  {simulationData.wallColor2 && (
+                    <div className="flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-md border border-black/10 shrink-0" style={{ backgroundColor: simulationData.wallColor2.hex }} />
+                      <span className="text-xs text-slate-700">外壁2：{simulationData.wallColor2.name} ({simulationData.wallColor2.hex})</span>
+                    </div>
+                  )}
+                  {simulationData.roofColor && (
+                    <div className="flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-md border border-black/10 shrink-0" style={{ backgroundColor: simulationData.roofColor.hex }} />
+                      <span className="text-xs text-slate-700">屋根：{simulationData.roofColor.name} ({simulationData.roofColor.hex})</span>
+                    </div>
+                  )}
+                  {simulationData.simulationId && (
+                    <p className="text-[10px] text-slate-400 font-mono">ID: {simulationData.simulationId}</p>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* 入力フォーム */}
             <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
@@ -816,6 +871,12 @@ export default function GaihekiLP() {
           </div>
         )}
       </main>
+
+      {/* ── Color Simulator ── */}
+      <GaihekiColorSimulator
+        id="color-simulator"
+        onRequestQuote={handleSimulationQuote}
+      />
 
       {/* ── Footer ── */}
       <footer style={{ background: '#1e3a5f' }} className="text-slate-300 py-10 px-5">

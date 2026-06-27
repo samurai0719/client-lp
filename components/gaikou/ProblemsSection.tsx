@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Wind,
@@ -51,16 +52,29 @@ export default function ProblemsSection() {
             return (
               <motion.div
                 key={p.text}
-                className="flex flex-col items-start gap-3 rounded-2xl bg-white border border-[#e7e3d8] px-4 py-[22px] sm:p-5 min-w-0"
+                className="flex flex-col rounded-2xl bg-white border border-[#e7e3d8] min-w-0 overflow-hidden"
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: (i % 6) * 0.06, ease: "easeOut" }}
               >
-                <span className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#eaf3ee] text-[#1f4d3d] shrink-0">
-                  <Icon className="w-5 h-5" strokeWidth={1.8} aria-hidden="true" />
-                </span>
-                <p className="text-[clamp(13px,3.8vw,15px)] sm:text-sm font-semibold text-[#1c2b25] leading-snug" style={{ overflowWrap: "anywhere" }}>{p.text}</p>
+                {p.image && (
+                  <div className="w-full aspect-[4/3] relative shrink-0">
+                    <Image
+                      src={p.image}
+                      alt={p.text}
+                      fill
+                      sizes="(max-width: 640px) calc(50vw - 22px), calc(33vw - 24px)"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div className="flex flex-col items-start gap-2.5 px-4 py-4 sm:p-5">
+                  <span className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#eaf3ee] text-[#1f4d3d] shrink-0">
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.8} aria-hidden="true" />
+                  </span>
+                  <p className="text-[clamp(12px,3.5vw,14px)] sm:text-sm font-semibold text-[#1c2b25] leading-snug" style={{ overflowWrap: "anywhere" }}>{p.text}</p>
+                </div>
               </motion.div>
             );
           })}

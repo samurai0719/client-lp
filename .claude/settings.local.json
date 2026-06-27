@@ -203,7 +203,10 @@
       "Bash(cp \"/Users/tsukamotoshuntaira/Downloads/0769e91c-689e-4985-abf8-92db2bc623d3.png\" \"/Users/tsukamotoshuntaira/Desktop/client-lp/public/images/gaikou/solutions/solution7-after.png\")",
       "Bash(grep -E \"\\\\.\\(png|jpg|jpeg|webp\\)$\")",
       "Bash(rm \".git/logs/refs/remotes/origin/HEAD 2\")",
-      "Bash(rm \".git/refs/remotes/origin/HEAD\")"
+      "Bash(rm \".git/refs/remotes/origin/HEAD\")",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw npx playwright install chromium)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw node *)",
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw npx playwright --version)"
     ]
   }
 }
