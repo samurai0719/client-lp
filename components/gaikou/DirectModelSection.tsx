@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowDown, Users, Megaphone, Building2, HardHat, Handshake } from "lucide-react";
 import SectionBackdrop from "./SectionBackdrop";
@@ -40,6 +41,18 @@ export default function DirectModelSection() {
             <br />
             紹介料や管理費が工事価格に上乗せされる場合があります。
           </p>
+        </div>
+
+        <div className="mt-8 md:mt-10 rounded-2xl overflow-hidden">
+          <div className="relative w-full aspect-[16/9]">
+            <Image
+              src="/images/gaikou/direct-model.png"
+              alt="実際の施工現場"
+              fill
+              sizes="(max-width: 768px) 100vw, 896px"
+              className="object-cover"
+            />
+          </div>
         </div>
 
         <div className="mt-8 md:mt-10 space-y-4 text-sm sm:text-base text-[#3d4a45] leading-[1.9] max-w-2xl mx-auto">

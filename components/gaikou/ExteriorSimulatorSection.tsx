@@ -601,7 +601,7 @@ export default function ExteriorSimulatorSection() {
               <p className="font-bold text-[#10302a] mb-3">このイメージで実際の費用を確認してみませんか？</p>
               <button type="button" onClick={scrollToContact} className="gaikou-cta-btn inline-block">
                 <span className="gaikou-cta-btn-inner">
-                  この内容で無料見積もりを依頼する <ChevronRight className="w-5 h-5" aria-hidden="true" />
+                  無料見積もりを依頼する <ChevronRight className="w-5 h-5" aria-hidden="true" />
                 </span>
               </button>
             </div>

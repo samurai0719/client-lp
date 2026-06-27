@@ -102,68 +102,64 @@ function buildPrompt(
   const hasWall = pattern !== "roof-only";
   const hasRoof = ["wall1-roof", "wall-twoTone-roof", "roof-only"].includes(pattern);
 
-  let colorLines = "";
+  let colorSpec = "";
   if (forMask === "wall1" || (!forMask && hasWall)) {
-    colorLines += `\nExterior wall color 1:\n${wallColor1.name}\n${wallColor1.hex}\n`;
+    colorSpec += `  - Exterior wall color 1: ${wallColor1.name} (${wallColor1.hex})\n`;
   }
   if ((forMask === "wall2" || (!forMask && hasTwoTone)) && wallColor2) {
-    colorLines += `\nExterior wall color 2:\n${wallColor2.name}\n${wallColor2.hex}\n`;
+    colorSpec += `  - Exterior wall color 2: ${wallColor2.name} (${wallColor2.hex})\n`;
   }
   if ((forMask === "roof" || (!forMask && hasRoof)) && roofColor) {
-    colorLines += `\nRoof color:\n${roofColor.name}\n${roofColor.hex}\n`;
+    colorSpec += `  - Roof color: ${roofColor.name} (${roofColor.hex})\n`;
   }
 
   let applicationLines = "";
   if (pattern === "roof-only") {
-    applicationLines = `
-Change only the visible roof surface color.
-Do not change any exterior wall color.`;
+    applicationLines = `- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with the specified roof color. This is mandatory — the roof MUST be recolored.\n- Leave all exterior walls completely unchanged.`;
   } else if (hasTwoTone && wallColor2) {
-    applicationLines = "\n" + twoToneInstruction(twoToneMethod, wallColor1, wallColor2, forMask);
+    applicationLines = twoToneInstruction(twoToneMethod, wallColor1, wallColor2, forMask);
     if (forMask === "roof" || (!forMask && hasRoof && roofColor)) {
-      applicationLines += `\nApply the roof color only to visible roof surfaces.`;
+      applicationLines += `\n- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with the specified roof color. This is mandatory — the roof MUST be recolored.`;
     }
   } else {
-    applicationLines = `
-Apply wall color 1 to all visible painted exterior wall surfaces.`;
+    applicationLines = `- Recolor all visible painted exterior wall surfaces to wall color 1.`;
     if (hasRoof && roofColor && (forMask === "roof" || !forMask)) {
-      applicationLines += `\nApply the roof color only to visible roof surfaces.`;
+      applicationLines += `\n- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with the specified roof color. This is mandatory — the roof MUST be recolored.`;
     }
   }
 
-  return `Edit the supplied real residential exterior photograph as a realistic exterior paint color simulation.
+  return `This is a SURFACE REPAINTING simulation task, not image generation. You must preserve the original photograph almost entirely and only tint the specified surfaces to the new color.
 
-Preserve the exact original house structure, architecture, camera angle, perspective, dimensions, roof shape, windows, window frames, entrance door, balcony, gutters, eaves, pipes, fences, landscaping, driveway, vehicles, sky, lighting, shadows and all surrounding objects.
+== ABSOLUTE PRESERVATION RULES (never violate) ==
+- The house shape, silhouette, roofline, proportions, and position in the frame must remain PIXEL-IDENTICAL to the original photo.
+- The output image must have EXACTLY the same crop, framing, field of view, zoom level, and subject positioning as the input image. Do not recompose, zoom in, zoom out, shift, or rotate the scene in any way.
+- Every architectural element must stay in its exact original position, size, and appearance: windows, window frames, glass, entrance door, balcony railing, gutters, downpipes, eaves, fascias, soffits, pillars, garage door, fences, outdoor equipment.
+- The entire background (sky, clouds, trees, garden, plants, driveway, pavement, vehicles, neighboring buildings, street) must remain completely unchanged.
+- Original lighting direction, shadow placement, reflections, and weather conditions must be preserved.
+- CRITICAL — MATERIAL AND TEXTURE: The surface material and micro-texture of every wall and roof surface must remain IDENTICAL to the original. Do NOT smooth, roughen, replace, or alter the material in any way. Only the color/hue changes — the physical texture, bump, grain, and surface relief must be pixel-accurate to the original. Think of this as a "hue shift" on the existing material, not a material replacement.
+- Do NOT add, remove, relocate, resize, or alter any part of the building structure or surroundings.
+- Do NOT repaint windows, glass, door panels, metal frames, gutters, downpipes, eave soffits, fences, pavement, or any surface that is NOT listed in the COLOR CHANGE TASK below.
+- If any element is not visible in the original photo, do not invent or reveal it.
 
-Do not redesign, rebuild, renovate, add, remove or relocate anything.
+== COLOR CHANGE TASK ==
+Apply the following paint colors. Every surface listed below MUST be recolored — do not skip any of them:
+${colorSpec}
+${applicationLines}
 
-Change only the specifically requested painted exterior wall and roof colors.
-${colorLines}${applicationLines}
-
-Do not paint windows, glass, window frames, entrance doors, gutters, downspouts, eaves, soffits, outdoor equipment, fences, plants, pavement or vehicles unless explicitly requested.
-
-Preserve the original siding, stucco, concrete, tile and roof material textures. The result must look like the same house after professional repainting, not a newly generated or redesigned house.
-
-Keep natural highlights, shadows, weather conditions and material texture.
-
-If the roof is not visible in the original photograph, do not invent or add a roof.
-
-Produce one photorealistic finished exterior paint simulation.`;
+The final image must look exactly like a professional photograph of the same house taken from the same angle after exterior repainting — identical building, identical material textures, identical surroundings, only the specified surfaces recolored.`;
 }
 
 // ─── Image processing ───────────────────────────────────────────────────────
-async function normalizeToJpeg(buffer: Buffer): Promise<Buffer> {
-  return sharp(buffer)
-    .rotate()
-    .resize(2048, 2048, { fit: "inside", withoutEnlargement: true })
-    .jpeg({ quality: 90 })
-    .toBuffer();
-}
-
 async function normalizeToPng(buffer: Buffer): Promise<Buffer> {
+  // Pad to 1024×1024 square with white background so input and output share the same
+  // aspect ratio — this makes the Before/After slider pixel-accurate in framing.
   return sharp(buffer)
     .rotate()
-    .resize(2048, 2048, { fit: "inside", withoutEnlargement: true })
+    .resize(1024, 1024, {
+      fit: "contain",
+      background: { r: 255, g: 255, b: 255, alpha: 255 },
+      withoutEnlargement: false,
+    })
     .png()
     .toBuffer();
 }
@@ -174,12 +170,6 @@ async function normalizeMask(maskBuffer: Buffer, width: number, height: number):
     .ensureAlpha()
     .png()
     .toBuffer();
-}
-
-async function createTransparentMask(width: number, height: number): Promise<Buffer> {
-  return sharp({
-    create: { width, height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
-  }).png().toBuffer();
 }
 
 // ─── Route handler ──────────────────────────────────────────────────────────
@@ -221,7 +211,8 @@ export async function POST(req: NextRequest) {
   const wc1Raw       = fd.get("wallColor1") as string | null;
   const wc2Raw       = fd.get("wallColor2") as string | null;
   const rcRaw        = fd.get("roofColor") as string | null;
-  const useAutoMask  = fd.get("useAutoMask") !== "false";
+  const useAutoMask    = fd.get("useAutoMask") !== "false";
+  const aiChooseColor  = fd.get("aiChooseColor") === "true";
 
   if (!imageFile) return NextResponse.json({ error: "画像が添付されていません。" }, { status: 400 });
 
@@ -250,9 +241,10 @@ export async function POST(req: NextRequest) {
 
     const rawBuffer = Buffer.from(await imageFile.arrayBuffer());
     const normalizedBuffer = await normalizeToPng(rawBuffer);
-    const meta = await sharp(normalizedBuffer).metadata();
-    const W = meta.width ?? 1024;
-    const H = meta.height ?? 1024;
+    // Return the normalized before-image so client Before/After uses same framing as output
+    const beforeImageB64 = normalizedBuffer.toString("base64");
+    const W = 1024;
+    const H = 1024;
 
     // Build sequential call list
     type CallSpec = { maskType: MaskType | null; maskFile: File | null };
@@ -274,31 +266,63 @@ export async function POST(req: NextRequest) {
       if (roofColor) calls.push({ maskType: "roof", maskFile: maskRoofF });
     }
 
+    const aiAutoPrompt = `This is a SURFACE REPAINTING simulation task, not image generation.
+
+Automatically select the most beautiful, suitable, and popular exterior paint color scheme for this Japanese residential house. Choose colors that complement the architectural style and are popular in Japanese residential exterior painting.
+
+MANDATORY TASK — you MUST do both of these:
+1. PAINT all visible exterior wall surfaces with your chosen wall color.
+2. PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with your chosen roof color.
+Both the walls AND the roof must be visibly recolored in the final image.
+
+== ABSOLUTE PRESERVATION RULES (never violate) ==
+- The house shape, silhouette, roofline, proportions, and position in the frame must remain PIXEL-IDENTICAL to the original photo.
+- The output image must have EXACTLY the same crop, framing, field of view, zoom level, and subject positioning as the input image. Do not recompose, zoom in, zoom out, shift, or rotate the scene in any way.
+- Every architectural element must stay in its exact original position, size, and appearance: windows, window frames, glass, entrance door, balcony railing, gutters, downpipes, eaves, fascias, soffits, pillars, garage door, fences, outdoor equipment.
+- The entire background (sky, clouds, trees, garden, plants, driveway, pavement, vehicles, neighboring buildings, street) must remain completely unchanged.
+- Original lighting direction, shadow placement, reflections, and weather conditions must be preserved.
+- CRITICAL — MATERIAL AND TEXTURE: The surface material and micro-texture of every wall and roof surface must remain IDENTICAL to the original. Only the color/hue changes — the physical texture, bump, grain, and surface relief must be pixel-accurate to the original. Think of this as a "hue shift" on the existing material.
+- Do NOT repaint windows, glass, door panels, metal frames, gutters, downpipes, eave soffits, fences, or pavement.
+
+The final image must look exactly like a professional photograph of the same house after beautiful exterior repainting — walls and roof both visibly recolored, everything else unchanged.`;
+
     let currentBuf = normalizedBuffer;
 
     for (const call of calls) {
-      const prompt = buildPrompt(paintPattern, twoToneMethod, wallColor1, wallColor2, roofColor, call.maskType);
+      const prompt = aiChooseColor
+        ? aiAutoPrompt
+        : buildPrompt(paintPattern, twoToneMethod, wallColor1, wallColor2, roofColor, call.maskType);
 
-      let maskBuf: Buffer;
-      if (call.maskFile && !useAutoMask) {
+      const imgFile = await toFile(currentBuf, "image.png", { type: "image/png" });
+
+      let editParams: ImageEditParams;
+
+      if (!useAutoMask && call.maskFile) {
+        // Manual mask provided by user — use it for targeted inpainting
         const rawMask = Buffer.from(await call.maskFile.arrayBuffer());
-        maskBuf = await normalizeMask(rawMask, W, H);
+        const maskBuf = await normalizeMask(rawMask, W, H);
+        const maskFile2 = await toFile(maskBuf, "mask.png", { type: "image/png" });
+        editParams = {
+          model,
+          image: imgFile,
+          mask: maskFile2,
+          prompt,
+          n: 1,
+          size: "1024x1024",
+          quality: "medium",
+        };
       } else {
-        maskBuf = await createTransparentMask(W, H);
+        // Auto mode — no mask, rely on prompt-guided editing to preserve structure
+        editParams = {
+          model,
+          image: imgFile,
+          prompt,
+          n: 1,
+          size: "1024x1024",
+          quality: "medium",
+        };
       }
 
-      const imgFile  = await toFile(currentBuf, "image.png", { type: "image/png" });
-      const maskFile2 = await toFile(maskBuf, "mask.png", { type: "image/png" });
-
-      const editParams: ImageEditParams = {
-        model,
-        image: imgFile,
-        mask: maskFile2,
-        prompt,
-        n: 1,
-        size: "1024x1024",
-        quality: "medium",
-      };
       const response = await openai.images.edit(editParams);
 
       const imgData = response.data?.[0];
@@ -319,6 +343,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       image: `data:image/png;base64,${resultB64}`,
+      beforeImage: `data:image/png;base64,${beforeImageB64}`,
       simulationId,
       remaining,
     });

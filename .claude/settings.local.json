@@ -206,7 +206,8 @@
       "Bash(rm \".git/refs/remotes/origin/HEAD\")",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw npx playwright install chromium)",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw node *)",
-      "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw npx playwright --version)"
+      "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw npx playwright --version)",
+      "Bash(kill 57929 59431)"
     ]
   }
 }

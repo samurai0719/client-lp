@@ -12,8 +12,7 @@ import {
 export interface ColorItem { name: string; hex: string }
 type PaintPattern = "wall1" | "wall-twoTone" | "wall1-roof" | "wall-twoTone-roof" | "roof-only";
 type TwoToneMethod = "floor12" | "topBottom" | "leftRight" | "balcony" | "entrance" | "indent" | "custom";
-type SimStep = "upload" | "pattern" | "color" | "mask" | "result";
-type MaskLayer = "wall1" | "wall2" | "roof" | "eraser";
+type SimStep = "upload" | "pattern" | "color" | "result";
 
 export interface SimulationData {
   originalImage: string;
@@ -133,42 +132,40 @@ const TWO_TONE_METHODS: { id: TwoToneMethod; label: string }[] = [
   { id: "custom",   label: "自分で塗装範囲を指定する" },
 ];
 
-// ─── Mask layer config ───────────────────────────────────────────────────────
-const MASK_LAYER_COLOR: Record<MaskLayer, string> = {
-  wall1:  "rgba(255,80,80,0.55)",
-  wall2:  "rgba(60,100,255,0.55)",
-  roof:   "rgba(250,160,0,0.55)",
-  eraser: "rgba(0,0,0,0)",
-};
-const MASK_LAYER_LABEL: Record<Exclude<MaskLayer, "eraser">, string> = {
-  wall1: "外壁カラー 1",
-  wall2: "外壁カラー 2",
-  roof:  "屋根",
-};
 
 // ─── Image processing ────────────────────────────────────────────────────────
 function readOrientation(buffer: ArrayBuffer): number {
-  const view = new DataView(buffer);
-  if (view.getUint16(0, false) !== 0xFFD8) return 1;
-  let offset = 2;
-  while (offset < view.byteLength) {
-    const marker = view.getUint16(offset, false);
-    offset += 2;
-    if (marker === 0xFFE1) {
-      if (view.getUint32(offset + 2, false) !== 0x45786966) break;
-      const littleEndian = view.getUint16(offset + 8, false) === 0x4949;
-      const ifdOffset = view.getUint32(offset + 12, !littleEndian) + offset + 8;
-      const entries = view.getUint16(ifdOffset, !littleEndian);
-      for (let i = 0; i < entries; i++) {
-        const base = ifdOffset + 2 + i * 12;
-        if (view.getUint16(base, !littleEndian) === 0x0112) {
-          return view.getUint16(base + 8, !littleEndian);
+  try {
+    const view = new DataView(buffer);
+    if (view.byteLength < 4 || view.getUint16(0, false) !== 0xFFD8) return 1;
+    let offset = 2;
+    while (offset + 1 < view.byteLength) {
+      const marker = view.getUint16(offset, false);
+      offset += 2;
+      if (marker === 0xFFE1) {
+        if (offset + 14 > view.byteLength) break;
+        if (view.getUint32(offset + 2, false) !== 0x45786966) break;
+        const littleEndian = view.getUint16(offset + 8, false) === 0x4949;
+        const ifdOffset = view.getUint32(offset + 12, littleEndian) + offset + 8;
+        if (ifdOffset + 2 > view.byteLength) break;
+        const entries = view.getUint16(ifdOffset, littleEndian);
+        for (let i = 0; i < entries; i++) {
+          const base = ifdOffset + 2 + i * 12;
+          if (base + 10 > view.byteLength) break;
+          if (view.getUint16(base, littleEndian) === 0x0112) {
+            return view.getUint16(base + 8, littleEndian);
+          }
         }
+        break;
       }
-      break;
+      if ((marker & 0xFF00) !== 0xFF00) break;
+      if (offset + 2 > view.byteLength) break;
+      const segLen = view.getUint16(offset, false);
+      if (segLen < 2) break;
+      offset += segLen;
     }
-    if ((marker & 0xFF00) !== 0xFF00) break;
-    offset += view.getUint16(offset, false);
+  } catch {
+    // malformed EXIF — ignore and use default orientation
   }
   return 1;
 }
@@ -200,39 +197,45 @@ async function processUploadedFile(file: File): Promise<{
     const img = new Image();
     img.onload = () => {
       URL.revokeObjectURL(url);
-      const MAX = 2048;
-      let { naturalWidth: w, naturalHeight: h } = img;
-      const swap = orientation >= 5 && orientation <= 8;
-      const srcW = swap ? h : w;
-      const srcH = swap ? w : h;
-      const scale = Math.min(1, MAX / Math.max(srcW, srcH));
-      const cW = Math.round(srcW * scale);
-      const cH = Math.round(srcH * scale);
-      const canvas = document.createElement("canvas");
-      canvas.width = cW; canvas.height = cH;
-      const ctx = canvas.getContext("2d")!;
-      ctx.save();
-      ctx.translate(cW / 2, cH / 2);
-      const rot = [0, 0, 180, 0, 90, 90, -90, -90][orientation - 1] ?? 0;
-      const flipH = [2, 4, 5, 7].includes(orientation);
-      if (flipH) ctx.scale(-1, 1);
-      ctx.rotate((rot * Math.PI) / 180);
-      ctx.drawImage(img, -w * scale / 2, -h * scale / 2, w * scale, h * scale);
-      ctx.restore();
+      try {
+        const MAX = 2048;
+        const { naturalWidth: w, naturalHeight: h } = img;
+        const swap = orientation >= 5 && orientation <= 8;
+        const srcW = swap ? h : w;
+        const srcH = swap ? w : h;
+        const scale = Math.min(1, MAX / Math.max(srcW, srcH));
+        const cW = Math.round(srcW * scale);
+        const cH = Math.round(srcH * scale);
+        const canvas = document.createElement("canvas");
+        canvas.width = cW; canvas.height = cH;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) { reject(new Error("CANVAS_FAILED")); return; }
+        ctx.save();
+        ctx.translate(cW / 2, cH / 2);
+        const rot = [0, 0, 180, 0, 90, 90, -90, -90][orientation - 1] ?? 0;
+        const flipH = [2, 4, 5, 7].includes(orientation);
+        if (flipH) ctx.scale(-1, 1);
+        ctx.rotate((rot * Math.PI) / 180);
+        ctx.drawImage(img, -w * scale / 2, -h * scale / 2, w * scale, h * scale);
+        ctx.restore();
 
-      // Brightness check
-      const sample = ctx.getImageData(0, 0, Math.min(100, cW), Math.min(100, cH));
-      let brightness = 0;
-      for (let i = 0; i < sample.data.length; i += 4) {
-        brightness += (sample.data[i] + sample.data[i + 1] + sample.data[i + 2]) / 3;
+        let warning: string | null = null;
+        try {
+          const sample = ctx.getImageData(0, 0, Math.min(100, cW), Math.min(100, cH));
+          let brightness = 0;
+          for (let i = 0; i < sample.data.length; i += 4) {
+            brightness += (sample.data[i] + sample.data[i + 1] + sample.data[i + 2]) / 3;
+          }
+          brightness /= (sample.data.length / 4);
+          if (brightness < 40) {
+            warning = "建物全体が正面から写っている、明るい時間帯の写真を使用すると、より自然な仕上がりになります。";
+          }
+        } catch { /* getImageData can fail in some environments — skip brightness check */ }
+
+        resolve({ dataUrl: canvas.toDataURL("image/jpeg", 0.9), warning });
+      } catch (e) {
+        reject(e);
       }
-      brightness /= (sample.data.length / 4);
-
-      const warning = brightness < 40
-        ? "建物全体が正面から写っている、明るい時間帯の写真を使用すると、より自然な仕上がりになります。"
-        : null;
-
-      resolve({ dataUrl: canvas.toDataURL("image/jpeg", 0.9), warning });
     };
     img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("LOAD_FAILED")); };
     img.src = url;
@@ -387,240 +390,11 @@ function ColorPicker({
   );
 }
 
-// ─── Mask Canvas ──────────────────────────────────────────────────────────────
-interface MaskCanvasProps {
-  imageDataUrl: string;
-  activeLayers: MaskLayer[];
-  activeLayer: MaskLayer;
-  brushSize: number;
-  onLayerChange: (layer: MaskLayer) => void;
-  onBrushChange: (size: number) => void;
-  canvasRefs: React.MutableRefObject<Record<Exclude<MaskLayer, "eraser">, HTMLCanvasElement | null>>;
-  imgRef: React.MutableRefObject<HTMLImageElement | null>;
-}
-
-function MaskCanvas({
-  imageDataUrl, activeLayers, activeLayer, brushSize,
-  onLayerChange, onBrushChange, canvasRefs, imgRef,
-}: MaskCanvasProps) {
-  const displayRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [panMode, setPanMode] = useState(false);
-  const [transform, setTransform] = useState({ scale: 1, x: 0, y: 0 });
-  const lastPointers = useRef<Map<number, { x: number; y: number }>>(new Map());
-  const isDrawing = useRef(false);
-
-  function redrawDisplay() {
-    const disp = displayRef.current;
-    if (!disp || !imgRef.current) return;
-    const ctx = disp.getContext("2d")!;
-    ctx.clearRect(0, 0, disp.width, disp.height);
-    ctx.drawImage(imgRef.current, 0, 0, disp.width, disp.height);
-    for (const layer of (["wall1", "wall2", "roof"] as const)) {
-      const maskCanvas = canvasRefs.current[layer];
-      if (!maskCanvas) continue;
-      ctx.globalAlpha = activeLayers.includes(layer) ? 0.6 : 0;
-      ctx.drawImage(maskCanvas, 0, 0, disp.width, disp.height);
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  useEffect(() => {
-    const img = new Image();
-    img.onload = () => {
-      imgRef.current = img;
-      const disp = displayRef.current;
-      if (!disp) return;
-      disp.width = img.naturalWidth;
-      disp.height = img.naturalHeight;
-      for (const layer of (["wall1", "wall2", "roof"] as const)) {
-        const c = canvasRefs.current[layer];
-        if (c) { c.width = img.naturalWidth; c.height = img.naturalHeight; }
-      }
-      redrawDisplay();
-    };
-    img.src = imageDataUrl;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageDataUrl]);
-
-  function getCanvasXY(e: { clientX: number; clientY: number }): { x: number; y: number } {
-    const disp = displayRef.current;
-    const container = containerRef.current;
-    if (!disp || !container) return { x: 0, y: 0 };
-    const rect = disp.getBoundingClientRect();
-    const scaleX = disp.width / rect.width;
-    const scaleY = disp.height / rect.height;
-    return {
-      x: (e.clientX - rect.left) * scaleX,
-      y: (e.clientY - rect.top) * scaleY,
-    };
-  }
-
-  function drawOnMask(x: number, y: number) {
-    if (activeLayer === "eraser") {
-      for (const layer of (["wall1", "wall2", "roof"] as const)) {
-        const c = canvasRefs.current[layer];
-        if (!c) continue;
-        const ctx = c.getContext("2d")!;
-        ctx.globalCompositeOperation = "destination-out";
-        ctx.beginPath();
-        ctx.arc(x, y, brushSize, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalCompositeOperation = "source-over";
-      }
-    } else {
-      const c = canvasRefs.current[activeLayer];
-      if (!c) return;
-      const ctx = c.getContext("2d")!;
-      ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = MASK_LAYER_COLOR[activeLayer];
-      ctx.beginPath();
-      ctx.arc(x, y, brushSize, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    redrawDisplay();
-  }
-
-  function handlePointerDown(e: React.PointerEvent) {
-    e.currentTarget.setPointerCapture(e.pointerId);
-    lastPointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (!panMode && lastPointers.current.size === 1) {
-      isDrawing.current = true;
-      const { x, y } = getCanvasXY(e);
-      drawOnMask(x, y);
-    }
-  }
-
-  function handlePointerMove(e: React.PointerEvent) {
-    const prev = lastPointers.current.get(e.pointerId);
-    if (!prev) return;
-    const curr = { x: e.clientX, y: e.clientY };
-
-    if (panMode || lastPointers.current.size >= 2) {
-      // Pan / pinch-zoom
-      if (lastPointers.current.size >= 2) {
-        const ids = [...lastPointers.current.keys()];
-        const other = ids.find((id) => id !== e.pointerId);
-        if (other !== undefined) {
-          const op = lastPointers.current.get(other)!;
-          const prevDist = Math.hypot(prev.x - op.x, prev.y - op.y);
-          const currDist = Math.hypot(curr.x - op.x, curr.y - op.y);
-          const scaleRatio = currDist / prevDist;
-          setTransform((t) => ({ ...t, scale: Math.min(5, Math.max(0.5, t.scale * scaleRatio)) }));
-        }
-      }
-      const dx = curr.x - prev.x;
-      const dy = curr.y - prev.y;
-      setTransform((t) => ({ ...t, x: t.x + dx, y: t.y + dy }));
-    } else if (isDrawing.current) {
-      const { x, y } = getCanvasXY(e);
-      drawOnMask(x, y);
-    }
-
-    lastPointers.current.set(e.pointerId, curr);
-  }
-
-  function handlePointerUp(e: React.PointerEvent) {
-    lastPointers.current.delete(e.pointerId);
-    if (lastPointers.current.size === 0) isDrawing.current = false;
-    e.currentTarget.releasePointerCapture(e.pointerId);
-  }
-
-  const layerButtons: { id: MaskLayer; label: string }[] = [
-    { id: "wall1", label: "外壁 1" },
-    { id: "wall2", label: "外壁 2" },
-    { id: "roof", label: "屋根" },
-    { id: "eraser", label: "消しゴム" },
-  ];
-
-  return (
-    <div className="space-y-3">
-      {/* Toolbar */}
-      <div className="flex flex-wrap gap-2 items-center">
-        {layerButtons.map((btn) => (
-          activeLayers.includes(btn.id) || btn.id === "eraser" ? (
-            <button
-              key={btn.id}
-              type="button"
-              onClick={() => onLayerChange(btn.id)}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold border-2 transition-all"
-              style={{
-                borderColor: activeLayer === btn.id ? "#1e3a5f" : "#e2e8f0",
-                background: activeLayer === btn.id ? "#1e3a5f" : "#fff",
-                color: activeLayer === btn.id ? "#fff" : "#64748b",
-              }}
-            >
-              {btn.id !== "eraser" && (
-                <span
-                  className="inline-block w-3 h-3 rounded-sm mr-1.5"
-                  style={{ background: MASK_LAYER_COLOR[btn.id].replace("0.55", "1") }}
-                />
-              )}
-              {btn.label}
-            </button>
-          ) : null
-        ))}
-
-        <button
-          type="button"
-          onClick={() => setPanMode((v) => !v)}
-          className="ml-auto px-3 py-1.5 rounded-lg text-xs font-bold border-2 transition-all"
-          style={{
-            borderColor: panMode ? "#f97316" : "#e2e8f0",
-            background: panMode ? "#fff7ed" : "#fff",
-            color: panMode ? "#f97316" : "#64748b",
-          }}
-        >
-          {panMode ? "移動モード" : "描画モード"}
-        </button>
-      </div>
-
-      {/* Brush size */}
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-slate-500 shrink-0">ブラシ</span>
-        <input
-          type="range" min={5} max={80} value={brushSize}
-          onChange={(e) => onBrushChange(Number(e.target.value))}
-          className="flex-1 accent-[#1e3a5f]"
-        />
-        <span className="text-xs text-slate-500 w-8 text-right">{brushSize}px</span>
-      </div>
-
-      {/* Display canvas */}
-      <div ref={containerRef} className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50" style={{ touchAction: "none" }}>
-        <div style={{ transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`, transformOrigin: "center", transition: "none" }}>
-          <canvas
-            ref={displayRef}
-            className="w-full h-auto block"
-            style={{ maxHeight: "60vh", objectFit: "contain" }}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-          />
-        </div>
-        {/* Offscreen canvases */}
-        {(["wall1", "wall2", "roof"] as const).map((layer) => (
-          <canvas
-            key={layer}
-            ref={(el) => { canvasRefs.current[layer] = el; }}
-            className="hidden"
-          />
-        ))}
-      </div>
-
-      <p className="text-xs text-slate-400 text-center">
-        指定したい範囲をなぞって色を塗ってください。2本指で拡大・移動できます。
-      </p>
-    </div>
-  );
-}
-
 // ─── Step indicator ───────────────────────────────────────────────────────────
 const STEPS: { id: SimStep; label: string }[] = [
   { id: "upload",  label: "写真" },
   { id: "pattern", label: "パターン" },
   { id: "color",   label: "カラー" },
-  { id: "mask",    label: "範囲" },
   { id: "result",  label: "結果" },
 ];
 
@@ -684,18 +458,12 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
   const [wallColor2, setWallColor2] = useState<ColorItem>(ALL_COLORS[12]);
   const [roofColor,  setRoofColor]  = useState<ColorItem>(ALL_COLORS[14]);
 
-  const [useManualMask, setUseManualMask] = useState(false);
-  const [activeLayer, setActiveLayer]     = useState<MaskLayer>("wall1");
-  const [brushSize,   setBrushSize]       = useState(30);
-  const maskCanvasRefs = useRef<Record<Exclude<MaskLayer, "eraser">, HTMLCanvasElement | null>>({
-    wall1: null, wall2: null, roof: null,
-  });
-  const maskImgRef = useRef<HTMLImageElement | null>(null);
 
   const [isGenerating, setIsGenerating]   = useState(false);
   const [loadingPhase, setLoadingPhase]   = useState(0);
   const [generateError, setGenerateError] = useState<string | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [beforeImage, setBeforeImage]     = useState<string | null>(null);
   const [simulationId, setSimulationId]   = useState<string | null>(null);
   const [resultView, setResultView]       = useState<"before" | "after" | "slider">("slider");
   const generatingRef = useRef(false);
@@ -705,13 +473,6 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
   const hasTwoTone = paintPattern === "wall-twoTone" || paintPattern === "wall-twoTone-roof";
   const hasRoof    = ["wall1-roof", "wall-twoTone-roof", "roof-only"].includes(paintPattern);
   const hasWall    = paintPattern !== "roof-only";
-
-  const activeMaskLayers: MaskLayer[] = [
-    ...(hasWall ? ["wall1" as MaskLayer] : []),
-    ...(hasTwoTone ? ["wall2" as MaskLayer] : []),
-    ...(hasRoof ? ["roof" as MaskLayer] : []),
-    "eraser",
-  ];
 
   // Loading phase cycling
   useEffect(() => {
@@ -764,37 +525,7 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
     }
   }, []);
 
-  // ── Extract mask as PNG blob ─────────────────────────────────────────────
-  async function getMaskFile(layer: Exclude<MaskLayer, "eraser">): Promise<File | null> {
-    const c = maskCanvasRefs.current[layer];
-    if (!c) return null;
-    const imgEl = maskImgRef.current;
-    if (!imgEl) return null;
-
-    // Create an RGBA PNG: painted areas = transparent, rest = white
-    const offscreen = document.createElement("canvas");
-    offscreen.width = imgEl.naturalWidth;
-    offscreen.height = imgEl.naturalHeight;
-    const ctx = offscreen.getContext("2d")!;
-
-    // Fill white (preserve)
-    ctx.fillStyle = "rgba(255,255,255,1)";
-    ctx.fillRect(0, 0, offscreen.width, offscreen.height);
-
-    // Erase where painted (transparent = editable)
-    ctx.globalCompositeOperation = "destination-out";
-    ctx.drawImage(c, 0, 0, offscreen.width, offscreen.height);
-    ctx.globalCompositeOperation = "source-over";
-
-    return new Promise((resolve) => {
-      offscreen.toBlob((blob) => {
-        if (!blob) { resolve(null); return; }
-        resolve(new File([blob], `mask_${layer}.png`, { type: "image/png" }));
-      }, "image/png");
-    });
-  }
-
-  // ── Generate ─────────────────────────────────────────────────────────────
+  // ── Generate (with user-selected colors) ─────────────────────────────────
   async function handleGenerate() {
     if (!imageDataUrl || isGenerating || generatingRef.current) return;
     generatingRef.current = true;
@@ -805,19 +536,7 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
       const fd = new FormData();
       const imgFile = await dataUrlToFile(imageDataUrl, "house.jpg");
       fd.append("image", imgFile);
-
-      if (useManualMask) {
-        const m1 = await getMaskFile("wall1");
-        const m2 = await getMaskFile("wall2");
-        const mr = await getMaskFile("roof");
-        if (m1) fd.append("maskWall1", m1);
-        if (m2) fd.append("maskWall2", m2);
-        if (mr) fd.append("maskRoof", mr);
-        fd.append("useAutoMask", "false");
-      } else {
-        fd.append("useAutoMask", "true");
-      }
-
+      fd.append("useAutoMask", "true");
       fd.append("paintPattern", paintPattern);
       fd.append("twoToneMethod", twoToneMethod);
       fd.append("wallColor1", JSON.stringify(wallColor1));
@@ -832,6 +551,7 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
       }
 
       setGeneratedImage(data.image);
+      setBeforeImage(data.beforeImage ?? imageDataUrl);
       setSimulationId(data.simulationId ?? null);
       setStep("result");
       setResultView("slider");
@@ -869,8 +589,47 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
     });
   }
 
+  // ── Generate (AI auto-selects colors) ────────────────────────────────────
+  async function handleAiGenerate() {
+    if (!imageDataUrl) {
+      setStep("upload");
+      return;
+    }
+    if (isGenerating || generatingRef.current) return;
+    generatingRef.current = true;
+    setIsGenerating(true);
+    setGenerateError(null);
+
+    try {
+      const fd = new FormData();
+      const imgFile = await dataUrlToFile(imageDataUrl, "house.jpg");
+      fd.append("image", imgFile);
+      fd.append("useAutoMask", "true");
+      fd.append("aiChooseColor", "true");
+      fd.append("paintPattern", "wall1");
+      fd.append("twoToneMethod", "floor12");
+
+      const res = await fetch("/api/gaiheki-paint-simulator", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok || !data.image) throw new Error(data.error ?? "シミュレーション画像を作成できませんでした。");
+
+      setGeneratedImage(data.image);
+      setBeforeImage(data.beforeImage ?? imageDataUrl);
+      setSimulationId(data.simulationId ?? null);
+      setStep("result");
+      setResultView("slider");
+      setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "シミュレーション画像を作成できませんでした。写真や通信環境を確認して、もう一度お試しください。";
+      setGenerateError(msg);
+    } finally {
+      setIsGenerating(false);
+      generatingRef.current = false;
+    }
+  }
+
   // ── Navigation helpers ────────────────────────────────────────────────────
-  const stepOrder: SimStep[] = ["upload", "pattern", "color", "mask", "result"];
+  const stepOrder: SimStep[] = ["upload", "pattern", "color", "result"];
   function goNext() {
     const i = stepOrder.indexOf(step);
     if (i < stepOrder.length - 1) setStep(stepOrder[i + 1]);
@@ -918,9 +677,10 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
             自宅写真をアップロードするだけで、<br />
             塗装後の完成イメージをAIが生成します
           </p>
+
         </div>
 
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-5">
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 mt-4">
           {step !== "result" && <StepIndicator current={step} />}
 
           {/* ══ STEP 1: Upload ══ */}
@@ -1124,94 +884,14 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
                 シミュレーション画像は仕上がりのイメージです。実際の色味は、塗料、外壁材、光の当たり方、周辺環境などによって異なります。
               </div>
 
-              <div className="flex gap-2">
-                <button onClick={goBack} className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold text-sm">
-                  戻る
-                </button>
-                <button onClick={goNext} className="flex-[2] py-3 rounded-2xl font-extrabold text-sm" style={navBtnStyle}>
-                  塗装範囲を確認する →
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* ══ STEP 4: Mask ══ */}
-          {step === "mask" && (
-            <div className="space-y-4">
-              <h3 className="text-base font-extrabold text-slate-900">STEP 4：塗装範囲の確認・修正</h3>
-
-              {/* Color preview */}
-              <div className="flex flex-wrap gap-2">
-                {hasWall && (
-                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
-                    <span className="w-5 h-5 rounded-md border border-black/10" style={{ background: wallColor1.hex }} />
-                    <span className="text-xs font-semibold text-slate-700">{hasTwoTone ? "外壁1：" : "外壁："}{wallColor1.name}</span>
-                  </div>
-                )}
-                {hasTwoTone && (
-                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
-                    <span className="w-5 h-5 rounded-md border border-black/10" style={{ background: wallColor2.hex }} />
-                    <span className="text-xs font-semibold text-slate-700">外壁2：{wallColor2.name}</span>
-                  </div>
-                )}
-                {hasRoof && (
-                  <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
-                    <span className="w-5 h-5 rounded-md border border-black/10" style={{ background: roofColor.hex }} />
-                    <span className="text-xs font-semibold text-slate-700">屋根：{roofColor.name}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Mode toggle */}
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setUseManualMask(false)}
-                  className="flex-1 py-2.5 rounded-xl text-sm font-bold border-2 transition-all"
-                  style={{
-                    borderColor: !useManualMask ? "#1e3a5f" : "#e2e8f0",
-                    background: !useManualMask ? "#1e3a5f" : "#fff",
-                    color: !useManualMask ? "#fff" : "#64748b",
-                  }}
-                >
-                  AIに自動判定させる
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setUseManualMask(true)}
-                  className="flex-1 py-2.5 rounded-xl text-sm font-bold border-2 transition-all"
-                  style={{
-                    borderColor: useManualMask ? "#1e3a5f" : "#e2e8f0",
-                    background: useManualMask ? "#1e3a5f" : "#fff",
-                    color: useManualMask ? "#fff" : "#64748b",
-                  }}
-                >
-                  塗る範囲を修正する
-                </button>
-              </div>
-
-              {useManualMask && imageDataUrl && (
-                <MaskCanvas
-                  imageDataUrl={imageDataUrl}
-                  activeLayers={activeMaskLayers}
-                  activeLayer={activeLayer}
-                  brushSize={brushSize}
-                  onLayerChange={setActiveLayer}
-                  onBrushChange={setBrushSize}
-                  canvasRefs={maskCanvasRefs}
-                  imgRef={maskImgRef}
-                />
-              )}
-
-              {!useManualMask && imageDataUrl && (
-                <div className="rounded-2xl overflow-hidden border border-slate-200">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={imageDataUrl} alt="プレビュー" className="w-full h-auto block" />
-                  <div className="p-3 bg-blue-50 text-center">
-                    <p className="text-xs text-blue-700">AIが外壁・屋根を自動判定してカラーを適用します</p>
-                  </div>
-                </div>
-              )}
+              <button
+                onClick={handleAiGenerate}
+                disabled={isGenerating}
+                className="w-full py-3.5 rounded-2xl font-extrabold text-base transition-all active:scale-[0.98] disabled:opacity-60"
+                style={ctaStyle}
+              >
+                カラーをお任せでシミュレーションしてみる →
+              </button>
 
               {generateError && (
                 <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
@@ -1220,20 +900,16 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
               )}
 
               <div className="flex gap-2">
-                <button
-                  onClick={goBack}
-                  disabled={isGenerating}
-                  className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold text-sm disabled:opacity-50"
-                >
+                <button onClick={goBack} disabled={isGenerating} className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold text-sm disabled:opacity-50">
                   戻る
                 </button>
                 <button
                   onClick={handleGenerate}
                   disabled={isGenerating}
                   className="flex-[2] py-3 rounded-2xl font-extrabold text-sm transition-all active:scale-[0.98] disabled:opacity-60"
-                  style={ctaStyle}
+                  style={navBtnStyle}
                 >
-                  {isGenerating ? "生成中..." : "このカラーでシミュレーションする"}
+                  {isGenerating ? "生成中..." : "この色でシミュレーション →"}
                 </button>
               </div>
 
@@ -1300,12 +976,12 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
 
               {/* Image display */}
               {resultView === "slider" && (
-                <BeforeAfterSlider before={imageDataUrl} after={generatedImage} />
+                <BeforeAfterSlider before={beforeImage ?? imageDataUrl} after={generatedImage} />
               )}
               {resultView === "before" && (
                 <div className="rounded-2xl overflow-hidden border border-slate-200">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={imageDataUrl} alt="元の写真" className="w-full h-auto block" />
+                  <img src={beforeImage ?? imageDataUrl} alt="元の写真" className="w-full h-auto block" />
                   <p className="text-center text-xs text-slate-500 py-2 bg-slate-50">元の写真</p>
                 </div>
               )}
@@ -1365,7 +1041,7 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
                   className="w-full py-4 rounded-2xl font-extrabold text-base transition-all active:scale-[0.98]"
                   style={ctaStyle}
                 >
-                  この配色で無料見積もり
+                  無料見積もりを依頼する
                 </button>
 
                 <div className="grid grid-cols-2 gap-3">

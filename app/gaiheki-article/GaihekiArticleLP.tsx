@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, type ReactNode } from 'react';
+import GaihekiColorSimulator, { type SimulationData } from '../gaiheki/components/GaihekiColorSimulator';
 import {
   CheckCircle,
   AlertTriangle,
@@ -1442,6 +1443,24 @@ export default function GaihekiArticleLP() {
         </div>
       </section>
 
+      {/* ── カラーシミュレーション（CTA直下） ───────────────────────────────── */}
+      <GaihekiColorSimulator
+        id="color-simulator"
+        onRequestQuote={(data: SimulationData) => {
+          try {
+            sessionStorage.setItem('gaiheki-sim-data', JSON.stringify({
+              wallColor1: data.wallColor1,
+              wallColor2: data.wallColor2,
+              roofColor: data.roofColor,
+              paintPattern: data.paintPattern,
+              twoToneMethod: data.twoToneMethod,
+              simulationId: data.simulationId,
+            }));
+          } catch { /* ignore */ }
+          window.location.href = '/gaiheki';
+        }}
+      />
+
       {/* ── 3. よくある失敗 ──────────────────────────────────────────────── */}
       <section
         className="relative py-14 sm:py-20"
@@ -2873,16 +2892,6 @@ export default function GaihekiArticleLP() {
       {/* ── 12. 最終CTA ───────────────────────────────────────────────────── */}
       <section className="bg-white py-16 sm:py-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-
-          {/* [IMAGE_5: 信頼感ビジュアル — 施工後の美しい外壁・満足した施主イメージ] */}
-          {/* ↓ ここにフィナルCTA直前の信頼感を演出する横長画像を差し込む */}
-          <FadeUp className="mb-10">
-            <ImgPlaceholder
-              aspect="16/5"
-              label="信頼感ビジュアル（施工後イメージ）"
-              className="shadow-lg"
-            />
-          </FadeUp>
 
           <FadeUp delay={100}>
             <div
