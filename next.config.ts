@@ -33,6 +33,16 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
           destination: "/driver",
         },
+        {
+          source: "/",
+          has: [{ type: "host", value: "takanagakensetu.com" }],
+          destination: "/gaikou",
+        },
+        {
+          source: "/",
+          has: [{ type: "host", value: "www.takanagakensetu.com" }],
+          destination: "/gaikou",
+        },
       ],
     };
   },
