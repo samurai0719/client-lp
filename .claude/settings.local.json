@@ -207,7 +207,8 @@
       "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw npx playwright install chromium)",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw node *)",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw npx playwright --version)",
-      "Bash(kill 57929 59431)"
+      "Bash(kill 57929 59431)",
+      "Bash(kill 62762 1491)"
     ]
   }
 }

@@ -267,9 +267,11 @@ export default function ContactSection() {
             </div>
           )}
 
-          <button type="submit" className="gaikou-cta-btn w-full">
-            <span className="gaikou-cta-btn-inner">無料で相談・お見積もりを依頼する</span>
-          </button>
+          <div className="max-w-[26rem] mx-auto">
+            <button type="submit" className="gaikou-cta-btn w-full">
+              <span className="gaikou-cta-btn-inner">無料で相談・お見積もりを依頼する</span>
+            </button>
+          </div>
 
           <p className="text-xs text-[#8a9a90] text-center leading-relaxed">
             ご入力いただいた情報は、お問い合わせ対応のみに使用します。

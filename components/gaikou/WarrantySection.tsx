@@ -48,11 +48,14 @@ export default function WarrantySection() {
               >
                 <Icon className="w-5 h-5 text-[#1f4d3d] mb-2" aria-hidden="true" />
                 <p className="text-[13px] sm:text-sm font-bold text-[#10302a]">{item.title}</p>
-                <p className="mt-1 text-[12px] sm:text-[13px] text-[#8a9a90]">{item.body}</p>
+                <p className="mt-1 text-[12px] sm:text-[13px] text-[#8a9a90] leading-relaxed" style={{ overflowWrap: "anywhere" }}>{item.body}</p>
               </motion.div>
             );
           })}
         </div>
+        <p className="mt-7 sm:mt-8 text-center text-[11px] text-[#9bb3a8] leading-relaxed px-5">
+          ※保証内容・期間・対象範囲は、工事内容および使用商品によって異なります。詳しくは契約書・保証書をご確認ください。
+        </p>
       </div>
     </section>
   );

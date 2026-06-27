@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function GaikouHeader() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-[#e7e3d8] shadow-sm">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center gap-3">
+      <div className="px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center gap-3">
         <Image
           src="/images/gaikou/logo-transparent.png"
           alt="高長建設"

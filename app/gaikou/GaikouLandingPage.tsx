@@ -67,7 +67,7 @@ export default function GaikouLandingPage() {
           <AreaSection />
           <ReassuranceSection />
 
-          <div className="relative px-4 sm:px-6 pb-14 sm:pb-16">
+          <div className="relative px-4 sm:px-6 pb-14 sm:pb-16 text-center">
             <CTABlock />
           </div>
 

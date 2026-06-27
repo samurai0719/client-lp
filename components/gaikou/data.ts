@@ -315,10 +315,10 @@ export type PlanItem = {
 };
 
 export const plans: PlanItem[] = [
-  { id: 1, title: "砂利からコンクリート", image: "", price: "価格は後日掲載", duration: "工期は後日掲載" },
-  { id: 2, title: "駐車場＋雑草対策", image: "", price: "価格は後日掲載", duration: "工期は後日掲載" },
-  { id: 3, title: "庭撤去＋駐車場拡張", image: "", price: "価格は後日掲載", duration: "工期は後日掲載" },
-  { id: 4, title: "駐車場＋カーポート＋フェンス", image: "", price: "価格は後日掲載", duration: "工期は後日掲載" },
+  { id: 1, title: "砂利からコンクリート", image: "/images/gaikou/plans/plan-4.png", price: "35万円から", duration: "工期 3〜5日" },
+  { id: 2, title: "駐車場＋雑草対策", image: "/images/gaikou/plans/plan-2.png", price: "42万円から", duration: "工期 4〜6日" },
+  { id: 3, title: "庭撤去＋駐車場拡張", image: "/images/gaikou/plans/plan-3.png", price: "58万円から", duration: "工期 5〜8日" },
+  { id: 4, title: "駐車場＋カーポート＋フェンス", image: "/images/gaikou/plans/plan-1.png", price: "98万円から", duration: "工期 7〜12日" },
 ];
 
 export type WarrantyItem = {
@@ -328,13 +328,13 @@ export type WarrantyItem = {
 };
 
 export const warrantyItems: WarrantyItem[] = [
-  { iconKey: "message-circle", title: "工事後の不具合相談", body: "内容は確定後に掲載いたします" },
-  { iconKey: "wrench", title: "補修対応", body: "内容は確定後に掲載いたします" },
-  { iconKey: "badge-check", title: "メーカー商品保証", body: "内容は確定後に掲載いたします" },
-  { iconKey: "clipboard-check", title: "完工後確認", body: "内容は確定後に掲載いたします" },
-  { iconKey: "circle-check-big", title: "保証対象", body: "内容は確定後に掲載いたします" },
-  { iconKey: "circle-alert", title: "保証対象外", body: "内容は確定後に掲載いたします" },
-  { iconKey: "calendar-check", title: "保証期間", body: "内容は確定後に掲載いたします" },
+  { iconKey: "message-circle", title: "工事後の不具合相談", body: "施工後に気になる点や不具合があった場合は、状況を確認のうえ迅速に対応します。" },
+  { iconKey: "wrench", title: "補修対応", body: "当社の施工に起因する不具合については、保証内容に基づき補修対応を行います。" },
+  { iconKey: "badge-check", title: "メーカー商品保証", body: "カーポート・フェンス・門柱などの商品は、各メーカーが定める保証内容が適用されます。" },
+  { iconKey: "clipboard-check", title: "完工後確認", body: "工事完了後はお客様と施工箇所を確認し、仕上がりや使用方法をご説明します。" },
+  { iconKey: "circle-check-big", title: "保証対象", body: "保証書または契約書に記載された施工箇所・商品・期間を保証対象とします。" },
+  { iconKey: "circle-alert", title: "保証対象外", body: "自然災害・経年劣化・お客様による破損・当社以外の工事による不具合は対象外となる場合があります。" },
+  { iconKey: "calendar-check", title: "保証期間", body: "保証期間は工事内容や使用商品によって異なります。詳しい内容はお見積もり時にご説明します。" },
 ];
 
 export type FaqItem = {

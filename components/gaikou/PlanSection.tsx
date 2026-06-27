@@ -33,9 +33,9 @@ export default function PlanSection() {
                 )}
               </div>
               <div className="p-3 sm:p-4">
-                <h3 className="text-[12.5px] sm:text-sm font-bold text-[#10302a] leading-snug">{plan.title}</h3>
-                <p className="mt-1.5 text-[12px] sm:text-sm font-bold text-[#d9601a]">{plan.price}</p>
-                <p className="mt-1 flex items-center gap-1 text-[11px] text-[#6b7a73]">
+                <h3 className="text-[12.5px] sm:text-sm font-bold text-[#10302a] leading-snug" style={{ overflowWrap: "anywhere" }}>{plan.title}</h3>
+                <p className="mt-1.5 text-[12px] sm:text-sm font-bold text-[#d9601a]" style={{ overflowWrap: "anywhere" }}>{plan.price}</p>
+                <p className="mt-1 flex items-center gap-1 text-[11px] text-[#6b7a73]" style={{ overflowWrap: "anywhere", wordBreak: "normal", whiteSpace: "normal" }}>
                   <Clock className="w-3 h-3 shrink-0" aria-hidden="true" />
                   {plan.duration}
                 </p>
@@ -43,6 +43,9 @@ export default function PlanSection() {
             </motion.div>
           ))}
         </div>
+        <p className="mt-5 text-center text-[11px] text-[#9bb3a8] leading-relaxed">
+          ※施工面積・現地状況・使用商品により価格と工期は変動します。
+        </p>
       </div>
     </section>
   );
