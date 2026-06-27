@@ -42,7 +42,7 @@ export default function GaikouLandingPage() {
           <HeroSection />
           <SectionDivider color="#fdfbf6" />
 
-          <div className="relative px-4 sm:px-6 pt-10 sm:pt-12">
+          <div className="relative px-4 sm:px-6 pt-0 pb-8 sm:pb-10">
             <CTABlock />
           </div>
 
