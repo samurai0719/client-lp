@@ -1,0 +1,782 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes cta-glow {
+  0%, 100% { box-shadow: 0 4px 24px 0 rgba(249, 115, 22, 0.28); }
+  50%       { box-shadow: 0 4px 36px 6px rgba(249, 115, 22, 0.48); }
+}
+.cta-glow {
+  animation: cta-glow 2.5s ease-in-out infinite;
+}
+
+/* Sparkles text shimmer — h1 (full particles + shimmer) */
+@keyframes sparkle-shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.sparkle-text {
+  background: linear-gradient(
+    90deg,
+    #0f172a 0%,
+    #0f172a 38%,
+    #f59e0b 48%,
+    #fbbf24 50%,
+    #f59e0b 52%,
+    #0f172a 62%,
+    #0f172a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: sparkle-shimmer 4s linear infinite;
+}
+
+/* Sparkle text subtle — h2 (slower, narrower shimmer) */
+.sparkle-text-subtle {
+  background: linear-gradient(
+    90deg,
+    #0f172a 0%,
+    #0f172a 43%,
+    #d97706 49%,
+    #f59e0b 50%,
+    #d97706 51%,
+    #0f172a 57%,
+    #0f172a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: sparkle-shimmer 7s linear infinite;
+}
+
+/* Sparkle particle */
+@keyframes sparkle-pop {
+  0%   { transform: scale(0) rotate(0deg);   opacity: 0; }
+  50%  { transform: scale(1) rotate(90deg);  opacity: 1; }
+  100% { transform: scale(0) rotate(180deg); opacity: 0; }
+}
+.sparkle-particle {
+  animation: sparkle-pop var(--dur, 1.5s) ease-in-out var(--delay, 0s) infinite;
+}
+
+/* Hero entrance */
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-enter {
+  animation: heroIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ctaFloat {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 6px 0 rgba(146, 92, 0, 0.35),
+      0 14px 28px rgba(180, 126, 20, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow:
+      0 7px 0 rgba(146, 92, 0, 0.30),
+      0 18px 34px rgba(180, 126, 20, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes ctaShine {
+  0% {
+    transform: translateX(-140%) skewX(-20deg);
+  }
+  45%, 100% {
+    transform: translateX(140%) skewX(-20deg);
+  }
+}
+
+/* 3D CTA Button ─────────────────────── */
+.cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #1a0f00;
+  text-decoration: none;
+  background: linear-gradient(
+    155deg,
+    #f5dc70 0%,
+    #d4a840 18%,
+    #b07020 42%,
+    #cc9a30 65%,
+    #eece58 85%,
+    #b07020 100%
+  );
+  animation: ctaFloat 2.8s ease-in-out infinite;
+}
+
+.cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.cta-btn:hover .cta-btn-inner {
+  transform: translateY(-1px) scale(1.01);
+}
+
+.cta-btn:active .cta-btn-inner {
+  transform: translateY(2px) scale(0.995);
+}
+
+.cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+  animation: ctaShine 3.5s ease-in-out infinite;
+}
+
+/* ── Nurse Senka Houmon LP CTA ───────────────────────────────────── */
+@keyframes nurseCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 5px 0 rgba(210, 50, 100, 0.3),
+      0 12px 28px rgba(249, 107, 157, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 7px 0 rgba(210, 50, 100, 0.25),
+      0 18px 36px rgba(249, 107, 157, 0.44),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes nurseCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.nurse-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(145deg, #f96ba0 0%, #ff8c60 50%, #f96ba0 100%);
+  background-size: 200% 200%;
+  animation: nurseCta-float 2.8s ease-in-out infinite;
+}
+
+.nurse-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.nurse-cta-btn:hover .nurse-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.nurse-cta-btn:active .nurse-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.nurse-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: nurseCta-shine 3.5s ease-in-out infinite;
+}
+
+/* ── Nurse Senka Shisetsu LP CTA (green) ────────────────────────── */
+@keyframes shisetsuCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 5px 0 rgba(21, 128, 61, 0.30),
+      0 12px 28px rgba(34, 197, 94, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 7px 0 rgba(21, 128, 61, 0.25),
+      0 18px 36px rgba(34, 197, 94, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes shisetsuCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.shisetsu-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(145deg, #22c55e 0%, #16a34a 50%, #0d9488 100%);
+  background-size: 200% 200%;
+  animation: shisetsuCta-float 2.8s ease-in-out infinite;
+}
+
+.shisetsu-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.shisetsu-cta-btn:hover .shisetsu-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.shisetsu-cta-btn:active .shisetsu-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.shisetsu-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: shisetsuCta-shine 3.5s ease-in-out infinite;
+}
+
+/* ── Sekou Kanri LP CTA (orange) ────────────────────────────────── */
+@keyframes sekouCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 5px 0 rgba(180, 60, 0, 0.35),
+      0 12px 28px rgba(249, 115, 22, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow:
+      0 7px 0 rgba(180, 60, 0, 0.28),
+      0 18px 36px rgba(249, 115, 22, 0.46),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes sekouCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.sekou-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(155deg, #ff9a47 0%, #f97316 44%, #e55d0a 100%);
+  border: 1px solid rgba(210, 72, 0, 0.42);
+  animation: sekouCta-float 2.8s ease-in-out infinite;
+}
+
+.sekou-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.sekou-cta-btn:hover .sekou-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.sekou-cta-btn:active .sekou-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.sekou-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: sekouCta-shine 3.5s ease-in-out infinite;
+}
+
+/* ── Taxi Tenshoku LP CTA (yellow-black) ────────────────────────── */
+@keyframes taxiCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 6px 0 rgba(100, 70, 0, 0.38),
+      0 14px 30px rgba(220, 170, 0, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.50);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 8px 0 rgba(100, 70, 0, 0.30),
+      0 20px 38px rgba(220, 170, 0, 0.44),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+}
+
+@keyframes taxiCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.taxi-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #1a0f00;
+  text-decoration: none;
+  background: linear-gradient(
+    155deg,
+    #ffe047 0%,
+    #f5c000 22%,
+    #d4960a 48%,
+    #f0b800 70%,
+    #ffe047 100%
+  );
+  border: 1.5px solid rgba(160, 110, 0, 0.30);
+  box-shadow:
+    0 6px 0 rgba(100, 70, 0, 0.38),
+    0 14px 30px rgba(220, 170, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+  animation: taxiCta-float 2.8s ease-in-out infinite;
+}
+
+/* :visited/:link override — prevent browser visited-link color from bleeding through */
+.taxi-cta-btn:link,
+.taxi-cta-btn:visited,
+.taxi-cta-btn:hover,
+.taxi-cta-btn:active {
+  color: #1a0f00;
+  text-decoration: none;
+}
+
+.taxi-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.taxi-cta-btn:hover .taxi-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.taxi-cta-btn:active .taxi-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.taxi-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: taxiCta-shine 3.5s ease-in-out infinite;
+}
+
+/* ── Gaiheki LP CTA (orange) — デザイン仕様準拠 ──────────────────── */
+.gaiheki-cta-btn {
+  display: block;
+  width: 100%;
+  padding: 1.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  font-size: 1.06rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(180deg, #f7833a 0%, #e96a1f 55%, #d6571a 100%);
+  border: 1px solid #c9501a;
+  border-radius: 999px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 -3px 0 rgba(0, 0, 0, 0.18) inset,
+    0 10px 22px -6px rgba(233, 106, 31, 0.55),
+    0 4px 10px -2px rgba(201, 80, 26, 0.4);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.gaiheki-cta-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.gaiheki-cta-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.18) inset,
+    0 4px 10px -4px rgba(233, 106, 31, 0.5);
+}
+
+.gaiheki-cta-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.gaiheki-cta-btn:focus-visible {
+  outline: 3px solid rgba(249, 115, 22, 0.5);
+  outline-offset: 2px;
+}
+
+.gaiheki-cta-btn-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.gaiheki-cta-shine {
+  display: none; /* 廃止: 3層シャドウで立体感を表現 */
+}
+
+@media (min-width: 768px) {
+  .gaiheki-cta-btn {
+    padding: 1.25rem 1.75rem;
+  }
+}
+
+@keyframes gaihekiStepIn {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.gaiheki-step-in {
+  animation: gaihekiStepIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes gaihekiFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.gaiheki-fade-in {
+  animation: gaihekiFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Reduced motion: disable all decorative animations */
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter  { animation: none; opacity: 1; transform: none; }
+  .sparkle-text,
+  .sparkle-text-subtle {
+    animation: none !important;
+    background: none !important;
+    -webkit-text-fill-color: #0f172a !important;
+    color: #0f172a;
+  }
+  .sparkle-particle { display: none; }
+  .cta-glow  { animation: none !important; }
+  .cta-float { animation: none !important; }
+  .cta-btn   { animation: none !important; }
+  .cta-shine { animation: none !important; display: none; }
+  .nurse-cta-btn   { animation: none !important; }
+  .nurse-cta-shine { animation: none !important; display: none; }
+  .shisetsu-cta-btn   { animation: none !important; }
+  .shisetsu-cta-shine { animation: none !important; display: none; }
+  .sekou-cta-btn   { animation: none !important; }
+  .sekou-cta-shine { animation: none !important; display: none; }
+  .taxi-cta-btn    {
+    animation: none !important;
+    box-shadow:
+      0 6px 0 rgba(100, 70, 0, 0.38),
+      0 14px 30px rgba(220, 170, 0, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.50) !important;
+  }
+  .taxi-cta-shine  { animation: none !important; display: none; }
+  .gaiheki-cta-btn   { transition: none; }
+  .gaiheki-step-in   { animation: none !important; opacity: 1; transform: none; }
+  .gaiheki-fade-in   { animation: none !important; opacity: 1; transform: none; }
+}
+
+/* Section fade-in (JS-driven via IntersectionObserver) */
+.section-fade {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.section-fade.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Office Wellness LP CTA (gold) ──────────────────────────────── */
+@keyframes wellnessCta-float {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow:
+      0 6px 0 rgba(100, 72, 20, 0.35),
+      0 14px 32px rgba(180, 140, 60, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  }
+  50% {
+    transform: translateY(-3px);
+    box-shadow:
+      0 8px 0 rgba(100, 72, 20, 0.28),
+      0 20px 40px rgba(180, 140, 60, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+}
+
+@keyframes wellnessCta-shine {
+  0%          { transform: translateX(-140%) skewX(-20deg); }
+  45%, 100%   { transform: translateX(140%)  skewX(-20deg); }
+}
+
+.wellness-cta-btn {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  border-radius: 1rem;
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: 800;
+  color: #1a0d00;
+  text-decoration: none;
+  background: linear-gradient(
+    155deg,
+    #e8c87a 0%,
+    #c9a040 20%,
+    #9a7028 48%,
+    #b88e38 68%,
+    #e0bc68 88%,
+    #9a7028 100%
+  );
+  border: 1px solid rgba(140, 100, 30, 0.30);
+  animation: wellnessCta-float 2.8s ease-in-out infinite;
+}
+
+.wellness-cta-btn:link,
+.wellness-cta-btn:visited,
+.wellness-cta-btn:hover,
+.wellness-cta-btn:active {
+  color: #1a0d00;
+  text-decoration: none;
+}
+
+.wellness-cta-btn-inner {
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease-out;
+}
+
+.wellness-cta-btn:hover .wellness-cta-btn-inner { transform: translateY(-1px) scale(1.01); }
+.wellness-cta-btn:active .wellness-cta-btn-inner { transform: translateY(2px) scale(0.995); }
+
+.wellness-cta-shine {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 45%;
+  height: 120%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.30) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  animation: wellnessCta-shine 3.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wellness-cta-btn   { animation: none !important; box-shadow: 0 6px 0 rgba(100,72,20,0.35), 0 14px 32px rgba(180,140,60,0.28) !important; }
+  .wellness-cta-shine { animation: none !important; display: none; }
+}
+
+/* ── Gaiheki Article LP: タイポグラフィ基盤 (v3 design spec) ─── */
+.gaiheki-article-lp {
+  font-feature-settings: "palt" 1;
+  color: #28292a;
+}
+.gaiheki-article-lp p,
+.gaiheki-article-lp li {
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+}
+
+/* 明朝見出し (Shippori Mincho B1 / Noto Serif JP フォールバック) */
+.gaiheki-font-mincho {
+  font-family: "Shippori Mincho B1", "Noto Serif JP", "YuMincho", "游明朝", "Hiragino Mincho ProN", serif;
+  font-feature-settings: "palt" 1;
+}
+
+/* セクション見出し英語ラベル (.sec-title .en 相当) */
+.gaiheki-sec-en {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Manrope", "Noto Sans JP", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #c9501a;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.gaiheki-sec-en::before,
+.gaiheki-sec-en::after {
+  content: "";
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  background: #e96a1f;
+  flex-shrink: 0;
+}
+.gaiheki-sec-en-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Manrope", "Noto Sans JP", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #c9501a;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.gaiheki-sec-en-left::before {
+  content: "";
+  display: inline-block;
+  width: 22px;
+  height: 1px;
+  background: #e96a1f;
+  flex-shrink: 0;
+}
+
+/* ── Gaiheki Article LP: 見出しのマーカー風アンダーライン ──────────
+   複数行になっても各行に自然に付くよう、行（span）ごとに適用する想定。
+   box-decoration-break: clone で、1つのspanが折り返した場合も追従する。 */
+.heading-highlight {
+  background-image: linear-gradient(
+    transparent 70%,
+    rgba(249, 115, 22, 0.20) 70%,
+    rgba(249, 115, 22, 0.20) 86%,
+    transparent 86%
+  );
+  background-repeat: no-repeat;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.08em;
+}
+
+.heading-highlight-blue {
+  background-image: linear-gradient(
+    transparent 68%,
+    rgba(147, 197, 253, 0.4) 68%,
+    rgba(147, 197, 253, 0.4) 88%,
+    transparent 88%
+  );
+  background-repeat: no-repeat;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.08em;
+}
+
+/* ── Driver LP: 質問カードフェードイン ────────────────────────── */
+@keyframes driverFadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: driverFadeIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in { animation: none !important; opacity: 1; transform: none; }
+}
