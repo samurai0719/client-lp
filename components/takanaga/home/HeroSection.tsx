@@ -3,512 +3,275 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Camera, ChevronDown } from "lucide-react";
+import { ArrowRight, Camera } from "lucide-react";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
-/* ─── インラインCSS（コンポーネント専用） ─────────────────────────── */
 const heroStyles = `
-  @keyframes tkn-hero-float {
-    0%, 100% { transform: translateY(0px); }
-    50%       { transform: translateY(-10px); }
+  @keyframes tkn-slide-up {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
   }
-  @keyframes tkn-hero-pulse-ring {
-    0%   { transform: scale(0.8); opacity: 0.6; }
-    100% { transform: scale(1.8); opacity: 0; }
+  @keyframes tkn-slide-right {
+    from { opacity:0; transform:translateX(-24px); }
+    to   { opacity:1; transform:translateX(0); }
   }
-  @keyframes tkn-hero-shimmer {
-    0%   { background-position: -400px 0; }
-    100% { background-position: 400px 0; }
-  }
-  @keyframes tkn-hero-slide-up {
-    from { opacity: 0; transform: translateY(32px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes tkn-hero-slide-right {
-    from { opacity: 0; transform: translateX(-24px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes tkn-hero-scale-in {
-    from { opacity: 0; transform: scale(0.88); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-  @keyframes tkn-hero-particle {
-    0%   { transform: translateY(0) scale(1); opacity: 0.7; }
-    100% { transform: translateY(-120px) scale(0); opacity: 0; }
-  }
-  @keyframes tkn-stripe-slide {
-    from { transform: translateX(-60px); }
-    to   { transform: translateX(0); }
+  @keyframes tkn-scale-in {
+    from { opacity:0; transform:scale(0.9); }
+    to   { opacity:1; transform:scale(1); }
   }
   @keyframes tkn-badge-pop {
-    0%   { opacity: 0; transform: scale(0.7) translateY(12px); }
-    70%  { transform: scale(1.06) translateY(-2px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
+    0%   { opacity:0; transform:scale(0.7); }
+    65%  { transform:scale(1.07); }
+    100% { opacity:1; transform:scale(1); }
   }
-  @keyframes tkn-card-enter {
-    from { opacity: 0; transform: translateY(28px) scale(0.94); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+  @keyframes tkn-pulse {
+    0%,100% { transform:scale(1);   opacity:1; }
+    50%     { transform:scale(1.15); opacity:0.7; }
   }
-  @keyframes tkn-scroll-hint {
-    0%, 100% { transform: translateY(0); opacity: 0.5; }
-    50%       { transform: translateY(6px); opacity: 1; }
+  @keyframes tkn-float {
+    0%,100% { transform:translateY(0); }
+    50%     { transform:translateY(-8px); }
+  }
+  @keyframes tkn-line-in {
+    from { transform:scaleX(0); transform-origin:left; }
+    to   { transform:scaleX(1); transform-origin:left; }
+  }
+  @keyframes tkn-particle-up {
+    0%   { opacity:0.6; transform:translateY(0); }
+    100% { opacity:0;   transform:translateY(-100px); }
   }
 
-  .tkn-hero-tag {
-    animation: tkn-hero-slide-right 0.7s cubic-bezier(.22,.68,0,1.2) 0.1s both;
-  }
-  .tkn-hero-h1 {
-    animation: tkn-hero-slide-up 0.75s cubic-bezier(.22,.68,0,1.1) 0.3s both;
-  }
-  .tkn-hero-sub {
-    animation: tkn-hero-slide-up 0.7s ease-out 0.52s both;
-  }
-  .tkn-hero-cta {
-    animation: tkn-hero-slide-up 0.7s ease-out 0.68s both;
-  }
-  .tkn-hero-sim {
-    animation: tkn-hero-slide-up 0.6s ease-out 0.82s both;
-  }
-  .tkn-hero-badge-0 { animation: tkn-badge-pop 0.6s cubic-bezier(.22,.68,0,1.3) 0.9s both; }
-  .tkn-hero-badge-1 { animation: tkn-badge-pop 0.6s cubic-bezier(.22,.68,0,1.3) 1.0s both; }
-  .tkn-hero-badge-2 { animation: tkn-badge-pop 0.6s cubic-bezier(.22,.68,0,1.3) 1.1s both; }
+  /* デスクトップ */
+  .tkn-tag   { animation: tkn-slide-right 0.6s cubic-bezier(.22,.68,0,1.2) 0.05s both; }
+  .tkn-h1a   { animation: tkn-slide-up    0.7s cubic-bezier(.22,.68,0,1.1) 0.2s  both; }
+  .tkn-h1b   { animation: tkn-slide-up    0.7s cubic-bezier(.22,.68,0,1.1) 0.32s both; }
+  .tkn-sub   { animation: tkn-slide-up    0.65s ease-out                   0.44s both; }
+  .tkn-cta   { animation: tkn-slide-up    0.65s ease-out                   0.56s both; }
+  .tkn-sim   { animation: tkn-slide-up    0.6s  ease-out                   0.68s both; }
+  .tkn-bd0   { animation: tkn-badge-pop   0.55s cubic-bezier(.22,.68,0,1.4) 0.76s both; }
+  .tkn-bd1   { animation: tkn-badge-pop   0.55s cubic-bezier(.22,.68,0,1.4) 0.88s both; }
+  .tkn-bd2   { animation: tkn-badge-pop   0.55s cubic-bezier(.22,.68,0,1.4) 1.0s  both; }
 
-  .tkn-hero-card-0 { animation: tkn-card-enter 0.8s cubic-bezier(.22,.68,0,1.1) 0.5s both; }
-  .tkn-hero-card-1 { animation: tkn-card-enter 0.8s cubic-bezier(.22,.68,0,1.1) 0.7s both; }
-  .tkn-hero-card-2 { animation: tkn-card-enter 0.8s cubic-bezier(.22,.68,0,1.1) 0.9s both; }
+  /* 写真カード */
+  .tkn-card0 { animation: tkn-scale-in 0.75s cubic-bezier(.22,.68,0,1.1) 0.1s  both; }
+  .tkn-card1 { animation: tkn-scale-in 0.75s cubic-bezier(.22,.68,0,1.1) 0.28s both; }
+  .tkn-card2 { animation: tkn-scale-in 0.75s cubic-bezier(.22,.68,0,1.1) 0.46s both; }
+  .tkn-float { animation: tkn-float 5s ease-in-out 1.2s infinite; }
 
-  .tkn-hero-float  { animation: tkn-hero-float 5s ease-in-out 1.2s infinite; }
-  .tkn-scroll-hint { animation: tkn-scroll-hint 1.8s ease-in-out infinite; }
+  .tkn-accent-line {
+    display:block; height:3px; border-radius:2px;
+    background:linear-gradient(90deg,#1d5fa6,#d9601a);
+    margin-top:6px;
+    animation: tkn-line-in 0.6s ease-out 0.5s both;
+  }
 
-  .tkn-card-shine {
-    position: relative;
-    overflow: hidden;
-  }
-  .tkn-card-shine::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
-    background-size: 400px 100%;
-    animation: tkn-hero-shimmer 3.5s ease-in-out 1.5s infinite;
-  }
   @media (prefers-reduced-motion: reduce) {
-    .tkn-hero-tag, .tkn-hero-h1, .tkn-hero-sub, .tkn-hero-cta,
-    .tkn-hero-sim, .tkn-hero-badge-0, .tkn-hero-badge-1, .tkn-hero-badge-2,
-    .tkn-hero-card-0, .tkn-hero-card-1, .tkn-hero-card-2,
-    .tkn-hero-float, .tkn-scroll-hint, .tkn-card-shine::after {
-      animation: none;
-      opacity: 1;
-      transform: none;
+    .tkn-tag,.tkn-h1a,.tkn-h1b,.tkn-sub,.tkn-cta,.tkn-sim,
+    .tkn-bd0,.tkn-bd1,.tkn-bd2,
+    .tkn-card0,.tkn-card1,.tkn-card2,.tkn-float {
+      animation:none; opacity:1; transform:none;
     }
+    .tkn-accent-line { animation:none; transform:scaleX(1); }
   }
 `;
 
-const BADGES = ["現地調査 無料", "お見積もり 無料", "3県対応"];
-
+/* 写真カードデータ */
 const CARDS = [
-  { src: "/images/gaikou/works/case1-after.png", label: "コンクリート駐車場", cls: "tkn-hero-card-0", pos: "top-0 right-0 w-[66%]" },
-  { src: "/images/gaikou/works/case3-after.png", label: "カーポート",           cls: "tkn-hero-card-1", pos: "top-[37%] left-0 w-[46%]" },
-  { src: "/images/gaikou/works/case5-after.png", label: "フェンス・外構",       cls: "tkn-hero-card-2", pos: "bottom-0 right-[4%] w-[42%]" },
+  { src: "/images/gaikou/works/case1-after.png", label: "コンクリート駐車場", cls: "tkn-card0" },
+  { src: "/images/gaikou/works/case3-after.png", label: "カーポート",           cls: "tkn-card1" },
+  { src: "/images/gaikou/works/case5-after.png", label: "フェンス・外構",       cls: "tkn-card2" },
 ];
 
-export default function HeroSection() {
-  const particleRef = useRef<SVGGElement>(null);
+/* 共通シャドウ */
+const shadow = (size: "lg" | "sm") =>
+  size === "lg"
+    ? "0 20px 56px rgba(15,39,68,0.16), 0 0 0 1px rgba(200,216,234,0.6)"
+    : "0 10px 32px rgba(15,39,68,0.13), 0 0 0 1px rgba(200,216,234,0.5)";
 
-  /* パーティクルをランダム配置 */
+/* カードラベルオーバーレイ */
+function CardLabel({ text, size = "sm" }: { text: string; size?: "sm" | "xs" }) {
+  return (
+    <div
+      className="absolute bottom-0 left-0 right-0"
+      style={{ background: "linear-gradient(to top, rgba(15,39,68,0.82) 0%, transparent 100%)", padding: "10px 12px 8px" }}
+    >
+      <span className="flex items-center gap-1.5">
+        <span className="block w-1.5 h-1.5 rounded-full" style={{ background: "#2d7dd2", flexShrink: 0 }} aria-hidden />
+        <span style={{ color: "#fff", fontSize: size === "xs" ? "0.62rem" : "0.72rem", fontWeight: 600 }}>{text}</span>
+      </span>
+    </div>
+  );
+}
+
+export default function HeroSection() {
+  const svgRef = useRef<SVGGElement>(null);
+
   useEffect(() => {
-    const g = particleRef.current;
+    const g = svgRef.current;
     if (!g) return;
-    const circles: SVGCircleElement[] = [];
-    for (let i = 0; i < 18; i++) {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) return;
+    const nodes: SVGElement[] = [];
+    for (let i = 0; i < 12; i++) {
       const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      const x = Math.random() * 100;
-      const y = 20 + Math.random() * 70;
-      const r = 1 + Math.random() * 2;
-      const delay = Math.random() * 6;
-      const dur = 4 + Math.random() * 5;
-      c.setAttribute("cx", `${x}%`);
-      c.setAttribute("cy", `${y}%`);
-      c.setAttribute("r", String(r));
-      c.setAttribute("fill", "rgba(96,165,250,0.5)");
-      c.style.animation = `tkn-hero-particle ${dur}s ease-out ${delay}s infinite`;
+      c.setAttribute("cx", `${10 + Math.random() * 80}%`);
+      c.setAttribute("cy", `${20 + Math.random() * 60}%`);
+      c.setAttribute("r", String(1 + Math.random() * 1.5));
+      c.setAttribute("fill", "rgba(29,95,166,0.2)");
+      const dur = 6 + Math.random() * 6;
+      c.style.animation = `tkn-particle-up ${dur}s ease-out ${Math.random() * 4}s infinite`;
       g.appendChild(c);
-      circles.push(c);
+      nodes.push(c);
     }
-    return () => circles.forEach((c) => c.remove());
+    return () => nodes.forEach((n) => n.remove());
   }, []);
 
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: heroStyles }} />
 
-      <section
-        className="relative overflow-hidden"
-        style={{ background: "#0d1117", minHeight: "100svh" }}
-        aria-label="ファーストビュー"
-      >
-        {/* ── 職人写真（低透明度テクスチャ） ── */}
-        <div className="absolute inset-0 pointer-events-none" aria-hidden>
-          <Image
-            src="/images/gaikou/direct-model.png"
-            alt=""
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-            style={{ opacity: 0.15, mixBlendMode: "luminosity" }}
-          />
-          {/* 左右グラデーションマスク */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to right, rgba(13,17,23,0.97) 0%, rgba(13,17,23,0.75) 45%, rgba(13,17,23,0.45) 100%)",
-            }}
-          />
-          {/* 下部フェードアウト */}
-          <div
-            className="absolute bottom-0 left-0 right-0 h-32"
-            style={{ background: "linear-gradient(to top, #0d1117 0%, transparent 100%)" }}
-          />
-        </div>
+      <section className="relative overflow-hidden bg-white" style={{ minHeight: "100svh" }} aria-label="ファーストビュー">
 
-        {/* ── インラインSVG 背景デコレーション ── */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          aria-hidden
-          preserveAspectRatio="xMidYMid slice"
-        >
+        {/* ── 背景SVG ── */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden preserveAspectRatio="xMidYMid slice">
           <defs>
-            {/* ドットグリッド */}
-            <pattern id="hero-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-              <circle cx="16" cy="16" r="0.8" fill="rgba(96,165,250,0.08)" />
+            <pattern id="hg-dot" width="28" height="28" patternUnits="userSpaceOnUse">
+              <circle cx="14" cy="14" r="0.85" fill="rgba(29,95,166,0.07)" />
             </pattern>
-            {/* 斜めストライプ */}
-            <pattern id="hero-stripe" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
-              <line x1="0" y1="0" x2="0" y2="60" stroke="rgba(255,255,255,0.018)" strokeWidth="18" />
-            </pattern>
-            {/* グロー */}
-            <radialGradient id="hero-glow-l" cx="0%" cy="50%" r="60%">
-              <stop offset="0%" stopColor="rgba(29,95,166,0.28)" />
+            <radialGradient id="hg-tl" cx="0%" cy="0%" r="55%">
+              <stop offset="0%" stopColor="rgba(229,238,248,0.85)" />
               <stop offset="100%" stopColor="transparent" />
             </radialGradient>
-            <radialGradient id="hero-glow-r" cx="100%" cy="45%" r="55%">
-              <stop offset="0%" stopColor="rgba(45,125,210,0.18)" />
+            <radialGradient id="hg-br" cx="100%" cy="100%" r="50%">
+              <stop offset="0%" stopColor="rgba(240,245,252,0.7)" />
               <stop offset="100%" stopColor="transparent" />
             </radialGradient>
-            {/* カードのハイライト用クリップ */}
-            <clipPath id="hero-clip-r">
-              <rect x="50%" y="0" width="50%" height="100%" />
-            </clipPath>
           </defs>
-
-          {/* ドット・ストライプ */}
-          <rect width="100%" height="100%" fill="url(#hero-grid)" />
-          <rect width="100%" height="100%" fill="url(#hero-stripe)" />
-
-          {/* グロー */}
-          <rect width="100%" height="100%" fill="url(#hero-glow-l)" />
-          <rect width="100%" height="100%" fill="url(#hero-glow-r)" />
-
-          {/* 大きな装飾円弧（右側） */}
-          <g stroke="rgba(96,165,250,0.06)" strokeWidth="1" fill="none">
-            <circle cx="78%" cy="48%" r="200" />
-            <circle cx="78%" cy="48%" r="320" />
-            <circle cx="78%" cy="48%" r="460" />
+          <rect width="100%" height="100%" fill="url(#hg-dot)" />
+          <rect width="100%" height="100%" fill="url(#hg-tl)" />
+          <rect width="100%" height="100%" fill="url(#hg-br)" />
+          {/* コーナー装飾 */}
+          <g stroke="rgba(29,95,166,0.13)" strokeWidth="1.5" fill="none">
+            <polyline points="0,72 0,0 72,0" />
           </g>
-
-          {/* 斜め装飾ライン */}
-          <line x1="0" y1="75%" x2="48%" y2="0" stroke="rgba(96,165,250,0.05)" strokeWidth="1" />
-          <line x1="5%" y1="100%" x2="55%" y2="0" stroke="rgba(96,165,250,0.04)" strokeWidth="1" />
-
-          {/* 左下のコーナー装飾 */}
-          <g stroke="rgba(45,125,210,0.2)" strokeWidth="1.5" fill="none">
-            <path d="M 0 85% L 60 85% L 60 100%" />
+          <g stroke="rgba(29,95,166,0.1)" strokeWidth="1.2" fill="none">
+            <circle cx="78%" cy="48%" r="220" />
+            <circle cx="78%" cy="48%" r="350" />
           </g>
-
-          {/* 右上のコーナー装飾 */}
-          <g stroke="rgba(45,125,210,0.2)" strokeWidth="1.5" fill="none">
-            <path d="M 100% 0 L calc(100% - 60px) 0 L calc(100% - 60px) 60" />
-          </g>
-
-          {/* フローティングパーティクル */}
-          <g ref={particleRef} />
+          <g ref={svgRef} />
         </svg>
 
-        {/* ── メインコンテンツ ── */}
-        <div
-          className="relative flex flex-col"
-          style={{ minHeight: "100svh" }}
-        >
-          {/* コンテンツグリッド */}
-          <div className="flex-1 mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10 pt-20 pb-6 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-center">
+        {/* ──────────────────────────────────────
+            モバイルレイアウト（写真が上、テキスト・CTAが下）
+        ────────────────────────────────────── */}
+        <div className="lg:hidden flex flex-col" style={{ minHeight: "100svh" }}>
 
-            {/* 左：テキスト */}
-            <div>
-              {/* エリアタグ */}
-              <div className="tkn-hero-tag inline-flex items-center gap-2 mb-6">
-                <span
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.7rem] font-bold tracking-widest uppercase"
-                  style={{
-                    background: "rgba(45,125,210,0.15)",
-                    border: "1px solid rgba(96,165,250,0.3)",
-                    color: "#93c5fd",
-                  }}
-                >
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
-                    <circle cx="5" cy="5" r="4" stroke="#93c5fd" strokeWidth="1.5"/>
-                    <circle cx="5" cy="5" r="1.5" fill="#93c5fd"/>
-                  </svg>
-                  岐阜・愛知・三重 対応
-                </span>
-                {/* パルスリング */}
-                <span className="relative flex h-2 w-2" aria-hidden>
-                  <span
-                    className="absolute inline-flex h-full w-full rounded-full"
-                    style={{
-                      background: "#2d7dd2",
-                      animation: "tkn-hero-pulse-ring 1.8s ease-out infinite",
-                    }}
-                  />
-                  <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: "#60a5fa" }} />
-                </span>
-              </div>
-
-              {/* メインキャッチ */}
-              <h1
-                className="tkn-hero-h1 font-black text-white tracking-tight leading-[1.15] mb-5"
-                style={{ fontSize: "clamp(2rem, 6vw, 3.5rem)" }}
-              >
-                住まいの外まわりを、
-                <br />
-                <span className="relative inline-block">
-                  <span className="relative z-10">もっと快適に。</span>
-                  {/* アンダーライン SVG */}
-                  <svg
-                    className="absolute -bottom-1 left-0 w-full"
-                    height="6"
-                    viewBox="0 0 200 6"
-                    preserveAspectRatio="none"
-                    aria-hidden
-                  >
-                    <path
-                      d="M0 4 Q50 0 100 3 Q150 6 200 2"
-                      stroke="url(#underline-grad)"
-                      strokeWidth="3"
-                      fill="none"
-                      strokeLinecap="round"
-                    />
-                    <defs>
-                      <linearGradient id="underline-grad" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor="#2d7dd2" />
-                        <stop offset="100%" stopColor="#d9601a" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </span>
-              </h1>
-
-              {/* サブコピー */}
-              <p
-                className="tkn-hero-sub leading-relaxed mb-7"
-                style={{
-                  color: "rgba(255,255,255,0.68)",
-                  fontSize: "clamp(0.875rem, 2.5vw, 1.05rem)",
-                  maxWidth: "30rem",
-                }}
-              >
-                駐車場・カーポート・フェンス・お庭など、<br className="hidden sm:block" />
-                外構リフォームの専門会社として東海エリアで対応。<br className="hidden sm:block" />
-                現地調査・お見積もりは無料です。
-              </p>
-
-              {/* CTA（デスクトップ） */}
-              <div className="tkn-hero-cta hidden lg:flex flex-col sm:flex-row gap-3 mb-6">
-                <Link href="/takanaga/contact" className="tkn-btn-primary !text-base !py-4 !px-8">
-                  無料で現地調査を相談する
-                  <ArrowRight size={18} aria-hidden />
-                </Link>
-                <Link
-                  href="/takanaga/works"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-4 text-sm font-semibold rounded-full transition-all"
-                  style={{
-                    color: "rgba(255,255,255,0.85)",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "";
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
-                  }}
-                >
-                  施工事例を見る
-                </Link>
-              </div>
-
-              <div className="tkn-hero-sim hidden lg:block mb-8">
-                <Link
-                  href={siteConfig.externalLinks.simulatorUrl}
-                  className="inline-flex items-center gap-2 text-sm transition-colors"
-                  style={{ color: "rgba(255,255,255,0.42)" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.8)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.42)"; }}
-                >
-                  <Camera size={13} aria-hidden />
-                  <span className="underline underline-offset-4">AIシミュレーションで完成イメージを確認する</span>
-                </Link>
-              </div>
-
-              {/* バッジ群 */}
-              <div className="hidden lg:flex flex-wrap gap-2">
-                {BADGES.map((label, i) => (
-                  <span
-                    key={label}
-                    className={`tkn-hero-badge-${i} inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold`}
-                    style={{
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      color: "rgba(255,255,255,0.75)",
-                      backdropFilter: "blur(6px)",
-                    }}
-                  >
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                      <circle cx="6" cy="6" r="5" stroke="#60a5fa" strokeWidth="1.2"/>
-                      <path d="M3.5 6l1.8 1.8L8.5 4" stroke="#60a5fa" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* 右：施工写真カード（デスクトップ） */}
-            <div className="hidden lg:block relative h-[480px]">
-              {CARDS.map(({ src, label, cls, pos }) => (
-                <div
-                  key={src}
-                  className={`${cls} tkn-card-shine tkn-hero-float absolute ${pos} rounded-2xl overflow-hidden`}
-                  style={{
-                    boxShadow: "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)",
-                  }}
-                >
-                  <div className="relative aspect-[4/3]">
-                    <Image src={src} alt={`施工事例 ${label}`} fill className="object-cover" sizes="28vw" />
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: "linear-gradient(to top, rgba(13,17,23,0.85) 0%, transparent 55%)" }}
-                      aria-hidden
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 px-4 py-3">
-                      <span
-                        className="inline-flex items-center gap-1 text-xs font-semibold"
-                        style={{ color: "rgba(255,255,255,0.9)" }}
-                      >
-                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden>
-                          <circle cx="4" cy="4" r="3" fill="#2d7dd2"/>
-                        </svg>
-                        {label}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {/* 光点 */}
-              <div
-                className="absolute top-[33%] left-[43%] w-3 h-3 rounded-full"
-                aria-hidden
-                style={{
-                  background: "#2d7dd2",
-                  boxShadow: "0 0 16px 4px rgba(45,125,210,0.6)",
-                  animation: "tkn-hero-pulse-ring 2s ease-out 0.5s infinite",
-                }}
-              />
-            </div>
-
-            {/* モバイル：施工写真カード（デスクトップと同レイアウト） */}
-            <div className="lg:hidden relative" style={{ height: "clamp(220px, 55vw, 340px)" }}>
-              {CARDS.map(({ src, label, cls, pos }) => (
-                <div
-                  key={src}
-                  className={`${cls} tkn-card-shine absolute ${pos} rounded-xl overflow-hidden`}
-                  style={{
-                    boxShadow: "0 12px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06)",
-                  }}
-                >
-                  <div className="relative aspect-[4/3]">
-                    <Image src={src} alt={`施工事例 ${label}`} fill className="object-cover" sizes="46vw" />
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: "linear-gradient(to top, rgba(13,17,23,0.85) 0%, transparent 55%)" }}
-                      aria-hidden
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 px-2 py-2">
-                      <span className="text-[0.58rem] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>
-                        {label}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* ① タグ（最上部） */}
+          <div className="tkn-tag px-5 pt-6 pb-3 flex items-center gap-2">
+            <span className="relative flex w-2 h-2" aria-hidden>
+              <span className="absolute inset-0 rounded-full" style={{ background: "#2d7dd2", animation: "tkn-pulse 2s ease-in-out infinite" }} />
+            </span>
+            <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase" style={{ color: "#1d5fa6" }}>
+              岐阜・愛知・三重 対応
+            </span>
           </div>
 
-          {/* ── モバイル CTA（ファーストビュー最下部） ── */}
-          <div
-            className="lg:hidden relative px-5 pb-8 pt-4"
-            style={{
-              background: "linear-gradient(to top, rgba(13,17,23,1) 60%, transparent 100%)",
-            }}
-          >
-            {/* バッジ */}
-            <div className="flex justify-center gap-2 mb-4">
-              {BADGES.map((label, i) => (
-                <span
-                  key={label}
-                  className={`tkn-hero-badge-${i} inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[0.6rem] font-semibold`}
-                  style={{
-                    background: "rgba(255,255,255,0.07)",
-                    border: "1px solid rgba(255,255,255,0.13)",
-                    color: "rgba(255,255,255,0.7)",
-                  }}
-                >
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
-                    <circle cx="5" cy="5" r="4" stroke="#60a5fa" strokeWidth="1"/>
-                    <path d="M2.8 5l1.5 1.5L7.2 3.5" stroke="#60a5fa" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  {label}
-                </span>
-              ))}
+          {/* ② 写真カード群（重なり・モバイル） */}
+          <div className="relative mx-4 flex-none" style={{ height: "52svh" }}>
+
+            {/* 大カード（右上） */}
+            <div
+              className={`${CARDS[0].cls} absolute rounded-2xl overflow-hidden`}
+              style={{ top: 0, right: 0, width: "64%", boxShadow: shadow("lg") }}
+            >
+              <div className="relative" style={{ paddingBottom: "78%" }}>
+                <Image src={CARDS[0].src} alt={`施工事例 ${CARDS[0].label}`} fill className="object-cover" sizes="60vw" priority />
+                <CardLabel text={CARDS[0].label} />
+              </div>
             </div>
 
-            {/* CTA ボタン */}
-            <div className="flex flex-col gap-2.5 max-w-sm mx-auto">
-              <Link href="/takanaga/contact" className="tkn-btn-primary justify-center !py-4 !text-base">
-                無料で現地調査を相談する
-                <ArrowRight size={18} aria-hidden />
-              </Link>
-              <Link
-                href="/takanaga/works"
-                className="inline-flex items-center justify-center gap-2 py-3.5 text-sm font-semibold rounded-full transition-all"
-                style={{
-                  color: "rgba(255,255,255,0.75)",
-                  border: "1px solid rgba(255,255,255,0.18)",
-                }}
-              >
-                施工事例を見る
-              </Link>
+            {/* 中カード（左中） */}
+            <div
+              className={`${CARDS[1].cls} absolute rounded-xl overflow-hidden`}
+              style={{ top: "36%", left: 0, width: "44%", boxShadow: shadow("sm") }}
+            >
+              <div className="relative" style={{ paddingBottom: "78%" }}>
+                <Image src={CARDS[1].src} alt={`施工事例 ${CARDS[1].label}`} fill className="object-cover" sizes="40vw" />
+                <CardLabel text={CARDS[1].label} size="xs" />
+              </div>
             </div>
 
-            {/* AIシミュレーション */}
-            <div className="text-center mt-3">
-              <Link
-                href={siteConfig.externalLinks.simulatorUrl}
-                className="inline-flex items-center gap-1.5 text-xs"
-                style={{ color: "rgba(255,255,255,0.38)" }}
+            {/* 小カード（右下） */}
+            <div
+              className={`${CARDS[2].cls} absolute rounded-xl overflow-hidden`}
+              style={{ bottom: 0, right: "3%", width: "40%", boxShadow: shadow("sm") }}
+            >
+              <div className="relative" style={{ paddingBottom: "78%" }}>
+                <Image src={CARDS[2].src} alt={`施工事例 ${CARDS[2].label}`} fill className="object-cover" sizes="38vw" />
+                <CardLabel text={CARDS[2].label} size="xs" />
+              </div>
+            </div>
+
+            {/* 接続ドット */}
+            <div
+              className="absolute rounded-full"
+              style={{
+                top: "34%", left: "41%", width: 10, height: 10,
+                background: "#2d7dd2",
+                boxShadow: "0 0 0 3px rgba(45,125,210,0.2), 0 0 12px rgba(45,125,210,0.4)",
+              }}
+              aria-hidden
+            />
+          </div>
+
+          {/* ③ テキスト */}
+          <div className="px-5 pt-5">
+            <h1 className="tkn-h1a font-black leading-[1.15] tracking-tight" style={{ fontSize: "clamp(1.75rem,8vw,2.4rem)", color: "#0f2744" }}>
+              住まいの外まわりを、
+            </h1>
+            <h1 className="tkn-h1b font-black leading-[1.15] tracking-tight mb-1" style={{ fontSize: "clamp(1.75rem,8vw,2.4rem)", color: "#1d5fa6" }}>
+              もっと快適に。
+              <span className="tkn-accent-line" aria-hidden />
+            </h1>
+            <p className="tkn-sub mt-3 text-sm leading-relaxed" style={{ color: "#4a6580", maxWidth: "30rem" }}>
+              駐車場・カーポート・フェンス・お庭。外構リフォーム専門で
+              東海エリアのお悩みを解決。現地調査・見積もりは<strong style={{ color: "#d9601a" }}>無料</strong>。
+            </p>
+          </div>
+
+          {/* ④ バッジ */}
+          <div className="px-5 pt-4 flex flex-wrap gap-2">
+            {[
+              { label: "現地調査", value: "無料", cls: "tkn-bd0" },
+              { label: "お見積もり", value: "無料", cls: "tkn-bd1" },
+              { label: "対応エリア", value: "3県",  cls: "tkn-bd2" },
+            ].map(({ label, value, cls }) => (
+              <span
+                key={label}
+                className={`${cls} inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[0.65rem] font-semibold`}
+                style={{ background: "#e5eef8", border: "1px solid #c8d8ea", color: "#1a3d6b" }}
               >
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+                  <circle cx="5" cy="5" r="4" stroke="#1d5fa6" strokeWidth="1" />
+                  <path d="M2.8 5l1.5 1.5L7.2 3.5" stroke="#1d5fa6" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span style={{ color: "#4a6580" }}>{label}</span>
+                <span style={{ color: "#1d5fa6", fontWeight: 700 }}>{value}</span>
+              </span>
+            ))}
+          </div>
+
+          {/* ⑤ CTA（最下部） */}
+          <div className="mt-auto px-5 pb-10 pt-5 flex flex-col gap-2.5">
+            <Link href="/takanaga/contact" className="tkn-cta tkn-btn-primary justify-center !py-4 !text-[0.95rem]">
+              無料で現地調査を相談する
+              <ArrowRight size={17} aria-hidden />
+            </Link>
+            <Link href="/takanaga/works" className="tkn-cta tkn-btn-outline justify-center !py-3.5 !text-[0.9rem]">
+              施工事例を見る
+            </Link>
+            <div className="text-center">
+              <Link href={siteConfig.externalLinks.simulatorUrl} className="tkn-sim inline-flex items-center gap-1.5 text-xs" style={{ color: "#4a6580" }}>
                 <Camera size={12} aria-hidden />
                 <span className="underline underline-offset-4">AIシミュレーションを試す</span>
               </Link>
@@ -516,13 +279,130 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* スクロールヒント */}
-        <div
-          className="absolute bottom-3 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-1 tkn-scroll-hint"
-          aria-hidden
-        >
-          <span className="text-[0.6rem] tracking-widest uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>Scroll</span>
-          <ChevronDown size={14} style={{ color: "rgba(255,255,255,0.3)" }} />
+        {/* ──────────────────────────────────────
+            デスクトップレイアウト
+        ────────────────────────────────────── */}
+        <div className="hidden lg:flex items-center" style={{ minHeight: "100svh" }}>
+          <div className="w-full mx-auto max-w-7xl px-12 py-20 grid grid-cols-2 gap-14 items-center">
+
+            {/* 左：テキスト */}
+            <div>
+              <div className="tkn-tag flex items-center gap-2.5 mb-7">
+                <span className="relative flex w-2 h-2" aria-hidden>
+                  <span className="absolute inset-0 rounded-full" style={{ background: "#2d7dd2", animation: "tkn-pulse 2s ease-in-out infinite" }} />
+                </span>
+                <span className="text-[0.68rem] font-bold tracking-[0.2em] uppercase" style={{ color: "#1d5fa6" }}>
+                  岐阜・愛知・三重 対応
+                </span>
+              </div>
+
+              <h1 className="tkn-h1a font-black leading-[1.18] tracking-tight mb-1" style={{ fontSize: "clamp(2.2rem,3.8vw,3.25rem)", color: "#0f2744" }}>
+                住まいの外まわりを、
+              </h1>
+              <h1 className="tkn-h1b font-black leading-[1.18] tracking-tight mb-2" style={{ fontSize: "clamp(2.2rem,3.8vw,3.25rem)", color: "#1d5fa6" }}>
+                もっと快適に。
+                <span className="tkn-accent-line" aria-hidden />
+              </h1>
+
+              <p className="tkn-sub mt-5 leading-relaxed mb-8" style={{ color: "#4a6580", fontSize: "1rem", maxWidth: "28rem" }}>
+                駐車場・カーポート・フェンス・お庭など、外構リフォームの専門会社として
+                東海エリアのお客様のお悩みを解決しています。
+                現地調査・お見積もりは<strong style={{ color: "#d9601a" }}>無料</strong>です。
+              </p>
+
+              <div className="tkn-cta flex gap-3 mb-6">
+                <Link href="/takanaga/contact" className="tkn-btn-primary !text-base !py-4 !px-8">
+                  無料で現地調査を相談する
+                  <ArrowRight size={18} aria-hidden />
+                </Link>
+                <Link href="/takanaga/works" className="tkn-btn-outline !text-base !py-4 !px-8">
+                  施工事例を見る
+                </Link>
+              </div>
+
+              <div className="tkn-sim mb-8">
+                <Link
+                  href={siteConfig.externalLinks.simulatorUrl}
+                  className="inline-flex items-center gap-1.5 text-sm transition-colors"
+                  style={{ color: "#4a6580" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#1d5fa6"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#4a6580"; }}
+                >
+                  <Camera size={13} aria-hidden />
+                  <span className="underline underline-offset-4">AIシミュレーションで完成イメージを確認する</span>
+                </Link>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: "現地調査", value: "無料", cls: "tkn-bd0" },
+                  { label: "お見積もり", value: "無料", cls: "tkn-bd1" },
+                  { label: "対応エリア", value: "3県",  cls: "tkn-bd2" },
+                ].map(({ label, value, cls }) => (
+                  <span
+                    key={label}
+                    className={`${cls} inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold`}
+                    style={{ background: "#e5eef8", border: "1px solid #c8d8ea", color: "#1a3d6b" }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                      <circle cx="6" cy="6" r="5" stroke="#1d5fa6" strokeWidth="1.2" />
+                      <path d="M3.5 6l1.8 1.8L8.5 4" stroke="#1d5fa6" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span style={{ color: "#4a6580" }}>{label}</span>
+                    <span style={{ color: "#1d5fa6", fontWeight: 700 }}>{value}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 右：施工写真カード（重なり） */}
+            <div className="tkn-float relative" style={{ height: 500 }}>
+
+              {/* 大カード（右上） */}
+              <div
+                className="tkn-card0 absolute rounded-2xl overflow-hidden"
+                style={{ top: 0, right: 0, width: "65%", boxShadow: shadow("lg") }}
+              >
+                <div className="relative" style={{ paddingBottom: "76%" }}>
+                  <Image src={CARDS[0].src} alt={`施工事例 ${CARDS[0].label}`} fill className="object-cover" sizes="28vw" priority />
+                  <CardLabel text={CARDS[0].label} />
+                </div>
+              </div>
+
+              {/* 中カード（左中） */}
+              <div
+                className="tkn-card1 absolute rounded-xl overflow-hidden"
+                style={{ top: "38%", left: 0, width: "46%", boxShadow: shadow("sm") }}
+              >
+                <div className="relative" style={{ paddingBottom: "76%" }}>
+                  <Image src={CARDS[1].src} alt={`施工事例 ${CARDS[1].label}`} fill className="object-cover" sizes="20vw" />
+                  <CardLabel text={CARDS[1].label} />
+                </div>
+              </div>
+
+              {/* 小カード（右下） */}
+              <div
+                className="tkn-card2 absolute rounded-xl overflow-hidden"
+                style={{ bottom: 0, right: "4%", width: "42%", boxShadow: shadow("sm") }}
+              >
+                <div className="relative" style={{ paddingBottom: "76%" }}>
+                  <Image src={CARDS[2].src} alt={`施工事例 ${CARDS[2].label}`} fill className="object-cover" sizes="18vw" />
+                  <CardLabel text={CARDS[2].label} />
+                </div>
+              </div>
+
+              {/* 接続ドット */}
+              <div
+                className="absolute rounded-full"
+                style={{
+                  top: "36%", left: "43%", width: 12, height: 12,
+                  background: "#2d7dd2",
+                  boxShadow: "0 0 0 4px rgba(45,125,210,0.15), 0 0 16px rgba(45,125,210,0.4)",
+                }}
+                aria-hidden
+              />
+            </div>
+          </div>
         </div>
 
         {/* 波形区切り */}
