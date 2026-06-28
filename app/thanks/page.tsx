@@ -1,0 +1,43 @@
+import Link from "next/link";
+import { CheckCircle2, Phone } from "lucide-react";
+
+export default function ThanksPage() {
+  return (
+    <div className="min-h-screen bg-[#fdfbf6] flex items-center justify-center px-4 py-16">
+      <div className="max-w-lg w-full text-center space-y-6">
+        <div className="flex justify-center">
+          <div className="w-20 h-20 rounded-full bg-[#eaf3ee] flex items-center justify-center">
+            <CheckCircle2 className="w-10 h-10 text-[#2f7d5a]" />
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <h1 className="text-2xl font-bold text-[#10302a]">
+            お問い合わせありがとうございます
+          </h1>
+          <p className="text-[#3d4a45] leading-relaxed">
+            内容を確認のうえ、担当者よりご連絡いたします。<br />
+            お急ぎの場合は、お電話でもお問い合わせいただけます。
+          </p>
+        </div>
+
+        <a
+          href="tel:0582-37-5050"
+          className="inline-flex items-center gap-2.5 px-6 py-4 rounded-2xl bg-[#174f3f] text-white font-semibold hover:bg-[#1f6450] transition-colors"
+        >
+          <Phone className="w-5 h-5" />
+          お電話でのお問い合わせ
+        </a>
+
+        <div>
+          <Link
+            href="/gaikou"
+            className="text-sm text-[#2f7d5a] hover:underline"
+          >
+            ← トップページへ戻る
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

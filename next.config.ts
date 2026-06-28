@@ -16,6 +16,35 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
+    // takanagakensetu.com のルーティング方針:
+    //   現在: / → /gaikou (広告LP。広告停止後に下記のコメントアウトを切り替える)
+    //   将来: / → /takanaga (コーポレートHP)
+    // コーポレートHPサブページ (/services, /works 等) は今すぐ有効。
+    // LP は引き続き /gaikou で直接アクセス可能。
+
+    const takanagaHosts = ["takanagakensetu.com", "www.takanagakensetu.com"];
+
+    // コーポレートHPのサブパス一覧
+    const hpPaths = [
+      "services", "works", "strengths", "price", "flow",
+      "company", "area", "faq", "news", "contact", "privacy",
+    ];
+
+    const subpathRewrites = takanagaHosts.flatMap((host) => [
+      // HP サブページ: takanagakensetu.com/services → /takanaga/services
+      ...hpPaths.map((path) => ({
+        source: `/${path}/:rest*`,
+        has: [{ type: "host" as const, value: host }],
+        destination: `/takanaga/${path}/:rest*`,
+      })),
+      // HP サブページ(直接): takanagakensetu.com/services → /takanaga/services
+      ...hpPaths.map((path) => ({
+        source: `/${path}`,
+        has: [{ type: "host" as const, value: host }],
+        destination: `/takanaga/${path}`,
+      })),
+    ]);
+
     return {
       beforeFiles: [
         {
@@ -33,6 +62,10 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
           destination: "/driver",
         },
+
+        // ── takanagakensetu.com ────────────────────────────────────────
+        // 広告LP (/) は現状維持。広告停止後に /takanaga へ切り替える。
+        // 切り替え時: destination を "/gaikou" → "/takanaga" に変更する。
         {
           source: "/",
           has: [{ type: "host", value: "takanagakensetu.com" }],
@@ -43,6 +76,9 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "www.takanagakensetu.com" }],
           destination: "/gaikou",
         },
+
+        // コーポレートHPサブページ（今すぐ有効）
+        ...subpathRewrites,
       ],
     };
   },

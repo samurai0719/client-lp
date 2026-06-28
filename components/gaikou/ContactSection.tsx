@@ -1,16 +1,19 @@
 "use client";
 
-import { useId, useState, type FormEvent } from "react";
+import { useId, useState, useEffect, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Paperclip, Info } from "lucide-react";
+import { Paperclip } from "lucide-react";
 import { serviceAreas } from "./data";
 import SectionHeading from "./SectionHeading";
 import SectionBackdrop from "./SectionBackdrop";
+import { captureUtm, loadUtm } from "@/lib/utm/storage";
 
 type FormErrors = {
   name?: string;
   phone?: string;
   email?: string;
+  workTypes?: string;
 };
 
 const CURRENT_STATE_OPTIONS = ["砂利が多い・雑草が気になる", "駐車場が足りない", "庭木・庭石の管理が大変", "その他"];
@@ -20,6 +23,7 @@ const OWNERSHIP_OPTIONS = ["持ち家", "賃貸", "その他"];
 
 export default function ContactSection() {
   const baseId = useId();
+  const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -30,25 +34,74 @@ export default function ContactSection() {
   const [ownership, setOwnership] = useState("");
   const [note, setNote] = useState("");
   const [errors, setErrors] = useState<FormErrors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  // honeypot（スパム対策）
+  const [website, setWebsite] = useState("");
+
+  // UTMをキャプチャ
+  useEffect(() => {
+    captureUtm();
+  }, []);
 
   function toggleWorkType(option: string) {
     setWorkTypes((prev) => (prev.includes(option) ? prev.filter((v) => v !== option) : [...prev, option]));
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const nextErrors: FormErrors = {};
     if (!name.trim()) nextErrors.name = "お名前を入力してください";
     if (!phone.trim()) nextErrors.phone = "電話番号を入力してください";
-    if (!email.trim()) {
-      nextErrors.email = "メールアドレスを入力してください";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       nextErrors.email = "正しいメールアドレスの形式で入力してください";
     }
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length === 0) {
-      setSubmitted(true);
+    if (Object.keys(nextErrors).length > 0) return;
+
+    setSubmitting(true);
+    setSubmitError("");
+
+    const utm = loadUtm() ?? {};
+
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          phone: phone.trim(),
+          email: email.trim() || undefined,
+          city: city || undefined,
+          workTypes,
+          inquiryMessage: note.trim() || undefined,
+          designStyle: currentState || undefined,
+          utmSource: utm.utm_source,
+          utmMedium: utm.utm_medium,
+          utmCampaign: utm.utm_campaign,
+          utmContent: utm.utm_content,
+          utmTerm: utm.utm_term,
+          fbclid: utm.fbclid,
+          gclid: utm.gclid,
+          ttclid: utm.ttclid,
+          landingPage: utm.landing_page,
+          referrer: utm.referrer,
+          deviceType: utm.device_type,
+          website, // honeypot
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setSubmitError(data.error ?? "送信に失敗しました。お手数ですがお電話でご連絡ください。");
+        setSubmitting(false);
+        return;
+      }
+
+      router.push("/thanks");
+    } catch {
+      setSubmitError("通信エラーが発生しました。お手数ですがお電話でご連絡ください。");
+      setSubmitting(false);
     }
   }
 
@@ -71,6 +124,18 @@ export default function ContactSection() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
+          {/* honeypot（非表示） */}
+          <input
+            type="text"
+            name="website"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            tabIndex={-1}
+            aria-hidden="true"
+            className="sr-only"
+            autoComplete="off"
+          />
+
           <div>
             <label htmlFor={`${baseId}-name`} className={labelClass}>
               お名前 <span className="text-[#d9601a]">*</span>
@@ -120,7 +185,7 @@ export default function ContactSection() {
 
             <div>
               <label htmlFor={`${baseId}-email`} className={labelClass}>
-                メールアドレス <span className="text-[#d9601a]">*</span>
+                メールアドレス
               </label>
               <input
                 id={`${baseId}-email`}
@@ -128,7 +193,6 @@ export default function ContactSection() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                aria-required="true"
                 aria-invalid={Boolean(errors.email)}
                 aria-describedby={errors.email ? `${baseId}-email-error` : undefined}
                 placeholder="example@email.com"
@@ -243,7 +307,7 @@ export default function ContactSection() {
               <Paperclip className="w-4 h-4 shrink-0" aria-hidden="true" />
               気になる場所のお写真があれば添付してください
             </label>
-            <input id={`${baseId}-photo`} type="file" accept="image/*" multiple className="sr-only" />
+            <input id={`${baseId}-photo`} type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" />
           </div>
 
           <div>
@@ -255,21 +319,27 @@ export default function ContactSection() {
               rows={4}
               value={note}
               onChange={(e) => setNote(e.target.value)}
+              maxLength={2000}
               placeholder="ご質問やご要望があればご記入ください"
               className={`${inputClass} resize-none`}
             />
           </div>
 
-          {submitted && (
-            <div className="flex items-start gap-2.5 rounded-xl bg-[#eaf3ee] border border-[#bfe0cd] px-4 py-3.5">
-              <Info className="w-4 h-4 text-[#1f4d3d] shrink-0 mt-0.5" aria-hidden="true" />
-              <p className="text-sm font-semibold text-[#1f4d3d]">現在はテスト表示です。送信機能は後から接続します。</p>
+          {submitError && (
+            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+              <p className="text-sm text-red-700">{submitError}</p>
             </div>
           )}
 
           <div className="max-w-[26rem] mx-auto">
-            <button type="submit" className="gaikou-cta-btn w-full">
-              <span className="gaikou-cta-btn-inner">無料で相談・お見積もりを依頼する</span>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="gaikou-cta-btn w-full disabled:opacity-70"
+            >
+              <span className="gaikou-cta-btn-inner">
+                {submitting ? "送信しています…" : "無料で相談・お見積もりを依頼する"}
+              </span>
             </button>
           </div>
 
