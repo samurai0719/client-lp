@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 高長建設 コーポレートサイト（+ 複数LP管理プロジェクト）
 
-## Getting Started
+Next.js 16 / TypeScript / Tailwind CSS v4 で構築しています。
 
-First, run the development server:
+このプロジェクトは複数クライアントのLPとサイトを1つのNext.jsアプリで管理しています。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 高長建設 コーポレートHP（新規）
+
+### ローカルURL
+
+```
+http://localhost:3000/takanaga
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### ページ一覧
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| URL | ページ |
+|-----|--------|
+| `/takanaga` | トップページ |
+| `/takanaga/services` | 工事内容 |
+| `/takanaga/works` | 施工事例一覧 |
+| `/takanaga/works/[slug]` | 施工事例詳細 |
+| `/takanaga/strengths` | 選ばれる理由 |
+| `/takanaga/price` | 費用目安 |
+| `/takanaga/flow` | ご依頼の流れ |
+| `/takanaga/company` | 会社案内 |
+| `/takanaga/area` | 対応地域 |
+| `/takanaga/faq` | よくある質問 |
+| `/takanaga/news` | お知らせ・コラム |
+| `/takanaga/contact` | お問い合わせ |
+| `/takanaga/contact/thanks` | 送信完了 |
+| `/takanaga/privacy` | プライバシーポリシー |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 管理データの場所
 
-## Learn More
+| ファイル | 内容 |
+|---------|------|
+| `data/takanaga/siteConfig.ts` | 会社情報・CTA文言・URL設定 |
+| `data/takanaga/works.ts` | 施工事例データ |
+| `data/takanaga/services.ts` | 対応工事カテゴリー |
+| `data/takanaga/faqs.ts` | よくある質問 |
+| `data/takanaga/areas.ts` | 対応地域 |
+| `data/takanaga/prices.ts` | 費用目安 |
+| `data/takanaga/news.ts` | お知らせ・コラム |
 
-To learn more about Next.js, take a look at the following resources:
+### 会社情報の入力方法
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`data/takanaga/siteConfig.ts` の `company` オブジェクトを編集してください。
+`null` の項目は画面に表示されません。情報が確定したら値を入力してください。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### ドメイン切り替え方法
 
-## Deploy on Vercel
+広告停止後に `next.config.ts` の以下の行を変更してください：
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```ts
+// 変更前（広告LP）
+destination: "/gaikou",
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+// 変更後（コーポレートHP）
+destination: "/takanaga",
+```
+
+### フォーム送信先
+
+1. **Resendメール通知**: `RESEND_API_KEY` と `NOTIFICATION_EMAIL` を `.env.local` に設定
+2. **CRM連携**: `CRM_WEBHOOK_URL` を `.env.local` に設定すると自動連携
+3. **開発中**: `RESEND_API_KEY` 未設定時はコンソールログ出力のみ
+
+---
+
+## 高長建設 外構LP（既存・広告用）
+
+```
+http://localhost:3000/gaikou
+```
+
+現在 `takanagakensetu.com` はこのLPに向いています。変更しないでください。
+
