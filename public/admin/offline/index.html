@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>オフライン - 高長建設 顧客管理</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f6ef;
+      font-family: -apple-system, 'Hiragino Sans', sans-serif;
+      padding: 24px;
+      padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      border: 1px solid #e7e3d8;
+      padding: 40px 32px;
+      text-align: center;
+      max-width: 320px;
+      width: 100%;
+    }
+    .icon {
+      width: 64px;
+      height: 64px;
+      background: #174f3f;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 28px;
+      color: white;
+      font-weight: bold;
+    }
+    h1 { font-size: 18px; color: #10302a; margin-bottom: 12px; }
+    p { font-size: 14px; color: #6b7a73; line-height: 1.6; margin-bottom: 24px; }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #174f3f;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #1f6450; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">TN</div>
+    <h1>現在オフラインです</h1>
+    <p>インターネット接続後に再度お試しください。<br>顧客情報の表示にはネットワーク接続が必要です。</p>
+    <button onclick="location.reload()">再読み込み</button>
+  </div>
+</body>
+</html>

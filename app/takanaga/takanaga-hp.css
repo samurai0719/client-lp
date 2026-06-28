@@ -1,0 +1,428 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   高長建設 コーポレートサイト専用スタイル (Blue Edition)
+   クラスはすべて tkn- プレフィックスで既存スタイルと分離
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── CSS変数 (:rootに定義してどこでも参照可能に) ─────────────────────── */
+:root {
+  --tkn-navy-deep:   #0f2744;
+  --tkn-navy:        #1a3d6b;
+  --tkn-blue:        #1d5fa6;
+  --tkn-blue-bright: #2d7dd2;
+  --tkn-blue-light:  #e5eef8;
+  --tkn-sky:         #f0f5fc;
+  --tkn-orange:      #d9601a;
+  --tkn-bg:          #f8fafd;
+  --tkn-warm-gray:   #eef2f7;
+  --tkn-border:      #c8d8ea;
+  --tkn-text:        #0f1f33;
+  --tkn-text-muted:  #4a6580;
+  --tkn-radius:      8px;
+  --tkn-radius-sm:   4px;
+  --tkn-duration:    0.6s;
+}
+
+.tkn-site {
+  background: var(--tkn-bg);
+  color: var(--tkn-text);
+  font-feature-settings: "palt";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── スクロールアニメーション ──────────────────────────────────────── */
+.tkn-animate-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity var(--tkn-duration) ease-out, transform var(--tkn-duration) ease-out;
+}
+.tkn-animate-fade {
+  opacity: 0;
+  transition: opacity var(--tkn-duration) ease-out;
+}
+.tkn-animate-right {
+  opacity: 0;
+  transform: translateX(-28px);
+  transition: opacity var(--tkn-duration) ease-out, transform var(--tkn-duration) ease-out;
+}
+.tkn-animate-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity var(--tkn-duration) ease-out, transform var(--tkn-duration) ease-out;
+}
+
+.tkn-animate-up.tkn-visible,
+.tkn-animate-fade.tkn-visible,
+.tkn-animate-right.tkn-visible,
+.tkn-animate-scale.tkn-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── ヘッダー ──────────────────────────────────────────────────────── */
+.tkn-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(248, 250, 253, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--tkn-border);
+}
+
+.tkn-nav-link {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--tkn-navy);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--tkn-radius-sm);
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.tkn-nav-link:hover {
+  color: var(--tkn-blue-bright);
+  background: var(--tkn-blue-light);
+}
+
+/* ── CTA ボタン ─────────────────────────────────────────────────────── */
+@keyframes tknCtaGlow {
+  0%, 100% { box-shadow: 0 8px 20px -6px rgba(217,96,26,0.4); }
+  50%      { box-shadow: 0 12px 28px -4px rgba(217,96,26,0.55); }
+}
+
+.tkn-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1;
+  color: #fff;
+  background: linear-gradient(135deg, #f08a3c 0%, var(--tkn-orange) 55%, #c2530f 100%);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  animation: tknCtaGlow 3s ease-in-out infinite;
+  white-space: nowrap;
+}
+.tkn-btn-primary:hover  { transform: translateY(-2px); }
+.tkn-btn-primary:active { transform: translateY(1px); animation: none; }
+.tkn-btn-primary:focus-visible {
+  outline: 3px solid rgba(217,96,26,0.4);
+  outline-offset: 3px;
+}
+
+.tkn-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1;
+  color: var(--tkn-blue);
+  background: transparent;
+  border: 2px solid var(--tkn-blue);
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+.tkn-btn-outline:hover  { background: var(--tkn-blue-light); transform: translateY(-1px); }
+.tkn-btn-outline:active { transform: translateY(1px); }
+.tkn-btn-outline:focus-visible {
+  outline: 3px solid rgba(29,95,166,0.3);
+  outline-offset: 3px;
+}
+
+/* ── セクション見出し ────────────────────────────────────────────────── */
+.tkn-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tkn-blue-bright);
+}
+.tkn-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  background: var(--tkn-orange);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.tkn-heading-line {
+  display: block;
+  width: 40px;
+  height: 3px;
+  margin-top: 12px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--tkn-blue-bright), var(--tkn-orange));
+}
+
+/* ── カード ──────────────────────────────────────────────────────────── */
+.tkn-card {
+  background: #fff;
+  border: 1px solid var(--tkn-border);
+  border-radius: var(--tkn-radius);
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.tkn-card:hover {
+  border-color: var(--tkn-blue-bright);
+  box-shadow: 0 4px 20px rgba(15,39,68,0.08);
+  transform: translateY(-2px);
+}
+
+/* ── セクション区切り SVG波 ─────────────────────────────────────────── */
+.tkn-wave-divider {
+  line-height: 0;
+  overflow: hidden;
+}
+.tkn-wave-divider svg {
+  display: block;
+  width: 100%;
+}
+
+/* ── ページヒーロー（内部ページ用） ───────────────────────────────────── */
+.tkn-page-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--tkn-navy-deep) 0%, var(--tkn-navy) 60%, var(--tkn-blue) 100%);
+  padding: 3.5rem 1rem 3rem;
+  color: #fff;
+}
+.tkn-page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") repeat;
+}
+.tkn-page-hero > * { position: relative; }
+
+@media (min-width: 768px) {
+  .tkn-page-hero {
+    padding: 5rem 2rem 4rem;
+  }
+}
+
+/* ── アコーディオン（FAQ） ──────────────────────────────────────────── */
+.tkn-accordion {
+  border: 1px solid var(--tkn-border);
+  border-radius: var(--tkn-radius);
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.tkn-accordion:hover { box-shadow: 0 2px 10px rgba(15,39,68,0.06); }
+.tkn-accordion + .tkn-accordion {
+  margin-top: -1px;
+  border-radius: 0;
+}
+.tkn-accordion:first-child  { border-radius: var(--tkn-radius) var(--tkn-radius) 0 0; }
+.tkn-accordion:last-child   { border-radius: 0 0 var(--tkn-radius) var(--tkn-radius); }
+.tkn-accordion:only-child   { border-radius: var(--tkn-radius); }
+
+.tkn-accordion-trigger {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.25rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--tkn-navy-deep);
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.tkn-accordion-trigger:hover { background: var(--tkn-blue-light); }
+.tkn-accordion-trigger:focus-visible {
+  outline: 2px solid var(--tkn-blue-bright);
+  outline-offset: -2px;
+}
+.tkn-accordion-content {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--tkn-text-muted);
+  padding: 1.25rem 1.25rem 1.25rem 3.5rem;
+  background: var(--tkn-sky);
+  border-top: 1px solid var(--tkn-border);
+}
+
+/* ── フロー ──────────────────────────────────────────────────────────── */
+.tkn-flow-step {
+  display: flex;
+  gap: 1.25rem;
+  position: relative;
+}
+.tkn-flow-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 1.375rem;
+  top: 3rem;
+  bottom: -1.5rem;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--tkn-blue-light), transparent);
+}
+
+/* ── フォーム ──────────────────────────────────────────────────────── */
+.tkn-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: var(--tkn-text);
+  background: #fff;
+  border: 1.5px solid var(--tkn-border);
+  border-radius: var(--tkn-radius-sm);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
+}
+.tkn-input:focus {
+  outline: none;
+  border-color: var(--tkn-blue-bright);
+  box-shadow: 0 0 0 3px rgba(45,125,210,0.12);
+}
+.tkn-input::placeholder { color: #8da5bf; }
+
+.tkn-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--tkn-navy-deep);
+  margin-bottom: 0.375rem;
+}
+.tkn-required {
+  display: inline-block;
+  margin-left: 0.375rem;
+  padding: 0.1rem 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--tkn-orange);
+  border-radius: 3px;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.tkn-optional {
+  display: inline-block;
+  margin-left: 0.375rem;
+  padding: 0.1rem 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--tkn-text-muted);
+  background: var(--tkn-warm-gray);
+  border-radius: 3px;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+
+/* ── モバイル固定CTA ─────────────────────────────────────────────────── */
+.tkn-mobile-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: var(--tkn-navy-deep);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0.5rem 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 0.375rem;
+}
+@media (min-width: 768px) { .tkn-mobile-cta { display: none; } }
+
+.tkn-mobile-cta-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.5rem 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tkn-mobile-cta-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.tkn-mobile-cta-btn.tkn-mobile-cta-primary {
+  background: var(--tkn-orange);
+  color: #fff;
+}
+.tkn-mobile-cta-btn.tkn-mobile-cta-primary:hover { background: #c2530f; }
+
+/* ── ドットパターン背景 ──────────────────────────────────────────────── */
+.tkn-dot-pattern {
+  background-image: radial-gradient(circle, rgba(45,125,210,0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── セクション統合背景 ─────────────────────────────────────────────── */
+.tkn-section-alt {
+  background: var(--tkn-warm-gray);
+  position: relative;
+}
+.tkn-section-alt::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--tkn-blue-light), transparent);
+}
+
+/* ── 数字バッジ ───────────────────────────────────────────────────── */
+.tkn-step-badge {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--tkn-blue-bright), var(--tkn-blue));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(29,95,166,0.3);
+}
+
+/* ── SVGデコレーション ───────────────────────────────────────────── */
+.tkn-deco {
+  position: absolute;
+  opacity: 0.06;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .tkn-btn-primary { animation: none !important; }
+  .tkn-card { transition: none !important; }
+  .tkn-animate-up,
+  .tkn-animate-fade,
+  .tkn-animate-right,
+  .tkn-animate-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

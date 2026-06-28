@@ -20,6 +20,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* iPhone Safe Area */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 @keyframes cta-glow {
   0%, 100% { box-shadow: 0 4px 24px 0 rgba(249, 115, 22, 0.28); }
   50%       { box-shadow: 0 4px 36px 6px rgba(249, 115, 22, 0.48); }
