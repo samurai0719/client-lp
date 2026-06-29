@@ -17,7 +17,7 @@ export default function CTABlock({ className = "", dark: _dark = false }: CTABlo
   return (
     <div className={`${className}`}>
       <div className="max-w-[26rem] mx-auto">
-        <a href="/gaikou/diagnosis" onClick={handleClick} className="gaikou-cta-btn">
+        <a href="/simulation" onClick={handleClick} className="gaikou-cta-btn">
           <span className="gaikou-cta-btn-inner">
             無料で相談・お見積もりを依頼する
             <ChevronRight className="w-5 h-5" aria-hidden="true" />

@@ -52,8 +52,11 @@ export const siteConfig = {
 
   // ── 外構LP・シミュレーターへのリンク ────────────────────────────────
   externalLinks: {
-    gaikouLpUrl: "/gaikou", // 既存広告LP
-    simulatorUrl: "/gaikou/diagnosis", // AIシミュレーター
+    gaikouLpUrl: "/lp/gaikou-reform",   // 外構リフォームLP（公開URL）
+    simulatorUrl: "/simulation",          // AIシミュレーター（公開URL）
+    // 旧URL（内部アクセス用・広告リダイレクト先として継続動作）
+    legacyLpUrl: "/gaikou",
+    legacySimulatorUrl: "/gaikou/diagnosis",
   },
 
   // ── SEO共通設定 ──────────────────────────────────────────────────────

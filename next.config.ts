@@ -16,15 +16,35 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
-    // takanagakensetu.com のルーティング方針:
-    //   現在: / → /gaikou (広告LP。広告停止後に下記のコメントアウトを切り替える)
-    //   将来: / → /takanaga (コーポレートHP)
-    // コーポレートHPサブページ (/services, /works 等) は今すぐ有効。
-    // LP は引き続き /gaikou で直接アクセス可能。
+    // ── takanagakensetu.com ルーティング方針 ──────────────────────────────
+    //
+    // 【現在の構成】
+    //   /                    → /gaikou          (外構リフォームLP ※広告配信中)
+    //   /lp/gaikou-reform    → app/lp/gaikou-reform/page.tsx (LP正規URL)
+    //   /simulation          → app/simulation/page.tsx       (AIシミュレーター)
+    //   /services            → /takanaga/services            (会社HP：工事内容)
+    //   /works               → /takanaga/works               (会社HP：施工事例)
+    //   /company             → /takanaga/company             (会社HP：会社案内)
+    //   /area                → /takanaga/area                (会社HP：対応地域)
+    //   /faq                 → /takanaga/faq                 (会社HP：よくある質問)
+    //   /contact             → /takanaga/contact             (会社HP：お問い合わせ)
+    //   /strengths           → /takanaga/strengths
+    //   /price               → /takanaga/price
+    //   /flow                → /takanaga/flow
+    //   /news                → /takanaga/news
+    //   /privacy             → /takanaga/privacy
+    //
+    // 【会社HPをルート(/)に切り替える手順】
+    //   広告管理画面でリンク先を takanagakensetu.com/lp/gaikou-reform に変更後:
+    //   下記2行の destination を "/gaikou" → "/takanaga" に書き換えてデプロイ
+    //   ※ /lp/gaikou-reform は引き続き動作するため LP は消えない
+    //
+    // 【注意】/lp, /simulation は直接 Next.js ページが存在するため rewrite 不要
 
     const takanagaHosts = ["takanagakensetu.com", "www.takanagakensetu.com"];
 
-    // コーポレートHPのサブパス一覧
+    // 会社HP サブパス（/takanaga/* にリライト）
+    // ※ lp / simulation は実ページがあるため含めない
     const hpPaths = [
       "services", "works", "strengths", "price", "flow",
       "company", "area", "faq", "news", "contact", "privacy",

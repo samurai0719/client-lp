@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "ご依頼の流れ",
   description:
     "高長建設への外構リフォームのご依頼から施工完了までの流れをご説明します。お問い合わせから現地調査・お見積もり・施工・引き渡しまでの9ステップ。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/flow` },
+  alternates: { canonical: `https://${siteConfig.domain}/flow` },
 };
 
 const STEPS = [

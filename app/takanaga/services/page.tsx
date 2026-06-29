@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "工事内容",
   description:
     "高長建設の対応工事一覧。駐車場・カーポート・フェンス・門柱・玄関アプローチ・人工芝・ウッドデッキ・庭リフォームなど、外構まわりの工事に対応しています。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/services` },
+  alternates: { canonical: `https://${siteConfig.domain}/services` },
 };
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {

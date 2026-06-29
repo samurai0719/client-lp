@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: work.title,
     description: `${work.prefecture}${work.city}の施工事例。${work.customerConcern}`,
-    alternates: { canonical: `https://${siteConfig.domain}/takanaga/works/${slug}` },
+    alternates: { canonical: `https://${siteConfig.domain}/works/${slug}` },
     openGraph: {
       title: `${work.title}${siteConfig.seo.titleSuffix}`,
       images: [{ url: work.afterImage }],

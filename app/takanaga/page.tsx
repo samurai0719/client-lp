@@ -17,12 +17,12 @@ export const metadata: Metadata = {
   title: `${siteConfig.siteName}｜岐阜・愛知・三重の外構リフォーム専門会社`,
   description: siteConfig.description,
   alternates: {
-    canonical: `https://${siteConfig.domain}/takanaga`,
+    canonical: `https://${siteConfig.domain}/`,
   },
   openGraph: {
     title: `${siteConfig.siteName}｜岐阜・愛知・三重の外構リフォーム専門会社`,
     description: siteConfig.description,
-    url: `https://${siteConfig.domain}/takanaga`,
+    url: `https://${siteConfig.domain}/`,
   },
 };
 
@@ -33,7 +33,7 @@ export default function TakanagaTopPage() {
     "@id": `https://${siteConfig.domain}`,
     name: siteConfig.siteName,
     description: siteConfig.description,
-    url: `https://${siteConfig.domain}/takanaga`,
+    url: `https://${siteConfig.domain}/`,
     image: `https://${siteConfig.domain}${siteConfig.seo.ogImage}`,
     areaServed: siteConfig.seo.serviceArea.map((area) => ({
       "@type": "AdministrativeArea",
