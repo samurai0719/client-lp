@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/takanaga/",
-      disallow: ["/takanaga/contact/thanks", "/admin/"],
+      allow: "/",
+      disallow: ["/contact/thanks", "/admin/", "/takanaga/contact/thanks"],
     },
     sitemap: `https://${siteConfig.domain}/takanaga/sitemap.xml`,
   };

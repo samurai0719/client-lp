@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "対応地域",
   description:
     "高長建設の対応地域。岐阜県・愛知県・三重県の東海エリアを中心に外構リフォームに対応しています。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/area` },
+  alternates: { canonical: `https://${siteConfig.domain}/area` },
 };
 
 export default function AreaPage() {
