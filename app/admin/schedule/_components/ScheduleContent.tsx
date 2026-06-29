@@ -7,7 +7,7 @@ import StatusBadge from "@/components/admin/StatusBadge";
 import { formatDate, isPast } from "@/lib/utils/format";
 import type { LeadWithCustomer } from "@/lib/types/crm";
 import { mockLeads } from "@/lib/mock/crmData";
-import { isSupabaseConfigured } from "@/lib/supabase/check";
+import { shouldUseDemoData } from "@/lib/supabase/check";
 
 type ViewMode = "calendar" | "list";
 
@@ -36,7 +36,7 @@ export default function ScheduleContent() {
 
   useEffect(() => {
     async function load() {
-      if (!isSupabaseConfigured()) {
+      if (shouldUseDemoData()) {
         const now = new Date();
         const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         const todayEnd = new Date(todayStart.getTime() + 86400000);
@@ -156,7 +156,7 @@ export default function ScheduleContent() {
         </div>
       </div>
 
-      {!isSupabaseConfigured() && (
+      {shouldUseDemoData() && (
         <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-800">
           デモデータ表示中（Supabase 未接続）
         </div>

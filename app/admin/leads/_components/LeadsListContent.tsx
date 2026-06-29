@@ -7,7 +7,7 @@ import StatusBadge from "@/components/admin/StatusBadge";
 import { formatCurrency, formatDate, minutesAgo } from "@/lib/utils/format";
 import { LEAD_STATUSES, LEAD_STATUS_LABELS, type LeadWithCustomer, type LeadStatus } from "@/lib/types/crm";
 import { mockLeads } from "@/lib/mock/crmData";
-import { isSupabaseConfigured } from "@/lib/supabase/check";
+import { shouldUseDemoData } from "@/lib/supabase/check";
 
 export default function LeadsListContent() {
   const [leads, setLeads] = useState<LeadWithCustomer[]>([]);
@@ -21,7 +21,7 @@ export default function LeadsListContent() {
 
   const loadLeads = useCallback(async () => {
     setLoading(true);
-    if (!isSupabaseConfigured()) {
+    if (shouldUseDemoData()) {
       let filtered = mockLeads;
       if (search) {
         const q = search.toLowerCase();
@@ -66,10 +66,10 @@ export default function LeadsListContent() {
     if (search) params.set("q", search);
     if (statusFilter) params.set("status", statusFilter);
     if (sourceFilter) params.set("source", sourceFilter);
-    const url = isSupabaseConfigured()
-      ? `/api/admin/csv?${params}`
-      : "#";
-    if (!isSupabaseConfigured()) {
+    const url = shouldUseDemoData()
+      ? "#"
+      : `/api/admin/csv?${params}`;
+    if (shouldUseDemoData()) {
       alert("Supabase 未接続のためCSV出力はできません");
       return;
     }
@@ -91,7 +91,7 @@ export default function LeadsListContent() {
         </button>
       </div>
 
-      {!isSupabaseConfigured() && (
+      {shouldUseDemoData() && (
         <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-800">
           デモデータ表示中（Supabase 未接続）
         </div>

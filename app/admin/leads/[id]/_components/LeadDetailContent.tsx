@@ -15,7 +15,7 @@ import {
   type LeadImage, type LeadStatus, type ActivityType,
 } from "@/lib/types/crm";
 import { mockLeads, mockActivities, mockNotes } from "@/lib/mock/crmData";
-import { isSupabaseConfigured } from "@/lib/supabase/check";
+import { shouldUseDemoData } from "@/lib/supabase/check";
 
 interface Props { paramsPromise: Promise<{ id: string }> }
 
@@ -49,7 +49,7 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
   const [actContent, setActContent] = useState("");
 
   const loadData = useCallback(async () => {
-    if (!isSupabaseConfigured()) {
+    if (shouldUseDemoData()) {
       const found = mockLeads.find((l) => l.id === id) ?? mockLeads[0];
       setLead(found);
       setEditStatus(found.status);
@@ -91,7 +91,7 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
   useEffect(() => { loadData(); }, [loadData]);
 
   async function handleSaveDeal() {
-    if (!isSupabaseConfigured()) { setMsg("デモモードです"); return; }
+    if (shouldUseDemoData()) { setMsg("デモモードです"); return; }
     setSaving(true);
     const prevStatus = lead?.status;
     if (editStatus === "contracted" && !editContract) {
@@ -127,7 +127,7 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
 
   async function handleAddActivity() {
     if (!actContent.trim()) return;
-    if (!isSupabaseConfigured()) { setMsg("デモモードです"); return; }
+    if (shouldUseDemoData()) { setMsg("デモモードです"); return; }
     const res = await fetch(`/api/admin/leads/${id}/activities`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -138,7 +138,7 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
 
   async function handleAddNote() {
     if (!newNote.trim()) return;
-    if (!isSupabaseConfigured()) { setMsg("デモモードです"); return; }
+    if (shouldUseDemoData()) { setMsg("デモモードです"); return; }
     const res = await fetch(`/api/admin/leads/${id}/notes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -148,7 +148,7 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
   }
 
   async function handleEditNote(noteId: string) {
-    if (!isSupabaseConfigured()) { setMsg("デモモードです"); return; }
+    if (shouldUseDemoData()) { setMsg("デモモードです"); return; }
     const res = await fetch(`/api/admin/leads/${id}/notes/${noteId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -159,14 +159,14 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
 
   async function handleDeleteNote(noteId: string) {
     if (!confirm("このメモを削除しますか？")) return;
-    if (!isSupabaseConfigured()) { setMsg("デモモードです"); return; }
+    if (shouldUseDemoData()) { setMsg("デモモードです"); return; }
     await fetch(`/api/admin/leads/${id}/notes/${noteId}`, { method: "DELETE" });
     await loadData();
   }
 
   async function handleDeleteImage(imgId: string) {
     if (!confirm("この画像を削除しますか？この操作は元に戻せません。")) return;
-    if (!isSupabaseConfigured()) { setMsg("デモモードです"); return; }
+    if (shouldUseDemoData()) { setMsg("デモモードです"); return; }
     await fetch(`/api/admin/leads/${id}/images/${imgId}`, { method: "DELETE" });
     await loadData();
   }
@@ -193,7 +193,7 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
         <StatusBadge status={lead.status} />
       </div>
 
-      {!isSupabaseConfigured() && (
+      {shouldUseDemoData() && (
         <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-800">
           デモデータ表示中（Supabase 未接続）
         </div>

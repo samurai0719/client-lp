@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { isAuthBypassEnabled } from "@/lib/auth/bypass";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,7 +15,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/taxi", request.url), { status: 301 });
   }
 
-  // Supabase 未設定の場合は認証チェックをスキップ（開発用）
+  // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）
+  if (isAuthBypassEnabled()) {
+    if (pathname === "/admin/login") {
+      return NextResponse.redirect(new URL("/admin", request.url));
+    }
+    return NextResponse.next();
+  }
+
+  // Supabase 未設定の場合は認証チェックをスキップ（開発用フォールバック）
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.next();
   }

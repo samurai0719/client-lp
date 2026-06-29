@@ -8,3 +8,10 @@ export function isSupabaseConfigured(): boolean {
 export function isSupabaseAdminConfigured(): boolean {
   return isSupabaseConfigured() && Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
+
+// クライアント側: デモデータを使うべきかどうか
+// NEXT_PUBLIC_DEMO_DATA_ENABLED=true または Supabase 未設定の場合にデモデータを使う
+export function shouldUseDemoData(): boolean {
+  if (process.env.NEXT_PUBLIC_DEMO_DATA_ENABLED === "true") return true;
+  return !isSupabaseConfigured();
+}

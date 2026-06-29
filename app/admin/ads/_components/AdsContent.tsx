@@ -5,7 +5,7 @@ import { Plus, Pencil, Trash2, Save, X } from "lucide-react";
 import { formatCurrency, formatDateOnly } from "@/lib/utils/format";
 import { AD_PLATFORM_LABELS, type AdExpense, type AdPlatform } from "@/lib/types/crm";
 import { mockAdExpenses, mockLeads } from "@/lib/mock/crmData";
-import { isSupabaseConfigured } from "@/lib/supabase/check";
+import { shouldUseDemoData } from "@/lib/supabase/check";
 
 interface PlatformStats {
   platform: AdPlatform | string;
@@ -26,7 +26,7 @@ export default function AdsContent() {
   const [form, setForm] = useState(emptyForm);
 
   async function load() {
-    if (!isSupabaseConfigured()) {
+    if (shouldUseDemoData()) {
       setExpenses(mockAdExpenses);
       const platforms = ["meta", "google", "tiktok"] as const;
       setStats(
@@ -60,7 +60,7 @@ export default function AdsContent() {
 
   async function handleSave() {
     if (!form.amount || Number(form.amount) <= 0) { alert("金額を入力してください"); return; }
-    if (!isSupabaseConfigured()) { alert("デモモードです"); return; }
+    if (shouldUseDemoData()) { alert("デモモードです"); return; }
     const body = { ...form, amount: Number(form.amount), campaign_name: form.campaign_name || null, memo: form.memo || null };
     if (editId) {
       await fetch(`/api/admin/ads/${editId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
@@ -75,7 +75,7 @@ export default function AdsContent() {
 
   async function handleDelete(id: string) {
     if (!confirm("この広告費データを削除しますか？")) return;
-    if (!isSupabaseConfigured()) { alert("デモモードです"); return; }
+    if (shouldUseDemoData()) { alert("デモモードです"); return; }
     await fetch(`/api/admin/ads/${id}`, { method: "DELETE" });
     await load();
   }
@@ -95,7 +95,7 @@ export default function AdsContent() {
         </button>
       </div>
 
-      {!isSupabaseConfigured() && (
+      {shouldUseDemoData() && (
         <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-800">
           デモデータ表示中（Supabase 未接続）
         </div>

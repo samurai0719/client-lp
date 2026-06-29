@@ -7,7 +7,7 @@ import StatusBadge from "@/components/admin/StatusBadge";
 import { formatCurrency, formatDate, isPast } from "@/lib/utils/format";
 import type { LeadWithCustomer } from "@/lib/types/crm";
 import { mockLeads } from "@/lib/mock/crmData";
-import { isSupabaseConfigured } from "@/lib/supabase/check";
+import { shouldUseDemoData } from "@/lib/supabase/check";
 
 interface DashboardStats {
   todayCount: number;
@@ -38,7 +38,7 @@ export default function DashboardContent() {
 
   useEffect(() => {
     async function load() {
-      if (!isSupabaseConfigured()) {
+      if (shouldUseDemoData()) {
         const now = new Date();
         const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -108,7 +108,7 @@ export default function DashboardContent() {
         <p className="text-sm text-[#6b7a73] mt-0.5">
           {new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric", weekday: "short" })}
         </p>
-        {!isSupabaseConfigured() && (
+        {shouldUseDemoData() && (
           <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-medium">
             デモデータ表示中（Supabase 未接続）
           </div>

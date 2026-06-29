@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
+
+const bypassEnabled = process.env.NEXT_PUBLIC_AUTH_BYPASS_ENABLED === "true";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -13,6 +15,13 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
   const [showReset, setShowReset] = useState(false);
+
+  // バイパスモードの場合は管理画面へ自動遷移（proxy.tsでもリダイレクトされるが二重保護）
+  useEffect(() => {
+    if (bypassEnabled) {
+      router.replace("/admin");
+    }
+  }, [router]);
 
   const supabaseReady = isSupabaseConfigured();
 
