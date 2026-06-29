@@ -208,7 +208,14 @@
       "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw node *)",
       "Bash(PLAYWRIGHT_BROWSERS_PATH=/tmp/pw npx playwright --version)",
       "Bash(kill 57929 59431)",
-      "Bash(kill 62762 1491)"
+      "Bash(kill 62762 1491)",
+      "Bash(vercel --version)",
+      "Bash(vercel project *)",
+      "Bash(vercel link *)",
+      "Bash(vercel env *)",
+      "Bash(vercel *)",
+      "Bash(ps *)",
+      "Bash(kill 86194 86195)"
     ]
   }
 }
