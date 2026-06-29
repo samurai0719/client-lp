@@ -3,56 +3,67 @@ import { ArrowRight, MapPin } from "lucide-react";
 import { serviceAreas } from "@/data/takanaga/areas";
 import AnimateOnScroll from "@/components/takanaga/common/AnimateOnScroll";
 
-// シンプルな日本地図アウトライン (東海地方フォーカス)
 function JapanMapSVG() {
   return (
     <svg
-      viewBox="0 0 300 200"
-      fill="none"
+      viewBox="0 0 200 280"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
-      className="w-full max-w-xs mx-auto opacity-80"
+      style={{ width: "100%", height: "auto", display: "block" }}
+      className="max-w-[180px] mx-auto opacity-90"
     >
-      {/* 岐阜県 */}
+      {/* 伊勢湾（背景） */}
       <path
-        d="M105 60 L125 50 L145 55 L150 75 L140 90 L120 85 L105 75 Z"
-        fill="rgba(29,95,166,0.15)"
-        stroke="rgba(29,95,166,0.5)"
-        strokeWidth="1.5"
-      />
-      <text x="127" y="72" textAnchor="middle" fontSize="8" fill="#1a3d6b" fontWeight="600">岐阜県</text>
-
-      {/* 愛知県 */}
-      <path
-        d="M120 90 L145 85 L165 90 L170 110 L155 125 L135 120 L118 108 Z"
-        fill="rgba(45,125,210,0.15)"
-        stroke="rgba(45,125,210,0.5)"
-        strokeWidth="1.5"
-      />
-      <text x="143" y="108" textAnchor="middle" fontSize="8" fill="#1a3d6b" fontWeight="600">愛知県</text>
-
-      {/* 三重県 */}
-      <path
-        d="M155 100 L175 95 L185 115 L180 140 L165 150 L150 135 L148 115 Z"
-        fill="rgba(29,95,166,0.10)"
-        stroke="rgba(29,95,166,0.4)"
-        strokeWidth="1.5"
-      />
-      <text x="167" y="128" textAnchor="middle" fontSize="8" fill="#1a3d6b" fontWeight="600">三重県</text>
-
-      {/* 海 */}
-      <path
-        d="M135 120 L155 125 L165 150 L160 170 L140 175 L125 160 L130 140 Z"
-        fill="rgba(240,245,252,0.5)"
-        stroke="rgba(200,216,234,0.5)"
+        d="M112,148 L138,152 L155,168 L158,195 L148,215 L132,220 L118,205 L110,182 L112,160 Z"
+        fill="rgba(219,234,254,0.6)"
+        stroke="rgba(147,197,253,0.5)"
         strokeWidth="0.5"
-        strokeDasharray="3,2"
       />
 
-      {/* マーカー */}
-      <circle cx="127" cy="73" r="4" fill="#2d7dd2" />
-      <circle cx="143" cy="108" r="4" fill="#2d7dd2" />
-      <circle cx="167" cy="128" r="4" fill="#2d7dd2" />
+      {/* 岐阜県 — 北部・内陸、横広の形状 */}
+      <path
+        d="M45,22 L95,12 L148,18 L172,38 L178,68 L165,98 L140,118 L108,128 L72,120 L48,100 L36,72 L40,46 Z"
+        fill="rgba(29,95,166,0.12)"
+        stroke="rgba(29,95,166,0.55)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+
+      {/* 愛知県 — 中部、知多半島あり */}
+      <path
+        d="M72,120 L108,128 L140,118 L165,98 L178,68 L185,85 L188,112 L180,140 L168,158 L158,165 L148,155 L140,140 L128,136 L112,140 L100,148 L88,140 Z"
+        fill="rgba(45,125,210,0.13)"
+        stroke="rgba(45,125,210,0.55)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      {/* 知多半島 */}
+      <path
+        d="M112,140 L120,155 L118,172 L110,178 L102,168 L100,152 Z"
+        fill="rgba(45,125,210,0.10)"
+        stroke="rgba(45,125,210,0.45)"
+        strokeWidth="1"
+        strokeLinejoin="round"
+      />
+
+      {/* 三重県 — 右側、南北に長い */}
+      <path
+        d="M140,118 L165,98 L178,68 L185,85 L188,112 L185,140 L180,168 L172,198 L162,228 L152,252 L142,255 L136,238 L138,210 L140,185 L142,162 L145,142 L140,128 Z"
+        fill="rgba(29,95,166,0.10)"
+        stroke="rgba(29,95,166,0.45)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+
+      {/* 県名ラベル */}
+      <text x="108" y="72" textAnchor="middle" fontSize="10" fill="#1e40af" fontWeight="700" fontFamily="sans-serif">岐阜県</text>
+      <text x="138" y="136" textAnchor="middle" fontSize="9" fill="#1e40af" fontWeight="700" fontFamily="sans-serif">愛知県</text>
+      <text x="168" y="185" textAnchor="middle" fontSize="9" fill="#1e40af" fontWeight="700" fontFamily="sans-serif">三重県</text>
+
+      {/* ピンマーカー */}
+      <circle cx="108" cy="78" r="4" fill="#2d7dd2" opacity="0.9" />
+      <circle cx="136" cy="142" r="4" fill="#2d7dd2" opacity="0.9" />
+      <circle cx="165" cy="190" r="4" fill="#2d7dd2" opacity="0.9" />
     </svg>
   );
 }
