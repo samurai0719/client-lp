@@ -133,9 +133,9 @@ export default function HeroSection() {
       <section className="relative overflow-hidden bg-white" style={{ minHeight: "100svh" }} aria-label="ファーストビュー">
 
         {/* ── 背景写真（デスクトップ） ── */}
-        <div className="absolute inset-0 hidden lg:block">
+        <div className="absolute inset-0 hidden lg:block pointer-events-none" aria-hidden>
           <Image
-            src="/images/fv-desktop.png"
+            src="/images/gaikou/hero-fv.png"
             alt=""
             fill
             className="object-cover object-center"
@@ -144,24 +144,23 @@ export default function HeroSection() {
           {/* 左から右へのグラデーション：テキスト側は白く、写真カード側は見せる */}
           <div
             className="absolute inset-0"
-            aria-hidden
             style={{ background: "linear-gradient(105deg, rgba(255,255,255,0.93) 0%, rgba(255,255,255,0.82) 38%, rgba(255,255,255,0.48) 62%, rgba(255,255,255,0.22) 100%)" }}
           />
         </div>
 
         {/* ── 背景写真（モバイル） ── */}
-        <div className="absolute inset-0 lg:hidden">
+        <div className="absolute inset-0 lg:hidden pointer-events-none" aria-hidden>
           <Image
-            src="/images/fv-mobile.png"
+            src="/images/gaikou/hero-fv.png"
             alt=""
             fill
-            className="object-cover object-top"
+            className="object-cover"
+            style={{ objectPosition: "28% center" }}
             priority
           />
           {/* 上（カード部）は写真を見せ、下（テキスト部）は白で読みやすくする */}
           <div
             className="absolute inset-0"
-            aria-hidden
             style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.52) 40%, rgba(255,255,255,0.93) 58%, rgba(255,255,255,0.98) 100%)" }}
           />
         </div>
