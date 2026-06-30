@@ -1,6 +1,22 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import type { TakanagaContactInput } from "@/lib/types/takanagaContact";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
+
+const WORK_TYPE_MAP: Record<string, string> = {
+  parking: "駐車場リフォーム",
+  carport: "エクステリア（カーポート・フェンスなど）",
+  fence: "フェンス・塀工事",
+  gate: "フェンス・塀工事",
+  approach: "駐車場リフォーム",
+  grass: "雑草・庭管理対策",
+  deck: "植栽工事",
+  garden: "植栽工事",
+  gravel: "雑草・庭管理対策",
+  drainage: "駐車場リフォーム",
+  full: "駐車場リフォーム",
+};
 
 const DESIRED_WORK_LABELS: Record<string, string> = {
   parking: "駐車場・土間コンクリート",
@@ -84,6 +100,69 @@ function buildAutoReplyBody(name: string): string {
   ].join("\n");
 }
 
+async function saveToCrm(data: TakanagaContactInput): Promise<void> {
+  if (!isSupabaseAdminConfigured()) return;
+  try {
+    const db = createAdminClient();
+    const phoneNorm = data.phone.replace(/[^\d]/g, "");
+
+    const { data: customer, error: custErr } = await db
+      .from("customers")
+      .upsert(
+        {
+          name: data.name,
+          phone: data.phone,
+          phone_normalized: phoneNorm,
+          email: data.email || null,
+          prefecture: data.prefecture,
+          city: data.city,
+          address: data.address || null,
+        },
+        { onConflict: "phone_normalized" }
+      )
+      .select("id")
+      .single();
+
+    if (custErr || !customer) {
+      console.error("[takanaga-contact] Customer upsert failed:", custErr);
+      return;
+    }
+
+    const workTypes = data.desiredWork
+      .map((w) => WORK_TYPE_MAP[w])
+      .filter((v): v is string => Boolean(v));
+    const uniqueTypes = [...new Set(workTypes)];
+    if (uniqueTypes.length === 0) uniqueTypes.push("その他");
+
+    const { data: lead, error: leadErr } = await db
+      .from("leads")
+      .insert({
+        customer_id: customer.id,
+        status: "new",
+        work_types: uniqueTypes,
+        inquiry_message: data.message,
+        source: "hp",
+      })
+      .select("id")
+      .single();
+
+    if (leadErr) {
+      console.error("[takanaga-contact] Lead insert failed:", leadErr);
+      return;
+    }
+
+    if (lead) {
+      await db.from("lead_activities").insert({
+        lead_id: lead.id,
+        activity_type: "inquiry_received",
+        content: "高長建設HPのお問い合わせフォームより受け付けました",
+      });
+    }
+  } catch (err) {
+    console.error("[takanaga-contact] CRM save error:", err);
+  }
+}
+
 async function notifyCrmWebhook(data: TakanagaContactInput): Promise<void> {
   const webhookUrl = process.env.CRM_WEBHOOK_URL;
   if (!webhookUrl) return;
@@ -126,6 +205,9 @@ export async function POST(req: Request) {
       hour: "2-digit",
       minute: "2-digit",
     });
+
+    // CRM: Supabase に顧客・リードを保存（失敗しても続行）
+    void saveToCrm(body);
 
     // CRM webhook（非同期、失敗しても続行）
     void notifyCrmWebhook(body);

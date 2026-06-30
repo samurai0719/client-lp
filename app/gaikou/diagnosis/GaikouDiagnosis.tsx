@@ -146,12 +146,9 @@ export default function GaikouDiagnosis() {
     setAnswers((prev) => ({ ...prev, contact }));
   }
 
-  function handleFinalSubmit() {
+  async function handleFinalSubmit() {
     setSubmitting(true);
 
-    // ── テスト送信 ──────────────────────────────────────────────
-    // 送信先APIは未接続のため、実際の送信は行わずコンソール出力のみ行う。
-    // API確定後、ここでfetch等による本送信処理に置き換える。
     const utm = (() => {
       try {
         const raw = window.sessionStorage.getItem(UTM_STORAGE_KEY);
@@ -160,14 +157,20 @@ export default function GaikouDiagnosis() {
         return {};
       }
     })();
-    console.log("[外構プラン無料診断] テスト送信（送信API未接続）", { answers, utm });
+
+    try {
+      await fetch("/api/gaikou-contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers, utm }),
+      });
+    } catch (err) {
+      console.error("[外構診断] API送信エラー:", err);
+    }
 
     window.sessionStorage.removeItem(STATE_STORAGE_KEY);
-
-    setTimeout(() => {
-      setSubmitting(false);
-      setPhase("result");
-    }, 300);
+    setSubmitting(false);
+    setPhase("result");
   }
 
   const currentQuestion = diagnosisQuestions.find((q) => q.step === step);
