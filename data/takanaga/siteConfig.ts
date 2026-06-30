@@ -53,7 +53,7 @@ export const siteConfig = {
   // ── 外構LP・シミュレーターへのリンク ────────────────────────────────
   externalLinks: {
     gaikouLpUrl: "/gaikou", // 既存広告LP
-    simulatorUrl: "/gaikou/diagnosis", // AIシミュレーター
+    simulatorUrl: "/takanaga/simulation", // AIシミュレーター（タカナガHP内ページ）
   },
 
   // ── SEO共通設定 ──────────────────────────────────────────────────────
