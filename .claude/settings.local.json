@@ -224,7 +224,8 @@
       "Bash(open *)",
       "Bash(xargs sed -i '' 's|href=\"/takanaga/|href=\"/|g')",
       "Bash(grep *)",
-      "Bash(xargs sed -i '' \"s|href={\\\\`/takanaga/|href={\\\\`/|g\")"
+      "Bash(xargs sed -i '' \"s|href={\\\\`/takanaga/|href={\\\\`/|g\")",
+      "Bash(sort -k5 -rn)"
     ]
   }
 }
