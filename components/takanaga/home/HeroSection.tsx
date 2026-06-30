@@ -132,6 +132,40 @@ export default function HeroSection() {
 
       <section className="relative overflow-hidden bg-white" style={{ minHeight: "100svh" }} aria-label="ファーストビュー">
 
+        {/* ── 背景写真（デスクトップ） ── */}
+        <div className="absolute inset-0 hidden lg:block">
+          <Image
+            src="/images/fv-desktop.png"
+            alt=""
+            fill
+            className="object-cover object-center"
+            priority
+          />
+          {/* 左から右へのグラデーション：テキスト側は白く、写真カード側は見せる */}
+          <div
+            className="absolute inset-0"
+            aria-hidden
+            style={{ background: "linear-gradient(105deg, rgba(255,255,255,0.93) 0%, rgba(255,255,255,0.82) 38%, rgba(255,255,255,0.48) 62%, rgba(255,255,255,0.22) 100%)" }}
+          />
+        </div>
+
+        {/* ── 背景写真（モバイル） ── */}
+        <div className="absolute inset-0 lg:hidden">
+          <Image
+            src="/images/fv-mobile.png"
+            alt=""
+            fill
+            className="object-cover object-top"
+            priority
+          />
+          {/* 上（カード部）は写真を見せ、下（テキスト部）は白で読みやすくする */}
+          <div
+            className="absolute inset-0"
+            aria-hidden
+            style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.52) 40%, rgba(255,255,255,0.93) 58%, rgba(255,255,255,0.98) 100%)" }}
+          />
+        </div>
+
         {/* ── 背景SVG ── */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden preserveAspectRatio="xMidYMid slice">
           <defs>
