@@ -49,7 +49,7 @@ export default function PriceSection() {
                 <tbody className="divide-y divide-(--tkn-border)">
                   {visiblePriceItems.map((item) => (
                     <tr key={item.id} className="hover:bg-(--tkn-sky)/60 transition-colors">
-                      <td className="px-4 py-3 text-(--tkn-navy-deep) font-medium">
+                      <td className="px-4 py-3 text-(--tkn-navy-deep) font-medium min-w-0 w-full">
                         {item.workType}
                         {item.priceNote && (
                           <p className="text-xs text-(--tkn-text-muted) font-normal mt-0.5">
@@ -57,7 +57,7 @@ export default function PriceSection() {
                           </p>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-4 py-3 text-right whitespace-nowrap">
                         {item.priceLabel ? (
                           <span className="font-bold text-(--tkn-blue)">{item.priceLabel}</span>
                         ) : (
@@ -105,7 +105,7 @@ export default function PriceSection() {
 
         <AnimateOnScroll variant="fade" delay={100} className="text-center mt-8">
           <Link
-            href="/price"
+            href="/takanaga/price"
             className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-navy) transition-colors"
           >
             費用目安の詳細を見る

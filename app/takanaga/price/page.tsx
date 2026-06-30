@@ -39,13 +39,13 @@ export default function PricePage() {
                 <tbody className="divide-y divide-(--tkn-border)">
                   {visiblePriceItems.map((item) => (
                     <tr key={item.id} className="hover:bg-(--tkn-warm-gray)/50 transition-colors">
-                      <td className="px-5 py-4 text-(--tkn-navy-deep) font-medium">
+                      <td className="px-5 py-4 text-(--tkn-navy-deep) font-medium min-w-0 w-full">
                         {item.workType}
                         {item.priceNote && (
                           <p className="text-xs text-(--tkn-text-muted) font-normal mt-1">{item.priceNote}</p>
                         )}
                       </td>
-                      <td className="px-5 py-4 text-right">
+                      <td className="px-5 py-4 text-right whitespace-nowrap">
                         {item.priceLabel ? (
                           <span className="text-base font-bold text-(--tkn-blue)">{item.priceLabel}</span>
                         ) : (
@@ -57,8 +57,11 @@ export default function PricePage() {
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-(--tkn-text-muted) mt-3">
-              ※ 上記の金額は参考価格です。現地の状況・仕様・施工条件によって変わります。正確な費用は現地調査後にご案内します。
+            <p className="text-sm text-(--tkn-text) mt-4 leading-relaxed">
+              駐車場2台分のコンクリートと2台用カーポートを同時に施工する場合は、100万円前後からが目安です。
+            </p>
+            <p className="text-xs text-(--tkn-text-muted) mt-2 leading-relaxed">
+              ※表示価格は標準的な施工条件での目安です。施工面積、既存外構の撤去、地盤状況、残土処分、排水工事、使用商品によって価格は変動します。正式な金額は現地調査後にお見積もりします。
             </p>
           </div>
 
