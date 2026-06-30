@@ -15,6 +15,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/taxi", request.url), { status: 301 });
   }
 
+  // takanaga-crm ドメイン: ルートは管理画面へリダイレクト
+  if (hostname.includes("takanaga-crm") && pathname === "/") {
+    return NextResponse.redirect(new URL("/admin", request.url));
+  }
+
   // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）
   if (isAuthBypassEnabled()) {
     if (pathname === "/admin/login") {

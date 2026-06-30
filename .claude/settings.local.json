@@ -215,7 +215,13 @@
       "Bash(vercel env *)",
       "Bash(vercel *)",
       "Bash(ps *)",
-      "Bash(kill 86194 86195)"
+      "Bash(kill 86194 86195)",
+      "Read(//Users/tsukamotoshuntaira/.local/share/com.vercel.cli/**)",
+      "Read(//Users/tsukamotoshuntaira/.config/vercel/**)",
+      "Bash(xargs cat)",
+      "Read(//Users/tsukamotoshuntaira/.config/com.vercel.cli/**)",
+      "Read(//Users/tsukamotoshuntaira/**)",
+      "Bash(open *)"
     ]
   }
 }
