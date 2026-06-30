@@ -121,7 +121,7 @@ export default function FlowPage() {
             <p className="text-sm text-(--tkn-text-muted) mb-5">
               「どんな工事ができるか分からない」「費用感だけ知りたい」でも構いません。
             </p>
-            <Link href="/takanaga/contact" className="tkn-btn-primary">
+            <Link href="/contact" className="tkn-btn-primary">
               お問い合わせ・無料現地調査を相談する
               <ArrowRight size={16} aria-hidden />
             </Link>

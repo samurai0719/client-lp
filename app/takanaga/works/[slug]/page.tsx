@@ -187,13 +187,13 @@ export default async function WorkDetailPage({ params }: Props) {
           {/* 前後ナビゲーション */}
           <nav className="mt-12 pt-8 border-t border-(--tkn-border) flex justify-between gap-4" aria-label="施工事例ナビゲーション">
             {prevWork ? (
-              <Link href={`/takanaga/works/${prevWork.slug}`} className="flex items-center gap-2 text-sm text-(--tkn-blue-bright) hover:text-(--tkn-blue) transition-colors">
+              <Link href={`/works/${prevWork.slug}`} className="flex items-center gap-2 text-sm text-(--tkn-blue-bright) hover:text-(--tkn-blue) transition-colors">
                 <ArrowLeft size={16} aria-hidden />
                 <span className="line-clamp-1">{prevWork.title}</span>
               </Link>
             ) : <div />}
             {nextWork ? (
-              <Link href={`/takanaga/works/${nextWork.slug}`} className="flex items-center gap-2 text-sm text-(--tkn-blue-bright) hover:text-(--tkn-blue) transition-colors">
+              <Link href={`/works/${nextWork.slug}`} className="flex items-center gap-2 text-sm text-(--tkn-blue-bright) hover:text-(--tkn-blue) transition-colors">
                 <span className="line-clamp-1">{nextWork.title}</span>
                 <ArrowRight size={16} aria-hidden />
               </Link>
@@ -201,7 +201,7 @@ export default async function WorkDetailPage({ params }: Props) {
           </nav>
 
           <div className="text-center mt-6">
-            <Link href="/takanaga/works" className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-blue) transition-colors">
+            <Link href="/works" className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-blue) transition-colors">
               <ArrowLeft size={14} aria-hidden />
               施工事例一覧に戻る
             </Link>

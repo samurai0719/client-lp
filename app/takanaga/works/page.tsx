@@ -94,7 +94,7 @@ export default function WorksPage() {
               {filtered.map((work) => (
                 <li key={work.slug}>
                   <Link
-                    href={`/takanaga/works/${work.slug}`}
+                    href={`/works/${work.slug}`}
                     className="group block tkn-card hover:border-(--tkn-blue-bright) transition-colors overflow-hidden h-full"
                   >
                     <div className="grid grid-cols-2 divide-x divide-(--tkn-border)">

@@ -90,7 +90,7 @@ export default function PricePage() {
               「予算がいくらあればできるか」「この内容でいくらになるか」など、費用についてのご相談もお気軽にどうぞ。
               現地を確認した上で、お客様の予算に合ったプランをご提案します。
             </p>
-            <Link href="/takanaga/contact" className="tkn-btn-primary">
+            <Link href="/contact" className="tkn-btn-primary">
               費用について相談する
               <ArrowRight size={16} aria-hidden />
             </Link>

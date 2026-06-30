@@ -68,7 +68,7 @@ export default async function NewsDetailPage({ params }: Props) {
 
           <div className="mt-10 pt-6 border-t border-(--tkn-border)">
             <Link
-              href="/takanaga/news"
+              href="/news"
               className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-blue) transition-colors"
             >
               <ArrowLeft size={14} aria-hidden />

@@ -28,7 +28,7 @@ export default function ThanksPage() {
             トップページへ
             <ArrowRight size={16} aria-hidden />
           </Link>
-          <Link href="/takanaga/works" className="tkn-btn-outline">
+          <Link href="/works" className="tkn-btn-outline">
             施工事例を見る
           </Link>
         </div>

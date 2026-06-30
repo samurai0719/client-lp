@@ -100,7 +100,7 @@ export default function FaqPage() {
             <p className="text-sm text-(--tkn-text-muted) mb-5">
               FAQに載っていない内容でも、お気軽にご質問ください。
             </p>
-            <Link href="/takanaga/contact" className="tkn-btn-primary">
+            <Link href="/contact" className="tkn-btn-primary">
               お問い合わせ
               <ArrowRight size={16} aria-hidden />
             </Link>

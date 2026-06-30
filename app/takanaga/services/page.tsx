@@ -76,7 +76,7 @@ export default function ServicesPage() {
             <p className="text-sm text-(--tkn-text-muted) mb-4">
               掲載していない工事でも、対応できる場合があります。お気軽にお問い合わせください。
             </p>
-            <Link href="/takanaga/contact" className="tkn-btn-primary">
+            <Link href="/contact" className="tkn-btn-primary">
               工事について相談する
               <ArrowRight size={16} aria-hidden />
             </Link>

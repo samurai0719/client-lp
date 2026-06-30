@@ -263,11 +263,11 @@ export default function HeroSection() {
 
           {/* ⑤ CTA（最下部） */}
           <div className="mt-auto px-5 pb-10 pt-5 flex flex-col gap-2.5">
-            <Link href="/contact" className="tkn-cta tkn-btn-primary justify-center !py-4 !text-[0.95rem]">
+            <Link href="/contact" className="tkn-cta tkn-btn-primary !w-full justify-center !py-4 !text-[0.95rem]">
               無料で現地調査を相談する
               <ArrowRight size={17} aria-hidden />
             </Link>
-            <Link href="/works" className="tkn-cta tkn-btn-outline justify-center !py-3.5 !text-[0.9rem]">
+            <Link href="/works" className="tkn-cta tkn-btn-outline !w-full justify-center !py-3.5 !text-[0.9rem]">
               施工事例を見る
             </Link>
             <div className="text-center">

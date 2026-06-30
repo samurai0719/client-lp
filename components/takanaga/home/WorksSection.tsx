@@ -34,7 +34,7 @@ export default function WorksSection() {
             {displayWorks.map((work, i) => (
               <AnimateOnScroll key={work.slug} variant="up" delay={i * 80} as="li">
                 <Link
-                  href={`/takanaga/works/${work.slug}`}
+                  href={`/works/${work.slug}`}
                   className="group block tkn-card overflow-hidden hover:border-(--tkn-blue-bright)"
                 >
                   {/* Before/After 画像 */}

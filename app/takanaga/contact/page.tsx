@@ -385,7 +385,7 @@ export default function ContactPage() {
                   第三者への提供は行いません（顧客管理システムへの記録を除く）。
                   詳しくは{" "}
                   <Link
-                    href="/takanaga/privacy"
+                    href="/privacy"
                     className="text-(--tkn-blue-bright) underline hover:text-(--tkn-blue) transition-colors"
                     target="_blank"
                     rel="noopener"
@@ -406,7 +406,7 @@ export default function ContactPage() {
                 />
                 <span className="text-sm text-(--tkn-text)">
                   <Link
-                    href="/takanaga/privacy"
+                    href="/privacy"
                     className="text-(--tkn-blue-bright) underline hover:text-(--tkn-blue) transition-colors"
                     target="_blank"
                     rel="noopener"

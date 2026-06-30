@@ -28,7 +28,7 @@ export default function NewsPage() {
               {publishedNews.map((item) => (
                 <li key={item.slug}>
                   <Link
-                    href={`/takanaga/news/${item.slug}`}
+                    href={`/news/${item.slug}`}
                     className="group flex flex-col sm:flex-row gap-4 tkn-card p-5 hover:border-(--tkn-blue-bright) transition-colors"
                   >
                     <div className="shrink-0 text-xs text-(--tkn-text-muted)">
