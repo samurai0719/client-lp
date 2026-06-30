@@ -93,7 +93,7 @@ export default function Footer() {
             © {new Date().getFullYear()} 高長建設. All rights reserved.
           </p>
           <div className="flex gap-4">
-            <Link href="/takanaga/privacy" className="text-xs text-white/40 hover:text-white/70 transition-colors">
+            <Link href="/privacy" className="text-xs text-white/40 hover:text-white/70 transition-colors">
               プライバシーポリシー
             </Link>
           </div>

@@ -99,7 +99,7 @@ export default function WorksSection() {
 
         <AnimateOnScroll variant="fade" delay={100} className="text-center mt-8">
           <Link
-            href="/takanaga/works"
+            href="/works"
             className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-navy) transition-colors"
           >
             施工事例をすべて見る

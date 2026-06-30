@@ -3,12 +3,10 @@ import CountUp from "@/components/takanaga/common/CountUp";
 
 const STATS = [
   {
-    value: 0,
+    value: 1000,
     suffix: "件+",
     label: "施工実績",
-    note: "要入力",
-    display: "--件+",
-    useCountUp: false,
+    useCountUp: true,
   },
   {
     value: 3,
@@ -38,11 +36,14 @@ export default function AboutSection() {
         </AnimateOnScroll>
 
         {/* 統計 */}
-        <div className="grid grid-cols-3 gap-4 sm:gap-8 mb-12">
+        <div className="grid grid-cols-3 gap-2 sm:gap-8 mb-12">
           {STATS.map((stat, i) => (
             <AnimateOnScroll key={stat.label} variant="scale" delay={i * 120}>
-              <div className="text-center p-5 sm:p-8 rounded-2xl border border-(--tkn-border) bg-white shadow-sm">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-(--tkn-blue) mb-2 leading-none">
+              <div className="text-center p-3 sm:p-8 rounded-2xl border border-(--tkn-border) bg-white shadow-sm">
+                <div
+                  className="font-black text-(--tkn-blue) mb-1 sm:mb-2 leading-none"
+                  style={{ fontSize: "clamp(1.4rem, 5.5vw, 3rem)" }}
+                >
                   {stat.display ? (
                     stat.display
                   ) : stat.useCountUp ? (
@@ -51,7 +52,7 @@ export default function AboutSection() {
                     `${stat.value}${stat.suffix ?? ""}`
                   )}
                 </div>
-                <div className="text-xs sm:text-sm font-semibold text-(--tkn-text-muted)">
+                <div className="text-[0.65rem] sm:text-sm font-semibold text-(--tkn-text-muted) leading-tight">
                   {stat.label}
                 </div>
               </div>

@@ -24,6 +24,8 @@ export const serviceAreas: PrefectureArea[] = [
       "関市",
       "多治見市",
       "美濃加茂市",
+      "高山市",
+      "下呂市",
     ],
   },
   {

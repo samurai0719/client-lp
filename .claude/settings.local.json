@@ -221,7 +221,8 @@
       "Bash(xargs cat)",
       "Read(//Users/tsukamotoshuntaira/.config/com.vercel.cli/**)",
       "Read(//Users/tsukamotoshuntaira/**)",
-      "Bash(open *)"
+      "Bash(open *)",
+      "Bash(xargs sed -i '' 's|href=\"/takanaga/|href=\"/|g')"
     ]
   }
 }
