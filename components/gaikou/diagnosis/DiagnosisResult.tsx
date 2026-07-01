@@ -69,11 +69,6 @@ export default function DiagnosisResult({ worries }: DiagnosisResultProps) {
         </p>
       </div>
 
-      <div className="mt-4 rounded-xl bg-[#eef0ea] px-4 py-3 text-[12px] sm:text-sm text-[#5a655f]">
-        現在はテスト運用中です。
-        <br />
-        送信機能は後から接続します。
-      </div>
     </motion.div>
   );
 }

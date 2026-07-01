@@ -170,21 +170,6 @@ export default function DiagnosisContactForm({
         </div>
 
         <div>
-          <label htmlFor={`${baseId}-address`} className={labelClass}>
-            住所（町名以下） <span className="text-xs text-[#8a9a90] font-normal">（任意）</span>
-          </label>
-          <input
-            id={`${baseId}-address`}
-            type="text"
-            value={contact.addressDetail}
-            onChange={(e) => set("addressDetail", e.target.value)}
-            onKeyDown={preventEnterSubmit}
-            placeholder="○○町1-2-3"
-            className={inputClass}
-          />
-        </div>
-
-        <div>
           <label htmlFor={`${baseId}-photo`} className={labelClass}>
             現場写真 <span className="text-xs text-[#8a9a90] font-normal">（任意）</span>
           </label>
