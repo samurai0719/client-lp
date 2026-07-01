@@ -45,10 +45,21 @@ export async function POST(req: Request) {
       const db = createAdminClient();
       const phoneNorm = contact.phone.replace(/[^\d]/g, "");
 
-      const { data: customer, error: custErr } = await db
+      // 既存顧客チェック → なければ新規作成
+      const { data: existing } = await db
         .from("customers")
-        .upsert(
-          {
+        .select("id")
+        .eq("phone_normalized", phoneNorm)
+        .is("deleted_at", null)
+        .limit(1);
+
+      let customerId: string | null = null;
+      if (existing && existing.length > 0) {
+        customerId = existing[0].id;
+      } else {
+        const { data: newCust, error: custErr } = await db
+          .from("customers")
+          .insert({
             name: contact.name,
             phone: contact.phone,
             phone_normalized: phoneNorm,
@@ -56,15 +67,18 @@ export async function POST(req: Request) {
             prefecture: answers.prefecture || null,
             city: answers.municipality || null,
             address: contact.addressDetail || null,
-          },
-          { onConflict: "phone_normalized" }
-        )
-        .select("id")
-        .single();
+          })
+          .select("id")
+          .single();
+        if (custErr || !newCust) {
+          console.error("[gaikou-contact] Customer insert failed:", custErr);
+        } else {
+          customerId = newCust.id;
+        }
+      }
 
-      if (custErr || !customer) {
-        console.error("[gaikou-contact] Customer upsert failed:", custErr);
-      } else {
+      if (customerId) {
+        const customer = { id: customerId };
         const workTypes = answers.constructionTypes
           .map((t) => CONSTRUCTION_TYPE_MAP[t])
           .filter((v): v is string => Boolean(v));

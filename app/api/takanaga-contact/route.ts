@@ -106,10 +106,21 @@ async function saveToCrm(data: TakanagaContactInput): Promise<void> {
     const db = createAdminClient();
     const phoneNorm = data.phone.replace(/[^\d]/g, "");
 
-    const { data: customer, error: custErr } = await db
+    // 既存顧客チェック → なければ新規作成
+    const { data: existing } = await db
       .from("customers")
-      .upsert(
-        {
+      .select("id")
+      .eq("phone_normalized", phoneNorm)
+      .is("deleted_at", null)
+      .limit(1);
+
+    let customerId: string | null = null;
+    if (existing && existing.length > 0) {
+      customerId = existing[0].id;
+    } else {
+      const { data: newCust, error: custErr } = await db
+        .from("customers")
+        .insert({
           name: data.name,
           phone: data.phone,
           phone_normalized: phoneNorm,
@@ -117,16 +128,17 @@ async function saveToCrm(data: TakanagaContactInput): Promise<void> {
           prefecture: data.prefecture,
           city: data.city,
           address: data.address || null,
-        },
-        { onConflict: "phone_normalized" }
-      )
-      .select("id")
-      .single();
-
-    if (custErr || !customer) {
-      console.error("[takanaga-contact] Customer upsert failed:", custErr);
-      return;
+        })
+        .select("id")
+        .single();
+      if (custErr || !newCust) {
+        console.error("[takanaga-contact] Customer insert failed:", custErr);
+        return;
+      }
+      customerId = newCust.id;
     }
+
+    const customer = { id: customerId! };
 
     const workTypes = data.desiredWork
       .map((w) => WORK_TYPE_MAP[w])
