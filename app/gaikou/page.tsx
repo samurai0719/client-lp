@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import GaikouLandingPage from "./GaikouLandingPage";
 import TakanagaMetaPixel from "@/components/analytics/TakanagaMetaPixel";
 
@@ -12,6 +13,8 @@ export default function GaikouPage() {
   return (
     <>
       <TakanagaMetaPixel />
+      {/* Ptengine（高長建設LP限定） */}
+      <Script id="ptengine-tag-gaikou" src="https://js.ptengine.jp/5ea63otf.js" strategy="afterInteractive" />
       <GaikouLandingPage />
     </>
   );
