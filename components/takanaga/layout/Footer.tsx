@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { MapPin, ExternalLink } from "lucide-react";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
 const NAV_COLUMNS = [
@@ -63,6 +64,33 @@ export default function Footer() {
             )}
             {siteConfig.company.businessHours && (
               <p className="text-xs text-white/50 mt-1">{siteConfig.company.businessHours}</p>
+            )}
+            {siteConfig.company.address && (
+              <div className="mt-4">
+                {siteConfig.company.googleMapsUrl ? (
+                  <Link
+                    href={siteConfig.company.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-start gap-1.5 text-xs text-white/60 hover:text-white/90 transition-colors"
+                  >
+                    <MapPin size={12} className="shrink-0 mt-0.5" aria-hidden />
+                    <span>
+                      {siteConfig.company.postalCode && `〒${siteConfig.company.postalCode} `}
+                      {siteConfig.company.address}
+                      <ExternalLink size={10} className="inline ml-1" aria-hidden />
+                    </span>
+                  </Link>
+                ) : (
+                  <p className="inline-flex items-start gap-1.5 text-xs text-white/60">
+                    <MapPin size={12} className="shrink-0 mt-0.5" aria-hidden />
+                    <span>
+                      {siteConfig.company.postalCode && `〒${siteConfig.company.postalCode} `}
+                      {siteConfig.company.address}
+                    </span>
+                  </p>
+                )}
+              </div>
             )}
           </div>
 

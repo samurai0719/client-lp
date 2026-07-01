@@ -12,25 +12,28 @@ export const siteConfig = {
   domain: "takanagakensetu.com",
   siteUrl: "https://takanagakensetu.com",
 
-  // ── 会社情報（未確定の項目は null ） ─────────────────────────────────
+  // ── 会社情報 ─────────────────────────────────────────────────────────
   company: {
     name: "高長建設",
-    nameKana: null as string | null, // 例: "タカナガケンセツ"
-    representativeName: null as string | null, // 代表者名
-    founded: null as string | null, // 例: "2010年"
-    established: null as string | null, // 法人設立年月（例: "2015年4月"）
-    businessType: "外構工事・エクステリア工事", // 事業内容
-    address: null as string | null, // 例: "岐阜県岐阜市〇〇町 1-2-3"
-    addressLine2: null as string | null, // 建物名など
-    phone: null as string | null, // 例: "058-XXX-XXXX"
-    phoneNote: null as string | null, // 電話に関する注記
-    email: null as string | null, // 例: "info@takanagakensetu.com"
-    businessHours: null as string | null, // 例: "8:00〜18:00"
-    closedDays: null as string | null, // 例: "日曜・祝日"
-    constructionLicenseNumber: null as string | null, // 建設業許可番号
-    invoiceRegistrationNumber: null as string | null, // インボイス登録番号
-    googleMapsUrl: null as string | null, // Googleマップ埋め込みURL
-    googleMapsEmbedUrl: null as string | null, // iframe src URL
+    nameKana: null as string | null,
+    representativeName: "長屋彰人" as string | null,
+    founded: null as string | null,
+    established: null as string | null,
+    businessType: "外構工事・エクステリア工事",
+    postalCode: "504-0008" as string | null,
+    address: "岐阜県各務原市那加桐野町1-65" as string | null,
+    addressLine2: null as string | null,
+    phone: "090-6598-4896" as string | null,
+    phoneNote: null as string | null,
+    email: null as string | null,
+    businessHours: null as string | null,
+    closedDays: null as string | null,
+    constructionLicenseNumber: null as string | null,
+    invoiceRegistrationNumber: null as string | null,
+    // Googleマップ共有URLはGoogle Mapsで住所検索→「共有」→「リンクをコピー」で取得
+    googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("岐阜県各務原市那加桐野町1-65")}` as string | null,
+    // iframe埋め込みURLはGoogle Maps→「共有」→「地図を埋め込む」→srcを貼り付け
+    googleMapsEmbedUrl: null as string | null,
   },
 
   // ── SNS（未設定は null） ────────────────────────────────────────────
@@ -44,7 +47,7 @@ export const siteConfig = {
 
   // ── 連絡先クイックアクセス ──────────────────────────────────────────
   contact: {
-    phone: null as string | null, // null の間はクリックしても発信しない
+    phone: "090-6598-4896" as string | null,
     formPath: "/takanaga/contact",
     thanksPath: "/takanaga/contact/thanks",
     crmWebhookUrl: process.env.CRM_WEBHOOK_URL ?? null,
@@ -52,8 +55,8 @@ export const siteConfig = {
 
   // ── 外構LP・シミュレーターへのリンク ────────────────────────────────
   externalLinks: {
-    gaikouLpUrl: "/gaikou", // 既存広告LP
-    simulatorUrl: "/takanaga/simulation", // AIシミュレーター（タカナガHP内ページ）
+    gaikouLpUrl: "/gaikou",
+    simulatorUrl: "/takanaga/simulation",
   },
 
   // ── SEO共通設定 ──────────────────────────────────────────────────────
