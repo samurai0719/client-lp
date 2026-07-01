@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import GaikouDiagnosis from "./GaikouDiagnosis";
 import TakanagaMetaPixel from "@/components/analytics/TakanagaMetaPixel";
 
@@ -12,6 +13,8 @@ export default function GaikouDiagnosisPage() {
   return (
     <>
       <TakanagaMetaPixel />
+      {/* Ptengine（外構プラン無料診断ページ限定） */}
+      <Script id="ptengine-tag-diagnosis" src="https://js.ptengine.jp/2b4rnqyi.js" strategy="afterInteractive" />
       <GaikouDiagnosis />
     </>
   );
