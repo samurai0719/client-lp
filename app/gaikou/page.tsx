@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import GaikouLandingPage from "./GaikouLandingPage";
+import TakanagaMetaPixel from "@/components/analytics/TakanagaMetaPixel";
 
 export const metadata: Metadata = {
   title: "高長建設｜岐阜県の外構リフォーム・駐車場コンクリート工事",
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function GaikouPage() {
-  return <GaikouLandingPage />;
+  return (
+    <>
+      <TakanagaMetaPixel />
+      <GaikouLandingPage />
+    </>
+  );
 }

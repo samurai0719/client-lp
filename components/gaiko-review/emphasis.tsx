@@ -17,14 +17,16 @@ export function withEmphasis(text: ReactNode, light = false): ReactNode {
       return (
         <strong
           key={i}
-          className="font-bold underline"
+          className="font-bold"
           style={{
             color: light ? EMPHASIS_RED_ON_DARK : EMPHASIS_RED,
-            textDecorationColor: EMPHASIS_UNDERLINE,
-            // フォントサイズが変わっても比率が崩れないよう em単位で統一する
-            // （ファーストビュー直下のセクション＝16〜17px時の 4px / -4px と同じ見え方になるよう調整）
-            textDecorationThickness: "0.24em",
-            textUnderlineOffset: "-0.22em",
+            // text-decoration/underline-offsetはフォント（明朝/ゴシック）ごとに基準位置の
+            // メトリクスが異なり、同じ数値でも被り方がバラバラになってしまう。
+            // そのためフォントに依存しない背景グラデーションでマーカー風の帯を描画し、
+            // 見え方を常に統一する（行の高さに対する割合指定なので文字サイズが変わっても比率は同じ）。
+            backgroundImage: `linear-gradient(to top, transparent 0%, transparent 12%, ${EMPHASIS_UNDERLINE} 12%, ${EMPHASIS_UNDERLINE} 38%, transparent 38%, transparent 100%)`,
+            boxDecorationBreak: "clone",
+            WebkitBoxDecorationBreak: "clone",
           }}
         >
           {part.slice(2, -2)}

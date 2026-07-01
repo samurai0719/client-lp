@@ -48,8 +48,8 @@ export default function ChosenReasonsSection() {
               className="mb-2 flex items-center gap-2 text-[13px] font-bold tracking-[0.1em]"
               style={{ color: "#EAD9A8" }}
             >
-              <Sparkles size={16} aria-hidden />
-              {withEmphasis(simulatorContent.heading, true)}
+              <Sparkles size={16} className="shrink-0" aria-hidden />
+              <span>{withEmphasis(simulatorContent.heading, true)}</span>
             </p>
             <p className="text-[15px] sm:text-base leading-[1.85] mb-4" style={{ color: "#FFFDF9" }}>
               {withEmphasis(simulatorContent.body, true)}

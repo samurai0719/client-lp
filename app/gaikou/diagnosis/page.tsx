@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import GaikouDiagnosis from "./GaikouDiagnosis";
+import TakanagaMetaPixel from "@/components/analytics/TakanagaMetaPixel";
 
 export const metadata: Metadata = {
   title: "外構プラン無料診断｜岐阜・愛知・三重の外構リフォーム",
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function GaikouDiagnosisPage() {
-  return <GaikouDiagnosis />;
+  return (
+    <>
+      <TakanagaMetaPixel />
+      <GaikouDiagnosis />
+    </>
+  );
 }

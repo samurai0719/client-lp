@@ -35,7 +35,7 @@ export default function FitForSection() {
                   style={{ backgroundColor: "#B7812D" }}
                   aria-hidden
                 />
-                {withEmphasis(item)}
+                <span>{withEmphasis(item)}</span>
               </li>
             ))}
           </ul>

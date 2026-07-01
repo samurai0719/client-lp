@@ -18,6 +18,7 @@ import FaqSection from "@/components/gaiko-review/FaqSection";
 import FinalSummarySection from "@/components/gaiko-review/FinalSummarySection";
 import FinalCtaSection from "@/components/gaiko-review/FinalCtaSection";
 import StickyMobileCta from "@/components/gaiko-review/StickyMobileCta";
+import TakanagaMetaPixel from "@/components/analytics/TakanagaMetaPixel";
 
 export const metadata: Metadata = {
   metadataBase: new URL(seoContent.siteUrl),
@@ -71,6 +72,7 @@ export default function GaikoReviewPage() {
 
   return (
     <div className="gr-page min-h-screen flex flex-col" style={{ backgroundColor: "#F8F4EC" }}>
+      <TakanagaMetaPixel />
       {/* 見出し用の明朝フォント（React 19の<link>ホイスティングでheadへ配置される） */}
       <link
         rel="stylesheet"

@@ -137,7 +137,8 @@ export const simulatorContent = {
   heading: "完成イメージは**AIシミュレーション**でも確認できます",
   body: "高長建設の公式サイトでは、写真とAIを使って外構の完成イメージを**事前に確認できる**シミュレーションが公開されています。私たちも打ち合わせの前に試してみて、仕上がりのイメージをすり合わせるのに役立ちました。",
   linkLabel: "AIシミュレーションを試してみる",
-  href: "/takanaga/simulation",
+  // 外構LP（/gaikou）内のAIシミュレーションセクションへ直接リンク
+  href: "/gaikou#exterior-simulator",
   screenshotImage: "/images/gaiko-review/official-site.png",
   screenshotAlt: "高長建設 公式サイトのトップページ画面",
   screenshotWidth: 2768,
@@ -214,9 +215,9 @@ export const afterChangeContent = {
 
 export const fitForContent = {
   heading: "高長建設さんは、こんな方に合うと思います",
-  // お客様の声・おすすめポイントをまとめた図解。
+  // 施工会社と営業会社の違いをまとめた図解。
   graphicImage: "/images/gaiko-review/fit-for-graphic.png",
-  graphicAlt: "お客様の声「駐車場まわりが見違えるほどキレイになりました」40代夫婦の外構リフォーム体験談。こんな方におすすめ：駐車場やアプローチをきれいにしたい、雑草や手入れの手間を減らしたい、家の印象を明るくしたい。現地調査・見積もり無料。",
+  graphicAlt: "施工会社か営業会社か、見分けがつきにくい理由。営業会社の場合はお客様→営業会社→下請け施工会社→現場となり中間コストが重なりやすいが、高長建設は施工会社のためお客様→高長建設→現場と直接つながり、費用の理由が分かりやすく中間コストを抑えやすい。会社の見た目ではなく実際に誰が施工するのかを確認することが大切。",
   graphicWidth: 1122,
   graphicHeight: 1402,
   items: [

@@ -3,6 +3,7 @@ import "./takanaga-hp.css";
 import Header from "@/components/takanaga/layout/Header";
 import Footer from "@/components/takanaga/layout/Footer";
 import { siteConfig } from "@/data/takanaga/siteConfig";
+import TakanagaMetaPixel from "@/components/analytics/TakanagaMetaPixel";
 
 export const metadata: Metadata = {
   metadataBase: new URL(`https://${siteConfig.domain}`),
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
 export default function TakanagaLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="tkn-site flex flex-col min-h-screen">
+      <TakanagaMetaPixel />
       <Header />
       <main className="flex-1 pb-16 lg:pb-0">{children}</main>
       <Footer />
