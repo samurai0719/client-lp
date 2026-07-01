@@ -14,12 +14,6 @@ const nextConfig: NextConfig = {
         pathname: "/media/**",
       },
     ],
-    localPatterns: [
-      {
-        // /gaiko-review では画像差し替え時に ?v=N を付けてCDNキャッシュを回避しているため許可する
-        pathname: "/images/gaiko-review/**",
-      },
-    ],
   },
   async rewrites() {
     // takanagakensetu.com のルーティング方針:

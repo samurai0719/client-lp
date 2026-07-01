@@ -1,7 +1,10 @@
 import { Fragment, type ReactNode } from "react";
 
 const EMPHASIS_RED = "#B3261E";
-const EMPHASIS_RED_ON_DARK = "#FFD9C9";
+// 従来の薄いピンク(#FFD9C9)は背景のパステルイエローとほぼ同じ明るさで、
+// 帯の上で文字が読みにくく「帯が先に見えて文字が霞む」印象になっていた。
+// 濃いビビッドレッドにして、暗い緑背景・帯どちらの上でも文字がくっきり見えるようにする。
+const EMPHASIS_RED_ON_DARK = "#FF4B3E";
 const EMPHASIS_UNDERLINE = "#F5E58E";
 
 // 本文中の **強調したい部分** を太字・赤字・マーカー風アンダーラインで表示する簡易マークアップ。
