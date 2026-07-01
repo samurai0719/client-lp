@@ -255,7 +255,15 @@
       "Bash(echo \"exit:$?\")",
       "Bash(nohup npm run dev)",
       "Bash(break)",
-      "Bash(md5 *)"
+      "Bash(md5 *)",
+      "Bash(cp fv-mobile.png fv-mobile-2.png)",
+      "Bash(cp fv-desktop.png fv-desktop-2.png)",
+      "Bash(cp fit-for-graphic.png fit-for-graphic-2.png)",
+      "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/services`|canonical: `https://${siteConfig.domain}/services`|g' app/takanaga/services/page.tsx)",
+      "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/strengths`|canonical: `https://${siteConfig.domain}/strengths`|g' app/takanaga/strengths/page.tsx)",
+      "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/price`|canonical: `https://${siteConfig.domain}/price`|g' app/takanaga/price/page.tsx)",
+      "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/flow`|canonical: `https://${siteConfig.domain}/flow`|g' app/takanaga/flow/page.tsx)",
+      "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/news`|canonical: `https://${siteConfig.domain}/news`|g' app/takanaga/news/page.tsx)"
     ]
   }
 }

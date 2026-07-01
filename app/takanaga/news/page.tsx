@@ -9,7 +9,7 @@ import { siteConfig } from "@/data/takanaga/siteConfig";
 export const metadata: Metadata = {
   title: "お知らせ・コラム",
   description: "高長建設からのお知らせと、外構リフォームに関するコラムをご覧いただけます。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/news` },
+  alternates: { canonical: `https://${siteConfig.domain}/news` },
 };
 
 export default function NewsPage() {

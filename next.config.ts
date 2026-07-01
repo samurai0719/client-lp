@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
     const hpPaths = [
       "services", "works", "strengths", "price", "flow",
       "company", "area", "faq", "news", "contact", "privacy",
+      "simulation",
     ];
 
     const subpathRewrites = takanagaHosts.flatMap((host) => [
@@ -79,6 +80,28 @@ const nextConfig: NextConfig = {
 
         // コーポレートHPサブページ（今すぐ有効）
         ...subpathRewrites,
+
+        // sitemap.xml / robots.txt を takanaga 用にプロキシ
+        {
+          source: "/sitemap.xml",
+          has: [{ type: "host", value: "takanagakensetu.com" }],
+          destination: "/takanaga/sitemap.xml",
+        },
+        {
+          source: "/sitemap.xml",
+          has: [{ type: "host", value: "www.takanagakensetu.com" }],
+          destination: "/takanaga/sitemap.xml",
+        },
+        {
+          source: "/robots.txt",
+          has: [{ type: "host", value: "takanagakensetu.com" }],
+          destination: "/takanaga/robots.txt",
+        },
+        {
+          source: "/robots.txt",
+          has: [{ type: "host", value: "www.takanagakensetu.com" }],
+          destination: "/takanaga/robots.txt",
+        },
       ],
     };
   },

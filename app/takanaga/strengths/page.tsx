@@ -8,9 +8,9 @@ import CTASection from "@/components/takanaga/common/CTASection";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
 export const metadata: Metadata = {
-  title: "選ばれる理由",
-  description: "高長建設が選ばれる理由。現地確認に基づく見積もり、丁寧な工事説明、小規模工事への対応、施工後のアフターフォローなどをご紹介します。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/strengths` },
+  title: "高長建設が選ばれる理由",
+  description: "高長建設が岐阜・愛知・三重で選ばれる理由。現地確認に基づく正確な見積もり・施工会社直接対応・丁寧な工事説明・小規模工事への対応・施工後のアフターフォローをご紹介します。",
+  alternates: { canonical: `https://${siteConfig.domain}/strengths` },
 };
 
 const STRENGTHS = [

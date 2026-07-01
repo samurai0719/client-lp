@@ -259,12 +259,12 @@ export default function HeroSection() {
 
           {/* ③ テキスト */}
           <div className="px-5 pt-5">
-            <h1 className="tkn-h1a font-black leading-[1.15] tracking-tight" style={{ fontSize: "clamp(1.75rem,8vw,2.4rem)", color: "#0f2744" }}>
-              住まいの外まわりを、
-            </h1>
-            <h1 className="tkn-h1b font-black leading-[1.15] tracking-tight mb-1" style={{ fontSize: "clamp(1.75rem,8vw,2.4rem)", color: "#1d5fa6" }}>
-              もっと快適に。
-              <span className="tkn-accent-line" aria-hidden />
+            <h1 className="font-black leading-[1.15] tracking-tight" style={{ fontSize: "clamp(1.75rem,8vw,2.4rem)" }}>
+              <span className="tkn-h1a block" style={{ color: "#0f2744" }}>住まいの外まわりを、</span>
+              <span className="tkn-h1b block mb-1" style={{ color: "#1d5fa6" }}>
+                もっと快適に。
+                <span className="tkn-accent-line" aria-hidden />
+              </span>
             </h1>
             <p className="tkn-sub mt-3 text-sm leading-relaxed" style={{ color: "#4a6580", maxWidth: "30rem" }}>
               駐車場・カーポート・フェンス・お庭。外構リフォーム専門で
@@ -329,12 +329,12 @@ export default function HeroSection() {
                 </span>
               </div>
 
-              <h1 className="tkn-h1a font-black leading-[1.18] tracking-tight mb-1" style={{ fontSize: "clamp(2.2rem,3.8vw,3.25rem)", color: "#0f2744" }}>
-                住まいの外まわりを、
-              </h1>
-              <h1 className="tkn-h1b font-black leading-[1.18] tracking-tight mb-2" style={{ fontSize: "clamp(2.2rem,3.8vw,3.25rem)", color: "#1d5fa6" }}>
-                もっと快適に。
-                <span className="tkn-accent-line" aria-hidden />
+              <h1 className="font-black leading-[1.18] tracking-tight mb-2" style={{ fontSize: "clamp(2.2rem,3.8vw,3.25rem)" }}>
+                <span className="tkn-h1a block" style={{ color: "#0f2744" }}>住まいの外まわりを、</span>
+                <span className="tkn-h1b block" style={{ color: "#1d5fa6" }}>
+                  もっと快適に。
+                  <span className="tkn-accent-line" aria-hidden />
+                </span>
               </h1>
 
               <p className="tkn-sub mt-5 leading-relaxed mb-8" style={{ color: "#4a6580", fontSize: "1rem", maxWidth: "28rem" }}>

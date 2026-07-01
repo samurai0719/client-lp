@@ -11,10 +11,10 @@ import { visibleServices } from "@/data/takanaga/services";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
 export const metadata: Metadata = {
-  title: "工事内容",
+  title: "外構工事・事業内容",
   description:
-    "高長建設の対応工事一覧。駐車場・カーポート・フェンス・門柱・玄関アプローチ・人工芝・ウッドデッキ・庭リフォームなど、外構まわりの工事に対応しています。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/services` },
+    "高長建設の外構工事対応メニュー一覧。駐車場・土間コンクリート・カーポート・フェンス・門柱・玄関アプローチ・人工芝・ウッドデッキ・庭リフォームまで岐阜・愛知・三重でご対応します。",
+  alternates: { canonical: `https://${siteConfig.domain}/services` },
 };
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {

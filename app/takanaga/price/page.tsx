@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "費用目安",
   description:
     "高長建設の外構リフォーム費用目安。工事別参考価格と、費用に影響する要因をご紹介します。正確な費用は現地調査後にご案内します。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/price` },
+  alternates: { canonical: `https://${siteConfig.domain}/price` },
 };
 
 export default function PricePage() {

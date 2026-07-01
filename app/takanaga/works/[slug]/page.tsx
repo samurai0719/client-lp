@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: work.title,
     description: `${work.prefecture}${work.city}の施工事例。${work.customerConcern}`,
-    alternates: { canonical: `https://${siteConfig.domain}/takanaga/works/${slug}` },
+    alternates: { canonical: `https://${siteConfig.domain}/works/${slug}` },
     openGraph: {
       title: `${work.title}${siteConfig.seo.titleSuffix}`,
       images: [{ url: work.afterImage }],
@@ -39,20 +39,36 @@ export default async function WorkDetailPage({ params }: Props) {
   const prevWork = currentIndex > 0 ? publishedWorks[currentIndex - 1] : null;
   const nextWork = currentIndex < publishedWorks.length - 1 ? publishedWorks[currentIndex + 1] : null;
 
-  const ldJson = {
+  const siteUrl = `https://${siteConfig.domain}`;
+
+  const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: work.title,
-    image: [`https://${siteConfig.domain}${work.afterImage}`],
+    image: [`${siteUrl}${work.afterImage}`],
     publisher: { "@type": "Organization", name: siteConfig.siteName },
     description: work.customerConcern,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: `${siteUrl}/` },
+      { "@type": "ListItem", position: 2, name: "施工事例", item: `${siteUrl}/works` },
+      { "@type": "ListItem", position: 3, name: work.title, item: `${siteUrl}/works/${work.slug}` },
+    ],
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJson) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <PageHero
         eyebrow="Works"

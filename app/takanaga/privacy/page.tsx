@@ -5,7 +5,7 @@ import { siteConfig } from "@/data/takanaga/siteConfig";
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description: "高長建設のプライバシーポリシー。個人情報の取り扱いについてご説明します。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/privacy` },
+  alternates: { canonical: `https://${siteConfig.domain}/privacy` },
 };
 
 export default function PrivacyPage() {

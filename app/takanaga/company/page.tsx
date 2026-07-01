@@ -5,8 +5,8 @@ import { siteConfig } from "@/data/takanaga/siteConfig";
 
 export const metadata: Metadata = {
   title: "会社案内",
-  description: "高長建設の会社案内。代表挨拶・会社概要・事業内容・対応地域などをご紹介します。",
-  alternates: { canonical: `https://${siteConfig.domain}/takanaga/company` },
+  description: "高長建設の会社案内。岐阜・愛知・三重の外構工事を専門とする高長建設の事業内容・対応地域・施工方針をご紹介します。",
+  alternates: { canonical: `https://${siteConfig.domain}/company` },
 };
 
 const { company, seo } = siteConfig;

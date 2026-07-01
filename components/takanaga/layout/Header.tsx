@@ -12,8 +12,10 @@ const NAV_LINKS = [
   { href: "/takanaga/strengths", label: "選ばれる理由" },
   { href: "/takanaga/price", label: "費用目安" },
   { href: "/takanaga/flow", label: "ご依頼の流れ" },
+  { href: "/takanaga/area", label: "対応地域" },
   { href: "/takanaga/company", label: "会社案内" },
   { href: "/takanaga/faq", label: "FAQ" },
+  { href: "/takanaga/news", label: "お知らせ" },
 ];
 
 export default function Header() {

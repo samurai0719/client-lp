@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: item.title,
     description: item.excerpt,
-    alternates: { canonical: `https://${siteConfig.domain}/takanaga/news/${slug}` },
+    alternates: { canonical: `https://${siteConfig.domain}/news/${slug}` },
     openGraph: {
       title: `${item.title}${siteConfig.seo.titleSuffix}`,
       description: item.excerpt,
@@ -34,7 +34,9 @@ export default async function NewsDetailPage({ params }: Props) {
   const item = publishedNews.find((n) => n.slug === slug);
   if (!item) notFound();
 
-  const ldJson = {
+  const siteUrl = `https://${siteConfig.domain}`;
+
+  const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: item.title,
@@ -43,11 +45,25 @@ export default async function NewsDetailPage({ params }: Props) {
     description: item.excerpt,
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: `${siteUrl}/` },
+      { "@type": "ListItem", position: 2, name: "お知らせ", item: `${siteUrl}/news` },
+      { "@type": "ListItem", position: 3, name: item.title, item: `${siteUrl}/news/${item.slug}` },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJson) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <PageHero
         eyebrow={item.category}

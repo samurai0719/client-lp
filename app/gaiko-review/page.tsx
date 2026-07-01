@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { seoContent, heroContent } from "@/data/gaiko-review/content";
 import { getGalleryImages } from "@/lib/gaikoReview/gallery";
 import "./gaiko-review.css";
@@ -73,6 +74,8 @@ export default function GaikoReviewPage() {
   return (
     <div className="gr-page min-h-screen flex flex-col" style={{ backgroundColor: "#F8F4EC" }}>
       <TakanagaMetaPixel />
+      {/* Ptengine（体験談LP限定） */}
+      <Script id="ptengine-tag" src="https://js.ptengine.jp/2055frb9.js" strategy="afterInteractive" />
       {/* 見出し用の明朝フォント（React 19の<link>ホイスティングでheadへ配置される） */}
       <link
         rel="stylesheet"
