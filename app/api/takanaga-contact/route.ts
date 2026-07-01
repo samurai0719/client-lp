@@ -206,17 +206,16 @@ export async function POST(req: Request) {
       minute: "2-digit",
     });
 
-    // CRM: Supabase に顧客・リードを保存（失敗しても続行）
-    void saveToCrm(body);
+    // CRM: Supabase に顧客・リードを保存（メール送信より先に await して確実に保存）
+    await saveToCrm(body);
 
     // CRM webhook（非同期、失敗しても続行）
     void notifyCrmWebhook(body);
 
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
-      console.warn("[takanaga-contact] RESEND_API_KEY not set — logging to console in dev");
-      console.log("[takanaga-contact] Form data:", JSON.stringify(body, null, 2));
-      return NextResponse.json({ success: true, dev: true });
+      // メール未設定でも CRM 保存は完了済みのため success を返す
+      return NextResponse.json({ success: true });
     }
 
     const notificationEmail = process.env.NOTIFICATION_EMAIL ?? "samurai0719@outlook.jp";
