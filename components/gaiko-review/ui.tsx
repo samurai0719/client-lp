@@ -51,7 +51,7 @@ export function FadeUp({ children, className = "" }: { children: ReactNode; clas
 
 // ─── 記事の最大幅コンテナ（読みやすさのため680〜760px程度に制限） ─────────
 export function ArticleContainer({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto w-full max-w-[720px] px-5 sm:px-6 ${className}`}>{children}</div>;
+  return <div className={`mx-auto w-full max-w-[680px] px-5 sm:px-6 ${className}`}>{children}</div>;
 }
 
 // ─── セクション見出し（明朝系） ───────────────────────────────────────────
@@ -65,10 +65,10 @@ export function SectionHeading({
   eyebrow?: string;
 }) {
   return (
-    <div className="mb-6 sm:mb-8">
+    <div className="mb-7 sm:mb-9">
       {eyebrow && (
         <p
-          className="mb-2 text-[11px] font-bold tracking-[0.24em] uppercase"
+          className="mb-2.5 text-[11px] font-bold tracking-[0.24em] uppercase"
           style={{ color: GR_COLORS.gold }}
         >
           {eyebrow}
@@ -76,8 +76,8 @@ export function SectionHeading({
       )}
       <h2
         id={id}
-        className="gr-font-serif text-balance text-[1.4rem] sm:text-[1.7rem] leading-[1.55] font-medium"
-        style={{ color: GR_COLORS.textDark, letterSpacing: "0.04em" }}
+        className="gr-font-serif text-balance text-[1.4rem] sm:text-[1.7rem] leading-[1.65] font-medium"
+        style={{ color: GR_COLORS.textDark, letterSpacing: "0.02em" }}
       >
         {children}
       </h2>
@@ -89,7 +89,7 @@ export function SectionHeading({
 export function BodyText({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <p
-      className={`text-[16px] sm:text-[17px] leading-[1.8] ${className}`}
+      className={`text-[16px] sm:text-[17.5px] leading-[1.9] tracking-[0.01em] ${className}`}
       style={{ color: GR_COLORS.textDark }}
     >
       {children}

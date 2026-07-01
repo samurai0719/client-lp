@@ -9,11 +9,11 @@ export default function ConcernsSection() {
           <SectionHeading id="concerns-heading">{concernsContent.heading}</SectionHeading>
         </FadeUp>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {concernsContent.items.map((item) => (
             <FadeUp key={item.question}>
-              <div className="border-l-2 pl-4" style={{ borderColor: "#B7812D" }}>
-                <p className="text-[16px] sm:text-[17px] font-bold mb-1.5" style={{ color: "#2E2923" }}>
+              <div className="border-l-2 pl-4 sm:pl-5" style={{ borderColor: "#B7812D" }}>
+                <p className="text-[16px] sm:text-[17px] font-bold mb-2" style={{ color: "#2E2923" }}>
                   {item.question}
                 </p>
                 <BodyText>{item.answer}</BodyText>

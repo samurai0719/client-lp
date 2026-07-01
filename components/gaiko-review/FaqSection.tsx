@@ -42,7 +42,7 @@ function FaqRow({ item }: { item: FaqItem }) {
       >
         <div className="overflow-hidden">
           <p
-            className="text-[15px] leading-relaxed pb-4 pl-6"
+            className="text-[15px] sm:text-base leading-[1.9] pb-5 pl-6"
             style={{ color: "#2E2923" }}
           >
             {item.answer}

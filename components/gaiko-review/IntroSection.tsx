@@ -7,25 +7,25 @@ export default function IntroSection() {
       <ArticleContainer>
         <FadeUp>
           <SectionHeading id="intro-heading">{introContent.heading}</SectionHeading>
-          <div className="space-y-5">
+          <div className="space-y-6">
             {introContent.paragraphs.map((p) => (
               <BodyText key={p}>{p}</BodyText>
             ))}
           </div>
         </FadeUp>
 
-        <FadeUp className="mt-10 sm:mt-12">
+        <FadeUp className="mt-11 sm:mt-14">
           <h3
-            className="gr-font-serif text-[1.15rem] sm:text-[1.3rem] font-medium mb-5"
+            className="gr-font-serif text-[1.15rem] sm:text-[1.3rem] font-medium mb-6"
             style={{ color: "#2E2923" }}
           >
             {problemsContent.heading}
           </h3>
-          <ol className="space-y-3">
+          <ol className="space-y-3.5">
             {problemsContent.items.map((item, i) => (
               <li
                 key={item}
-                className="flex items-start gap-3 rounded-xl border px-4 py-3.5"
+                className="flex items-start gap-3 rounded-xl border px-4 py-4"
                 style={{ backgroundColor: "#F8F4EC", borderColor: "#DDD3C2" }}
               >
                 <span
@@ -35,7 +35,7 @@ export default function IntroSection() {
                 >
                   {i + 1}
                 </span>
-                <span className="text-[15px] sm:text-base leading-relaxed pt-0.5" style={{ color: "#2E2923" }}>
+                <span className="text-[15px] sm:text-base leading-[1.8] pt-0.5" style={{ color: "#2E2923" }}>
                   {item}
                 </span>
               </li>

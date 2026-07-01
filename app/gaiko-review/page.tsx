@@ -17,8 +17,6 @@ import FitForSection from "@/components/gaiko-review/FitForSection";
 import FaqSection from "@/components/gaiko-review/FaqSection";
 import FinalSummarySection from "@/components/gaiko-review/FinalSummarySection";
 import FinalCtaSection from "@/components/gaiko-review/FinalCtaSection";
-import ContactForm from "@/components/gaiko-review/ContactForm";
-import CompanyInfoSection from "@/components/gaiko-review/CompanyInfoSection";
 import StickyMobileCta from "@/components/gaiko-review/StickyMobileCta";
 
 export const metadata: Metadata = {
@@ -95,8 +93,6 @@ export default function GaikoReviewPage() {
         <FaqSection />
         <FinalSummarySection />
         <FinalCtaSection />
-        <ContactForm />
-        <CompanyInfoSection />
       </main>
 
       <SimpleFooter />
