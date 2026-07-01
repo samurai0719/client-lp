@@ -69,7 +69,7 @@ export default function Header() {
               >
                 AIシミュレーション
               </Link>
-              <Link href="/contact" className="tkn-btn-primary !text-sm !py-2.5 !px-5">
+              <Link href="/takanaga/contact" className="tkn-btn-primary !text-sm !py-2.5 !px-5">
                 無料現地調査を相談
               </Link>
             </div>
@@ -139,7 +139,7 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="/contact"
+              href="/takanaga/contact"
               className="px-6 py-4 text-white text-base font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
               onClick={() => setOpen(false)}
             >
@@ -158,7 +158,7 @@ export default function Header() {
 
           <div className="p-6 mt-4 flex flex-col gap-3">
             <Link
-              href="/contact"
+              href="/takanaga/contact"
               className="tkn-btn-primary w-full justify-center text-center"
               onClick={() => setOpen(false)}
             >
@@ -202,7 +202,7 @@ export default function Header() {
         )}
 
         <Link
-          href="/contact"
+          href="/takanaga/contact"
           className="tkn-mobile-cta-btn tkn-mobile-cta-primary"
           aria-label="無料見積もりを相談する"
         >

@@ -225,7 +225,14 @@
       "Bash(xargs sed -i '' 's|href=\"/takanaga/|href=\"/|g')",
       "Bash(grep *)",
       "Bash(xargs sed -i '' \"s|href={\\\\`/takanaga/|href={\\\\`/|g\")",
-      "Bash(sort -k5 -rn)"
+      "Bash(sort -k5 -rn)",
+      "Bash(cp ~/Downloads/d587b780-8c27-4bcf-9bdb-75179b97c68e.png public/images/gaiko-review/fv-mobile.png)",
+      "Bash(cp ~/Downloads/d8e30294-35a5-41f6-aea6-14e9607ddef5.png public/images/gaiko-review/fv-desktop.png)",
+      "Bash(xargs kill -9)",
+      "WebFetch(domain:gisho-kk.com)",
+      "Bash(npx --yes create-next-app@latest gisho-renewal-proposal --typescript --tailwind --app --src-dir --import-alias \"@/*\" --eslint --no-turbopack --use-npm)",
+      "Bash(lsof -ti:3000,3002)",
+      "Bash(xargs -I{} ps -p {} -o pid,command)"
     ]
   }
 }

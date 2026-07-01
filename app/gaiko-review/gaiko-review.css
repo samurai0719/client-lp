@@ -1,0 +1,32 @@
+/* /gaiko-review 専用スタイル */
+
+.gr-page {
+  overflow-x: hidden;
+}
+
+.gr-font-serif {
+  font-family: "Shippori Mincho B1", "Noto Serif JP", "YuMincho", "游明朝", "Hiragino Mincho ProN", serif;
+  font-feature-settings: "palt" 1;
+}
+
+.gr-page a,
+.gr-page button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gr-page a:focus-visible,
+.gr-page button:focus-visible,
+.gr-page input:focus-visible,
+.gr-page select:focus-visible,
+.gr-page textarea:focus-visible {
+  outline: 2px solid #b7812d;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gr-page .section-fade {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

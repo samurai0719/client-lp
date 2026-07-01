@@ -34,7 +34,7 @@ export default function WorksSection() {
             {displayWorks.map((work, i) => (
               <AnimateOnScroll key={work.slug} variant="up" delay={i * 80} as="li">
                 <Link
-                  href={`/works/${work.slug}`}
+                  href={`/takanaga/works/${work.slug}`}
                   className="group block tkn-card overflow-hidden hover:border-(--tkn-blue-bright)"
                 >
                   {/* Before/After 画像 */}
@@ -99,7 +99,7 @@ export default function WorksSection() {
 
         <AnimateOnScroll variant="fade" delay={100} className="text-center mt-8">
           <Link
-            href="/works"
+            href="/takanaga/works"
             className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-navy) transition-colors"
           >
             施工事例をすべて見る

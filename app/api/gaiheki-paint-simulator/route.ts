@@ -115,16 +115,18 @@ function buildPrompt(
 
   let applicationLines = "";
   if (pattern === "roof-only") {
-    applicationLines = `- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with the specified roof color. This is mandatory — the roof MUST be recolored.\n- Leave all exterior walls completely unchanged.`;
+    const roofSpec = roofColor ? `${roofColor.name} (${roofColor.hex})` : "the specified roof color";
+    applicationLines = `- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with ${roofSpec}. This is mandatory — the roof MUST be recolored.\n- Leave all exterior walls completely unchanged.`;
   } else if (hasTwoTone && wallColor2) {
     applicationLines = twoToneInstruction(twoToneMethod, wallColor1, wallColor2, forMask);
     if (forMask === "roof" || (!forMask && hasRoof && roofColor)) {
-      applicationLines += `\n- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with the specified roof color. This is mandatory — the roof MUST be recolored.`;
+      const roofSpec = roofColor ? `${roofColor.name} (${roofColor.hex})` : "the specified roof color";
+      applicationLines += `\n- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with ${roofSpec}. This is mandatory — the roof MUST be recolored.`;
     }
   } else {
-    applicationLines = `- Recolor all visible painted exterior wall surfaces to wall color 1.`;
+    applicationLines = `- Recolor all visible painted exterior wall surfaces to ${wallColor1.name} (${wallColor1.hex}).`;
     if (hasRoof && roofColor && (forMask === "roof" || !forMask)) {
-      applicationLines += `\n- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with the specified roof color. This is mandatory — the roof MUST be recolored.`;
+      applicationLines += `\n- PAINT the entire visible roof surface (all roof tiles, panels, or covering material) with ${roofColor.name} (${roofColor.hex}). This is mandatory — the roof MUST be recolored.`;
     }
   }
 

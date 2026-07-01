@@ -89,7 +89,7 @@ export default function FaqSection() {
 
         <AnimateOnScroll variant="fade" delay={100} className="text-center mt-8">
           <Link
-            href="/faq"
+            href="/takanaga/faq"
             className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-navy) transition-colors"
           >
             すべてのFAQを見る
