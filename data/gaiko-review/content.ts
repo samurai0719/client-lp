@@ -10,9 +10,12 @@
 export const DRAFT_NOTICE =
   "このページの体験談・金額・比較内容は制作時の仮原稿です。実際の体験内容を確認のうえ、公開前に差し替えてください。";
 
+// 画像を差し替えるたびに ?v=N の番号を増やすこと。
+// ファイル名は変えずに中身だけ差し替えると、VercelのImage Optimizationが
+// 古いキャッシュを返し続けて反映されないため、クエリを変えて別URL扱いにする。
 export const heroContent = {
-  mobileImage: "/images/gaiko-review/fv-mobile.png",
-  desktopImage: "/images/gaiko-review/fv-desktop.png",
+  mobileImage: "/images/gaiko-review/fv-mobile.png?v=3",
+  desktopImage: "/images/gaiko-review/fv-desktop.png?v=3",
   mobileWidth: 941,
   mobileHeight: 1672,
   desktopWidth: 1672,
@@ -52,7 +55,7 @@ export type ComparisonRow = {
 export const comparisonContent = {
   heading: "同じような工事でも、**見積もり金額に大きな差**がありました",
   // 比較表を画像化したもの（駐車場2台+カーポート施工の比較例）。金額は仮の内容です。
-  graphicImage: "/images/gaiko-review/comparison-graphic.png",
+  graphicImage: "/images/gaiko-review/comparison-graphic.png?v=1",
   graphicAlt: "同じような工事内容でも見積もりに大きな差があった比較表。駐車場2台とカーポート施工で、高長建設80万円、他社A158万円、他社B168万円、最大88万円差。",
   graphicWidth: 1122,
   graphicHeight: 1402,
@@ -98,7 +101,7 @@ export type DirectReason = {
 export const directReasonsContent = {
   heading: "施工会社へ直接相談したことで、話が早くなりました",
   // 「営業会社を通す場合」と「施工会社へ直接頼む場合」を比較した図解。金額は仮の内容です。
-  graphicImage: "/images/gaiko-review/direct-reason-graphic.png",
+  graphicImage: "/images/gaiko-review/direct-reason-graphic.png?v=1",
   graphicAlt: "なぜ施工会社に直接頼むのが良いのかを示す比較図。営業会社を通す場合は160万円〜170万円、施工会社へ直接頼む場合は80万円で、最大で半分以上安くなった。",
   graphicWidth: 1122,
   graphicHeight: 1402,
@@ -139,7 +142,7 @@ export const simulatorContent = {
   linkLabel: "AIシミュレーションを試してみる",
   // 外構LP（/gaikou）内のAIシミュレーションセクションへ直接リンク
   href: "/gaikou#exterior-simulator",
-  screenshotImage: "/images/gaiko-review/official-site.png",
+  screenshotImage: "/images/gaiko-review/official-site.png?v=1",
   screenshotAlt: "高長建設 公式サイトのトップページ画面",
   screenshotWidth: 2768,
   screenshotHeight: 1674,
@@ -216,7 +219,7 @@ export const afterChangeContent = {
 export const fitForContent = {
   heading: "高長建設さんは、こんな方に合うと思います",
   // 施工会社と営業会社の違いをまとめた図解。
-  graphicImage: "/images/gaiko-review/fit-for-graphic.png",
+  graphicImage: "/images/gaiko-review/fit-for-graphic.png?v=2",
   graphicAlt: "施工会社か営業会社か、見分けがつきにくい理由。営業会社の場合はお客様→営業会社→下請け施工会社→現場となり中間コストが重なりやすいが、高長建設は施工会社のためお客様→高長建設→現場と直接つながり、費用の理由が分かりやすく中間コストを抑えやすい。会社の見た目ではなく実際に誰が施工するのかを確認することが大切。",
   graphicWidth: 1122,
   graphicHeight: 1402,
@@ -351,7 +354,7 @@ export const seoContent = {
     "外構リフォームを検討した40代夫婦が、複数社の見積もりを比較し、施工会社へ直接相談した体験を紹介。駐車場のコンクリート工事やカーポート設置を検討している方へ。",
   // 架空の著者名は設定しない。事実に合わせて後から変更できるようにする。
   author: "岐阜県在住・40代夫婦（匿名）",
-  ogImage: "/images/gaiko-review/fv-desktop.png",
+  ogImage: "/images/gaiko-review/fv-desktop.png?v=3",
   siteUrl: "https://takanagakensetu.com",
   path: "/gaiko-review",
 };
