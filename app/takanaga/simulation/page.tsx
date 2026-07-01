@@ -12,7 +12,17 @@ export const metadata: Metadata = {
 
 export default function SimulationPage() {
   return (
-    <div className="min-h-[60vh]">
+    // gaikou.css の CSS変数を提供するラッパー（ExteriorSimulatorSection がこれらを参照する）
+    <div
+      style={{
+        "--gaikou-green-deep": "#10302a",
+        "--gaikou-green": "#1f4d3d",
+        "--gaikou-green-bright": "#2f7d5a",
+        "--gaikou-orange": "#d9601a",
+        "--gaikou-beige": "#f9f7f1",
+        "--gaikou-cream": "#fdfbf6",
+      } as React.CSSProperties}
+    >
       <ExteriorSimulatorSection />
     </div>
   );
