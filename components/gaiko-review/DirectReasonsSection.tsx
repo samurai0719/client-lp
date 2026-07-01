@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { directReasonsContent } from "@/data/gaiko-review/content";
 import { ArticleContainer, BodyText, FadeUp, SectionHeading } from "./ui";
 
@@ -7,6 +8,18 @@ export default function DirectReasonsSection() {
       <ArticleContainer>
         <FadeUp>
           <SectionHeading id="direct-reasons-heading">{directReasonsContent.heading}</SectionHeading>
+
+          <div className="mb-9 overflow-hidden rounded-2xl border" style={{ borderColor: "#DDD3C2" }}>
+            <Image
+              src={directReasonsContent.graphicImage}
+              alt={directReasonsContent.graphicAlt}
+              width={directReasonsContent.graphicWidth}
+              height={directReasonsContent.graphicHeight}
+              loading="lazy"
+              className="w-full h-auto"
+              sizes="(min-width: 768px) 680px, 100vw"
+            />
+          </div>
         </FadeUp>
 
         <div className="space-y-10">

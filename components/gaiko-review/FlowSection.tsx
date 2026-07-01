@@ -1,5 +1,6 @@
 import { flowContent } from "@/data/gaiko-review/content";
 import { ArticleContainer, FadeUp, SectionHeading } from "./ui";
+import { withEmphasis } from "./emphasis";
 
 export default function FlowSection() {
   return (
@@ -28,7 +29,7 @@ export default function FlowSection() {
                   {step.title}
                 </p>
                 <p className="text-[14px] leading-relaxed" style={{ color: "#5c574d" }}>
-                  {step.description}
+                  {withEmphasis(step.description)}
                 </p>
               </li>
             ))}

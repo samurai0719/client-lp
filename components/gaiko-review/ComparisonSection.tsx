@@ -1,5 +1,7 @@
+import Image from "next/image";
 import { comparisonContent } from "@/data/gaiko-review/content";
-import { ArticleContainer, BodyText, FadeUp, SectionHeading } from "./ui";
+import { ArticleContainer, BodyText, FadeUp, VisuallyHiddenHeading } from "./ui";
+import { withEmphasis } from "./emphasis";
 import CtaBlock from "./CtaBlock";
 
 export default function ComparisonSection() {
@@ -7,7 +9,21 @@ export default function ComparisonSection() {
     <section className="py-12 sm:py-16" style={{ backgroundColor: "#F8F4EC" }} aria-labelledby="comparison-heading">
       <ArticleContainer>
         <FadeUp>
-          <SectionHeading id="comparison-heading">{comparisonContent.heading}</SectionHeading>
+          <VisuallyHiddenHeading as="h2" id="comparison-heading">
+            {comparisonContent.heading.replace(/\*\*/g, "")}
+          </VisuallyHiddenHeading>
+
+          <div className="mb-8 overflow-hidden rounded-2xl border" style={{ borderColor: "#DDD3C2" }}>
+            <Image
+              src={comparisonContent.graphicImage}
+              alt={comparisonContent.graphicAlt}
+              width={comparisonContent.graphicWidth}
+              height={comparisonContent.graphicHeight}
+              loading="lazy"
+              className="w-full h-auto"
+              sizes="(min-width: 768px) 680px, 100vw"
+            />
+          </div>
 
           <div className="space-y-5">
             {comparisonContent.rows.map((row) => (
@@ -43,7 +59,7 @@ export default function ComparisonSection() {
             className="mt-7 rounded-xl px-5 py-4 text-[15px] sm:text-base font-bold leading-[1.75]"
             style={{ backgroundColor: "#2E2923", color: "#FFFDF9" }}
           >
-            {comparisonContent.resultNote}
+            {withEmphasis(comparisonContent.resultNote, true)}
           </p>
           <BodyText className="mt-3 !text-xs sm:!text-sm" >
             <span style={{ color: "#879174" }}>{comparisonContent.disclaimer}</span>

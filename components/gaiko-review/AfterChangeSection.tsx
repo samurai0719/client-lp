@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 import { afterChangeContent } from "@/data/gaiko-review/content";
 import type { GalleryImage } from "@/lib/gaikoReview/gallery";
 import { ArticleContainer, FadeUp, SectionHeading } from "./ui";
+import { withEmphasis } from "./emphasis";
 
 export default function AfterChangeSection({ galleryImages }: { galleryImages: GalleryImage[] }) {
   return (
@@ -16,7 +17,7 @@ export default function AfterChangeSection({ galleryImages }: { galleryImages: G
               <li key={item} className="flex items-start gap-3">
                 <Check size={18} className="shrink-0 mt-0.5" style={{ color: "#566342" }} aria-hidden />
                 <span className="text-[15px] sm:text-base leading-relaxed" style={{ color: "#2E2923" }}>
-                  {item}
+                  {withEmphasis(item)}
                 </span>
               </li>
             ))}

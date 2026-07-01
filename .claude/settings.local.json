@@ -236,7 +236,25 @@
       "Bash(mkdir -p \"\\(site\\)\")",
       "Bash(mv page.tsx \"\\(site\\)/page.tsx\")",
       "Bash(npx --prefix /Users/tsukamotoshuntaira/Desktop/client-lp next dev)",
-      "Bash(lsof -ti:3002)"
+      "Bash(lsof -ti:3002)",
+      "Bash(timeout 30 bash -c 'until curl -sf http://localhost:3000 >/dev/null; do sleep 1; done')",
+      "Bash(npx --yes playwright --version)",
+      "Bash(pip3 install *)",
+      "Bash(pip install *)",
+      "Bash(cp ~/Downloads/fe59fd79-41fb-4183-aeb7-26652a5b2d9d.png /Users/tsukamotoshuntaira/Desktop/client-lp/public/images/gaiko-review/fv-mobile.png)",
+      "Bash(cp ~/Downloads/c145dd5e-37fc-4f39-a0b7-8679d56e4ad7.png /Users/tsukamotoshuntaira/Desktop/client-lp/public/images/gaiko-review/fv-desktop.png)",
+      "Bash(xargs -I{} stat -f \"%m %Sm %N\" -t \"%Y-%m-%d %H:%M:%S\" {})",
+      "Bash(pkill -f \"next dev.*gisho\")",
+      "Bash(pkill -f \"3001\")",
+      "Bash(xargs kill)",
+      "Bash(xargs -I{} stat -f \"%Sm %N\" -t \"%Y-%m-%d %H:%M:%S\" {})",
+      "Bash(lsof -i :3000 -sTCP:LISTEN)",
+      "Bash(lsof -i :3001 -sTCP:LISTEN)",
+      "Bash(pkill -f \"next dev -p 3010\")",
+      "Bash(lsof -i :3010 -sTCP:LISTEN)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(nohup npm run dev)",
+      "Bash(break)"
     ]
   }
 }

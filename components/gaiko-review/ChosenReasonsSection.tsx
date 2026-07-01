@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Check, Sparkles, ArrowRight } from "lucide-react";
 import { chosenReasonsContent, simulatorContent } from "@/data/gaiko-review/content";
 import { ArticleContainer, FadeUp } from "./ui";
+import { withEmphasis } from "./emphasis";
 import CtaBlock from "./CtaBlock";
 
 // このセクションから初めて高長建設を少し強く紹介する。ただし利用者側の感想として。
@@ -15,10 +17,10 @@ export default function ChosenReasonsSection() {
           </p>
           <h2
             id="chosen-reasons-heading"
-            className="gr-font-serif text-balance text-[1.4rem] sm:text-[1.7rem] leading-[1.65] font-medium mb-7 sm:mb-9"
+            className="gr-font-serif text-balance text-[1.4rem] sm:text-[1.7rem] leading-[1.65] font-bold mb-7 sm:mb-9"
             style={{ color: "#FFFDF9", letterSpacing: "0.02em" }}
           >
-            {chosenReasonsContent.heading}
+            {withEmphasis(chosenReasonsContent.heading, true)}
           </h2>
 
           <ul className="space-y-3.5 mb-10">
@@ -30,7 +32,7 @@ export default function ChosenReasonsSection() {
               >
                 <Check size={18} className="shrink-0 mt-0.5" style={{ color: "#B7812D" }} aria-hidden />
                 <span className="text-[15px] sm:text-base leading-[1.75]" style={{ color: "#FFFDF9" }}>
-                  {item}
+                  {withEmphasis(item, true)}
                 </span>
               </li>
             ))}
@@ -47,11 +49,27 @@ export default function ChosenReasonsSection() {
               style={{ color: "#EAD9A8" }}
             >
               <Sparkles size={16} aria-hidden />
-              {simulatorContent.heading}
+              {withEmphasis(simulatorContent.heading, true)}
             </p>
             <p className="text-[15px] sm:text-base leading-[1.85] mb-4" style={{ color: "#FFFDF9" }}>
-              {simulatorContent.body}
+              {withEmphasis(simulatorContent.body, true)}
             </p>
+
+            <div
+              className="relative w-full overflow-hidden rounded-xl border mb-4"
+              style={{ borderColor: "rgba(255,253,249,0.25)" }}
+            >
+              <Image
+                src={simulatorContent.screenshotImage}
+                alt={simulatorContent.screenshotAlt}
+                width={simulatorContent.screenshotWidth}
+                height={simulatorContent.screenshotHeight}
+                loading="lazy"
+                className="w-full h-auto"
+                sizes="(min-width: 768px) 630px, 100vw"
+              />
+            </div>
+
             <Link
               href={simulatorContent.href}
               className="inline-flex items-center gap-1.5 text-sm font-bold underline underline-offset-4"

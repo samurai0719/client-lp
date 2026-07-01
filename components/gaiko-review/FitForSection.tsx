@@ -1,10 +1,26 @@
+import Image from "next/image";
 import { fitForContent, notFitForContent } from "@/data/gaiko-review/content";
 import { ArticleContainer, BodyText, FadeUp, SectionHeading } from "./ui";
+import { withEmphasis } from "./emphasis";
 
 export default function FitForSection() {
   return (
     <section className="py-12 sm:py-16" style={{ backgroundColor: "#FFFDF9" }} aria-labelledby="fit-for-heading">
       <ArticleContainer>
+        <FadeUp className="mb-9">
+          <div className="overflow-hidden rounded-2xl border" style={{ borderColor: "#DDD3C2" }}>
+            <Image
+              src={fitForContent.graphicImage}
+              alt={fitForContent.graphicAlt}
+              width={fitForContent.graphicWidth}
+              height={fitForContent.graphicHeight}
+              loading="lazy"
+              className="w-full h-auto"
+              sizes="(min-width: 768px) 680px, 100vw"
+            />
+          </div>
+        </FadeUp>
+
         <FadeUp>
           <SectionHeading id="fit-for-heading">{fitForContent.heading}</SectionHeading>
           <ul className="space-y-3 mb-12">
@@ -19,7 +35,7 @@ export default function FitForSection() {
                   style={{ backgroundColor: "#B7812D" }}
                   aria-hidden
                 />
-                {item}
+                {withEmphasis(item)}
               </li>
             ))}
           </ul>

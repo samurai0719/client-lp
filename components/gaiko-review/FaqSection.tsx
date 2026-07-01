@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { faqContent, type FaqItem } from "@/data/gaiko-review/content";
 import { ArticleContainer, FadeUp, SectionHeading } from "./ui";
+import { withEmphasis } from "./emphasis";
 
 function FaqRow({ item }: { item: FaqItem }) {
   const [open, setOpen] = useState(false);
@@ -45,7 +46,7 @@ function FaqRow({ item }: { item: FaqItem }) {
             className="text-[15px] sm:text-base leading-[1.9] pb-5 pl-6"
             style={{ color: "#2E2923" }}
           >
-            {item.answer}
+            {withEmphasis(item.answer)}
           </p>
         </div>
       </div>

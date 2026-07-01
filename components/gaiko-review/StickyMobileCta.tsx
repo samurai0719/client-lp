@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { ctaContent, analyticsEvents } from "@/data/gaiko-review/content";
 import { trackEvent } from "@/lib/analytics/track";
 
@@ -51,10 +52,11 @@ export default function StickyMobileCta() {
         href={ctaContent.href}
         onClick={handleClick}
         data-gtm-event={analyticsEvents.stickyCtaClick}
-        className="flex min-h-[48px] w-full items-center justify-center rounded-full text-[15px] font-bold text-white"
-        style={{ backgroundColor: "#B7812D" }}
+        className="flex min-h-[48px] w-full items-center justify-center gap-1.5 rounded-full text-[15px] font-bold text-white shadow-[0_6px_16px_-4px_rgba(183,129,45,0.6)]"
+        style={{ background: "linear-gradient(135deg, #C79640 0%, #B7812D 55%, #96681F 100%)" }}
       >
         {ctaContent.stickyLabel}
+        <ArrowRight size={16} aria-hidden />
       </Link>
     </div>
   );

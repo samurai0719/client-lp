@@ -1,5 +1,6 @@
 import { introContent, problemsContent } from "@/data/gaiko-review/content";
 import { ArticleContainer, BodyText, FadeUp, SectionHeading } from "./ui";
+import { withEmphasis } from "./emphasis";
 
 export default function IntroSection() {
   return (
@@ -36,7 +37,7 @@ export default function IntroSection() {
                   {i + 1}
                 </span>
                 <span className="text-[15px] sm:text-base leading-[1.8] pt-0.5" style={{ color: "#2E2923" }}>
-                  {item}
+                  {withEmphasis(item)}
                 </span>
               </li>
             ))}

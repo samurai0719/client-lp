@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { withEmphasis } from "./emphasis";
 
 // ─── 記事LP共通カラー ────────────────────────────────────────────────────
 export const GR_COLORS = {
@@ -59,10 +60,12 @@ export function SectionHeading({
   children,
   id,
   eyebrow,
+  light = false,
 }: {
   children: ReactNode;
   id?: string;
   eyebrow?: string;
+  light?: boolean;
 }) {
   return (
     <div className="mb-7 sm:mb-9">
@@ -76,29 +79,49 @@ export function SectionHeading({
       )}
       <h2
         id={id}
-        className="gr-font-serif text-balance text-[1.4rem] sm:text-[1.7rem] leading-[1.65] font-medium"
-        style={{ color: GR_COLORS.textDark, letterSpacing: "0.02em" }}
+        className="gr-font-serif text-balance text-[1.4rem] sm:text-[1.7rem] leading-[1.65] font-bold"
+        style={{ color: light ? GR_COLORS.bgLight : GR_COLORS.textDark, letterSpacing: "0.02em" }}
       >
-        {children}
+        {withEmphasis(children, light)}
       </h2>
     </div>
   );
 }
 
 // ─── 本文段落 ─────────────────────────────────────────────────────────────
-export function BodyText({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function BodyText({
+  children,
+  className = "",
+  light = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  light?: boolean;
+}) {
   return (
     <p
       className={`text-[16px] sm:text-[17.5px] leading-[1.9] tracking-[0.01em] ${className}`}
-      style={{ color: GR_COLORS.textDark }}
+      style={{ color: light ? GR_COLORS.bgLight : GR_COLORS.textDark }}
     >
-      {children}
+      {withEmphasis(children, light)}
     </p>
   );
 }
 
 // ─── スクリーンリーダー専用の見出し（画像内テキストと重複させないためのSEO見出し） ──
-export function VisuallyHiddenHeading({ children, as = "h1" }: { children: ReactNode; as?: "h1" | "h2" }) {
+export function VisuallyHiddenHeading({
+  children,
+  as = "h1",
+  id,
+}: {
+  children: ReactNode;
+  as?: "h1" | "h2";
+  id?: string;
+}) {
   const Tag = as;
-  return <Tag className="sr-only">{children}</Tag>;
+  return (
+    <Tag id={id} className="sr-only">
+      {children}
+    </Tag>
+  );
 }
