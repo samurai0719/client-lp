@@ -232,7 +232,11 @@
       "WebFetch(domain:gisho-kk.com)",
       "Bash(npx --yes create-next-app@latest gisho-renewal-proposal --typescript --tailwind --app --src-dir --import-alias \"@/*\" --eslint --no-turbopack --use-npm)",
       "Bash(lsof -ti:3000,3002)",
-      "Bash(xargs -I{} ps -p {} -o pid,command)"
+      "Bash(xargs -I{} ps -p {} -o pid,command)",
+      "Bash(mkdir -p \"\\(site\\)\")",
+      "Bash(mv page.tsx \"\\(site\\)/page.tsx\")",
+      "Bash(npx --prefix /Users/tsukamotoshuntaira/Desktop/client-lp next dev)",
+      "Bash(lsof -ti:3002)"
     ]
   }
 }

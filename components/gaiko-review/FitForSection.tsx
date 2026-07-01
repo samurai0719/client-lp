@@ -7,11 +7,11 @@ export default function FitForSection() {
       <ArticleContainer>
         <FadeUp>
           <SectionHeading id="fit-for-heading">{fitForContent.heading}</SectionHeading>
-          <ul className="space-y-2.5 mb-12">
+          <ul className="space-y-3 mb-12">
             {fitForContent.items.map((item) => (
               <li
                 key={item}
-                className="flex items-start gap-3 text-[15px] sm:text-base leading-relaxed"
+                className="flex items-start gap-3 text-[15px] sm:text-base leading-[1.8]"
                 style={{ color: "#2E2923" }}
               >
                 <span

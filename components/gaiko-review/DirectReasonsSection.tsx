@@ -9,7 +9,7 @@ export default function DirectReasonsSection() {
           <SectionHeading id="direct-reasons-heading">{directReasonsContent.heading}</SectionHeading>
         </FadeUp>
 
-        <div className="space-y-8">
+        <div className="space-y-10">
           {directReasonsContent.items.map((item) => (
             <FadeUp key={item.number}>
               <div className="flex items-start gap-4">
@@ -21,7 +21,7 @@ export default function DirectReasonsSection() {
                   {item.number}
                 </span>
                 <div>
-                  <h3 className="text-[16px] sm:text-[18px] font-bold mb-2" style={{ color: "#2E2923" }}>
+                  <h3 className="text-[16px] sm:text-[18px] font-bold mb-2.5" style={{ color: "#2E2923" }}>
                     {item.title}
                   </h3>
                   <BodyText>{item.body}</BodyText>

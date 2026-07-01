@@ -7,7 +7,7 @@ export default function FinalSummarySection() {
       <ArticleContainer>
         <FadeUp>
           <SectionHeading id="final-summary-heading">{finalSummaryContent.heading}</SectionHeading>
-          <div className="space-y-5">
+          <div className="space-y-6">
             {finalSummaryContent.paragraphs.map((p) => (
               <BodyText key={p}>{p}</BodyText>
             ))}

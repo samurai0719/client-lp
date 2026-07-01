@@ -9,25 +9,25 @@ export default function ComparisonSection() {
         <FadeUp>
           <SectionHeading id="comparison-heading">{comparisonContent.heading}</SectionHeading>
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             {comparisonContent.rows.map((row) => (
               <div
                 key={row.label}
-                className="rounded-xl border p-4 sm:p-5"
+                className="rounded-xl border p-5 sm:p-6"
                 style={{ backgroundColor: "#FFFDF9", borderColor: "#DDD3C2" }}
               >
-                <p className="text-[15px] sm:text-base font-bold mb-2" style={{ color: "#566342" }}>
+                <p className="text-[15px] sm:text-base font-bold mb-2.5" style={{ color: "#566342" }}>
                   {row.label}
                 </p>
-                <ul className="space-y-1.5">
+                <ul className="space-y-2">
                   {row.points.map((point) => (
                     <li
                       key={point}
-                      className="text-[15px] leading-relaxed pl-4 relative"
+                      className="text-[15px] leading-[1.8] pl-4 relative"
                       style={{ color: "#2E2923" }}
                     >
                       <span
-                        className="absolute left-0 top-[0.65em] w-1.5 h-1.5 rounded-full"
+                        className="absolute left-0 top-[0.75em] w-1.5 h-1.5 rounded-full"
                         style={{ backgroundColor: "#879174" }}
                         aria-hidden
                       />
@@ -40,7 +40,7 @@ export default function ComparisonSection() {
           </div>
 
           <p
-            className="mt-6 rounded-xl px-4 py-4 text-[15px] sm:text-base font-bold leading-relaxed"
+            className="mt-7 rounded-xl px-5 py-4 text-[15px] sm:text-base font-bold leading-[1.75]"
             style={{ backgroundColor: "#2E2923", color: "#FFFDF9" }}
           >
             {comparisonContent.resultNote}
