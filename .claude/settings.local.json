@@ -254,7 +254,8 @@
       "Bash(lsof -i :3010 -sTCP:LISTEN)",
       "Bash(echo \"exit:$?\")",
       "Bash(nohup npm run dev)",
-      "Bash(break)"
+      "Bash(break)",
+      "Bash(md5 *)"
     ]
   }
 }
