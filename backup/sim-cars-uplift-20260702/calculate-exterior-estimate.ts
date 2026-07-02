@@ -21,7 +21,6 @@ import {
   parkingCarportSet,
   parkingConcrete,
   setAdjustmentRate,
-  simulatorBaseUplift,
   simulatorWorkTypeEstimates,
   slopeHandrail,
   terraceRoof,
@@ -304,74 +303,29 @@ export type SimulatorEstimate = {
   hasUnpriced: boolean;
 };
 
-export type SimulatorEstimateOptions = {
-  /** 駐車場・カーポートの台数（未選択は null＝幅広の既定レンジ） */
-  parkingCars?: CarCount | null;
-};
+export function calculateSimulatorEstimate(workTypeIds: string[]): SimulatorEstimate | null {
+  const defs = workTypeIds
+    .map((id) => simulatorWorkTypeEstimates[id])
+    .filter((def): def is NonNullable<typeof def> => Boolean(def));
 
-export function calculateSimulatorEstimate(
-  workTypeIds: string[],
-  options: SimulatorEstimateOptions = {}
-): SimulatorEstimate | null {
-  const parkingCars = options.parkingCars ?? null;
-  const ids = [...new Set(workTypeIds)].filter((id) => simulatorWorkTypeEstimates[id]);
-  const hasUnpriced = ids.some((id) => simulatorWorkTypeEstimates[id].range === null);
-
-  // 駐車場2台分＋2台用カーポートはセット価格（共通施工費調整済み）を適用
-  const useSet = parkingCars === 2 && ids.includes("concrete") && ids.includes("carport");
-
-  const setLabels: string[] = [];
-  const items: Array<{ label: string; range: PriceRange }> = [];
-
-  for (const id of ids) {
-    const def = simulatorWorkTypeEstimates[id];
-    if (def.range === null) continue;
-    // 台数が選択されていれば、コンクリート／カーポートは台数別価格を優先する
-    if (id === "concrete" && parkingCars) {
-      const label = `駐車場コンクリート（${parkingCars}台分）`;
-      if (useSet) {
-        setLabels.push(label);
-      } else {
-        items.push({ label, range: parkingConcrete.byCars[parkingCars] });
-      }
-      continue;
-    }
-    if (id === "carport" && parkingCars) {
-      const label = `カーポート（${parkingCars}台用）`;
-      if (useSet) {
-        setLabels.push(label);
-      } else {
-        items.push({ label, range: carport.byCars[parkingCars] });
-      }
-      continue;
-    }
-    items.push({ label: def.label, range: def.range });
-  }
-
-  // セットは2工事分として数え、共通施工費の調整率を決める
-  const pricedCount = items.length + (useSet ? 2 : 0);
-  if (pricedCount === 0) return null;
+  const priced = defs.filter(
+    (def): def is { label: string; range: PriceRange } => def.range !== null
+  );
+  if (priced.length === 0) return null;
 
   let sum: PriceRange = { min: 0, max: 0 };
-  if (useSet) sum = add(sum, parkingCarportSet);
-  if (items.length > 0) {
-    let rest: PriceRange = { min: 0, max: 0 };
-    for (const item of items) {
-      rest = add(rest, item.range);
-    }
-    // セット部分は調整済みのため、残りの工事にのみ調整率を適用する
-    sum = add(sum, scale(rest, 1 - setAdjustmentRate(pricedCount)));
+  for (const def of priced) {
+    sum = add(sum, def.range);
   }
-
-  // ベース上乗せ額（諸経費・付帯工事の余裕分）を全体へ一律加算
-  sum = { min: sum.min + simulatorBaseUplift, max: sum.max + simulatorBaseUplift };
+  // 複数工事の共通施工費調整
+  sum = scale(sum, 1 - setAdjustmentRate(priced.length));
 
   const result = toResult(sum);
   return {
     label: result.label,
     minMan: result.minMan,
     maxMan: result.maxMan,
-    works: [...setLabels, ...items.map((item) => item.label)],
-    hasUnpriced,
+    works: priced.map((def) => def.label),
+    hasUnpriced: defs.length !== priced.length,
   };
 }

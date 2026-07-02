@@ -140,32 +140,6 @@ const setWorks = [
   check("10c. 全工事選択でも計算できる", Boolean(all && all.minMan > 0), all?.label ?? "null");
 }
 
-// 11. シミュレーターの台数指定とベース上乗せ（+15万円）
-{
-  // カーポート1台用 22〜32万 +15万 = 37〜47万
-  const c1 = calculateSimulatorEstimate(["carport"], { parkingCars: 1 });
-  check("11. カーポート1台用＋上乗せ = 約37万円〜47万円", c1?.label === "約37万円〜47万円", c1?.label ?? "null");
-
-  // 駐車場2台分＋2台用カーポート → セット80〜100万 +15万 = 95〜115万
-  const set = calculateSimulatorEstimate(["concrete", "carport"], { parkingCars: 2 });
-  check("11b. 2台セット＋上乗せ = 約95万円〜115万円", set?.label === "約95万円〜115万円", set?.label ?? "null");
-
-  // 駐車場3台分 55〜70万 +15万 = 70〜85万
-  const p3 = calculateSimulatorEstimate(["concrete"], { parkingCars: 3 });
-  check("11c. 駐車場3台分＋上乗せ = 約70万円〜85万円", p3?.label === "約70万円〜85万円", p3?.label ?? "null");
-
-  // 台数未選択は従来の幅広レンジ＋上乗せ（12〜30万 → 27〜45万）
-  const noCars = calculateSimulatorEstimate(["concrete"]);
-  check("11d. 台数未選択＋上乗せ = 約27万円〜45万円", noCars?.label === "約27万円〜45万円", noCars?.label ?? "null");
-
-  // 上乗せ後もLP料金表の最低価格を下回らない（当然満たす）
-  check("11e. 上乗せ後もLP最低価格以上", (noCars?.minMan ?? 0) * MAN >= 12 * MAN);
-
-  // セット＋他工事の併用：セット80〜100万＋フェンス(15〜30万に3工事調整7%)＋上乗せ15万
-  const mix = calculateSimulatorEstimate(["concrete", "carport", "fence"], { parkingCars: 2 });
-  check("11f. セット＋フェンス = 約109万円〜143万円", mix?.label === "約109万円〜143万円", mix?.label ?? "null");
-}
-
 console.log("");
 if (failed > 0) {
   console.error(`${failed} 件のテストが失敗しました`);

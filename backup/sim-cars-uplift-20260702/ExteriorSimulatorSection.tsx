@@ -16,7 +16,6 @@ import {
   calculateSimulatorEstimate,
   SIMULATOR_ESTIMATE_STORAGE_KEY,
 } from "@/lib/calculate-exterior-estimate";
-import type { CarCount } from "@/config/exterior-pricing";
 
 // シミュレーションの特徴（概算費用の訴求を含む）
 const SIMULATOR_FEATURES = [
@@ -56,16 +55,6 @@ const WORK_TYPES: WorkType[] = [
 const STYLE_APPLICABLE = new Set([
   "concrete", "parking-expansion", "carport", "fence", "entrance", "gate-mailbox",
 ]);
-
-// 台数選択の対象となる駐車場関連の工事
-const PARKING_WORK_IDS = ["concrete", "parking-expansion", "carport"];
-
-const PARKING_CAR_OPTIONS: Array<{ value: CarCount | null; label: string }> = [
-  { value: 1, label: "1台分" },
-  { value: 2, label: "2台分" },
-  { value: 3, label: "3台分以上" },
-  { value: null, label: "まだ決めていない" },
-];
 
 // ─── Fence location options ───────────────────────────────────────
 
@@ -195,7 +184,6 @@ export default function ExteriorSimulatorSection() {
   const [compressedBlob, setCompressedBlob] = useState<Blob | null>(null);
 
   const [selectedWorkTypes, setSelectedWorkTypes] = useState<string[]>([]);
-  const [parkingCars, setParkingCars] = useState<CarCount | null>(null);
   const [fenceLocations, setFenceLocations] = useState<string[]>(["auto"]);
   const [useStyleForOther, setUseStyleForOther] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState("auto");
@@ -254,10 +242,6 @@ export default function ExteriorSimulatorSection() {
       const next = isRemoving ? prev.filter((t) => t !== id) : [...prev, id];
       if (id === "fence" && isRemoving) setFenceLocations(["auto"]);
       if (id === "other" && isRemoving) setUseStyleForOther(false);
-      // 駐車場関連の工事がすべて外れたら台数選択もリセット
-      if (isRemoving && PARKING_WORK_IDS.includes(id) && !next.some((t) => PARKING_WORK_IDS.includes(t))) {
-        setParkingCars(null);
-      }
       return next;
     });
   };
@@ -316,7 +300,6 @@ export default function ExteriorSimulatorSection() {
     setPreviewUrl(null);
     setCompressedBlob(null);
     setSelectedWorkTypes([]);
-    setParkingCars(null);
     setFenceLocations(["auto"]);
     setUseStyleForOther(false);
     setSelectedStyle("auto");
@@ -329,8 +312,8 @@ export default function ExteriorSimulatorSection() {
 
   // 選択された工事内容からの概算価格（標準条件・税込の参考価格）
   const estimate = useMemo(
-    () => calculateSimulatorEstimate(selectedWorkTypes, { parkingCars }),
-    [selectedWorkTypes, parkingCars]
+    () => calculateSimulatorEstimate(selectedWorkTypes),
+    [selectedWorkTypes]
   );
 
   const scrollToContact = () => {
@@ -423,7 +406,6 @@ export default function ExteriorSimulatorSection() {
   // ── Work type selection (step: "worktype") ────────────────────
   const renderWorktype = () => {
     const hasFence = selectedWorkTypes.includes("fence");
-    const hasParkingWork = selectedWorkTypes.some((t) => PARKING_WORK_IDS.includes(t));
     return (
       <motion.div key="worktype" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }}>
         {previewUrl && (
@@ -469,33 +451,6 @@ export default function ExteriorSimulatorSection() {
               />
               <span className="text-sm text-[#3d4a45]">デザインの雰囲気も指定する</span>
             </label>
-          </div>
-        )}
-
-        {/* Parking car count selector */}
-        {hasParkingWork && (
-          <div className="mb-4 rounded-xl border border-[#c8d8d0] bg-[#f6fbf8] p-4">
-            <h4 className="text-sm font-bold text-[#10302a] mb-1">駐車場・カーポートの台数</h4>
-            <p className="text-xs text-[#6b7f75] mb-3">分かる範囲で選択してください。概算費用に反映されます。</p>
-            <div className="flex flex-wrap gap-2">
-              {PARKING_CAR_OPTIONS.map(({ value, label }) => {
-                const sel = parkingCars === value;
-                return (
-                  <button
-                    key={label}
-                    type="button"
-                    onClick={() => setParkingCars(value)}
-                    aria-pressed={sel}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all min-h-[36px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1f4d3d] ${
-                      sel ? "border-[#1f4d3d] bg-[#1f4d3d] text-white" : "border-[#c8d8d0] bg-white text-[#3d4a45] hover:border-[#9bb3a8]"
-                    }`}
-                  >
-                    {sel && <Check className="w-3 h-3 shrink-0" aria-hidden="true" />}
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
           </div>
         )}
 
@@ -623,12 +578,6 @@ export default function ExteriorSimulatorSection() {
                     })}
                   </ul>
                 </>
-              )}
-              {parkingCars && (
-                <p className="text-xs text-[#3d4a45] mb-1.5">
-                  <span className="font-bold text-[#10302a]">駐車場・カーポートの台数：</span>
-                  {PARKING_CAR_OPTIONS.find((o) => o.value === parkingCars)?.label}
-                </p>
               )}
               {styleName && (
                 <p className="text-xs text-[#3d4a45]">
