@@ -263,7 +263,10 @@
       "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/strengths`|canonical: `https://${siteConfig.domain}/strengths`|g' app/takanaga/strengths/page.tsx)",
       "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/price`|canonical: `https://${siteConfig.domain}/price`|g' app/takanaga/price/page.tsx)",
       "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/flow`|canonical: `https://${siteConfig.domain}/flow`|g' app/takanaga/flow/page.tsx)",
-      "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/news`|canonical: `https://${siteConfig.domain}/news`|g' app/takanaga/news/page.tsx)"
+      "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/news`|canonical: `https://${siteConfig.domain}/news`|g' app/takanaga/news/page.tsx)",
+      "Bash(claude --version)",
+      "Bash(claude update *)",
+      "Bash(awk '{print $5, $9}')"
     ]
   }
 }
