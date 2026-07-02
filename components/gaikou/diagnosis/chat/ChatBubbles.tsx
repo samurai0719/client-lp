@@ -11,7 +11,7 @@ export function ChatAvatar() {
 
   return (
     <span
-      className="relative flex items-center justify-center w-12 h-12 sm:w-[52px] sm:h-[52px] rounded-full overflow-hidden bg-[#eaf3ee] border border-[#cfe3d6] shrink-0"
+      className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-[#eaf3ee] border border-[#cfe3d6] shrink-0"
       aria-hidden="true"
     >
       {!failed ? (
@@ -40,13 +40,13 @@ export function BotMessage({
   showName?: boolean;
 }) {
   return (
-    <div className="gd-chat-appear flex items-start gap-2.5 sm:gap-3">
+    <div className="gd-chat-appear flex items-start gap-2 sm:gap-2.5">
       <ChatAvatar />
       <div className="min-w-0 max-w-[85%]">
         {showName && (
-          <p className="mb-1 text-[10.5px] font-semibold text-[#8a9a90]">{CHAT_AGENT_NAME}</p>
+          <p className="mb-0.5 text-[10px] font-semibold text-[#8a9a90]">{CHAT_AGENT_NAME}</p>
         )}
-        <div className="rounded-2xl rounded-tl-md border border-[#e7e3d8] bg-white px-4 py-3 text-[14px] sm:text-[15px] leading-relaxed text-[#10302a] whitespace-pre-line">
+        <div className="rounded-2xl rounded-tl-md border border-[#e7e3d8] bg-white px-3.5 py-2.5 text-[13px] sm:text-[14px] leading-relaxed text-[#10302a] whitespace-pre-line">
           {children}
         </div>
       </div>
@@ -61,7 +61,7 @@ export function UserMessage({ lines }: { lines: string[] }) {
 
   return (
     <div className="gd-chat-appear flex justify-end">
-      <div className="max-w-[85%] rounded-2xl rounded-tr-md bg-[#1f4d3d] px-4 py-3 text-[14px] sm:text-[15px] leading-relaxed text-white">
+      <div className="max-w-[85%] rounded-2xl rounded-tr-md bg-[#1f4d3d] px-3.5 py-2.5 text-[13px] sm:text-[14px] leading-relaxed text-white">
         {shown.map((line, i) => (
           <p key={`${i}-${line}`}>{line}</p>
         ))}
@@ -73,9 +73,9 @@ export function UserMessage({ lines }: { lines: string[] }) {
 // ─── 入力中インジケーター ────────────────────────────────────────────
 export function TypingBubble() {
   return (
-    <div className="gd-chat-appear flex items-start gap-2.5 sm:gap-3" aria-label="次の質問を準備しています">
+    <div className="gd-chat-appear flex items-start gap-2 sm:gap-2.5" aria-label="次の質問を準備しています">
       <ChatAvatar />
-      <div className="rounded-2xl rounded-tl-md border border-[#e7e3d8] bg-white px-4 py-3.5">
+      <div className="rounded-2xl rounded-tl-md border border-[#e7e3d8] bg-white px-3.5 py-3">
         <span className="gd-typing-dots" aria-hidden="true">
           <span />
           <span />

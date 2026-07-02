@@ -57,29 +57,29 @@ export default function DiagnosisOptionCard({ label, iconKey, selected, onClick,
       role={multi ? "checkbox" : "radio"}
       aria-checked={selected}
       onClick={onClick}
-      className={`w-full min-h-[56px] flex items-center gap-3 rounded-2xl border-2 px-4 py-3.5 text-left transition-colors duration-150 ${
+      className={`w-full min-h-[48px] flex items-center gap-2.5 rounded-xl border-2 px-3 py-2 text-left transition-colors duration-150 ${
         selected ? "border-[#2f7d5a] bg-[#eaf3ee]" : "border-[#e7e3d8] bg-white hover:border-[#cfe3d6]"
       }`}
     >
       {Icon && (
         <span
-          className={`flex items-center justify-center w-9 h-9 rounded-full shrink-0 ${
+          className={`flex items-center justify-center w-7 h-7 rounded-full shrink-0 ${
             selected ? "bg-[#1f4d3d] text-white" : "bg-[#f3eee0] text-[#7a8a82]"
           }`}
         >
-          <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
+          <Icon className="w-[15px] h-[15px]" aria-hidden="true" />
         </span>
       )}
-      <span className={`flex-1 min-w-0 text-[14px] sm:text-[15px] font-semibold ${selected ? "text-[#10302a]" : "text-[#3d4a45]"}`}>
+      <span className={`flex-1 min-w-0 text-[13px] sm:text-[14px] font-semibold leading-snug ${selected ? "text-[#10302a]" : "text-[#3d4a45]"}`}>
         {label}
       </span>
       <span
-        className={`shrink-0 w-6 h-6 flex items-center justify-center border-2 transition-colors ${
+        className={`shrink-0 w-5 h-5 flex items-center justify-center border-2 transition-colors ${
           multi ? "rounded-md" : "rounded-full"
         } ${selected ? "bg-[#2f7d5a] border-[#2f7d5a] text-white" : "border-[#cbd5c9] text-transparent"}`}
         aria-hidden="true"
       >
-        <Check className="w-3.5 h-3.5" />
+        <Check className="w-3 h-3" />
       </span>
     </button>
   );

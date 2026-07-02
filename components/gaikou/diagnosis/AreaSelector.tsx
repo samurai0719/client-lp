@@ -29,7 +29,7 @@ export default function AreaSelector({
               role="radio"
               aria-checked={selected}
               onClick={() => onChangePrefecture(pref)}
-              className={`min-h-[56px] flex items-center justify-center gap-1.5 rounded-2xl border-2 px-2 py-3 text-[14px] sm:text-[15px] font-bold transition-colors ${
+              className={`min-h-[48px] flex items-center justify-center gap-1.5 rounded-xl border-2 px-2 py-2 text-[13px] sm:text-[14px] font-bold transition-colors ${
                 selected ? "border-[#2f7d5a] bg-[#eaf3ee] text-[#10302a]" : "border-[#e7e3d8] bg-white text-[#3d4a45] hover:border-[#cfe3d6]"
               }`}
             >

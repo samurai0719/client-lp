@@ -94,6 +94,8 @@ export default function GaikouDiagnosis() {
 
   const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  // 現在の質問の直前に置くアンカー。質問文が画面上部に見える位置へスクロールする
+  const questionAnchorRef = useRef<HTMLDivElement>(null);
   // ユーザー操作直後だけ自動スクロールする（履歴を読んでいる最中に飛ばさない）
   const scrollArmedUntil = useRef(0);
   const historyArmed = useRef(false);
@@ -150,11 +152,16 @@ export default function GaikouDiagnosis() {
     return () => clearTimeout(timer);
   }, [step, phase]);
 
-  // ユーザー操作直後のみ画面下部へスクロール
+  // ユーザー操作直後のみ自動スクロールする。
+  // 質問中は「現在の質問の先頭」へ合わせ、選択肢が多くても質問文が見える位置に保つ。
   useEffect(() => {
     if (Date.now() > scrollArmedUntil.current) return;
     const id = requestAnimationFrame(() => {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      if (phase === "question") {
+        questionAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      }
     });
     return () => cancelAnimationFrame(id);
   }, [step, typing, phase, submitError, answers.prefecture]);
@@ -328,7 +335,7 @@ export default function GaikouDiagnosis() {
   function renderAnswerPanel() {
     if (step === 1) {
       return (
-        <div className="space-y-4">
+        <div className="space-y-3">
           <AreaSelector
             prefecture={answers.prefecture}
             municipality={answers.municipality}
@@ -349,8 +356,8 @@ export default function GaikouDiagnosis() {
 
     if (step === 2 && currentQuestion) {
       return (
-        <div className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-2.5">
+        <div className="space-y-3">
+          <div className="grid sm:grid-cols-2 gap-2">
             {currentQuestion.options.map((option) => (
               <DiagnosisOptionCard
                 key={option.id}
@@ -376,8 +383,8 @@ export default function GaikouDiagnosis() {
 
     if (step === 3 && currentQuestion) {
       return (
-        <div className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-2.5">
+        <div className="space-y-3">
+          <div className="grid sm:grid-cols-2 gap-2">
             {currentQuestion.options.map((option) => (
               <DiagnosisOptionCard
                 key={option.id}
@@ -417,7 +424,7 @@ export default function GaikouDiagnosis() {
 
     if (step === 4 && currentQuestion) {
       return (
-        <div className="grid sm:grid-cols-2 gap-2.5">
+        <div className="grid sm:grid-cols-2 gap-2">
           {currentQuestion.options.map((option) => (
             <DiagnosisOptionCard
               key={option.id}
@@ -432,7 +439,7 @@ export default function GaikouDiagnosis() {
 
     if (step === 5 && currentQuestion) {
       return (
-        <div className="grid sm:grid-cols-2 gap-2.5">
+        <div className="grid sm:grid-cols-2 gap-2">
           {currentQuestion.options.map((option) => (
             <DiagnosisOptionCard
               key={option.id}
@@ -447,8 +454,8 @@ export default function GaikouDiagnosis() {
 
     if (step === 6 && currentQuestion) {
       return (
-        <div className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-2.5">
+        <div className="space-y-3">
+          <div className="grid sm:grid-cols-2 gap-2">
             {currentQuestion.options.map((option) => (
               <DiagnosisOptionCard
                 key={option.id}
@@ -521,7 +528,7 @@ export default function GaikouDiagnosis() {
       <MotionConfigWrapper>
         {phase !== "result" && <DiagnosisProgress step={step} />}
 
-        <div className="max-w-xl mx-auto px-4 sm:px-6 py-3">
+        <div className="max-w-xl mx-auto px-4 sm:px-6 py-2">
           <div className="flex items-center justify-center gap-3">
             <Image
               src="/images/gaikou/mascot-worry-male.png"
@@ -554,7 +561,7 @@ export default function GaikouDiagnosis() {
           {phase === "result" ? (
             <DiagnosisResult worries={answers.worries} />
           ) : (
-            <div className="space-y-4 pt-2" aria-live="polite">
+            <div className="space-y-2.5 sm:space-y-3 pt-2" aria-live="polite">
               {/* 最初の挨拶 */}
               <BotMessage showName>{GREETING_LINES[0]}</BotMessage>
               <BotMessage>{GREETING_LINES[1]}</BotMessage>
@@ -567,7 +574,7 @@ export default function GaikouDiagnosis() {
                     <BotMessage>
                       <span className="font-bold">{q.title}</span>
                       {q.description && (
-                        <span className="block mt-1 text-[12px] text-[#8a9a90]">{q.description}</span>
+                        <span className="block mt-1 text-[11px] text-[#8a9a90]">{q.description}</span>
                       )}
                     </BotMessage>
                     <UserMessage lines={answerLinesForStep(s, answers)} />
@@ -575,13 +582,14 @@ export default function GaikouDiagnosis() {
                 );
               })}
 
-              {/* 現在の質問 */}
+              {/* 現在の質問（アンカーは固定ヘッダーの高さぶん余白を確保） */}
+              <div ref={questionAnchorRef} className="scroll-mt-[92px]" aria-hidden="true" />
               {phase === "question" && typing && <TypingBubble />}
               {showCurrentQuestion && (
                 <BotMessage showName>
                   <span className="font-bold">{questionForStep(step).title}</span>
                   {questionForStep(step).description && (
-                    <span className="block mt-1 text-[12px] text-[#8a9a90]">
+                    <span className="block mt-1 text-[11px] text-[#8a9a90]">
                       {questionForStep(step).description}
                     </span>
                   )}
