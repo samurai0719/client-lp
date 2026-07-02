@@ -1,0 +1,19 @@
+/* /gaikou/diagnosis 専用の追加スタイル。CTAボタン等の基本スタイルは ../gaikou.css を再利用する。 */
+
+.gaikou-diagnosis-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cfe3d6 transparent;
+}
+.gaikou-diagnosis-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.gaikou-diagnosis-scroll::-webkit-scrollbar-thumb {
+  background-color: #cfe3d6;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gaikou-diagnosis-scroll {
+    scroll-behavior: auto;
+  }
+}

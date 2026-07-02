@@ -15,8 +15,6 @@ type DiagnosisContactFormProps = {
   onBack: () => void;
   onSubmit: () => void;
   submitting: boolean;
-  /** 送信ボタンの文言（チャットUIでは確認画面へ進むため差し替え可能にする） */
-  submitLabel?: string;
 };
 
 type FormErrors = {
@@ -40,7 +38,6 @@ export default function DiagnosisContactForm({
   onBack,
   onSubmit,
   submitting,
-  submitLabel = "無料診断を完了する",
 }: DiagnosisContactFormProps) {
   const baseId = useId();
   const [errors, setErrors] = useState<FormErrors>({});
@@ -65,13 +62,16 @@ export default function DiagnosisContactForm({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -6 }}
+      initial={{ opacity: 0, x: 28 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -28 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
     >
-      {/* 見出し（質問文）はチャット側の吹き出しで表示する */}
-      <div className="flex items-center justify-between gap-3 rounded-xl bg-[#eaf3ee] border border-[#bfe0cd] px-4 py-3">
+      <h2 className="text-[1.15rem] sm:text-[1.4rem] font-bold text-[#10302a] leading-snug tracking-tight whitespace-pre-line">
+        診断結果をお届けするため、{"\n"}お客様情報をご入力ください
+      </h2>
+
+      <div className="mt-4 flex items-center justify-between gap-3 rounded-xl bg-[#eaf3ee] border border-[#bfe0cd] px-4 py-3">
         <p className="text-[13px] sm:text-sm text-[#1f4d3d]">
           <span className="flex items-center gap-1 font-semibold mb-0.5">
             <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
@@ -223,17 +223,17 @@ export default function DiagnosisContactForm({
           )}
         </div>
 
-        <div className="space-y-2 pt-1">
-          <button type="submit" disabled={submitting} className="gaikou-cta-btn w-full disabled:opacity-60">
-            <span className="gaikou-cta-btn-inner">{submitting ? "送信しています…" : submitLabel}</span>
-          </button>
+        <div className="flex items-center gap-3 pt-1">
           <button
             type="button"
             onClick={onBack}
-            className="mx-auto flex items-center justify-center gap-1 min-h-[44px] px-3 text-sm font-semibold text-[#6b7a73] hover:text-[#10302a] transition-colors"
+            className="flex items-center gap-1 min-h-[44px] px-3 text-sm font-semibold text-[#6b7a73] hover:text-[#10302a] transition-colors"
           >
             <ChevronLeft className="w-4 h-4" aria-hidden="true" />
-            ひとつ前の質問に戻る
+            戻る
+          </button>
+          <button type="submit" disabled={submitting} className="gaikou-cta-btn flex-1 disabled:opacity-60">
+            <span className="gaikou-cta-btn-inner">{submitting ? "送信中..." : "無料診断を完了する"}</span>
           </button>
         </div>
       </form>

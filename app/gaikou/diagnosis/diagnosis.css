@@ -17,3 +17,61 @@
     scroll-behavior: auto;
   }
 }
+
+/* ── チャットUI ──────────────────────────────────────────────────── */
+
+/* 新しい吹き出し・回答エリアのフェードイン（控えめ） */
+.gd-chat-appear {
+  animation: gdChatIn 0.28s ease-out both;
+}
+@keyframes gdChatIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 「入力中…」の3点ドット */
+.gd-typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.gd-typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #9bb3a8;
+  animation: gdTypingPulse 1s ease-in-out infinite;
+}
+.gd-typing-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.gd-typing-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes gdTypingPulse {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gd-chat-appear {
+    animation: none;
+  }
+  .gd-typing-dots span {
+    animation: none;
+  }
+}

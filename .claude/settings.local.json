@@ -268,7 +268,10 @@
       "Bash(claude update *)",
       "Bash(awk '{print $5, $9}')",
       "Bash(npx tsx *)",
-      "Bash(echo \"typecheck exit: $?\")"
+      "Bash(echo \"typecheck exit: $?\")",
+      "Bash(cp -r app/gaikou/diagnosis backup/chat-diagnosis-20260702/app-diagnosis)",
+      "Bash(cp -r components/gaikou/diagnosis backup/chat-diagnosis-20260702/components-diagnosis)",
+      "Bash(echo \"参照なし\\(exit $?\\)\")"
     ]
   }
 }

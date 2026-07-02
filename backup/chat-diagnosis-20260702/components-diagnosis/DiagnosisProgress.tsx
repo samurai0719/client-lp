@@ -13,15 +13,12 @@ export default function DiagnosisProgress({ step }: DiagnosisProgressProps) {
   return (
     <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-[#e7e3d8]">
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-3">
-        <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center justify-between mb-2">
           <p className="text-[13px] sm:text-sm font-bold text-[#10302a]">外構プラン無料診断</p>
           <p className="text-[12px] sm:text-sm font-semibold text-[#2f7d5a]">
             質問 {step} / {TOTAL_STEPS}
           </p>
         </div>
-        <p className="mb-2 text-[10.5px] sm:text-[11px] text-[#8a9a90] leading-snug">
-          いくつかの質問に答えるだけで、あなたに合った外構リフォームプランが分かります
-        </p>
         <div
           className="h-2 rounded-full bg-[#eef0ea] overflow-hidden"
           role="progressbar"
