@@ -2,10 +2,7 @@
 // 外構リフォームLP（/gaikou）共通データ
 // 施工事例・料金・FAQなどはすべて配列で管理。実際の実績・金額が確定したら
 // このファイルの値を置き換えるだけで画面に反映されます。
-// 料金表の価格は config/exterior-pricing.ts を参照（ベタ書き禁止）。
 // ─────────────────────────────────────────────────────────────────────────────
-
-import { lpPriceTable } from "@/config/exterior-pricing";
 
 export type WorkItem = {
   id: number;
@@ -236,14 +233,22 @@ export type PriceItem = {
   badge?: string;
 };
 
-// 価格の実数値は config/exterior-pricing.ts が唯一のソース。
-// ここでは表示用に変換するだけで、金額をベタ書きしない。
-export const prices: PriceItem[] = lpPriceTable.map((row) => ({
-  label: row.label,
-  price: row.price,
-  note: row.note,
-  confirmed: true,
-}));
+// 確定情報は「土間コンクリート」のみ。その他は確定後に差し替えてください。
+export const prices: PriceItem[] = [
+  {
+    label: "土間コンクリート",
+    price: "10㎡ 10万円〜",
+    note: "駐車場やアプローチの土間コンクリート施工に対応します。",
+    confirmed: true,
+    badge: "SNS広告限定",
+  },
+  { label: "駐車場1台分", price: "価格は現地調査後にご案内", confirmed: false },
+  { label: "駐車場2台分", price: "価格は現地調査後にご案内", confirmed: false },
+  { label: "防草シート＋砂利", price: "価格は現地調査後にご案内", confirmed: false },
+  { label: "人工芝", price: "価格は現地調査後にご案内", confirmed: false },
+  { label: "目隠しフェンス", price: "価格は現地調査後にご案内", confirmed: false },
+  { label: "カーポート", price: "価格は現地調査後にご案内", confirmed: false },
+];
 
 export const priceIncludes: string[] = [
   "現地調査",

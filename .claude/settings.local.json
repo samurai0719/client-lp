@@ -266,7 +266,9 @@
       "Bash(sed -i '' 's|canonical: `https://\\\\${siteConfig.domain}/takanaga/news`|canonical: `https://${siteConfig.domain}/news`|g' app/takanaga/news/page.tsx)",
       "Bash(claude --version)",
       "Bash(claude update *)",
-      "Bash(awk '{print $5, $9}')"
+      "Bash(awk '{print $5, $9}')",
+      "Bash(npx tsx *)",
+      "Bash(echo \"typecheck exit: $?\")"
     ]
   }
 }

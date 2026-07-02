@@ -3,31 +3,11 @@
 import { useId, useState, useEffect, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Calculator, Paperclip } from "lucide-react";
+import { Paperclip } from "lucide-react";
 import { serviceAreas } from "./data";
 import SectionHeading from "./SectionHeading";
 import SectionBackdrop from "./SectionBackdrop";
 import { captureUtm, loadUtm } from "@/lib/utm/storage";
-import { SIMULATOR_ESTIMATE_STORAGE_KEY } from "@/lib/calculate-exterior-estimate";
-
-// シミュレーターから引き継がれる概算価格
-type SimulatorEstimateHandoff = {
-  label: string;
-  works: string[];
-  at: number;
-};
-
-function loadSimulatorEstimate(): SimulatorEstimateHandoff | null {
-  try {
-    const raw = sessionStorage.getItem(SIMULATOR_ESTIMATE_STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as SimulatorEstimateHandoff;
-    if (!parsed.label || !Array.isArray(parsed.works)) return null;
-    return parsed;
-  } catch {
-    return null;
-  }
-}
 
 type FormErrors = {
   name?: string;
@@ -58,20 +38,10 @@ export default function ContactSection() {
   const [submitError, setSubmitError] = useState("");
   // honeypot（スパム対策）
   const [website, setWebsite] = useState("");
-  // シミュレーターの概算価格（あれば問い合わせ内容に添えて送信する）
-  const [simEstimate, setSimEstimate] = useState<SimulatorEstimateHandoff | null>(null);
 
   // UTMをキャプチャ
   useEffect(() => {
     captureUtm();
-  }, []);
-
-  // シミュレーターからの概算価格を受け取る（初期表示＋CTAクリック時のイベント）
-  useEffect(() => {
-    const sync = () => setSimEstimate(loadSimulatorEstimate());
-    sync();
-    window.addEventListener("gaikou:simulator-estimate", sync);
-    return () => window.removeEventListener("gaikou:simulator-estimate", sync);
   }, []);
 
   function toggleWorkType(option: string) {
@@ -94,16 +64,6 @@ export default function ContactSection() {
 
     const utm = loadUtm() ?? {};
 
-    // シミュレーターの概算価格を問い合わせ内容に添える（管理画面で確認できる）
-    const inquiryMessage = [
-      simEstimate
-        ? `【シミュレーション概算】${simEstimate.label}（対象：${simEstimate.works.join("・")}）※現地調査後に正式見積もり`
-        : null,
-      note.trim() || null,
-    ]
-      .filter(Boolean)
-      .join("\n");
-
     try {
       const res = await fetch("/api/inquiries", {
         method: "POST",
@@ -114,7 +74,7 @@ export default function ContactSection() {
           email: email.trim() || undefined,
           city: city || undefined,
           workTypes,
-          inquiryMessage: inquiryMessage || undefined,
+          inquiryMessage: note.trim() || undefined,
           designStyle: currentState || undefined,
           utmSource: utm.utm_source,
           utmMedium: utm.utm_medium,
@@ -175,24 +135,6 @@ export default function ContactSection() {
             className="sr-only"
             autoComplete="off"
           />
-
-          {/* シミュレーターからの概算価格（送信内容に添えられる） */}
-          {simEstimate && (
-            <div className="rounded-xl bg-[#fff7ec] border border-[#e8a25a] px-4 py-3.5">
-              <p className="flex items-center gap-1.5 text-xs font-bold text-[#a85a1f]">
-                <Calculator className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-                シミュレーションの概算費用
-              </p>
-              <p className="mt-0.5 text-lg font-extrabold tracking-tight text-[#d9601a]">{simEstimate.label}</p>
-              <p className="mt-1 text-[12px] font-semibold text-[#a85a1f] leading-relaxed">
-                シミュレーションからお問い合わせいただいた方のみ、この概算価格の範囲内で施工いたします。
-              </p>
-              <p className="mt-1 text-[11px] text-[#8a7a55] leading-relaxed">
-                対象：{simEstimate.works.join("・")}／この概算を添えて送信されます。
-                ※標準的な施工条件の場合。追加工事が必要なときは現地調査時に事前にご説明します。
-              </p>
-            </div>
-          )}
 
           <div>
             <label htmlFor={`${baseId}-name`} className={labelClass}>

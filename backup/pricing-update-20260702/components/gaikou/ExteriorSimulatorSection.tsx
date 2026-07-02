@@ -12,17 +12,6 @@ import {
 } from "lucide-react";
 import SectionHeading from "./SectionHeading";
 import SectionBackdrop from "./SectionBackdrop";
-import {
-  calculateSimulatorEstimate,
-  SIMULATOR_ESTIMATE_STORAGE_KEY,
-} from "@/lib/calculate-exterior-estimate";
-
-// シミュレーションの特徴（概算費用の訴求を含む）
-const SIMULATOR_FEATURES = [
-  "完成イメージをAIで確認",
-  "選択した工事内容から概算費用を算出",
-  "そのまま無料見積もりを依頼可能",
-];
 
 // ─── Step type ────────────────────────────────────────────────────
 
@@ -310,31 +299,9 @@ export default function ExteriorSimulatorSection() {
     setCompareMode("slider");
   }, [previewUrl]);
 
-  // 選択された工事内容からの概算価格（標準条件・税込の参考価格）
-  const estimate = useMemo(
-    () => calculateSimulatorEstimate(selectedWorkTypes),
-    [selectedWorkTypes]
-  );
-
   const scrollToContact = () => {
-    const el = document.getElementById("contact") ?? document.querySelector("form");
+    const el = document.getElementById("gaikou-contact") ?? document.querySelector("form");
     el?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // 概算価格を問い合わせフォームへ引き継いでからスクロールする
-  const requestQuote = () => {
-    try {
-      if (estimate) {
-        sessionStorage.setItem(
-          SIMULATOR_ESTIMATE_STORAGE_KEY,
-          JSON.stringify({ label: estimate.label, works: estimate.works, at: Date.now() })
-        );
-        window.dispatchEvent(new Event("gaikou:simulator-estimate"));
-      }
-    } catch {
-      // ストレージ不可の環境でも遷移は妨げない
-    }
-    scrollToContact();
   };
 
   // ── Step indicator ────────────────────────────────────────────
@@ -605,28 +572,6 @@ export default function ExteriorSimulatorSection() {
               {compareMode === "after" && <img src={generatedUrl} alt="完成イメージ" className="w-full block rounded-xl" />}
             </div>
 
-            {/* 概算費用（config/exterior-pricing.ts 基準の参考価格） */}
-            <div className="rounded-xl border border-[#e8a25a] bg-[#fff7ec] p-4 sm:p-5 mb-4 text-center">
-              <p className="text-xs sm:text-[13px] font-bold text-[#a85a1f]">この施工内容の概算費用</p>
-              {estimate ? (
-                <>
-                  <p className="mt-1 text-2xl sm:text-3xl font-extrabold tracking-tight text-[#d9601a]">
-                    {estimate.label}
-                  </p>
-                  <p className="mt-2 text-[11px] sm:text-xs text-[#8a7a55] leading-relaxed">
-                    選択された工事内容・施工範囲をもとに算出した参考価格です。
-                    {estimate.hasUnpriced && "「その他」の工事は含まれていません。"}
-                    <br />
-                    ※表示される金額は概算です。正式な金額は現地調査後に確定します。
-                  </p>
-                </>
-              ) : (
-                <p className="mt-1 text-sm font-semibold text-[#8a7a55] leading-relaxed">
-                  お選びいただいた内容は現地確認が必要なため、概算費用は現地調査時にご案内します。
-                </p>
-              )}
-            </div>
-
             {/* Action buttons */}
             <div className="flex flex-wrap gap-2 mb-6">
               <a href={generatedUrl} download="exterior-simulation.png"
@@ -653,24 +598,12 @@ export default function ExteriorSimulatorSection() {
 
             {/* CTA */}
             <div className="rounded-2xl bg-[#eaf3ee] border border-[#c8d8d0] p-5 text-center mb-5">
-              {estimate && (
-                <p className="mb-3 text-[14px] sm:text-base font-bold text-[#10302a] leading-relaxed">
-                  シミュレーション後、こちらからお問い合わせいただいた方のみ、
-                  <span className="text-[#d9601a]">この概算価格の範囲内で施工いたします。</span>
-                </p>
-              )}
-              <button type="button" onClick={requestQuote} className="gaikou-cta-btn inline-block">
+              <p className="font-bold text-[#10302a] mb-3">このイメージで実際の費用を確認してみませんか？</p>
+              <button type="button" onClick={scrollToContact} className="gaikou-cta-btn inline-block">
                 <span className="gaikou-cta-btn-inner">
-                  この内容で無料見積もりを依頼する <ChevronRight className="w-5 h-5" aria-hidden="true" />
+                  無料見積もりを依頼する <ChevronRight className="w-5 h-5" aria-hidden="true" />
                 </span>
               </button>
-              <p className="mt-3 text-xs sm:text-sm text-[#52615c]">現地調査・正式なお見積もりは無料です。</p>
-              {estimate && (
-                <p className="mt-2 text-[11px] text-[#8a9a90] leading-relaxed">
-                  ※標準的な施工条件の場合。現地調査の結果、撤去・地盤改良・排水などの追加工事が必要な場合は、
-                  事前にご説明し、ご承諾なく費用が変わることはありません。
-                </p>
-              )}
             </div>
 
             <p className="text-[11px] text-[#9bb3a8] text-center leading-relaxed">
@@ -690,24 +623,10 @@ export default function ExteriorSimulatorSection() {
         <SectionHeading
           eyebrow="SIMULATION"
           title="外構リフォームシミュレーター"
-          description={"自宅の写真を撮るだけ。\n施工後のイメージと、おおよその費用まで無料で確認できます。"}
+          description={"自宅の写真を撮るだけ。\n外構リフォーム後のイメージを確認できます。"}
         />
         <p className="mt-3 text-sm text-[#6b7f75] text-center leading-relaxed max-w-xl mx-auto">
           土間コンクリート、駐車場の拡張、人工芝、カーポート、目隠しフェンスなど、気になるリフォームを写真でシミュレーションできます。
-        </p>
-
-        <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-          {SIMULATOR_FEATURES.map((feature) => (
-            <li key={feature} className="flex items-center gap-1.5 text-[12.5px] sm:text-[13px] font-semibold text-[#1f4d3d]">
-              <Check className="w-3.5 h-3.5 text-[#2f7d5a] shrink-0" aria-hidden="true" />
-              {feature}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-3 text-xs text-[#8a9a90] text-center leading-relaxed max-w-xl mx-auto">
-          工事内容・施工面積・商品グレードなどをもとに、参考となる概算価格を表示します。
-          <br />
-          ※表示される金額は概算です。正式な金額は現地調査後に確定します。
         </p>
 
         <div className="mt-10 md:mt-14 bg-white rounded-2xl border border-[#e7e3d8] p-5 sm:p-7 shadow-sm">

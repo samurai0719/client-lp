@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { CarFront, Tag } from "lucide-react";
 import { prices } from "./data";
-import { lpPriceDisclaimer, lpPriceTaxNote, lpSetNote } from "@/config/exterior-pricing";
 import SectionHeading from "./SectionHeading";
 import CTABlock from "./CTABlock";
 import SectionBackdrop from "./SectionBackdrop";
@@ -15,7 +14,7 @@ export default function PriceSection() {
     <section id="price" className="relative px-4 sm:px-6 py-16 md:py-24 overflow-hidden">
       <SectionBackdrop variant="triangle-down" tone="orange" />
       <div className="relative z-10 max-w-4xl mx-auto">
-        <SectionHeading eyebrow="PRICE" title={"料金の目安"} description={"標準的な施工条件での概算価格（参考価格）です"} />
+        <SectionHeading eyebrow="PRICE" title={"料金の目安"} description={"確定している料金と、今後ご案内する料金の目安です"} />
 
         <motion.div
           className="mt-10 md:mt-12 rounded-2xl border-2 border-[#e8a25a] bg-gradient-to-br from-[#fff7ec] to-[#fef2e2] p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-8"
@@ -41,7 +40,7 @@ export default function PriceSection() {
         </motion.div>
 
         <p className="mt-3 text-[11px] sm:text-xs text-[#8a9a90] text-center leading-relaxed">
-          {lpPriceTaxNote}
+          ※撤去・残土処分・目地・デザイン施工・各種設備工事などは別途お見積もりとなります。
         </p>
 
         <div className="mt-6 grid sm:grid-cols-2 gap-3 sm:gap-4">
@@ -55,25 +54,13 @@ export default function PriceSection() {
               transition={{ duration: 0.45, delay: i * 0.05, ease: "easeOut" }}
             >
               <span className="text-[13px] sm:text-sm font-semibold text-[#1c2b25]">{p.label}</span>
-              <span className="text-[13px] sm:text-base font-bold text-[#d9601a] text-right shrink-0">{p.price}</span>
+              <span className="text-[12px] sm:text-sm text-[#6b7a73] text-right">{p.price}</span>
             </motion.div>
           ))}
         </div>
 
-        <motion.div
-          className="mt-6 rounded-xl bg-[#fff7ec] border border-[#e8a25a] px-5 py-4"
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
-        >
-          <p className="text-[13px] sm:text-sm font-bold text-[#a85a1f] text-center leading-relaxed">
-            {lpSetNote}
-          </p>
-        </motion.div>
-
-        <p className="mt-4 text-[11px] sm:text-xs text-[#8a9a90] text-left sm:text-center leading-relaxed">
-          {lpPriceDisclaimer}
+        <p className="mt-6 text-xs sm:text-sm text-[#6b7a73] text-center leading-relaxed">
+          上記以外の料金は確定後にご案内します。架空の金額は掲載していません。
         </p>
 
         <div className="mt-12 md:mt-16">
