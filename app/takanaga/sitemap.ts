@@ -9,7 +9,9 @@ const BASE = `https://${siteConfig.domain}`;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
-    { url: `${BASE}/`,            priority: 1.0, changeFrequency: "weekly" },
+    // ドメインルート（/）は現在広告LPを配信中のため、HPトップは /takanaga で登録する。
+    // ドメイン切替後は `${BASE}/` に戻すこと（app/takanaga/page.tsx のcanonicalも同時に変更）。
+    { url: `${BASE}/takanaga`,    priority: 1.0, changeFrequency: "weekly" },
     { url: `${BASE}/services`,    priority: 0.9, changeFrequency: "monthly" },
     { url: `${BASE}/works`,       priority: 0.9, changeFrequency: "weekly" },
     { url: `${BASE}/strengths`,   priority: 0.8, changeFrequency: "monthly" },

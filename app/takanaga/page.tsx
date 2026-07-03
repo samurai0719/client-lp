@@ -19,12 +19,15 @@ export const metadata: Metadata = {
   title: `${siteConfig.siteName}｜岐阜・愛知・三重の外構工事・外構リフォーム`,
   description: siteConfig.description,
   alternates: {
-    canonical: `${siteUrl}/`,
+    // 現在ドメインルート（/）は広告LP（/gaikou）を配信しているため、
+    // HPトップの正規URLは /takanaga とする。
+    // ドメイン切替（/ → /takanaga）後は `${siteUrl}/` に戻すこと。
+    canonical: `${siteUrl}/takanaga`,
   },
   openGraph: {
     title: `${siteConfig.siteName}｜岐阜・愛知・三重の外構工事・外構リフォーム`,
     description: siteConfig.description,
-    url: `${siteUrl}/`,
+    url: `${siteUrl}/takanaga`,
   },
 };
 

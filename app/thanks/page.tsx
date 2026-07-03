@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Phone } from "lucide-react";
+
+export const metadata: Metadata = {
+  // metadata未設定だとルートlayoutの看護師LP向けタイトルを継承してしまうため必ず上書きする
+  title: "お問い合わせ完了｜高長建設",
+  description: "お問い合わせありがとうございます。内容を確認のうえ、担当者よりご連絡いたします。",
+  robots: { index: false, follow: false },
+};
 
 export default function ThanksPage() {
   return (

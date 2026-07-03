@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   title: seoContent.title,
   description: seoContent.description,
   alternates: { canonical: seoContent.path },
+  // 広告の受け皿ページのため検索結果には出さない（コーポレートHPとの競合・重複防止）
+  robots: { index: false, follow: true },
   openGraph: {
     type: "article",
     title: seoContent.title,
