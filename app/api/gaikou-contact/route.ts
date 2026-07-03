@@ -6,6 +6,21 @@ import {
   findRecentDuplicateLead,
   nameMismatchNote,
 } from "@/lib/crm/customers";
+import {
+  budgetOptions,
+  paymentMethodOptions,
+  sizeOptions,
+  timingOptions,
+  worryOptions,
+  type DiagnosisOption,
+} from "@/data/gaikou/diagnosisQuestions";
+
+// 診断の回答IDを管理画面用の日本語ラベルへ変換する
+// （旧実装は "within-1y" 等の生IDのまま保存され、管理画面で読めなかった）
+function labelOf(options: DiagnosisOption[], id: string | null | undefined): string | null {
+  if (!id) return null;
+  return options.find((o) => o.id === id)?.label ?? id;
+}
 
 const CONSTRUCTION_TYPE_MAP: Record<string, string> = {
   concrete: "駐車場リフォーム",
@@ -28,12 +43,16 @@ export async function POST(req: Request) {
         municipality: string | null;
         constructionTypes: string[];
         worries: string[];
+        worriesOther?: string;
+        size?: string | null;
         timing: string | null;
         budget: string | null;
+        paymentMethod?: string | null;
         contact: {
           name: string;
           phone: string;
           email: string;
+          contactTime?: string;
           note: string;
           addressDetail: string;
         };
@@ -75,11 +94,23 @@ export async function POST(req: Request) {
           ? nameMismatchNote(contact.name, customerResult.existingName)
           : null;
 
+        // お悩み（「その他」の自由入力があれば併記）
+        const worryLabels = answers.worries
+          .map((w) => labelOf(worryOptions, w))
+          .filter(Boolean);
+        if (answers.worries.includes("other") && answers.worriesOther?.trim()) {
+          worryLabels.push(`「${answers.worriesOther.trim()}」`);
+        }
+
         const notes = [
           mismatchNote,
           contact.note ? `備考：${contact.note}` : null,
-          answers.timing ? `希望時期：${answers.timing}` : null,
-          answers.budget ? `予算：${answers.budget}` : null,
+          worryLabels.length > 0 ? `お悩み：${worryLabels.join("、")}` : null,
+          answers.size ? `希望の広さ：${labelOf(sizeOptions, answers.size)}` : null,
+          answers.timing ? `希望時期：${labelOf(timingOptions, answers.timing)}` : null,
+          answers.budget ? `予算：${labelOf(budgetOptions, answers.budget)}` : null,
+          answers.paymentMethod ? `支払い方法：${labelOf(paymentMethodOptions, answers.paymentMethod)}` : null,
+          contact.contactTime ? `連絡しやすい時間帯：${contact.contactTime}` : null,
         ]
           .filter(Boolean)
           .join("\n");

@@ -64,9 +64,11 @@ export async function findOrCreateCustomer(
   if (canMatch) {
     const existing = await findMatchableCustomer(db, phoneNormalized);
     if (existing) {
-      // 名前は上書きしない。メールのみ「未登録の場合」に補完する。
+      // 名前は上書きしない。ただし既存の名前が「空」の場合のみ入力名で補完する。
+      // メールも「未登録の場合」のみ補完する。
       const patch: Record<string, string> = { updated_at: new Date().toISOString() };
       if (input.email && !existing.email) patch.email = input.email;
+      if (!existing.name?.trim() && input.name.trim()) patch.name = input.name.trim();
       await db.from("customers").update(patch).eq("id", existing.id);
       return {
         ok: true,
