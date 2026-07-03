@@ -49,22 +49,28 @@ export default function TakanagaTopPage() {
 
   const localBusinessJsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    // 外構・エクステリア工事業者に最も近いスキーマ種別
+    "@type": "HomeAndConstructionBusiness",
     "@id": `${siteUrl}/#organization`,
     name: siteConfig.siteName,
     description: siteConfig.description,
     url: siteUrl,
     image: `${siteUrl}${siteConfig.seo.ogImage}`,
+    logo: `${siteUrl}/images/gaikou/logo.png`,
     areaServed: siteConfig.seo.serviceArea.map((area) => ({
       "@type": "AdministrativeArea",
       name: area,
     })),
-    ...(siteConfig.company.address
-      ? { address: { "@type": "PostalAddress", addressLocality: siteConfig.company.address } }
-      : {}),
-    ...(siteConfig.company.phone
-      ? { telephone: siteConfig.company.phone }
-      : {}),
+    address: {
+      "@type": "PostalAddress",
+      postalCode: siteConfig.company.postalCode ?? undefined,
+      addressRegion: "岐阜県",
+      addressLocality: "各務原市",
+      streetAddress: "那加桐野町1-65",
+      addressCountry: "JP",
+    },
+    ...(siteConfig.company.googleMapsUrl ? { hasMap: siteConfig.company.googleMapsUrl } : {}),
+    ...(siteConfig.company.phone ? { telephone: siteConfig.company.phone } : {}),
   };
 
   return (

@@ -62,7 +62,8 @@ export const siteConfig = {
   // ── SEO共通設定 ──────────────────────────────────────────────────────
   seo: {
     titleSuffix: "｜高長建設",
-    ogImage: "/images/gaikou/logo.png",
+    // OGPは1200×630推奨。施工事例写真から生成（public/images/takanaga/og-image.jpg）
+    ogImage: "/images/takanaga/og-image.jpg",
     twitterCard: "summary_large_image" as const,
     locale: "ja_JP",
     serviceArea: ["岐阜県", "愛知県", "三重県"],

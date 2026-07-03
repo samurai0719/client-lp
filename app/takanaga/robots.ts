@@ -7,7 +7,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/contact/thanks", "/admin/"],
+        // /contact/thanks はrewrite後の公開URL、/takanaga/contact/thanks は直接パス
+        disallow: ["/contact/thanks", "/takanaga/contact/thanks", "/admin/", "/api/"],
       },
     ],
     sitemap: `https://${siteConfig.domain}/sitemap.xml`,
