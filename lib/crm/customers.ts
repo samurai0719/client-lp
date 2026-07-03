@@ -3,8 +3,9 @@
 //
 // /api/inquiries・/api/gaikou-contact・/api/takanaga-contact の3経路で
 // 挙動を統一するためのヘルパー。過去に発生した以下の不具合を防ぐ：
-//   1. 既存顧客の名前・メールを新しいフォーム入力で上書きして消してしまう
-//      → 名前は絶対に上書きしない。メールは未登録の場合のみ補完する。
+//   1. 名前の扱い：最新のフォーム入力名を顧客名へ反映する（空では上書きしない）。
+//      名前が変わった場合は nameMismatchNote で「以前の登録名」をリードに記録し、
+//      情報を消さない。※別人の名前に化ける事故は 3 の照合ガードで防いでいる。
 //   2. 電話番号の正規化が経路ごとに異なり、同じ番号でも別顧客が作られて重複する
 //      → normalizePhone に一本化。
 //   3. 桁数が不十分な番号（空文字など）同士が一致して別人の顧客に結合される
@@ -64,11 +65,14 @@ export async function findOrCreateCustomer(
   if (canMatch) {
     const existing = await findMatchableCustomer(db, phoneNormalized);
     if (existing) {
-      // 名前は上書きしない。ただし既存の名前が「空」の場合のみ入力名で補完する。
-      // メールも「未登録の場合」のみ補完する。
+      // 最新の入力を顧客情報へ反映する。ただし空の値で消すことはしない。
+      // 名前が変わる場合、以前の名前は呼び出し側が nameMismatchNote でリードに記録する。
       const patch: Record<string, string> = { updated_at: new Date().toISOString() };
-      if (input.email && !existing.email) patch.email = input.email;
-      if (!existing.name?.trim() && input.name.trim()) patch.name = input.name.trim();
+      const submittedName = input.name.trim();
+      if (submittedName && submittedName !== (existing.name ?? "").trim()) {
+        patch.name = submittedName;
+      }
+      if (input.email) patch.email = input.email;
       await db.from("customers").update(patch).eq("id", existing.id);
       return {
         ok: true,
@@ -142,9 +146,10 @@ export async function findRecentDuplicateLead(
   return null;
 }
 
-// フォーム入力名が既存顧客の登録名と異なる場合に、問い合わせ内容へ残す注記
+// フォーム入力名で顧客名を更新した場合に、以前の名前を問い合わせ内容へ残す注記
+// （名前の変更履歴が消えないようにするため）
 export function nameMismatchNote(submittedName: string, existingName: string | null): string | null {
   const submitted = submittedName.trim();
-  if (!existingName || existingName.trim() === submitted) return null;
-  return `【フォーム入力のお名前】${submitted}（登録済みのお名前：${existingName.trim()}）`;
+  if (!submitted || !existingName || existingName.trim() === submitted) return null;
+  return `【お名前を更新】${submitted}（以前の登録名：${existingName.trim()}）`;
 }

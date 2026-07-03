@@ -23,10 +23,11 @@ check("記号のみ", normalizePhone("---") === "");
 check("同名なら注記なし", nameMismatchNote("山田 太郎", "山田 太郎") === null);
 check("前後空白は無視", nameMismatchNote(" 山田 太郎 ", "山田 太郎") === null);
 check(
-  "別名なら注記を生成",
+  "別名なら更新注記を生成",
   nameMismatchNote("山田 花子", "山田 太郎") ===
-    "【フォーム入力のお名前】山田 花子（登録済みのお名前：山田 太郎）"
+    "【お名前を更新】山田 花子（以前の登録名：山田 太郎）"
 );
+check("入力名が空なら注記なし", nameMismatchNote("  ", "山田 太郎") === null);
 check("既存名が無ければ注記なし", nameMismatchNote("山田 太郎", null) === null);
 
 console.log("");
