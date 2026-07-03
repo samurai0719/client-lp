@@ -3,11 +3,6 @@ import { Resend } from "resend";
 import type { TakanagaContactInput } from "@/lib/types/takanagaContact";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
-import {
-  findOrCreateCustomer,
-  findRecentDuplicateLead,
-  nameMismatchNote,
-} from "@/lib/crm/customers";
 
 const WORK_TYPE_MAP: Record<string, string> = {
   parking: "駐車場リフォーム",
@@ -109,22 +104,41 @@ async function saveToCrm(data: TakanagaContactInput): Promise<void> {
   if (!isSupabaseAdminConfigured()) return;
   try {
     const db = createAdminClient();
+    const phoneNorm = data.phone.replace(/[^\d]/g, "");
 
-    // 顧客の照合・作成（名前は上書きしない共通ロジック。正規化も統一）
-    const customerResult = await findOrCreateCustomer(db, {
-      name: data.name,
-      phone: data.phone,
-      email: data.email,
-      prefecture: data.prefecture,
-      city: data.city,
-      address: data.address,
-    });
-    if (!customerResult.ok) {
-      console.error("[takanaga-contact] Customer insert failed");
-      return;
+    // 既存顧客チェック → なければ新規作成
+    const { data: existing } = await db
+      .from("customers")
+      .select("id")
+      .eq("phone_normalized", phoneNorm)
+      .is("deleted_at", null)
+      .limit(1);
+
+    let customerId: string | null = null;
+    if (existing && existing.length > 0) {
+      customerId = existing[0].id;
+    } else {
+      const { data: newCust, error: custErr } = await db
+        .from("customers")
+        .insert({
+          name: data.name,
+          phone: data.phone,
+          phone_normalized: phoneNorm,
+          email: data.email || null,
+          prefecture: data.prefecture,
+          city: data.city,
+          address: data.address || null,
+        })
+        .select("id")
+        .single();
+      if (custErr || !newCust) {
+        console.error("[takanaga-contact] Customer insert failed:", custErr);
+        return;
+      }
+      customerId = newCust.id;
     }
 
-    const customer = { id: customerResult.customerId };
+    const customer = { id: customerId! };
 
     const workTypes = data.desiredWork
       .map((w) => WORK_TYPE_MAP[w])
@@ -132,22 +146,13 @@ async function saveToCrm(data: TakanagaContactInput): Promise<void> {
     const uniqueTypes = [...new Set(workTypes)];
     if (uniqueTypes.length === 0) uniqueTypes.push("その他");
 
-    const mismatchNote = customerResult.matchedExisting
-      ? nameMismatchNote(data.name, customerResult.existingName)
-      : null;
-    const leadMessage = [mismatchNote, data.message || null].filter(Boolean).join("\n") || null;
-
-    // 二重送信（同じ内容の直近リード）は新規作成しない
-    const duplicateLeadId = await findRecentDuplicateLead(db, customer.id, uniqueTypes, leadMessage);
-    if (duplicateLeadId) return;
-
     const { data: lead, error: leadErr } = await db
       .from("leads")
       .insert({
         customer_id: customer.id,
         status: "new",
         work_types: uniqueTypes,
-        inquiry_message: leadMessage,
+        inquiry_message: data.message,
         source: "hp",
       })
       .select("id")

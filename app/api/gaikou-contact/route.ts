@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
+import {
+  findOrCreateCustomer,
+  findRecentDuplicateLead,
+  nameMismatchNote,
+} from "@/lib/crm/customers";
 
 const CONSTRUCTION_TYPE_MAP: Record<string, string> = {
   concrete: "駐車場リフォーム",
@@ -43,55 +48,47 @@ export async function POST(req: Request) {
 
     if (isSupabaseAdminConfigured()) {
       const db = createAdminClient();
-      const phoneNorm = contact.phone.replace(/[^\d]/g, "");
 
-      // 既存顧客チェック → なければ新規作成
-      const { data: existing } = await db
-        .from("customers")
-        .select("id")
-        .eq("phone_normalized", phoneNorm)
-        .is("deleted_at", null)
-        .limit(1);
+      // 顧客の照合・作成（名前は上書きしない共通ロジック。正規化も統一）
+      const customerResult = await findOrCreateCustomer(db, {
+        name: contact.name,
+        phone: contact.phone,
+        email: contact.email,
+        prefecture: answers.prefecture,
+        city: answers.municipality,
+        address: contact.addressDetail,
+      });
 
-      let customerId: string | null = null;
-      if (existing && existing.length > 0) {
-        customerId = existing[0].id;
-      } else {
-        const { data: newCust, error: custErr } = await db
-          .from("customers")
-          .insert({
-            name: contact.name,
-            phone: contact.phone,
-            phone_normalized: phoneNorm,
-            email: contact.email || null,
-            prefecture: answers.prefecture || null,
-            city: answers.municipality || null,
-            address: contact.addressDetail || null,
-          })
-          .select("id")
-          .single();
-        if (custErr || !newCust) {
-          console.error("[gaikou-contact] Customer insert failed:", custErr);
-        } else {
-          customerId = newCust.id;
-        }
+      if (!customerResult.ok) {
+        console.error("[gaikou-contact] Customer insert failed");
       }
 
-      if (customerId) {
-        const customer = { id: customerId };
+      if (customerResult.ok) {
+        const customer = { id: customerResult.customerId };
         const workTypes = answers.constructionTypes
           .map((t) => CONSTRUCTION_TYPE_MAP[t])
           .filter((v): v is string => Boolean(v));
         const uniqueTypes = [...new Set(workTypes)];
         if (uniqueTypes.length === 0) uniqueTypes.push("その他");
 
+        const mismatchNote = customerResult.matchedExisting
+          ? nameMismatchNote(contact.name, customerResult.existingName)
+          : null;
+
         const notes = [
+          mismatchNote,
           contact.note ? `備考：${contact.note}` : null,
           answers.timing ? `希望時期：${answers.timing}` : null,
           answers.budget ? `予算：${answers.budget}` : null,
         ]
           .filter(Boolean)
           .join("\n");
+
+        // 二重送信（同じ内容の直近リード）は新規作成しない
+        const duplicateLeadId = await findRecentDuplicateLead(db, customer.id, uniqueTypes, notes || null);
+        if (duplicateLeadId) {
+          return NextResponse.json({ success: true, duplicate: true });
+        }
 
         const { data: lead, error: leadErr } = await db
           .from("leads")

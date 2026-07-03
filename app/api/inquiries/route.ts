@@ -2,6 +2,11 @@ import { NextResponse, type NextRequest } from "next/server";
 import { Resend } from "resend";
 import { normalizePhone } from "@/lib/utils/format";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
+import {
+  findOrCreateCustomer,
+  findRecentDuplicateLead,
+  nameMismatchNote,
+} from "@/lib/crm/customers";
 
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -94,45 +99,33 @@ export async function POST(request: NextRequest) {
   const { createAdminClient } = await import("@/lib/supabase/admin");
   const adminClient = createAdminClient();
 
-  // 顧客の重複チェック
-  const { data: existingCustomers } = await adminClient
-    .from("customers")
-    .select("id")
-    .eq("phone_normalized", phoneNormalized)
-    .is("deleted_at", null)
-    .limit(1);
+  // 顧客の照合・作成（名前は上書きせず、メールは未登録時のみ補完する共通ロジック）
+  const customerResult = await findOrCreateCustomer(adminClient, {
+    name,
+    phone,
+    email,
+    postalCode,
+    prefecture,
+    city,
+    address,
+  });
 
-  let customerId: string;
+  if (!customerResult.ok) {
+    console.error("[inquiries] customer insert error");
+    return NextResponse.json({ error: "保存に失敗しました" }, { status: 500 });
+  }
+  const customerId = customerResult.customerId;
 
-  if (existingCustomers && existingCustomers.length > 0) {
-    customerId = existingCustomers[0].id;
-    // 既存顧客情報を更新（名前・メール）
-    await adminClient.from("customers").update({
-      name: name.trim(),
-      email: email ?? null,
-      updated_at: new Date().toISOString(),
-    }).eq("id", customerId);
-  } else {
-    const { data: newCustomer, error: custErr } = await adminClient
-      .from("customers")
-      .insert({
-        name: name.trim(),
-        phone: phone.trim(),
-        phone_normalized: phoneNormalized,
-        email: email ?? null,
-        postal_code: postalCode ?? null,
-        prefecture: prefecture ?? null,
-        city: city ?? null,
-        address: address ?? null,
-      })
-      .select("id")
-      .single();
+  // フォーム入力名が登録済みの顧客名と異なる場合は、上書きせず問い合わせ内容に記録する
+  const mismatchNote = customerResult.matchedExisting
+    ? nameMismatchNote(name, customerResult.existingName)
+    : null;
+  const leadMessage = [mismatchNote, inquiryMessage ?? null].filter(Boolean).join("\n") || null;
 
-    if (custErr || !newCustomer) {
-      console.error("[inquiries] customer insert error");
-      return NextResponse.json({ error: "保存に失敗しました" }, { status: 500 });
-    }
-    customerId = newCustomer.id;
+  // 二重送信（同じ内容の直近リード）は新規作成せず既存リードを返す
+  const duplicateLeadId = await findRecentDuplicateLead(adminClient, customerId, workTypes, leadMessage);
+  if (duplicateLeadId) {
+    return NextResponse.json({ success: true, leadId: duplicateLeadId, duplicate: true });
   }
 
   // リード作成
@@ -143,7 +136,7 @@ export async function POST(request: NextRequest) {
       status: "new",
       work_types: workTypes,
       design_style: designStyle ?? null,
-      inquiry_message: inquiryMessage ?? null,
+      inquiry_message: leadMessage,
       source,
     })
     .select("id")

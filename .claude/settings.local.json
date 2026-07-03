@@ -274,7 +274,8 @@
       "Bash(echo \"参照なし\\(exit $?\\)\")",
       "Bash(awk '{print $6, $7, $8, $9}')",
       "Bash(cp ~/Downloads/823ef592-1626-4c57-9607-614c6dbf9edb.png /tmp/../private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/ad78a59e-711f-491e-b446-5d0aac6f6168/scratchpad/agent-src.png)",
-      "Bash(cp ~/Downloads/823ef592-1626-4c57-9607-614c6dbf9edb.png __TRACKED_VAR__/agent-src.png)"
+      "Bash(cp ~/Downloads/823ef592-1626-4c57-9607-614c6dbf9edb.png __TRACKED_VAR__/agent-src.png)",
+      "Bash(awk '{print $6,$7,$8}')"
     ]
   }
 }

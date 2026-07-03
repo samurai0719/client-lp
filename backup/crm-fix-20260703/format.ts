@@ -26,12 +26,7 @@ export function formatDateOnly(dateStr: string | null | undefined): string {
 }
 
 export function normalizePhone(phone: string): string {
-  // 全角数字を半角へ変換してから数字以外を除去する。
-  // （旧実装は全角数字ごと除去してしまい、全角入力同士が空文字で
-  //   一致して別人の顧客と誤って結合される事故があった）
-  return phone
-    .replace(/[０-９]/g, (d) => String.fromCharCode(d.charCodeAt(0) - 0xfee0))
-    .replace(/[^\d]/g, "");
+  return phone.replace(/[^\d]/g, "");
 }
 
 export function isPast(dateStr: string | null | undefined): boolean {
