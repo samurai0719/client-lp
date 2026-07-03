@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, useState, useEffect, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Calculator, Paperclip } from "lucide-react";
 import { serviceAreas } from "./data";
@@ -43,7 +42,6 @@ const OWNERSHIP_OPTIONS = ["持ち家", "賃貸", "その他"];
 
 export default function ContactSection() {
   const baseId = useId();
-  const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -138,7 +136,9 @@ export default function ContactSection() {
         return;
       }
 
-      router.push("/thanks");
+      // 専用サンクスページへはフルページ遷移にする
+      // （SPA遷移だとMeta PixelのPageViewが発火せず、URLベースのCV計測ができないため）
+      window.location.assign("/gaikou/thanks");
     } catch {
       setSubmitError("通信エラーが発生しました。お手数ですがお電話でご連絡ください。");
       setSubmitting(false);
@@ -396,7 +396,7 @@ export default function ContactSection() {
               className="gaikou-cta-btn w-full disabled:opacity-70"
             >
               <span className="gaikou-cta-btn-inner">
-                {submitting ? "送信しています…" : "無料で相談・お見積もりを依頼する"}
+                {submitting ? "送信しています…" : "無料で相談する"}
               </span>
             </button>
           </div>

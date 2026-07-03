@@ -2,15 +2,17 @@ import { getImageProps } from "next/image";
 
 // ファーストビュー：画像内に文言・価格がすべて含まれているため、HTML側で文字を重ねない。
 // <picture> による Art Direction で、画面幅に応じて該当する1枚のみを読み込む。
+// 画像を差し替えるときは同名上書きせず、新しいファイル名（-2, -3…）で追加して
+// パスを変更する（Vercelの画像キャッシュが旧画像を返し続けるのを防ぐため）。
 export default function HeroSection() {
   const common = {
-    alt: "外構リフォーム職人による駐車場コンクリート工事の様子と、岐阜県対応・現地調査無料、駐車場コンクリート10㎡10万円からの料金案内",
     sizes: "100vw",
     quality: 85,
   };
 
   const { props: desktopProps } = getImageProps({
     ...common,
+    alt: "外構リフォーム職人による駐車場コンクリート工事の様子と、岐阜県対応・現地調査無料、駐車場コンクリート10㎡10万円からの料金案内",
     src: "/images/gaikou/hero-desktop.png",
     width: 1672,
     height: 941,
@@ -18,7 +20,8 @@ export default function HeroSection() {
 
   const { props: mobileProps } = getImageProps({
     ...common,
-    src: "/images/gaikou/hero-mobile.png",
+    alt: "SNS広告限定ページ。広告をご覧いただいた方限定、駐車場コンクリート車1台分12万円〜（約12㎡・現地状況により変動）。岐阜県対応・現地調査無料。砂利・雑草のお庭も手入れのいらない外構へ。見積もり無料・地域密着・直接施工管理",
+    src: "/images/gaikou/hero-mobile-2.png",
     width: 941,
     height: 1672,
     priority: true,
