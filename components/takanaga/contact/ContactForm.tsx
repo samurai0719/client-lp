@@ -113,7 +113,7 @@ export default function ContactForm() {
       }
 
       setFormState("success");
-      window.location.href = "/takanaga/contact/thanks";
+      window.location.href = "/contact/thanks";
     } catch (err) {
       setFormState("error");
       setErrorMessage(err instanceof Error ? err.message : "送信に失敗しました。もう一度お試しください。");
@@ -317,7 +317,7 @@ export default function ContactForm() {
                 入力いただいた情報および写真は、お問い合わせへの回答、現地調査、見積もり、施工提案のために利用します。
                 第三者への提供は行いません（顧客管理システムへの記録を除く）。
                 詳しくは{" "}
-                <Link href="/takanaga/privacy" className="text-(--tkn-blue-bright) underline hover:text-(--tkn-blue) transition-colors" target="_blank" rel="noopener">
+                <Link href="/privacy" className="text-(--tkn-blue-bright) underline hover:text-(--tkn-blue) transition-colors" target="_blank" rel="noopener">
                   プライバシーポリシー
                 </Link>{" "}
                 をご確認ください。
@@ -327,7 +327,7 @@ export default function ContactForm() {
             <label className="flex items-start gap-3 cursor-pointer">
               <input type="checkbox" name="privacyAgreed" required className="mt-0.5 accent-(--tkn-blue) w-4 h-4" />
               <span className="text-sm text-(--tkn-text)">
-                <Link href="/takanaga/privacy" className="text-(--tkn-blue-bright) underline hover:text-(--tkn-blue) transition-colors" target="_blank" rel="noopener">
+                <Link href="/privacy" className="text-(--tkn-blue-bright) underline hover:text-(--tkn-blue) transition-colors" target="_blank" rel="noopener">
                   プライバシーポリシー
                 </Link>
                 に同意する<span className="tkn-required ml-1">必須</span>

@@ -9,8 +9,9 @@ export const siteConfig = {
   tagline: "今の暮らしに合う、外構リフォームを。",
   description:
     "岐阜県・愛知県・三重県エリアの外構リフォーム専門会社。駐車場・カーポート・フェンス・お庭など、住まいの外まわりの工事に対応しています。現地調査・お見積もり無料。",
-  domain: "takanagakensetu.com",
-  siteUrl: "https://takanagakensetu.com",
+  // 正規URLはwwwあり・httpsに統一（canonical・sitemap・JSON-LDすべてこの形式）
+  domain: "www.takanagakensetu.com",
+  siteUrl: "https://www.takanagakensetu.com",
 
   // ── 会社情報 ─────────────────────────────────────────────────────────
   company: {
@@ -48,15 +49,16 @@ export const siteConfig = {
   // ── 連絡先クイックアクセス ──────────────────────────────────────────
   contact: {
     phone: "090-6598-4896" as string | null,
-    formPath: "/takanaga/contact",
-    thanksPath: "/takanaga/contact/thanks",
+    formPath: "/contact",
+    thanksPath: "/contact/thanks",
     crmWebhookUrl: process.env.CRM_WEBHOOK_URL ?? null,
   },
 
   // ── 外構LP・シミュレーターへのリンク ────────────────────────────────
   externalLinks: {
-    gaikouLpUrl: "/gaikou",
-    simulatorUrl: "/takanaga/simulation",
+    // 外構広告LPは /takanaga で配信（2026-07-04のURL構成変更）
+    gaikouLpUrl: "/takanaga",
+    simulatorUrl: "/simulation",
   },
 
   // ── SEO共通設定 ──────────────────────────────────────────────────────

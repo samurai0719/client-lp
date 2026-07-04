@@ -143,7 +143,7 @@ export const simulatorContent = {
   body: "高長建設の公式サイトでは、写真とAIを使って外構の完成イメージを**事前に確認できる**シミュレーションが公開されています。私たちも打ち合わせの前に試してみて、仕上がりのイメージをすり合わせるのに役立ちました。",
   linkLabel: "AIシミュレーションを試してみる",
   // 外構LP（/gaikou）内のAIシミュレーションセクションへ直接リンク
-  href: "/gaikou#exterior-simulator",
+  href: "/takanaga#exterior-simulator",
   screenshotImage: "/images/gaiko-review/official-site.png",
   screenshotAlt: "高長建設 公式サイトのトップページ画面",
   screenshotWidth: 2768,
@@ -326,7 +326,7 @@ export const ctaContent = {
   subText: "まだ工事内容が決まっていなくても相談できます",
   stickyLabel: "無料相談はこちら",
   // CTAの飛び先は高長建設の外構広告LP（見積もり相談フォームあり）
-  href: "/gaikou",
+  href: "/takanaga",
 };
 
 export const workTypeOptions = [
@@ -346,8 +346,8 @@ export const priorityPrefectures = ["岐阜県", "愛知県", "三重県"];
 // 第三者目線の体験談記事という体裁を保つため、フッターには社名・会社情報を出さない。
 export const companyInfo = {
   name: "高長建設",
-  privacyPolicyPath: "/takanaga/privacy",
-  contactPath: "/gaikou",
+  privacyPolicyPath: "/privacy",
+  contactPath: "/takanaga",
 };
 
 export const seoContent = {
@@ -357,7 +357,7 @@ export const seoContent = {
   // 架空の著者名は設定しない。事実に合わせて後から変更できるようにする。
   author: "岐阜県在住・40代夫婦（匿名）",
   ogImage: "/images/gaiko-review/fv-desktop-2.png",
-  siteUrl: "https://takanagakensetu.com",
+  siteUrl: "https://www.takanagakensetu.com",
   path: "/gaiko-review",
 };
 

@@ -76,7 +76,7 @@ export default async function PrefectureAreaPage({ params }: Props) {
         title={`${pref.name}の外構工事`}
         subtitle={`${pref.name}全域で現地調査・お見積もりに伺います。`}
         breadcrumbs={[
-          { label: "対応地域", href: "/takanaga/area" },
+          { label: "対応地域", href: "/area" },
           { label: `${pref.name}` },
         ]}
       />
@@ -154,11 +154,11 @@ export default async function PrefectureAreaPage({ params }: Props) {
 
           {/* 全国エリアへ */}
           <div className="pt-8 border-t border-(--tkn-border) flex flex-col sm:flex-row items-center justify-between gap-4">
-            <Link href="/takanaga/area" className="inline-flex items-center gap-1.5 text-sm font-semibold text-(--tkn-blue-bright) hover:underline">
+            <Link href="/area" className="inline-flex items-center gap-1.5 text-sm font-semibold text-(--tkn-blue-bright) hover:underline">
               <ArrowRight size={14} aria-hidden />
               対応地域一覧に戻る
             </Link>
-            <Link href="/takanaga/contact" className="tkn-btn-primary">
+            <Link href="/contact" className="tkn-btn-primary">
               無料現地調査を申し込む
               <ArrowRight size={16} aria-hidden />
             </Link>

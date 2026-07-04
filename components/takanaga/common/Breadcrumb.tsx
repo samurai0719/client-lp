@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function Breadcrumb({ items }: Props) {
-  const all = [{ label: "ホーム", href: "/takanaga" }, ...items];
+  const all = [{ label: "ホーム", href: "/" }, ...items];
 
   return (
     <nav aria-label="パンくずリスト" className="py-3 px-4 sm:px-6 lg:px-8 bg-(--tkn-warm-gray)">

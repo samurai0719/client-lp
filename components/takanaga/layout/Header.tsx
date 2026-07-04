@@ -7,15 +7,15 @@ import { Menu, X, Phone, Clipboard, Cpu } from "lucide-react";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
 const NAV_LINKS = [
-  { href: "/takanaga/services", label: "工事内容" },
-  { href: "/takanaga/works", label: "施工事例" },
-  { href: "/takanaga/strengths", label: "選ばれる理由" },
-  { href: "/takanaga/price", label: "費用目安" },
-  { href: "/takanaga/flow", label: "ご依頼の流れ" },
-  { href: "/takanaga/area", label: "対応地域" },
-  { href: "/takanaga/company", label: "会社案内" },
-  { href: "/takanaga/faq", label: "FAQ" },
-  { href: "/takanaga/news", label: "お知らせ" },
+  { href: "/services", label: "工事内容" },
+  { href: "/works", label: "施工事例" },
+  { href: "/strengths", label: "選ばれる理由" },
+  { href: "/price", label: "費用目安" },
+  { href: "/flow", label: "ご依頼の流れ" },
+  { href: "/area", label: "対応地域" },
+  { href: "/company", label: "会社案内" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/news", label: "お知らせ" },
 ];
 
 export default function Header() {
@@ -37,7 +37,7 @@ export default function Header() {
           <div className="flex h-16 items-center justify-between gap-4">
             {/* ロゴ */}
             <Link
-              href="/takanaga"
+              href="/"
               className="flex items-center gap-2.5 shrink-0"
               aria-label="高長建設 トップページ"
             >
@@ -71,7 +71,7 @@ export default function Header() {
               >
                 AIシミュレーション
               </Link>
-              <Link href="/takanaga/contact" className="tkn-btn-primary !text-sm !py-2.5 !px-5">
+              <Link href="/contact" className="tkn-btn-primary !text-sm !py-2.5 !px-5">
                 無料現地調査を相談
               </Link>
             </div>
@@ -113,7 +113,7 @@ export default function Header() {
           {/* ロゴ */}
           <div className="px-6 pb-4 border-b border-white/10">
             <Link
-              href="/takanaga"
+              href="/"
               className="flex items-center gap-2.5"
               onClick={() => setOpen(false)}
             >
@@ -141,7 +141,7 @@ export default function Header() {
               </Link>
             ))}
             <Link
-              href="/takanaga/contact"
+              href="/contact"
               className="px-6 py-4 text-white text-base font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
               onClick={() => setOpen(false)}
             >
@@ -160,7 +160,7 @@ export default function Header() {
 
           <div className="p-6 mt-4 flex flex-col gap-3">
             <Link
-              href="/takanaga/contact"
+              href="/contact"
               className="tkn-btn-primary w-full justify-center text-center"
               onClick={() => setOpen(false)}
             >
@@ -204,7 +204,7 @@ export default function Header() {
         )}
 
         <Link
-          href="/takanaga/contact"
+          href="/contact"
           className="tkn-mobile-cta-btn tkn-mobile-cta-primary"
           aria-label="無料見積もりを相談する"
         >

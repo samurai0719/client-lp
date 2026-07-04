@@ -138,7 +138,7 @@ export default function AreaSection() {
             上記以外のエリアについては、まずはお問い合わせください。
           </p>
           <Link
-            href="/takanaga/area"
+            href="/area"
             className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-navy) transition-colors"
           >
             対応地域の詳細を見る

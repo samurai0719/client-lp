@@ -114,7 +114,7 @@ export default function FlowSection() {
 
         <AnimateOnScroll variant="fade" delay={100} className="text-center mt-10">
           <Link
-            href="/takanaga/flow"
+            href="/flow"
             className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-navy) transition-colors"
           >
             ご依頼の流れの詳細を見る

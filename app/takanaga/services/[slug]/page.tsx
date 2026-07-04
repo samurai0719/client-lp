@@ -63,7 +63,7 @@ export default async function ServiceDetailPage({ params }: Props) {
         eyebrow="Services"
         title={service.title}
         breadcrumbs={[
-          { label: "外構工事・事業内容", href: "/takanaga/services" },
+          { label: "外構工事・事業内容", href: "/services" },
           { label: service.title },
         ]}
       />
@@ -135,7 +135,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
           {/* 他の工事内容へ */}
           <div className="pt-8 border-t border-(--tkn-border)">
-            <Link href="/takanaga/services" className="inline-flex items-center gap-1.5 text-sm font-semibold text-(--tkn-blue-bright) hover:underline">
+            <Link href="/services" className="inline-flex items-center gap-1.5 text-sm font-semibold text-(--tkn-blue-bright) hover:underline">
               <ArrowRight size={14} aria-hidden />
               すべての工事内容を見る
             </Link>

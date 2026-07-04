@@ -7,28 +7,28 @@ const NAV_COLUMNS = [
   {
     heading: "施工について",
     links: [
-      { href: "/takanaga/services", label: "工事内容一覧" },
-      { href: "/takanaga/works", label: "施工事例" },
-      { href: "/takanaga/price", label: "費用目安" },
-      { href: "/takanaga/flow", label: "ご依頼の流れ" },
+      { href: "/services", label: "工事内容一覧" },
+      { href: "/works", label: "施工事例" },
+      { href: "/price", label: "費用目安" },
+      { href: "/flow", label: "ご依頼の流れ" },
     ],
   },
   {
     heading: "会社について",
     links: [
-      { href: "/takanaga/company", label: "会社案内" },
-      { href: "/takanaga/strengths", label: "選ばれる理由" },
-      { href: "/takanaga/area", label: "対応地域" },
-      { href: "/takanaga/faq", label: "よくある質問" },
+      { href: "/company", label: "会社案内" },
+      { href: "/strengths", label: "選ばれる理由" },
+      { href: "/area", label: "対応地域" },
+      { href: "/faq", label: "よくある質問" },
     ],
   },
   {
     heading: "お役立ち",
     links: [
-      { href: "/takanaga/news", label: "お知らせ・コラム" },
+      { href: "/news", label: "お知らせ・コラム" },
       { href: siteConfig.externalLinks.simulatorUrl, label: "AIシミュレーション" },
-      { href: "/takanaga/contact", label: "お問い合わせ" },
-      { href: "/takanaga/privacy", label: "プライバシーポリシー" },
+      { href: "/contact", label: "お問い合わせ" },
+      { href: "/privacy", label: "プライバシーポリシー" },
     ],
   },
 ];
@@ -40,7 +40,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-4">
           {/* ブランド */}
           <div className="lg:col-span-1">
-            <Link href="/takanaga" className="flex items-center gap-2.5 mb-4">
+            <Link href="/" className="flex items-center gap-2.5 mb-4">
               <Image
                 src="/images/gaikou/logo-transparent.png"
                 alt=""
@@ -121,7 +121,7 @@ export default function Footer() {
             © {new Date().getFullYear()} 高長建設. All rights reserved.
           </p>
           <div className="flex gap-4">
-            <Link href="/takanaga/privacy" className="text-xs text-white/40 hover:text-white/70 transition-colors">
+            <Link href="/privacy" className="text-xs text-white/40 hover:text-white/70 transition-colors">
               プライバシーポリシー
             </Link>
           </div>

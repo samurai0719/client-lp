@@ -12,7 +12,7 @@ export default function NotFound() {
         <p className="text-(--tkn-text-muted) text-base leading-relaxed mb-8">
           お探しのページは移動または削除された可能性があります。
         </p>
-        <Link href="/takanaga" className="tkn-btn-primary">
+        <Link href="/" className="tkn-btn-primary">
           トップページへ
           <ArrowRight size={16} aria-hidden />
         </Link>

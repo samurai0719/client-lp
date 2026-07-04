@@ -194,6 +194,9 @@ export default function HeroSection() {
           <g ref={svgRef} />
         </svg>
 
+        {/* SEO用のh1（ページ内で1つだけ）。見た目のキャッチコピーはpタグで表現する */}
+        <h1 className="sr-only">岐阜・愛知・三重の外構工事・外構リフォームなら高長建設</h1>
+
         {/* ──────────────────────────────────────
             モバイルレイアウト（写真が上、テキスト・CTAが下）
         ────────────────────────────────────── */}
@@ -259,13 +262,13 @@ export default function HeroSection() {
 
           {/* ③ テキスト */}
           <div className="px-5 pt-5">
-            <h1 className="font-black leading-[1.15] tracking-tight" style={{ fontSize: "clamp(1.75rem,8vw,2.4rem)" }}>
+            <p className="font-black leading-[1.15] tracking-tight" style={{ fontSize: "clamp(1.75rem,8vw,2.4rem)" }}>
               <span className="tkn-h1a block" style={{ color: "#0f2744" }}>住まいの外まわりを、</span>
               <span className="tkn-h1b block mb-1" style={{ color: "#1d5fa6" }}>
                 もっと快適に。
                 <span className="tkn-accent-line" aria-hidden />
               </span>
-            </h1>
+            </p>
             <p className="tkn-sub mt-3 text-sm leading-relaxed" style={{ color: "#4a6580", maxWidth: "30rem" }}>
               駐車場・カーポート・フェンス・お庭。外構リフォーム専門で
               東海エリアのお悩みを解決。現地調査・見積もりは<strong style={{ color: "#d9601a" }}>無料</strong>。
@@ -296,11 +299,11 @@ export default function HeroSection() {
 
           {/* ⑤ CTA（最下部） */}
           <div className="mt-auto px-5 pb-10 pt-5 flex flex-col gap-2.5">
-            <Link href="/takanaga/contact" className="tkn-cta tkn-btn-primary !w-full justify-center !py-4 !text-[0.95rem]">
+            <Link href="/contact" className="tkn-cta tkn-btn-primary !w-full justify-center !py-4 !text-[0.95rem]">
               無料で現地調査を相談する
               <ArrowRight size={17} aria-hidden />
             </Link>
-            <Link href="/takanaga/works" className="tkn-cta tkn-btn-outline !w-full justify-center !py-3.5 !text-[0.9rem]">
+            <Link href="/works" className="tkn-cta tkn-btn-outline !w-full justify-center !py-3.5 !text-[0.9rem]">
               施工事例を見る
             </Link>
             <div className="text-center">
@@ -329,13 +332,13 @@ export default function HeroSection() {
                 </span>
               </div>
 
-              <h1 className="font-black leading-[1.18] tracking-tight mb-2" style={{ fontSize: "clamp(2.2rem,3.8vw,3.25rem)" }}>
+              <p className="font-black leading-[1.18] tracking-tight mb-2" style={{ fontSize: "clamp(2.2rem,3.8vw,3.25rem)" }}>
                 <span className="tkn-h1a block" style={{ color: "#0f2744" }}>住まいの外まわりを、</span>
                 <span className="tkn-h1b block" style={{ color: "#1d5fa6" }}>
                   もっと快適に。
                   <span className="tkn-accent-line" aria-hidden />
                 </span>
-              </h1>
+              </p>
 
               <p className="tkn-sub mt-5 leading-relaxed mb-8" style={{ color: "#4a6580", fontSize: "1rem", maxWidth: "28rem" }}>
                 駐車場・カーポート・フェンス・お庭など、外構リフォームの専門会社として
@@ -344,11 +347,11 @@ export default function HeroSection() {
               </p>
 
               <div className="tkn-cta flex gap-3 mb-6">
-                <Link href="/takanaga/contact" className="tkn-btn-primary !text-base !py-4 !px-8">
+                <Link href="/contact" className="tkn-btn-primary !text-base !py-4 !px-8">
                   無料で現地調査を相談する
                   <ArrowRight size={18} aria-hidden />
                 </Link>
-                <Link href="/takanaga/works" className="tkn-btn-outline !text-base !py-4 !px-8">
+                <Link href="/works" className="tkn-btn-outline !text-base !py-4 !px-8">
                   施工事例を見る
                 </Link>
               </div>

@@ -24,7 +24,7 @@ export default function ThanksPage() {
           返信には数日いただく場合がございます。
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/takanaga" className="tkn-btn-primary">
+          <Link href="/" className="tkn-btn-primary">
             トップページへ
             <ArrowRight size={16} aria-hidden />
           </Link>

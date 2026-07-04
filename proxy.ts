@@ -20,6 +20,20 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
 
+  // ── takanagakensetu.com のURL構成（2026-07-04切替） ──────────────────
+  // / = コーポレートHP、/takanaga = 外構広告LP。
+  // next.config.ts の beforeFiles rewrite はマッチ後も評価が続き
+  // 「/ → /takanaga → /gaikou」と連鎖してしまうため、この2つの
+  // 書き換えはミドルウェアで排他的に処理する（リダイレクトではないためループしない）。
+  const isTakanagaHost =
+    hostname === "takanagakensetu.com" || hostname === "www.takanagakensetu.com";
+  if (isTakanagaHost && pathname === "/") {
+    return NextResponse.rewrite(new URL("/takanaga", request.url));
+  }
+  if (isTakanagaHost && pathname === "/takanaga") {
+    return NextResponse.rewrite(new URL("/gaikou", request.url));
+  }
+
   // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）
   if (isAuthBypassEnabled()) {
     if (pathname === "/admin/login") {
@@ -74,5 +88,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/admin/:path*"],
+  matcher: ["/", "/takanaga", "/admin/:path*"],
 };

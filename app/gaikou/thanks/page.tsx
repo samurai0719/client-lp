@@ -42,7 +42,7 @@ export default function GaikouThanksPage() {
 
         <div>
           <Link
-            href="/gaikou"
+            href="/takanaga"
             className="text-sm text-[#2f7d5a] hover:underline"
           >
             ← トップページへ戻る

@@ -74,7 +74,7 @@ export default async function WorkDetailPage({ params }: Props) {
         eyebrow="Works"
         title={work.title}
         breadcrumbs={[
-          { label: "施工事例", href: "/takanaga/works" },
+          { label: "施工事例", href: "/works" },
           { label: work.title },
         ]}
       />

@@ -279,7 +279,13 @@
       "Bash(awk '{print $5\" bytes\"}')",
       "Bash(rm -f \".git/refs/remotes/origin/HEAD 2\")",
       "Bash(rm -f \".git/refs/remotes/origin/HEAD\")",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
+      "Bash(mkdir -p ~/Documents/請求書)",
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --no-pdf-header-footer --print-to-pdf=/private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/ad78a59e-711f-491e-b446-5d0aac6f6168/scratchpad/invoice.pdf file:///private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/ad78a59e-711f-491e-b446-5d0aac6f6168/scratchpad/invoice.html)",
+      "Bash(perl -pi -e 's{href=\"/gaikou\"}{href=\"/takanaga\"}g' app/thanks/page.tsx app/gaikou/thanks/page.tsx)",
+      "Bash(perl -pi -e 's{href: \"/gaikou\",}{href: \"/takanaga\",}g; s{contactPath: \"/gaikou\",}{contactPath: \"/takanaga\",}g; s{href: \"/gaikou#exterior-simulator\",}{href: \"/takanaga#exterior-simulator\",}g; s{siteUrl: \"https://takanagakensetu.com\",}{siteUrl: \"https://www.takanagakensetu.com\",}g' data/gaiko-review/content.ts)",
+      "Bash(perl -pi -e 's{`/takanaga/}{`/}g' components/takanaga/home/WorksSection.tsx components/takanaga/works/WorksClient.tsx)"
     ]
   }
 }

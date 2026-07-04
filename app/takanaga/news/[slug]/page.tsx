@@ -69,7 +69,7 @@ export default async function NewsDetailPage({ params }: Props) {
         eyebrow={item.category}
         title={item.title}
         breadcrumbs={[
-          { label: "お知らせ・コラム", href: "/takanaga/news" },
+          { label: "お知らせ・コラム", href: "/news" },
           { label: item.title },
         ]}
       />

@@ -1,5 +1,15 @@
 import type { NextConfig } from "next";
 
+// takanagakensetu.com 用のホスト条件とコーポレートHPサブパス一覧
+// （このリポジトリは他社LPも同居しているため、物理ルートは動かさず
+//   ホスト条件付きの rewrite / redirect で takanagakensetu.com のURL構成を制御する）
+const takanagaHosts = ["takanagakensetu.com", "www.takanagakensetu.com"];
+const takanagaHpPaths = [
+  "services", "works", "strengths", "price", "flow",
+  "company", "area", "faq", "news", "contact", "privacy",
+  "simulation",
+];
+
 const nextConfig: NextConfig = {
   experimental: {
     // iCloud同期(Desktop & Documents)が .next/dev/cache/turbopack の永続キャッシュファイルと
@@ -15,31 +25,61 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    // takanagakensetu.com のルーティング方針:
-    //   現在: / → /gaikou (広告LP。広告停止後に下記のコメントアウトを切り替える)
-    //   将来: / → /takanaga (コーポレートHP)
-    // コーポレートHPサブページ (/services, /works 等) は今すぐ有効。
-    // LP は引き続き /gaikou で直接アクセス可能。
+  async redirects() {
+    // 旧URL → 新URL の301リダイレクト（takanagakensetu.com のみ）
+    // 注意: / と /takanaga の間には絶対にリダイレクトを張らない（両方200で配信する）
+    const subpathRedirects = takanagaHosts.flatMap((host) =>
+      takanagaHpPaths.flatMap((path) => [
+        // 動的ページ含む: /takanaga/works/xxx → /works/xxx
+        {
+          source: `/takanaga/${path}/:rest*`,
+          has: [{ type: "host" as const, value: host }],
+          destination: `/${path}/:rest*`,
+          statusCode: 301,
+        },
+        // 直接: /takanaga/services → /services
+        {
+          source: `/takanaga/${path}`,
+          has: [{ type: "host" as const, value: host }],
+          destination: `/${path}`,
+          statusCode: 301,
+        },
+      ])
+    );
 
-    const takanagaHosts = ["takanagakensetu.com", "www.takanagakensetu.com"];
-
-    // コーポレートHPのサブパス一覧
-    const hpPaths = [
-      "services", "works", "strengths", "price", "flow",
-      "company", "area", "faq", "news", "contact", "privacy",
-      "simulation",
+    return [
+      // URL正規化: wwwなし → wwwあり（https化はVercelが自動処理）
+      {
+        source: "/:path*",
+        has: [{ type: "host" as const, value: "takanagakensetu.com" }],
+        destination: "https://www.takanagakensetu.com/:path*",
+        statusCode: 301,
+      },
+      // 旧LP URL → 新LP URL（/gaikou配下の診断・サンクスはそのまま）
+      ...takanagaHosts.map((host) => ({
+        source: "/gaikou",
+        has: [{ type: "host" as const, value: host }],
+        destination: "/takanaga",
+        statusCode: 301,
+      })),
+      ...subpathRedirects,
     ];
+  },
+  async rewrites() {
+    // takanagakensetu.com のルーティング（2026-07-04 切替済み）:
+    //   / → /takanaga (コーポレートHP)
+    //   /takanaga → /gaikou (外構広告LP)
+    //   /services 等 → /takanaga/services 等 (HPサブページ)
 
     const subpathRewrites = takanagaHosts.flatMap((host) => [
       // HP サブページ: takanagakensetu.com/services → /takanaga/services
-      ...hpPaths.map((path) => ({
+      ...takanagaHpPaths.map((path) => ({
         source: `/${path}/:rest*`,
         has: [{ type: "host" as const, value: host }],
         destination: `/takanaga/${path}/:rest*`,
       })),
       // HP サブページ(直接): takanagakensetu.com/services → /takanaga/services
-      ...hpPaths.map((path) => ({
+      ...takanagaHpPaths.map((path) => ({
         source: `/${path}`,
         has: [{ type: "host" as const, value: host }],
         destination: `/takanaga/${path}`,
@@ -65,20 +105,12 @@ const nextConfig: NextConfig = {
         },
 
         // ── takanagakensetu.com ────────────────────────────────────────
-        // 広告LP (/) は現状維持。広告停止後に /takanaga へ切り替える。
-        // 切り替え時: destination を "/gaikou" → "/takanaga" に変更する。
-        {
-          source: "/",
-          has: [{ type: "host", value: "takanagakensetu.com" }],
-          destination: "/gaikou",
-        },
-        {
-          source: "/",
-          has: [{ type: "host", value: "www.takanagakensetu.com" }],
-          destination: "/gaikou",
-        },
+        // 「/ → コーポレートHP」「/takanaga → 外構LP」の2つの書き換えは
+        // proxy.ts（ミドルウェア）で処理している。
+        // beforeFilesに置くとマッチ後も評価が続き「/ → /takanaga → /gaikou」と
+        // 連鎖してルートがLPになる不具合があるため、ここには置かないこと。
 
-        // コーポレートHPサブページ（今すぐ有効）
+        // コーポレートHPサブページ
         ...subpathRewrites,
 
         // sitemap.xml / robots.txt を takanaga 用にプロキシ

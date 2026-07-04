@@ -17,17 +17,18 @@ const siteUrl = `https://${siteConfig.domain}`;
 
 export const metadata: Metadata = {
   title: `${siteConfig.siteName}｜岐阜・愛知・三重の外構工事・外構リフォーム`,
-  description: siteConfig.description,
+  description:
+    "高長建設は岐阜県・愛知県・三重県で、駐車場コンクリート、カーポート、フェンス、庭リフォームなどに対応する外構工事会社です。現地調査・お見積もり無料。",
   alternates: {
-    // 現在ドメインルート（/）は広告LP（/gaikou）を配信しているため、
-    // HPトップの正規URLは /takanaga とする。
-    // ドメイン切替（/ → /takanaga）後は `${siteUrl}/` に戻すこと。
-    canonical: `${siteUrl}/takanaga`,
+    // 2026-07-04切替済み: ルート（/）＝コーポレートHPが正規URL
+    canonical: `${siteUrl}/`,
   },
+  robots: { index: true, follow: true },
   openGraph: {
     title: `${siteConfig.siteName}｜岐阜・愛知・三重の外構工事・外構リフォーム`,
-    description: siteConfig.description,
-    url: `${siteUrl}/takanaga`,
+    description:
+      "高長建設は岐阜県・愛知県・三重県で、駐車場コンクリート、カーポート、フェンス、庭リフォームなどに対応する外構工事会社です。現地調査・お見積もり無料。",
+    url: `${siteUrl}/`,
   },
 };
 
