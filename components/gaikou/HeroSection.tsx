@@ -20,8 +20,8 @@ export default function HeroSection() {
 
   const { props: mobileProps } = getImageProps({
     ...common,
-    alt: "SNS広告限定ページ。広告をご覧いただいた方限定、駐車場コンクリート車1台分12万円〜（約12㎡・現地状況により変動）。岐阜県対応・現地調査無料。砂利・雑草のお庭も手入れのいらない外構へ。見積もり無料・地域密着・直接施工管理",
-    src: "/images/gaikou/hero-mobile-2.png",
+    alt: "外構リフォーム職人による駐車場コンクリート工事の様子と、岐阜県対応・現地調査無料、駐車場コンクリート10㎡10万円からの料金案内",
+    src: "/images/gaikou/hero-mobile.png",
     width: 941,
     height: 1672,
     priority: true,
