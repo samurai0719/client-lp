@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Search, Download, Filter, AlertCircle } from "lucide-react";
 import StatusBadge from "@/components/admin/StatusBadge";
-import { formatCurrency, formatDate, minutesAgo } from "@/lib/utils/format";
+import { formatCurrency, formatDate, formatPhone, minutesAgo } from "@/lib/utils/format";
 import { LEAD_STATUSES, LEAD_STATUS_LABELS, type LeadWithCustomer, type LeadStatus } from "@/lib/types/crm";
 import { mockLeads } from "@/lib/mock/crmData";
 import { shouldUseDemoData } from "@/lib/supabase/check";
@@ -185,7 +185,7 @@ export default function LeadsListContent() {
                         </td>
                         <td className="px-4 py-3">
                           <a href={`tel:${lead.customer.phone}`} className="text-[#2f7d5a] hover:underline">
-                            {lead.customer.phone}
+                            {formatPhone(lead.customer.phone)}
                           </a>
                         </td>
                         <td className="px-4 py-3 text-xs text-[#3d4a45]">{lead.customer.city ?? "—"}</td>

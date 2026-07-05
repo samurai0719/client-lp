@@ -1,7 +1,7 @@
 // CRM修正の検証スクリプト（純関数部分）
 // 実行: npx tsx scripts/verify-crm-fix.ts
 
-import { normalizePhone } from "../lib/utils/format";
+import { formatPhone, normalizePhone } from "../lib/utils/format";
 import { nameMismatchNote } from "../lib/crm/customers";
 
 let failed = 0;
@@ -18,6 +18,15 @@ check("全角ハイフン混在", normalizePhone("０９０-１２３４-５６�
 check("同じ番号の全角/半角が同一値に正規化される", normalizePhone("０９０-1234-5678") === normalizePhone("090-1234-5678"));
 check("空文字", normalizePhone("") === "");
 check("記号のみ", normalizePhone("---") === "");
+
+// ── formatPhone（表示用整形） ──
+check("携帯11桁", formatPhone("09000000000") === "090-0000-0000");
+check("既にハイフン付きでも同じ結果", formatPhone("090-0000-0000") === "090-0000-0000");
+check("全角入力も整形", formatPhone("０９０１２３４５６７８") === "090-1234-5678");
+check("固定電話10桁（3-3-4）", formatPhone("0582375050") === "058-237-5050");
+check("フリーダイヤル", formatPhone("0120123456") === "0120-123-456");
+check("桁数不明はそのまま", formatPhone("123") === "123");
+check("空はダッシュ", formatPhone("") === "—" && formatPhone(null) === "—");
 
 // ── nameMismatchNote ──
 check("同名なら注記なし", nameMismatchNote("山田 太郎", "山田 太郎") === null);

@@ -34,6 +34,27 @@ export function normalizePhone(phone: string): string {
     .replace(/[^\d]/g, "");
 }
 
+// 電話番号を表示用にハイフン区切りへ整形する（例: 09000000000 → 090-0000-0000）
+// 保存値は従来どおり（正規化はnormalizePhone）で、表示時のみ使用する。
+export function formatPhone(phone: string | null | undefined): string {
+  if (!phone) return "—";
+  const digits = normalizePhone(phone);
+  // 携帯・11桁（090/080/070/050等）: 3-4-4
+  if (digits.length === 11) {
+    return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+  }
+  // フリーダイヤル: 0120-XXX-XXX
+  if (digits.length === 10 && digits.startsWith("0120")) {
+    return `${digits.slice(0, 4)}-${digits.slice(4, 7)}-${digits.slice(7)}`;
+  }
+  // 固定電話10桁（東海圏の市外局番3桁を想定）: 3-3-4
+  if (digits.length === 10) {
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+  // 桁数が想定外の場合は入力値のまま表示
+  return phone;
+}
+
 export function isPast(dateStr: string | null | undefined): boolean {
   if (!dateStr) return false;
   return new Date(dateStr) < new Date();

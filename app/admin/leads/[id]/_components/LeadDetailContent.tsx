@@ -7,7 +7,7 @@ import {
   Plus, Pencil, Trash2, Save, X, AlertTriangle, CheckCircle2
 } from "lucide-react";
 import StatusBadge from "@/components/admin/StatusBadge";
-import { formatCurrency, formatDate, isPast } from "@/lib/utils/format";
+import { formatCurrency, formatDate, formatPhone, isPast } from "@/lib/utils/format";
 import {
   LEAD_STATUSES, LEAD_STATUS_LABELS, ACTIVITY_TYPE_LABELS,
   LOST_REASON_OPTIONS, IMAGE_TYPE_LABELS,
@@ -211,7 +211,7 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
             <p className={labelClass}>電話番号</p>
             <a href={`tel:${lead.customer.phone}`} className="text-sm text-[#2f7d5a] flex items-center gap-1 hover:underline">
               <Phone className="w-3 h-3" />
-              {lead.customer.phone}
+              {formatPhone(lead.customer.phone)}
             </a>
           </div>
           {lead.customer.email && (

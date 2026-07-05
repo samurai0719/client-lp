@@ -7,7 +7,7 @@ import {
   AlertCircle, MapPin, Clock, Plus, X, Search,
 } from "lucide-react";
 import StatusBadge from "@/components/admin/StatusBadge";
-import { formatDate, isPast } from "@/lib/utils/format";
+import { formatDate, formatPhone, isPast } from "@/lib/utils/format";
 import type { LeadWithCustomer } from "@/lib/types/crm";
 import { mockLeads } from "@/lib/mock/crmData";
 import { shouldUseDemoData } from "@/lib/supabase/check";
@@ -392,7 +392,7 @@ export default function ScheduleContent() {
                 <div className="flex items-center justify-between px-3 py-2.5 rounded-xl border border-[#174f3f] bg-[#174f3f]/5">
                   <div>
                     <p className="text-sm font-semibold text-[#10302a]">{modalSelected.customer.name} 様</p>
-                    <p className="text-xs text-[#6b7a73]">{modalSelected.customer.phone}</p>
+                    <p className="text-xs text-[#6b7a73]">{formatPhone(modalSelected.customer.phone)}</p>
                   </div>
                   <button onClick={() => setModalSelected(null)} className="p-1 rounded hover:bg-[#f0ece0]">
                     <X className="w-3.5 h-3.5 text-[#6b7a73]" />
@@ -419,7 +419,7 @@ export default function ScheduleContent() {
                         >
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-[#10302a] truncate">{l.customer.name} 様</p>
-                            <p className="text-xs text-[#6b7a73]">{l.customer.phone}</p>
+                            <p className="text-xs text-[#6b7a73]">{formatPhone(l.customer.phone)}</p>
                           </div>
                           <StatusBadge status={l.status} />
                         </button>
