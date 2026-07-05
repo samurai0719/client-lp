@@ -299,7 +299,13 @@
       "Bash(perl -pi -e 's{\"@type\": \"HomeAndConstructionBusiness\",\\\\n}{\"\\\\@type\": \"HomeAndConstructionBusiness\",\\\\n}' app/takanaga/page.tsx)",
       "Bash(perl -0777 -pi -e 's{    \"\\\\@type\": \"HomeAndConstructionBusiness\",\\\\n    \"\\\\@id\": `\\\\$\\\\{siteUrl\\\\}/#organization`,}{    \"\\\\@type\": \"HomeAndConstructionBusiness\",\\\\n    \"\\\\@id\": `\\\\$\\\\{siteUrl\\\\}/#localbusiness`,}' app/takanaga/page.tsx)",
       "Bash(perl -0777 -pi -e 's{    inLanguage: \"ja\",\\\\n    potentialAction:}{    inLanguage: \"ja\",\\\\n    publisher: \\\\{ \"\\\\@id\": `\\\\$\\\\{siteUrl\\\\}/#organization` \\\\},\\\\n    potentialAction:}' app/takanaga/page.tsx)",
-      "Bash(perl -pi -e 's{<h1 className=\"sr-only\">岐阜・愛知・三重の外構工事・外構リフォームなら高長建設</h1>}{<h1 className=\"sr-only\">岐阜・愛知・三重の外構工事なら高長建設</h1>}' components/takanaga/home/HeroSection.tsx)"
+      "Bash(perl -pi -e 's{<h1 className=\"sr-only\">岐阜・愛知・三重の外構工事・外構リフォームなら高長建設</h1>}{<h1 className=\"sr-only\">岐阜・愛知・三重の外構工事なら高長建設</h1>}' components/takanaga/home/HeroSection.tsx)",
+      "Bash(perl -pi -e 's{import \\\\{ formatCurrency, formatDate, minutesAgo \\\\} from \"\\\\@/lib/utils/format\";}{import { formatCurrency, formatDate, formatPhone, minutesAgo } from \"\\\\@/lib/utils/format\";}; s{^\\(\\\\s+\\)\\\\{lead\\\\.customer\\\\.phone\\\\}$}{$1\\\\{formatPhone\\(lead.customer.phone\\)\\\\}}' app/admin/leads/_components/LeadsListContent.tsx)",
+      "Bash(perl -pi -e 's{import \\\\{ formatCurrency, formatDate, isPast \\\\} from \"\\\\@/lib/utils/format\";}{import { formatCurrency, formatDate, formatPhone, isPast } from \"\\\\@/lib/utils/format\";}; s{^\\(\\\\s+\\)\\\\{lead\\\\.customer\\\\.phone\\\\}$}{$1\\\\{formatPhone\\(lead.customer.phone\\)\\\\}}' \"app/admin/leads/[id]/_components/LeadDetailContent.tsx\")",
+      "Bash(perl -pi -e 's{import \\\\{ formatDate, isPast \\\\} from \"\\\\@/lib/utils/format\";}{import { formatDate, formatPhone, isPast } from \"\\\\@/lib/utils/format\";}; s{\\\\{modalSelected\\\\.customer\\\\.phone\\\\}}{\\\\{formatPhone\\(modalSelected.customer.phone\\)\\\\}}; s{\\\\{l\\\\.customer\\\\.phone\\\\}</p>}{\\\\{formatPhone\\(l.customer.phone\\)\\\\}</p>}' app/admin/schedule/_components/ScheduleContent.tsx)",
+      "Bash(perl -pi -e 's{import \\\\{ formatCurrency, formatDate, minutesAgo \\\\} from}{import { formatCurrency, formatDate, formatPhone, minutesAgo } from}; s{\\(?<!\\\\$\\)\\\\{lead\\\\.customer\\\\.phone\\\\}}{\\\\{formatPhone\\(lead.customer.phone\\)\\\\}}g' app/admin/leads/_components/LeadsListContent.tsx)",
+      "Bash(perl -pi -e 's{import \\\\{ formatCurrency, formatDate, isPast \\\\} from}{import { formatCurrency, formatDate, formatPhone, isPast } from}; s{\\(?<!\\\\$\\)\\\\{lead\\\\.customer\\\\.phone\\\\}}{\\\\{formatPhone\\(lead.customer.phone\\)\\\\}}g' \"app/admin/leads/[id]/_components/LeadDetailContent.tsx\")",
+      "Bash(npm --version)"
     ]
   }
 }
