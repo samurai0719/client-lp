@@ -6,7 +6,7 @@ import { serviceAreas } from "@/data/takanaga/areas";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
 export const metadata: Metadata = {
-  title: "対応地域",
+  title: "対応地域｜岐阜・愛知・三重の外構工事",
   description:
     "高長建設の対応地域。岐阜県・愛知県・三重県の東海エリアを中心に外構リフォームに対応しています。",
   alternates: { canonical: `https://${siteConfig.domain}/area` },
@@ -17,8 +17,9 @@ export default function AreaPage() {
     <>
       <PageHero
         eyebrow="Service Area"
-        title="対応地域"
-        subtitle="岐阜県・愛知県・三重県の東海エリアを中心に対応しています。"
+        title="外構工事の対応地域"
+        subtitle="高長建設の外構工事は、岐阜県・愛知県・三重県の東海3県に対応しています。岐阜市・各務原市をはじめとした岐阜県内を中心に、愛知県・三重県の各エリアまで、現地調査からお見積もり・施工まで一貫して対応します。対応可否が気になる地域はお気軽にお問い合わせください。"
+        path="/area"
         breadcrumbs={[{ label: "対応地域" }]}
       />
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 import HeroSection from "@/components/takanaga/home/HeroSection";
 import AboutSection from "@/components/takanaga/home/AboutSection";
+import SiteGuideSection from "@/components/takanaga/home/SiteGuideSection";
 import ProblemsSection from "@/components/takanaga/home/ProblemsSection";
 import ServicesSection from "@/components/takanaga/home/ServicesSection";
 import WorksSection from "@/components/takanaga/home/WorksSection";
@@ -41,6 +42,7 @@ export default function TakanagaTopPage() {
     name: siteConfig.siteName,
     description: siteConfig.description,
     inLanguage: "ja",
+    publisher: { "@id": `${siteUrl}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
       target: { "@type": "EntryPoint", urlTemplate: `${siteUrl}/works?q={search_term_string}` },
@@ -48,11 +50,30 @@ export default function TakanagaTopPage() {
     },
   };
 
+  // Organization（LocalBusinessとは別ノードとして出力し、WebSiteのpublisherから参照する）
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
+    name: siteConfig.siteName,
+    url: `${siteUrl}/`,
+    logo: `${siteUrl}/images/gaikou/logo.png`,
+    ...(siteConfig.company.phone ? { telephone: siteConfig.company.phone } : {}),
+    address: {
+      "@type": "PostalAddress",
+      postalCode: siteConfig.company.postalCode ?? undefined,
+      addressRegion: "岐阜県",
+      addressLocality: "各務原市",
+      streetAddress: "那加桐野町1-65",
+      addressCountry: "JP",
+    },
+  };
+
   const localBusinessJsonLd = {
     "@context": "https://schema.org",
     // 外構・エクステリア工事業者に最も近いスキーマ種別
     "@type": "HomeAndConstructionBusiness",
-    "@id": `${siteUrl}/#organization`,
+    "@id": `${siteUrl}/#localbusiness`,
     name: siteConfig.siteName,
     description: siteConfig.description,
     url: siteUrl,
@@ -82,10 +103,15 @@ export default function TakanagaTopPage() {
       />
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
       />
       <HeroSection />
       <AboutSection />
+      <SiteGuideSection />
       <ProblemsSection />
       <ServicesSection />
       <WorksSection />

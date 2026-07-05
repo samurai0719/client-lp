@@ -5,29 +5,40 @@ import { siteConfig } from "@/data/takanaga/siteConfig";
 
 const NAV_COLUMNS = [
   {
-    heading: "施工について",
-    links: [
-      { href: "/services", label: "工事内容一覧" },
-      { href: "/works", label: "施工事例" },
-      { href: "/price", label: "費用目安" },
-      { href: "/flow", label: "ご依頼の流れ" },
-    ],
-  },
-  {
-    heading: "会社について",
+    heading: "会社情報",
     links: [
       { href: "/company", label: "会社案内" },
+      { href: "/company#greeting", label: "代表挨拶" },
       { href: "/strengths", label: "選ばれる理由" },
       { href: "/area", label: "対応地域" },
-      { href: "/faq", label: "よくある質問" },
     ],
   },
   {
-    heading: "お役立ち",
+    heading: "サービス",
     links: [
-      { href: "/news", label: "お知らせ・コラム" },
-      { href: siteConfig.externalLinks.simulatorUrl, label: "AIシミュレーション" },
+      { href: "/services", label: "事業案内" },
+      { href: "/services/concrete-parking", label: "駐車場コンクリート" },
+      { href: "/services/carport", label: "カーポート" },
+      { href: "/services/fence", label: "フェンス" },
+      { href: "/services/garden-reform", label: "庭リフォーム" },
+      { href: "/services/artificial-grass", label: "雑草対策" },
+    ],
+  },
+  {
+    heading: "お客様向け",
+    links: [
+      { href: "/works", label: "施工事例" },
+      { href: "/pricing", label: "料金・費用目安" },
+      { href: "/flow", label: "ご依頼の流れ" },
+      { href: "/faq", label: "よくある質問" },
       { href: "/contact", label: "お問い合わせ" },
+    ],
+  },
+  {
+    heading: "その他",
+    links: [
+      { href: "/news", label: "お知らせ" },
+      { href: siteConfig.externalLinks.simulatorUrl, label: "AIシミュレーション" },
       { href: "/privacy", label: "プライバシーポリシー" },
     ],
   },
@@ -37,7 +48,7 @@ export default function Footer() {
   return (
     <footer className="text-white mt-0" style={{ background: "linear-gradient(135deg, #0f2744 0%, #1a3d6b 100%)" }}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {/* ブランド */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-4">

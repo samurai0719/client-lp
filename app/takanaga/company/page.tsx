@@ -6,7 +6,7 @@ import CTASection from "@/components/takanaga/common/CTASection";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
 export const metadata: Metadata = {
-  title: "会社案内",
+  title: "会社案内・代表挨拶",
   description: "高長建設の会社案内。岐阜県各務原市を拠点に岐阜・愛知・三重の外構工事を手がける高長建設の事業内容・代表者・所在地をご紹介します。",
   alternates: { canonical: `https://${siteConfig.domain}/company` },
 };
@@ -80,16 +80,16 @@ export default function CompanyPage() {
 
       <PageHero
         eyebrow="Company"
-        title="会社案内"
-        subtitle="高長建設について"
+        title="高長建設の会社案内"
+        subtitle="高長建設は、岐阜県各務原市を拠点に、岐阜・愛知・三重の東海3県で外構工事・エクステリア工事を手がける施工会社です。会社概要・代表挨拶・所在地・対応エリアなど、高長建設の基本情報をご紹介します。"
+        path="/company"
         breadcrumbs={[{ label: "会社案内" }]}
       />
 
       <section className="py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-(--tkn-bg)">
         <div className="mx-auto max-w-4xl space-y-12">
 
-          {/* 代表挨拶プレースホルダー */}
-          <div className="tkn-card p-6 sm:p-8">
+          <div id="greeting" className="tkn-card p-6 sm:p-8 scroll-mt-20">
             <h2 className="text-xl font-bold text-(--tkn-navy-deep) mb-4">代表挨拶</h2>
             <div className="text-sm text-(--tkn-text-muted) italic">
               ※ 代表者の挨拶文が確定しましたら、こちらに掲載します。

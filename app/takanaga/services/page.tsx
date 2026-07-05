@@ -11,7 +11,7 @@ import { visibleServices } from "@/data/takanaga/services";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
 export const metadata: Metadata = {
-  title: "外構工事・事業内容",
+  title: "事業案内｜外構工事・エクステリア工事",
   description:
     "高長建設の外構工事対応メニュー一覧。駐車場・土間コンクリート・カーポート・フェンス・門柱・玄関アプローチ・人工芝・ウッドデッキ・庭リフォームまで岐阜・愛知・三重でご対応します。",
   alternates: { canonical: `https://${siteConfig.domain}/services` },
@@ -28,9 +28,10 @@ export default function ServicesPage() {
     <>
       <PageHero
         eyebrow="Services"
-        title="工事内容"
-        subtitle="部分的な工事から外構全体のリフォームまで、規模を問わず対応しています。"
-        breadcrumbs={[{ label: "工事内容" }]}
+        title="高長建設の事業案内"
+        subtitle="高長建設は、岐阜県・愛知県・三重県で外構工事・エクステリア工事を行う施工会社です。駐車場・土間コンクリート、カーポート、フェンス・目隠し、玄関アプローチ、人工芝・防草対策、庭リフォームまで、部分的な工事から外構全体のリフォームまで規模を問わず対応しています。"
+        path="/services"
+        breadcrumbs={[{ label: "事業案内" }]}
       />
 
       <section className="py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-(--tkn-bg)">

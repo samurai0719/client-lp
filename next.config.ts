@@ -4,10 +4,21 @@ import type { NextConfig } from "next";
 // （このリポジトリは他社LPも同居しているため、物理ルートは動かさず
 //   ホスト条件付きの rewrite / redirect で takanagakensetu.com のURL構成を制御する）
 const takanagaHosts = ["takanagakensetu.com", "www.takanagakensetu.com"];
+// public: 公開URL（takanagakensetu.com直下）/ internal: appルート（/takanaga配下）
+// 料金ページのみ公開URLを /pricing に変更（内部ルートは /takanaga/price のまま）
 const takanagaHpPaths = [
-  "services", "works", "strengths", "price", "flow",
-  "company", "area", "faq", "news", "contact", "privacy",
-  "simulation",
+  { public: "services", internal: "services" },
+  { public: "works", internal: "works" },
+  { public: "strengths", internal: "strengths" },
+  { public: "pricing", internal: "price" },
+  { public: "flow", internal: "flow" },
+  { public: "company", internal: "company" },
+  { public: "area", internal: "area" },
+  { public: "faq", internal: "faq" },
+  { public: "news", internal: "news" },
+  { public: "contact", internal: "contact" },
+  { public: "privacy", internal: "privacy" },
+  { public: "simulation", internal: "simulation" },
 ];
 
 const nextConfig: NextConfig = {
@@ -29,23 +40,39 @@ const nextConfig: NextConfig = {
     // 旧URL → 新URL の301リダイレクト（takanagakensetu.com のみ）
     // 注意: / と /takanaga の間には絶対にリダイレクトを張らない（両方200で配信する）
     const subpathRedirects = takanagaHosts.flatMap((host) =>
-      takanagaHpPaths.flatMap((path) => [
+      takanagaHpPaths.flatMap(({ public: pub, internal }) => [
         // 動的ページ含む: /takanaga/works/xxx → /works/xxx
         {
-          source: `/takanaga/${path}/:rest*`,
+          source: `/takanaga/${internal}/:rest*`,
           has: [{ type: "host" as const, value: host }],
-          destination: `/${path}/:rest*`,
+          destination: `/${pub}/:rest*`,
           statusCode: 301,
         },
         // 直接: /takanaga/services → /services
         {
-          source: `/takanaga/${path}`,
+          source: `/takanaga/${internal}`,
           has: [{ type: "host" as const, value: host }],
-          destination: `/${path}`,
+          destination: `/${pub}`,
           statusCode: 301,
         },
       ])
     );
+
+    // 旧公開URL /price → 新公開URL /pricing（2026-07-04まで公開していたURL）
+    const priceRedirects = takanagaHosts.flatMap((host) => [
+      {
+        source: "/price/:rest*",
+        has: [{ type: "host" as const, value: host }],
+        destination: "/pricing/:rest*",
+        statusCode: 301,
+      },
+      {
+        source: "/price",
+        has: [{ type: "host" as const, value: host }],
+        destination: "/pricing",
+        statusCode: 301,
+      },
+    ]);
 
     return [
       // URL正規化: wwwなし → wwwあり（https化はVercelが自動処理）
@@ -62,6 +89,7 @@ const nextConfig: NextConfig = {
         destination: "/takanaga",
         statusCode: 301,
       })),
+      ...priceRedirects,
       ...subpathRedirects,
     ];
   },
@@ -73,16 +101,16 @@ const nextConfig: NextConfig = {
 
     const subpathRewrites = takanagaHosts.flatMap((host) => [
       // HP サブページ: takanagakensetu.com/services → /takanaga/services
-      ...takanagaHpPaths.map((path) => ({
-        source: `/${path}/:rest*`,
+      ...takanagaHpPaths.map(({ public: pub, internal }) => ({
+        source: `/${pub}/:rest*`,
         has: [{ type: "host" as const, value: host }],
-        destination: `/takanaga/${path}/:rest*`,
+        destination: `/takanaga/${internal}/:rest*`,
       })),
       // HP サブページ(直接): takanagakensetu.com/services → /takanaga/services
-      ...takanagaHpPaths.map((path) => ({
-        source: `/${path}`,
+      ...takanagaHpPaths.map(({ public: pub, internal }) => ({
+        source: `/${pub}`,
         has: [{ type: "host" as const, value: host }],
-        destination: `/takanaga/${path}`,
+        destination: `/takanaga/${internal}`,
       })),
     ]);
 

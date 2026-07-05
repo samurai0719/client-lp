@@ -105,7 +105,7 @@ export default function PriceSection() {
 
         <AnimateOnScroll variant="fade" delay={100} className="text-center mt-8">
           <Link
-            href="/price"
+            href="/pricing"
             className="inline-flex items-center gap-2 text-sm font-semibold text-(--tkn-blue-bright) hover:text-(--tkn-navy) transition-colors"
           >
             費用目安の詳細を見る

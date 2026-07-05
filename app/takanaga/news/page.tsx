@@ -18,6 +18,7 @@ export default function NewsPage() {
       <PageHero
         eyebrow="News & Column"
         title="お知らせ・コラム"
+        path="/news"
         breadcrumbs={[{ label: "お知らせ・コラム" }]}
       />
 

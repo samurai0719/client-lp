@@ -71,6 +71,7 @@ export default function StrengthsPage() {
         eyebrow="Why Choose Us"
         title="選ばれる理由"
         subtitle="高長建設の特徴をご紹介します。"
+        path="/strengths"
         breadcrumbs={[{ label: "選ばれる理由" }]}
       />
 

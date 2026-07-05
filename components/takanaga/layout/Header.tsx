@@ -6,16 +6,29 @@ import Link from "next/link";
 import { Menu, X, Phone, Clipboard, Cpu } from "lucide-react";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
+// PC版グローバルナビ（サイトリンク候補にしたい主要ページ）
 const NAV_LINKS = [
-  { href: "/services", label: "工事内容" },
+  { href: "/", label: "ホーム" },
+  { href: "/services", label: "事業案内" },
   { href: "/works", label: "施工事例" },
-  { href: "/strengths", label: "選ばれる理由" },
-  { href: "/price", label: "費用目安" },
-  { href: "/flow", label: "ご依頼の流れ" },
-  { href: "/area", label: "対応地域" },
   { href: "/company", label: "会社案内" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/news", label: "お知らせ" },
+  { href: "/area", label: "対応地域" },
+  { href: "/pricing", label: "料金・費用目安" },
+  { href: "/faq", label: "よくある質問" },
+  { href: "/contact", label: "お問い合わせ" },
+];
+
+// スマホメニュー（ご依頼の流れを含む）
+const MOBILE_NAV_LINKS = [
+  { href: "/", label: "ホーム" },
+  { href: "/services", label: "事業案内" },
+  { href: "/works", label: "施工事例" },
+  { href: "/company", label: "会社案内" },
+  { href: "/area", label: "対応地域" },
+  { href: "/pricing", label: "料金・費用目安" },
+  { href: "/flow", label: "ご依頼の流れ" },
+  { href: "/faq", label: "よくある質問" },
+  { href: "/contact", label: "お問い合わせ" },
 ];
 
 export default function Header() {
@@ -91,15 +104,16 @@ export default function Header() {
         </div>
       </header>
 
-      {/* モバイルメニュー（フルスクリーン青オーバーレイ） */}
-      {open && (
-        <div
-          id="tkn-mobile-menu"
-          className="fixed inset-0 z-[49] flex flex-col pt-16 overflow-y-auto"
-          style={{ background: "linear-gradient(160deg, #0f2744 0%, #1a3d6b 60%, #1d5fa6 100%)" }}
-          role="dialog"
-          aria-label="モバイルメニュー"
-        >
+      {/* モバイルメニュー（フルスクリーン青オーバーレイ）
+          SEOのため常にDOMへレンダリングし、開閉はCSSクラスで切り替える
+          （Googleがメニュー内リンクをクロールできるようにする） */}
+      <div
+        id="tkn-mobile-menu"
+        className={`fixed inset-0 z-[49] flex-col pt-16 overflow-y-auto ${open ? "flex" : "hidden"}`}
+        style={{ background: "linear-gradient(160deg, #0f2744 0%, #1a3d6b 60%, #1d5fa6 100%)" }}
+        role="dialog"
+        aria-label="モバイルメニュー"
+      >
           {/* 閉じるボタン（右上） */}
           <button
             type="button"
@@ -129,7 +143,7 @@ export default function Header() {
           </div>
 
           <nav className="flex flex-col divide-y divide-white/10">
-            {NAV_LINKS.map((link) => (
+            {MOBILE_NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -140,14 +154,6 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/contact"
-              className="px-6 py-4 text-white text-base font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
-              onClick={() => setOpen(false)}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-(--tkn-blue-bright) shrink-0" aria-hidden />
-              お問い合わせ
-            </Link>
             <Link
               href={siteConfig.externalLinks.simulatorUrl}
               className="px-6 py-4 text-white text-base font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
@@ -178,7 +184,6 @@ export default function Header() {
             ) : null}
           </div>
         </div>
-      )}
 
       {/* モバイル固定CTA */}
       <div className="tkn-mobile-cta lg:hidden" role="navigation" aria-label="クイックアクション">

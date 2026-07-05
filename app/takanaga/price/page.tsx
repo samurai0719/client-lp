@@ -7,10 +7,10 @@ import { visiblePriceItems, costFactors } from "@/data/takanaga/prices";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 
 export const metadata: Metadata = {
-  title: "費用目安",
+  title: "外構工事の料金・費用目安",
   description:
     "高長建設の外構リフォーム費用目安。工事別参考価格と、費用に影響する要因をご紹介します。正確な費用は現地調査後にご案内します。",
-  alternates: { canonical: `https://${siteConfig.domain}/price` },
+  alternates: { canonical: `https://${siteConfig.domain}/pricing` },
 };
 
 export default function PricePage() {
@@ -18,9 +18,10 @@ export default function PricePage() {
     <>
       <PageHero
         eyebrow="Price"
-        title="費用目安"
-        subtitle="外構工事の費用は現地の状況によって変わります。下記を参考にしていただき、詳しくはお気軽にお問い合わせください。"
-        breadcrumbs={[{ label: "費用目安" }]}
+        title="外構工事の料金・費用目安"
+        subtitle="高長建設の外構工事の料金・費用目安をご紹介します。駐車場コンクリート、カーポート、フェンス、人工芝・防草対策など工事別の参考価格と、費用が変動する主な要因をまとめました。正確な金額は無料の現地調査後にお見積もりでご案内します。"
+        path="/pricing"
+        breadcrumbs={[{ label: "料金・費用目安" }]}
       />
 
       <section className="py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-(--tkn-bg)">

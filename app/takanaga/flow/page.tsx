@@ -85,6 +85,7 @@ export default function FlowPage() {
         eyebrow="Flow"
         title="ご依頼から施工完了までの流れ"
         subtitle="お問い合わせから工事完了まで、9つのステップでご説明します。"
+        path="/flow"
         breadcrumbs={[{ label: "ご依頼の流れ" }]}
       />
 

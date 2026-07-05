@@ -13,6 +13,7 @@ export default function PrivacyPage() {
     <>
       <PageHero
         title="プライバシーポリシー"
+        path="/privacy"
         breadcrumbs={[{ label: "プライバシーポリシー" }]}
       />
 
