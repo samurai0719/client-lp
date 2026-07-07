@@ -312,7 +312,8 @@
       "Bash(cat package.json)",
       "Bash(xargs -I{} sh -c 'grep -l \"use client\" \"{}\" 2>/dev/null')",
       "Bash(echo \"=== exit=$? ===\")",
-      "Bash(echo \"TSC_EXIT=$?\")"
+      "Bash(echo \"TSC_EXIT=$?\")",
+      "Bash(xargs -0 stat -f \"%m %Sm %N\" -t \"%Y-%m-%d %H:%M:%S\")"
     ]
   }
 }
