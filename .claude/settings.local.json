@@ -307,7 +307,12 @@
       "Bash(perl -pi -e 's{import \\\\{ formatCurrency, formatDate, isPast \\\\} from}{import { formatCurrency, formatDate, formatPhone, isPast } from}; s{\\(?<!\\\\$\\)\\\\{lead\\\\.customer\\\\.phone\\\\}}{\\\\{formatPhone\\(lead.customer.phone\\)\\\\}}g' \"app/admin/leads/[id]/_components/LeadDetailContent.tsx\")",
       "Bash(npm --version)",
       "Bash(npx --yes create-next-app@latest lp-insight --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --use-npm --eslint --no-turbopack)",
-      "Bash(npx vitest *)"
+      "Bash(npx vitest *)",
+      "Bash(cd /Users/tsukamotoshuntaira/Desktop/lp-insight)",
+      "Bash(cat package.json)",
+      "Bash(xargs -I{} sh -c 'grep -l \"use client\" \"{}\" 2>/dev/null')",
+      "Bash(echo \"=== exit=$? ===\")",
+      "Bash(echo \"TSC_EXIT=$?\")"
     ]
   }
 }
