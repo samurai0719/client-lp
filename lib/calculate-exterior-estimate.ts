@@ -18,6 +18,9 @@ import {
   gardenClearance,
   gardenToParking,
   gatePillar,
+  newExteriorCarportByCars,
+  newExteriorParkingByCars,
+  newExteriorSimulatorEstimates,
   parkingCarportSet,
   parkingConcrete,
   setAdjustmentRate,
@@ -372,6 +375,76 @@ export function calculateSimulatorEstimate(
     minMan: result.minMan,
     maxMan: result.maxMan,
     works: [...setLabels, ...items.map((item) => item.label)],
+    hasUnpriced,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// 新築外構シミュレーター用：選択された工事内容IDから概算価格を算出
+// 価格レンジは config/exterior-pricing.ts の newExteriorSimulatorEstimates を参照。
+// リフォーム用の calculateSimulatorEstimate と同じ考え方で、
+// 工事数に応じた共通施工費の調整とベース上乗せ額を適用する。
+// ─────────────────────────────────────────────────────────────────────
+
+export const NEW_EXTERIOR_SIMULATOR_ESTIMATE_STORAGE_KEY = "new-exterior-simulator-estimate-v1";
+
+export function calculateNewExteriorSimulatorEstimate(
+  workTypeIds: string[],
+  options: SimulatorEstimateOptions = {}
+): SimulatorEstimate | null {
+  const parkingCars = options.parkingCars ?? null;
+  const ids = [...new Set(workTypeIds)].filter((id) => newExteriorSimulatorEstimates[id]);
+  const hasUnpriced = ids.some((id) => newExteriorSimulatorEstimates[id].range === null);
+
+  // 「外構一式」が選ばれている場合は個別工事を含む一式レンジを優先する
+  if (ids.includes("full-exterior")) {
+    const def = newExteriorSimulatorEstimates["full-exterior"];
+    if (!def.range) return null;
+    const sum = {
+      min: def.range.min + simulatorBaseUplift,
+      max: def.range.max + simulatorBaseUplift,
+    };
+    const result = toResult(sum);
+    return {
+      label: result.label,
+      minMan: result.minMan,
+      maxMan: result.maxMan,
+      works: [def.label],
+      hasUnpriced,
+    };
+  }
+
+  const items: Array<{ label: string; range: PriceRange }> = [];
+  for (const id of ids) {
+    const def = newExteriorSimulatorEstimates[id];
+    if (def.range === null) continue;
+    // 台数が選択されていれば、駐車場コンクリート・カーポートは台数別価格を優先する
+    if (id === "parking-concrete" && parkingCars) {
+      items.push({ label: `駐車場コンクリート（${parkingCars}台分）`, range: newExteriorParkingByCars[parkingCars] });
+      continue;
+    }
+    if (id === "carport" && parkingCars) {
+      items.push({ label: `カーポート（${parkingCars}台用）`, range: newExteriorCarportByCars[parkingCars] });
+      continue;
+    }
+    items.push({ label: def.label, range: def.range });
+  }
+
+  if (items.length === 0) return null;
+
+  let rest: PriceRange = { min: 0, max: 0 };
+  for (const item of items) {
+    rest = add(rest, item.range);
+  }
+  let sum = scale(rest, 1 - setAdjustmentRate(items.length));
+  sum = { min: sum.min + simulatorBaseUplift, max: sum.max + simulatorBaseUplift };
+
+  const result = toResult(sum);
+  return {
+    label: result.label,
+    minMan: result.minMan,
+    maxMan: result.maxMan,
+    works: items.map((item) => item.label),
     hasUnpriced,
   };
 }

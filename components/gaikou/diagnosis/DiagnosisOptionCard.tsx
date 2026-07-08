@@ -17,6 +17,11 @@ import {
   Construction,
   Compass,
   Ellipsis,
+  Mailbox,
+  Footprints,
+  CalendarClock,
+  KeyRound,
+  FileText,
   Check,
   type LucideIcon,
 } from "lucide-react";
@@ -38,6 +43,12 @@ const ICONS: Record<string, LucideIcon> = {
   construction: Construction,
   compass: Compass,
   ellipsis: Ellipsis,
+  // 新築外構診断（/new-exterior/diagnosis）用に追加
+  mailbox: Mailbox,
+  footprints: Footprints,
+  "calendar-clock": CalendarClock,
+  "key-round": KeyRound,
+  "file-text": FileText,
 };
 
 type DiagnosisOptionCardProps = {

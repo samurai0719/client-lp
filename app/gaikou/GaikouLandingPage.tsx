@@ -5,6 +5,7 @@ import SectionDivider from "@/components/gaikou/SectionDivider";
 import HeroSection from "@/components/gaikou/HeroSection";
 import CTABlock from "@/components/gaikou/CTABlock";
 import WorksGrid from "@/components/gaikou/WorksGrid";
+import StaffSection from "@/components/gaikou/StaffSection";
 import ProblemsSection from "@/components/gaikou/ProblemsSection";
 import SolutionsSection from "@/components/gaikou/SolutionsSection";
 import DirectModelSection from "@/components/gaikou/DirectModelSection";
@@ -46,6 +47,7 @@ export default function GaikouLandingPage() {
           </div>
 
           <WorksGrid />
+          <StaffSection />
           <ExteriorSimulatorSection />
           <SectionDivider color="#fdfbf6" />
 

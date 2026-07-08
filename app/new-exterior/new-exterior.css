@@ -1,0 +1,303 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   /new-exterior 専用スタイル。
+   FVクリエイティブ（生成り×墨色×オリーブグリーン×テラコッタ・明朝体）に
+   合わせた上品なナチュラルテイスト。クラス名は ne- プレフィックスで分離。
+   施工事例セクション（washi背景）とCTAアニメーションは gaikou.css を併用する。
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ne-lp {
+  --ne-ink: #2f3527;        /* 墨色（テキスト） */
+  --ne-olive-deep: #3f4d33; /* 深いオリーブグリーン */
+  --ne-olive: #5a6b46;      /* オリーブグリーン */
+  --ne-olive-soft: #8a9573; /* 淡いオリーブ */
+  --ne-terracotta: #b0502f; /* テラコッタ（アクセント・CTA） */
+  --ne-gold: #cdb98a;       /* 金茶（罫線・装飾） */
+  --ne-cream: #f7f4ea;      /* 生成り（ベース背景） */
+  --ne-cream-deep: #f0ebdc; /* 濃いめの生成り */
+  --ne-paper: #fbf9f2;      /* 白に近い紙色（カード） */
+  --ne-border: #e2dcc9;     /* カード枠線 */
+  background: var(--ne-cream);
+  color: var(--ne-ink);
+  position: relative;
+  isolation: isolate;
+}
+
+/* 明朝体見出し（Shippori Mincho は page 側で next/font により読み込む） */
+.ne-serif {
+  font-family: var(--font-ne-serif, "Shippori Mincho"), "Yu Mincho", YuMincho,
+    "Hiragino Mincho ProN", "Noto Serif JP", serif;
+  letter-spacing: 0.04em;
+}
+
+/* ── セクション見出しの小ラベル（葉飾り付き） ─────────────────────── */
+
+.ne-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--ne-olive);
+}
+
+/* ── CTAボタン（テラコッタ） ─────────────────────────────────────── */
+
+@keyframes neCtaGlow {
+  0%, 100% { box-shadow: 0 10px 24px -8px rgba(176, 80, 47, 0.45), 0 0 0 0 rgba(176, 80, 47, 0); }
+  50%      { box-shadow: 0 12px 30px -6px rgba(176, 80, 47, 0.55), 0 0 24px 2px rgba(176, 80, 47, 0.16); }
+}
+
+.ne-cta-btn {
+  display: inline-block;
+  width: 100%;
+  max-width: 26rem;
+  padding: 1.15rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  position: relative;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid #96421f;
+  background: linear-gradient(160deg, #c96b3f 0%, var(--ne-terracotta, #b0502f) 55%, #96421f 100%);
+  animation: neCtaGlow 3.2s ease-in-out infinite;
+  transition: transform 0.15s ease;
+}
+.ne-cta-btn:hover { transform: translateY(-2px); }
+.ne-cta-btn:active { transform: translateY(1px); }
+.ne-cta-btn:focus-visible {
+  outline: 3px solid rgba(176, 80, 47, 0.45);
+  outline-offset: 3px;
+}
+.ne-cta-btn-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+/* ── 背景装飾（生成りのにじみ＋葉の線画） ─────────────────────────── */
+
+.ne-bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ne-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.6;
+}
+.ne-blob-1 {
+  width: 460px;
+  height: 460px;
+  top: -140px;
+  right: -120px;
+  background: radial-gradient(circle, rgba(205, 185, 138, 0.28), transparent 70%);
+}
+.ne-blob-2 {
+  width: 420px;
+  height: 420px;
+  bottom: -160px;
+  left: -120px;
+  background: radial-gradient(circle, rgba(90, 107, 70, 0.16), transparent 70%);
+}
+
+/* ── reduced motion ──────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .ne-cta-btn { animation: none !important; }
+}
+
+/* ── 画像LP風の装飾パーツ ─────────────────────────────────────────── */
+
+/* 吹き出し（キャラの台詞用） */
+.ne-bubble {
+  position: relative;
+  background: #fff;
+  border: 2px solid var(--ne-olive, #5a6b46);
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-weight: 700;
+  color: var(--ne-ink, #2f3527);
+  line-height: 1.6;
+}
+.ne-bubble::before,
+.ne-bubble::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+/* 左下に向くしっぽ */
+.ne-bubble-tail-bl::before {
+  bottom: -14px;
+  left: 26px;
+  border-width: 14px 12px 0 0;
+  border-color: var(--ne-olive, #5a6b46) transparent transparent transparent;
+}
+.ne-bubble-tail-bl::after {
+  bottom: -10px;
+  left: 28.5px;
+  border-width: 11px 9px 0 0;
+  border-color: #fff transparent transparent transparent;
+}
+/* 右下に向くしっぽ */
+.ne-bubble-tail-br::before {
+  bottom: -14px;
+  right: 26px;
+  border-width: 0 12px 14px 0;
+  border-color: transparent var(--ne-olive, #5a6b46) transparent transparent;
+}
+.ne-bubble-tail-br::after {
+  bottom: -10px;
+  right: 28.5px;
+  border-width: 0 9px 11px 0;
+  border-color: transparent #fff transparent transparent;
+}
+/* 左（キャラが右側にいるとき） */
+.ne-bubble-tail-r::before {
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 10px 0 10px 14px;
+  border-color: transparent transparent transparent var(--ne-olive, #5a6b46);
+}
+.ne-bubble-tail-r::after {
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 7.5px 0 7.5px 11px;
+  border-color: transparent transparent transparent #fff;
+}
+
+/* リボン帯見出し */
+.ne-ribbon {
+  position: relative;
+  display: inline-block;
+  background: var(--ne-olive-deep, #3f4d33);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 10px 26px;
+  line-height: 1.5;
+}
+.ne-ribbon::before,
+.ne-ribbon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.ne-ribbon::before {
+  left: -16px;
+  border-width: 21px 16px;
+  border-color: var(--ne-olive-deep, #3f4d33) var(--ne-olive-deep, #3f4d33) var(--ne-olive-deep, #3f4d33) transparent;
+}
+.ne-ribbon::after {
+  right: -16px;
+  border-width: 21px 16px;
+  border-color: var(--ne-olive-deep, #3f4d33) transparent var(--ne-olive-deep, #3f4d33) var(--ne-olive-deep, #3f4d33);
+}
+.ne-ribbon-terracotta {
+  background: var(--ne-terracotta, #b0502f);
+}
+.ne-ribbon-terracotta::before {
+  border-color: var(--ne-terracotta, #b0502f) var(--ne-terracotta, #b0502f) var(--ne-terracotta, #b0502f) transparent;
+}
+.ne-ribbon-terracotta::after {
+  border-color: var(--ne-terracotta, #b0502f) transparent var(--ne-terracotta, #b0502f) var(--ne-terracotta, #b0502f);
+}
+
+/* CTA誘導の跳ねる矢印 */
+@keyframes neBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+.ne-guide-arrow {
+  animation: neBounce 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ne-guide-arrow { animation: none !important; }
+}
+
+/* ── 参考LP風の追加パーツ ─────────────────────────────────────────── */
+
+/* やわらかい吹き出し（枠線なし・薄ベージュ） */
+.ne-bubble-soft {
+  position: relative;
+  background: #f1ede1;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-weight: 600;
+  color: var(--ne-ink, #2f3527);
+  line-height: 1.7;
+}
+.ne-bubble-soft::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+/* 左向きしっぽ（キャラが左にいるとき） */
+.ne-bubble-soft.ne-soft-tail-l::before {
+  left: -12px;
+  top: 34px;
+  border-width: 8px 14px 8px 0;
+  border-color: transparent #f1ede1 transparent transparent;
+}
+/* 右向きしっぽ（キャラが右にいるとき） */
+.ne-bubble-soft.ne-soft-tail-r::before {
+  right: -12px;
+  top: 34px;
+  border-width: 8px 0 8px 14px;
+  border-color: transparent transparent transparent #f1ede1;
+}
+
+/* 黄色マーカーの強調（テキストの下半分にマーカー） */
+.ne-marker {
+  background: linear-gradient(transparent 58%, #f7e27d 58%, #f7e27d 92%, transparent 92%);
+  padding: 0 2px;
+}
+
+/* 手書き風の英字ポイントラベル */
+.ne-script {
+  font-family: "Snell Roundhand", "Savoye LET", "Bradley Hand", "Segoe Script", cursive;
+  color: var(--ne-terracotta, #b0502f);
+  letter-spacing: 0.06em;
+}
+
+/* ＼ ○○ ／ の煽りテキスト */
+.ne-shout {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--ne-ink, #2f3527);
+}
+.ne-shout::before,
+.ne-shout::after {
+  content: "";
+  width: 2.5px;
+  height: 1.1em;
+  background: var(--ne-ink, #2f3527);
+  border-radius: 2px;
+}
+.ne-shout::before { transform: rotate(-30deg); }
+.ne-shout::after { transform: rotate(30deg); }

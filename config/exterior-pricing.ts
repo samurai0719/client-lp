@@ -186,6 +186,66 @@ export const lpPriceDisclaimer =
 export const lpPriceTaxNote = "※価格はいずれも税込の概算です。";
 
 // ─────────────────────────────────────────────────────────────────────
+// 新築外構LP料金表（/new-exterior PriceSection 用の表示データ）
+// 新築の更地は既存外構の撤去・処分が不要なため、リフォームLPの料金表とは
+// 別の参考価格を掲載する。掲載価格を変更するときはここだけを修正する。
+// ─────────────────────────────────────────────────────────────────────
+
+export const newExteriorLpPriceTable: LpPriceRow[] = [
+  { label: "駐車場コンクリート 1台分", price: "15万円〜" },
+  { label: "駐車場コンクリート 2台分", price: "30万円〜" },
+  { label: "カーポート 1台用", price: "25万円〜" },
+  { label: "カーポート 2台用", price: "45万円〜" },
+  { label: "門柱・ポスト", price: "15万円〜" },
+  { label: "フェンス工事", price: "20万円〜" },
+  { label: "人工芝・庭工事", price: "15万円〜" },
+  {
+    label: "新築外構一式",
+    price: "100万円〜",
+    note: "駐車場・門柱・アプローチ・フェンスなどをまとめて施工するプランの目安です。",
+  },
+];
+
+export const newExteriorPriceDisclaimer =
+  "※敷地条件・面積・使用する材料により金額は変動します。正確な金額は現地調査後にご提示します。";
+
+// ─────────────────────────────────────────────────────────────────────
+// 新築外構シミュレーター用：工事内容ごとの既定概算レンジ
+// 新築の更地は撤去・処分費がかからないため、リフォーム用より低めのレンジ。
+// 最低価格は newExteriorLpPriceTable の最低価格を下回らないこと。
+// ─────────────────────────────────────────────────────────────────────
+
+export const newExteriorSimulatorEstimates: Record<
+  string,
+  { label: string; range: PriceRange | null }
+> = {
+  // 駐車場コンクリート（台数未選択のため1〜2台分の幅）
+  "parking-concrete": { label: "駐車場コンクリート", range: { min: 150_000, max: 450_000 } },
+  // カーポート（台数未選択のため1〜2台用の幅）
+  carport: { label: "カーポート", range: { min: 250_000, max: 600_000 } },
+  "gate-mailbox": { label: "門柱・ポスト", range: { min: 150_000, max: 300_000 } },
+  entrance: { label: "アプローチ", range: { min: 100_000, max: 300_000 } },
+  fence: { label: "フェンス・目隠し", range: { min: 200_000, max: 400_000 } },
+  "artificial-grass": { label: "人工芝・庭づくり", range: { min: 150_000, max: 350_000 } },
+  planting: { label: "植栽", range: { min: 50_000, max: 200_000 } },
+  // 外構一式（現地条件の影響が大きいため広めのレンジ）
+  "full-exterior": { label: "新築外構一式", range: { min: 1_000_000, max: 2_000_000 } },
+};
+
+// 台数が選択された場合の駐車場・カーポートの新築向け概算
+export const newExteriorParkingByCars: Record<CarCount, PriceRange> = {
+  1: { min: 150_000, max: 250_000 },
+  2: { min: 300_000, max: 450_000 },
+  3: { min: 450_000, max: 650_000 },
+};
+
+export const newExteriorCarportByCars: Record<CarCount, PriceRange> = {
+  1: { min: 250_000, max: 350_000 },
+  2: { min: 450_000, max: 600_000 },
+  3: { min: 650_000, max: 900_000 },
+};
+
+// ─────────────────────────────────────────────────────────────────────
 // AIシミュレーター概算のベース上乗せ額
 // 現場ごとの諸経費・付帯工事のための余裕分として、算出した概算レンジ全体へ
 // 一律で上乗せする（「概算価格の範囲内で施工」の約束を守るための安全余裕）。
