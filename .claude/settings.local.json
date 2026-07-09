@@ -340,7 +340,15 @@
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --virtual-time-budget=15000 --screenshot=/private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/c5f6f09b-74f1-4050-97ce-ddfa2c1cf38a/scratchpad/illust-tail.png --window-size=500,15500 http://localhost:3000/new-exterior)",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --virtual-time-budget=20000 --screenshot=/private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/c5f6f09b-74f1-4050-97ce-ddfa2c1cf38a/scratchpad/ref-lp.png --window-size=500,12000 https://www.town-life.jp/reform/exterior/index.php?from=tl_meta-ex_zen_39)",
       "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --virtual-time-budget=12000 --screenshot=/private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/c5f6f09b-74f1-4050-97ce-ddfa2c1cf38a/scratchpad/medal-zoom.png --window-size=500,1300 http://localhost:3000/new-exterior)",
-      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --virtual-time-budget=12000 --screenshot=/private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/c5f6f09b-74f1-4050-97ce-ddfa2c1cf38a/scratchpad/medal-desktop.png --window-size=1440,1400 http://localhost:3000/new-exterior)"
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --virtual-time-budget=12000 --screenshot=/private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/c5f6f09b-74f1-4050-97ce-ddfa2c1cf38a/scratchpad/medal-desktop.png --window-size=1440,1400 http://localhost:3000/new-exterior)",
+      "Bash(grep -qE \"Ready in|error|Error\" /private/tmp/claude-501/-Users-tsukamotoshuntaira-Desktop-client-lp/54d2ca56-d7da-47f3-b6e4-5c299027beef/tasks/borwaglf0.output)",
+      "Bash(sed -E 's/\\(=.{0,6}\\).*/\\\\1***/' .env.local)",
+      "Bash(awk -F= '/SUPABASE/ {v=$2; gsub\\(/[ \\\\t\\\\r]/,\"\",v\\); print $1 \" => \" \\(length\\(v\\)==0 ? \"\\(空\\)\" : \"設定あり\\(\" length\\(v\\) \"文字\\)\"\\)}' .env.local)",
+      "Bash(lsof -i :3000 -sTCP:LISTEN -n -P)",
+      "WebSearch",
+      "Bash(docker version *)",
+      "Bash(supabase --version)",
+      "Bash(brew install *)"
     ]
   }
 }
