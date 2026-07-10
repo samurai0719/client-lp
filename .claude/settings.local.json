@@ -348,7 +348,29 @@
       "WebSearch",
       "Bash(docker version *)",
       "Bash(supabase --version)",
-      "Bash(brew install *)"
+      "Bash(brew install *)",
+      "Bash(colima start *)",
+      "Bash(echo \"=== EXIT=$? ===\")",
+      "Bash(supabase init *)",
+      "Bash(supabase start *)",
+      "Bash(awk 'NR==1 || /LISTEN/')",
+      "Bash(brew services *)",
+      "Bash(chmod +x /Users/tsukamotoshuntaira/Desktop/lp-insight/scripts/local-up.sh)",
+      "Bash(launchctl unload *)",
+      "Bash(launchctl load *)",
+      "Bash(launchctl list *)",
+      "Bash(rm -rf '/Users/tsukamotoshuntaira/Desktop/LP Insight.app')",
+      "Bash(osacompile -o '/Users/tsukamotoshuntaira/Desktop/LP Insight.app' -e 'on run *)",
+      "Bash(osascript -e 'tell application \"System Events\" to make login item at end with properties {path:\"/Users/tsukamotoshuntaira/Desktop/LP Insight.app\", hidden:false}')",
+      "Bash(osascript -e 'tell application \"System Events\" to get the name of every login item')",
+      "Bash(wait)",
+      "Bash(dig +short NS takanagakensetu.com)",
+      "Bash(dig +short takanagakensetu.com)",
+      "Bash(dig +short db.kgtahteuioqivwkbxgck.supabase.co A)",
+      "Bash(dig +short db.kgtahteuioqivwkbxgck.supabase.co AAAA)",
+      "Bash(dig +short aws-0-ap-northeast-1.pooler.supabase.com A)",
+      "Bash(awk '/LISTEN/{print $2}')",
+      "Bash(xargs -I{} ps -p {} -o command=)"
     ]
   }
 }
