@@ -21,7 +21,7 @@ export default function HeroSection() {
   const { props: mobileProps } = getImageProps({
     ...common,
     alt: "外構リフォーム職人による駐車場コンクリート工事の様子と、岐阜県対応・現地調査無料、駐車場コンクリート10㎡10万円からの料金案内",
-    src: "/images/gaikou/hero-mobile-3.png",
+    src: "/images/gaikou/hero-mobile.png",
     width: 941,
     height: 1672,
     priority: true,
