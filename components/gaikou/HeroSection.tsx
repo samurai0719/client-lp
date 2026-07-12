@@ -13,7 +13,7 @@ export default function HeroSection() {
   const { props: desktopProps } = getImageProps({
     ...common,
     alt: "外構リフォーム職人による駐車場コンクリート工事の様子と、岐阜県対応・現地調査無料、駐車場コンクリート10㎡10万円からの料金案内",
-    src: "/images/gaikou/hero-desktop.png",
+    src: "/images/gaikou/hero-desktop-2.png",
     width: 1672,
     height: 941,
   });
@@ -21,7 +21,7 @@ export default function HeroSection() {
   const { props: mobileProps } = getImageProps({
     ...common,
     alt: "外構リフォーム職人による駐車場コンクリート工事の様子と、岐阜県対応・現地調査無料、駐車場コンクリート10㎡10万円からの料金案内",
-    src: "/images/gaikou/hero-mobile.png",
+    src: "/images/gaikou/hero-mobile-4.png",
     width: 941,
     height: 1672,
     priority: true,
