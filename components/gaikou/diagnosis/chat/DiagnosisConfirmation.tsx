@@ -26,11 +26,12 @@ export default function DiagnosisConfirmation({
 
   const rows: Row[] = [
     { label: "施工予定地域", value: answerLinesForStep(1, answers).join(" ") },
-    { label: "ご希望の工事内容", value: answerLinesForStep(2, answers).join("、") },
-    { label: "現在のお困りごと", value: answerLinesForStep(3, answers).join("、") },
-    { label: "ご希望の広さ", value: answerLinesForStep(4, answers).join("") },
-    { label: "工事のご希望時期", value: answerLinesForStep(5, answers).join("") },
-    { label: "ご予算の目安", value: answerLinesForStep(6, answers)[0] ?? "" },
+    { label: "ご希望の工事", value: answerLinesForStep(2, answers).join("") },
+    { label: "ご希望の工事内容", value: answerLinesForStep(3, answers).join("、") },
+    { label: "現在のお困りごと", value: answerLinesForStep(4, answers).join("、") },
+    { label: "ご希望の広さ", value: answerLinesForStep(5, answers).join("") },
+    { label: "工事のご希望時期", value: answerLinesForStep(6, answers).join("") },
+    { label: "ご予算の目安", value: answerLinesForStep(7, answers)[0] ?? "" },
     { label: "支払い方法", value: paymentMethodLabel(answers.paymentMethod) || "未選択" },
     { label: "現場写真", value: contact.photoName || "なし" },
     { label: "お名前", value: contact.name },

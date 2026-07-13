@@ -33,7 +33,11 @@ export default function AreaSelector({
                 selected ? "border-[#2f7d5a] bg-[#eaf3ee] text-[#10302a]" : "border-[#e7e3d8] bg-white text-[#3d4a45] hover:border-[#cfe3d6]"
               }`}
             >
-              {selected && <Check className="w-4 h-4 text-[#2f7d5a]" aria-hidden="true" />}
+              {selected ? (
+                <Check className="w-4 h-4 text-[#2f7d5a]" aria-hidden="true" />
+              ) : (
+                <MapPin className="w-4 h-4 text-[#9bb3a8]" aria-hidden="true" />
+              )}
               {pref}
             </button>
           );

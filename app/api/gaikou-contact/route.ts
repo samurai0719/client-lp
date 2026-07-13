@@ -11,6 +11,7 @@ import {
   paymentMethodOptions,
   sizeOptions,
   timingOptions,
+  workTypeOptions,
   worryOptions,
   type DiagnosisOption,
 } from "@/data/gaikou/diagnosisQuestions";
@@ -41,6 +42,8 @@ export async function POST(req: Request) {
       answers: {
         prefecture: string | null;
         municipality: string | null;
+        // 工事種別（new-construction=新築外構 / renovation=外構リフォーム）。旧クライアントは未送信のため任意
+        workType?: string | null;
         constructionTypes: string[];
         worries: string[];
         worriesOther?: string;
@@ -84,10 +87,12 @@ export async function POST(req: Request) {
 
       if (customerResult.ok) {
         const customer = { id: customerResult.customerId };
+        // 工事種別（新築外構/外構リフォーム）はwork_typesの先頭に入れ、管理画面の一覧で見えるようにする
+        const workTypeLabel = labelOf(workTypeOptions, answers.workType);
         const workTypes = answers.constructionTypes
           .map((t) => CONSTRUCTION_TYPE_MAP[t])
           .filter((v): v is string => Boolean(v));
-        const uniqueTypes = [...new Set(workTypes)];
+        const uniqueTypes = [...new Set([...(workTypeLabel ? [workTypeLabel] : []), ...workTypes])];
         if (uniqueTypes.length === 0) uniqueTypes.push("その他");
 
         const mismatchNote = customerResult.matchedExisting
@@ -104,6 +109,7 @@ export async function POST(req: Request) {
 
         const notes = [
           mismatchNote,
+          workTypeLabel ? `工事種別：${workTypeLabel}` : null,
           contact.note ? `備考：${contact.note}` : null,
           worryLabels.length > 0 ? `お悩み：${worryLabels.join("、")}` : null,
           answers.size ? `希望の広さ：${labelOf(sizeOptions, answers.size)}` : null,

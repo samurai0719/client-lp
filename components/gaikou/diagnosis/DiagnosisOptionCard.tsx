@@ -1,5 +1,6 @@
 "use client";
 
+import type { ComponentType, SVGProps } from "react";
 import {
   Layers,
   CarFront,
@@ -20,13 +21,70 @@ import {
   Mailbox,
   Footprints,
   CalendarClock,
+  CalendarDays,
+  CalendarRange,
+  Calculator,
+  Coins,
+  Wallet,
+  Banknote,
+  Landmark,
+  LandPlot,
+  MessagesSquare,
+  Zap,
   KeyRound,
   FileText,
   Check,
   type LucideIcon,
 } from "lucide-react";
 
-const ICONS: Record<string, LucideIcon> = {
+// lucideと同じ24px・stroke2・線画テイストで揃えたカスタムアイコン
+function iconSvgProps(props: SVGProps<SVGSVGElement>) {
+  return {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 24 24",
+    width: 24,
+    height: 24,
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    ...props,
+  };
+}
+
+// 新築外構：新しい住まい（キラッと光る新築マーク付き）と整えた外まわり
+function NewExteriorIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...iconSvgProps(props)}>
+      <path d="M2 21h20" />
+      <path d="M5 21v-8.5" />
+      <path d="M15 21v-8.5" />
+      <path d="M3 13.5 10 7l7 6.5" />
+      <path d="M8.5 21v-4h3v4" />
+      <path d="M19.5 3v5" />
+      <path d="M17 5.5h5" />
+    </svg>
+  );
+}
+
+// 外構リフォーム：既存の住まいの外まわりをハンマーで手直しする様子
+function RenovationIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...iconSvgProps(props)}>
+      <path d="M2 21h20" />
+      <path d="M4 21v-8.5" />
+      <path d="M14 21v-8.5" />
+      <path d="M2 13.5 9 7l7 6.5" />
+      <path d="m15.5 21 3.1-5.4" />
+      <path d="m17.4 13 4.3 2.5-1.5 2.6-4.3-2.5z" />
+    </svg>
+  );
+}
+
+type IconComponent = LucideIcon | ComponentType<SVGProps<SVGSVGElement>>;
+
+const ICONS: Record<string, IconComponent> = {
   layers: Layers,
   "car-front": CarFront,
   trees: Trees,
@@ -49,6 +107,20 @@ const ICONS: Record<string, LucideIcon> = {
   "calendar-clock": CalendarClock,
   "key-round": KeyRound,
   "file-text": FileText,
+  // 工事種別（新築外構/外構リフォーム）用のカスタムアイコン
+  "new-exterior": NewExteriorIcon,
+  renovation: RenovationIcon,
+  // 広さ・時期・予算・支払い方法の選択肢用に追加
+  "land-plot": LandPlot,
+  zap: Zap,
+  "calendar-days": CalendarDays,
+  "calendar-range": CalendarRange,
+  calculator: Calculator,
+  coins: Coins,
+  wallet: Wallet,
+  banknote: Banknote,
+  landmark: Landmark,
+  "messages-square": MessagesSquare,
 };
 
 type DiagnosisOptionCardProps = {

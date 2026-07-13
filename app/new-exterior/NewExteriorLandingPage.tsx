@@ -52,7 +52,8 @@ export default function NewExteriorLandingPage() {
           <TrustBadges />
 
           <div className="relative px-4 sm:px-6 pt-6 pb-8 sm:pb-10">
-            <CTABlock />
+            {/* ページ内で最初のCTAのみ10%OFFクーポンを表示する */}
+            <CTABlock showCoupon />
           </div>
 
           {/* 施工事例（FV直下で実例と価格感を先に見せる） */}

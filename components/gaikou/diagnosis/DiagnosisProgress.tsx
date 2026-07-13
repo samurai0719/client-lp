@@ -20,7 +20,7 @@ export default function DiagnosisProgress({ step }: DiagnosisProgressProps) {
           </p>
         </div>
         <p className="mb-2 text-[10.5px] sm:text-[11px] text-[#8a9a90] leading-snug">
-          いくつかの質問に答えるだけで、あなたに合った外構リフォームプランが分かります
+          いくつかの質問に答えるだけで、あなたに合った外構プランが分かります
         </p>
         <div
           className="h-2 rounded-full bg-[#eef0ea] overflow-hidden"

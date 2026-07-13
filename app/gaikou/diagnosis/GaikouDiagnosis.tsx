@@ -41,7 +41,8 @@ import {
 import { getUtmRecord } from "@/components/gaikou/utm";
 import { trackEvent } from "@/lib/analytics/track";
 
-const STATE_STORAGE_KEY = "gaikou-diagnosis-state-v1";
+// v2: 質問2に工事種別（新築外構/外構リフォーム）を追加しステップ番号が変わったためキーを更新
+const STATE_STORAGE_KEY = "gaikou-diagnosis-state-v2";
 const UTM_STORAGE_KEY = "gaikou-diagnosis-utm-v1";
 const STARTED_FLAG_KEY = "gaikou-diagnosis-started-v1";
 
@@ -62,7 +63,7 @@ const TRUST_POINTS = [
 
 // 案内役からの最初の挨拶（1問目の質問文自体は変更していない）
 const GREETING_LINES = [
-  "こんにちは。\n外構プラン診断をご利用いただきありがとうございます。\nいくつかの質問に答えていただくと、お客様に合った外構リフォームプランをご案内できます。",
+  "こんにちは。\n外構プラン診断をご利用いただきありがとうございます。\nいくつかの質問に答えていただくと、お客様に合った外構プランをご案内できます。",
   "それでは、外構について教えてください。",
 ];
 
@@ -243,7 +244,7 @@ export default function GaikouDiagnosis() {
     });
   }
 
-  function setSingleAndAdvance(field: "size" | "timing", optionId: string) {
+  function setSingleAndAdvance(field: "workType" | "size" | "timing", optionId: string) {
     setAnswers((prev) => ({ ...prev, [field]: optionId }));
     trackEvent("diagnosis_answer", { step: stepRef.current, field });
     armScroll();
@@ -274,7 +275,7 @@ export default function GaikouDiagnosis() {
 
   // 連絡先フォームのバリデーション通過後、最終確認へ進む
   function goToConfirmation() {
-    trackEvent("diagnosis_answer", { step: 7, field: "contact" });
+    trackEvent("diagnosis_answer", { step: 8, field: "contact" });
     trackEvent("inquiry_started");
     armScroll();
     setSubmitError("");
@@ -328,7 +329,7 @@ export default function GaikouDiagnosis() {
   }
 
   const currentQuestion = diagnosisQuestions.find((q) => q.step === step);
-  const completedSteps = phase === "confirm" ? 6 : step - 1;
+  const completedSteps = phase === "confirm" ? 7 : step - 1;
   const showCurrentQuestion = phase === "question" && !typing;
 
   // ── 回答エリア（現在の質問の選択肢） ─────────────────────────────
@@ -354,7 +355,24 @@ export default function GaikouDiagnosis() {
       );
     }
 
+    // 質問2: 工事種別（新築外構 / 外構リフォーム）。選択すると自動で次へ進む
     if (step === 2 && currentQuestion) {
+      return (
+        <div className="grid sm:grid-cols-2 gap-2">
+          {currentQuestion.options.map((option) => (
+            <DiagnosisOptionCard
+              key={option.id}
+              label={option.label}
+              iconKey={option.iconKey}
+              selected={answers.workType === option.id}
+              onClick={() => setSingleAndAdvance("workType", option.id)}
+            />
+          ))}
+        </div>
+      );
+    }
+
+    if (step === 3 && currentQuestion) {
       return (
         <div className="space-y-3">
           <div className="grid sm:grid-cols-2 gap-2">
@@ -381,7 +399,7 @@ export default function GaikouDiagnosis() {
       );
     }
 
-    if (step === 3 && currentQuestion) {
+    if (step === 4 && currentQuestion) {
       return (
         <div className="space-y-3">
           <div className="grid sm:grid-cols-2 gap-2">
@@ -422,13 +440,14 @@ export default function GaikouDiagnosis() {
       );
     }
 
-    if (step === 4 && currentQuestion) {
+    if (step === 5 && currentQuestion) {
       return (
         <div className="grid sm:grid-cols-2 gap-2">
           {currentQuestion.options.map((option) => (
             <DiagnosisOptionCard
               key={option.id}
               label={option.label}
+              iconKey={option.iconKey}
               selected={answers.size === option.id}
               onClick={() => setSingleAndAdvance("size", option.id)}
             />
@@ -437,13 +456,14 @@ export default function GaikouDiagnosis() {
       );
     }
 
-    if (step === 5 && currentQuestion) {
+    if (step === 6 && currentQuestion) {
       return (
         <div className="grid sm:grid-cols-2 gap-2">
           {currentQuestion.options.map((option) => (
             <DiagnosisOptionCard
               key={option.id}
               label={option.label}
+              iconKey={option.iconKey}
               selected={answers.timing === option.id}
               onClick={() => setSingleAndAdvance("timing", option.id)}
             />
@@ -452,7 +472,7 @@ export default function GaikouDiagnosis() {
       );
     }
 
-    if (step === 6 && currentQuestion) {
+    if (step === 7 && currentQuestion) {
       return (
         <div className="space-y-3">
           <div className="grid sm:grid-cols-2 gap-2">
@@ -460,6 +480,7 @@ export default function GaikouDiagnosis() {
               <DiagnosisOptionCard
                 key={option.id}
                 label={option.label}
+                iconKey={option.iconKey}
                 selected={answers.budget === option.id}
                 onClick={() => setBudget(option.id)}
               />
@@ -475,6 +496,7 @@ export default function GaikouDiagnosis() {
                 <DiagnosisOptionCard
                   key={option.id}
                   label={option.label}
+                  iconKey={option.iconKey}
                   selected={answers.paymentMethod === option.id}
                   onClick={() => setPaymentMethod(option.id)}
                 />
@@ -499,7 +521,7 @@ export default function GaikouDiagnosis() {
       );
     }
 
-    if (step === 7) {
+    if (step === 8) {
       return (
         <DiagnosisContactForm
           prefecture={answers.prefecture}
@@ -559,7 +581,7 @@ export default function GaikouDiagnosis() {
 
         <main className="max-w-xl mx-auto px-4 sm:px-6 pb-[calc(48px+env(safe-area-inset-bottom))]">
           {phase === "result" ? (
-            <DiagnosisResult worries={answers.worries} />
+            <DiagnosisResult workType={answers.workType} worries={answers.worries} />
           ) : (
             <div className="space-y-2.5 sm:space-y-3 pt-2" aria-live="polite">
               {/* 最初の挨拶 */}
@@ -600,7 +622,7 @@ export default function GaikouDiagnosis() {
               {showCurrentQuestion && (
                 <div className="gd-chat-appear pt-1">
                   {renderAnswerPanel()}
-                  {step > 1 && step < 7 && (
+                  {step > 1 && step < 8 && (
                     <button
                       type="button"
                       onClick={goBack}

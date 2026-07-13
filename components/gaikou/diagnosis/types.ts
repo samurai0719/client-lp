@@ -14,6 +14,8 @@ export type DiagnosisContact = {
 export type DiagnosisAnswers = {
   prefecture: Prefecture | null;
   municipality: string | null;
+  /** 工事種別（new-construction=新築外構 / renovation=外構リフォーム） */
+  workType: string | null;
   constructionTypes: string[];
   worries: string[];
   worriesOther: string;
@@ -27,6 +29,7 @@ export type DiagnosisAnswers = {
 export const initialDiagnosisAnswers: DiagnosisAnswers = {
   prefecture: null,
   municipality: null,
+  workType: null,
   constructionTypes: [],
   worries: [],
   worriesOther: "",
@@ -46,4 +49,4 @@ export const initialDiagnosisAnswers: DiagnosisAnswers = {
   },
 };
 
-export const TOTAL_STEPS = 7;
+export const TOTAL_STEPS = 8;

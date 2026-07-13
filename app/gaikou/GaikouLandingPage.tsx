@@ -43,7 +43,8 @@ export default function GaikouLandingPage() {
           <SectionDivider color="#fdfbf6" />
 
           <div className="relative px-4 sm:px-6 pt-0 pb-8 sm:pb-10">
-            <CTABlock />
+            {/* ページ内で最初のCTAのみ10%OFFクーポンを表示する */}
+            <CTABlock showCoupon />
           </div>
 
           <WorksGrid />

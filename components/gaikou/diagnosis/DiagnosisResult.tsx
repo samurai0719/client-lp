@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Sparkles, Info } from "lucide-react";
 
 type DiagnosisResultProps = {
+  workType: string | null;
   worries: string[];
 };
 
@@ -19,8 +20,9 @@ function getRecommendedPlans(worries: string[]): string[] {
   return Array.from(new Set(plans));
 }
 
-export default function DiagnosisResult({ worries }: DiagnosisResultProps) {
+export default function DiagnosisResult({ workType, worries }: DiagnosisResultProps) {
   const plans = getRecommendedPlans(worries);
+  const workTypeLabel = workType === "new-construction" ? "新築外構" : "外構リフォーム";
 
   return (
     <motion.div
@@ -35,12 +37,18 @@ export default function DiagnosisResult({ worries }: DiagnosisResultProps) {
 
       <h2 className="text-[1.3rem] sm:text-[1.6rem] font-bold text-[#10302a] tracking-tight">診断が完了しました</h2>
 
+      <p className="mt-3">
+        <span className="inline-flex items-center rounded-full bg-[#eaf3ee] border border-[#2f7d5a]/30 px-3.5 py-1 text-[12.5px] sm:text-[13px] font-bold text-[#1f4d3d]">
+          ご希望の工事：{workTypeLabel}
+        </span>
+      </p>
+
       <p className="mt-4 text-[14px] sm:text-[15px] text-[#3d4a45] leading-relaxed text-left sm:text-center">
         ご回答ありがとうございます。
         <br />
         <br />
         ご希望の工事内容と現在のお悩みをもとに、
-        お客様に合った外構リフォームプランをご案内します。
+        お客様に合った{workTypeLabel}プランをご案内します。
         <br />
         <br />
         担当者からのご連絡をお待ちください。

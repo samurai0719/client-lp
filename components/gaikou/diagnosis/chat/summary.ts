@@ -8,6 +8,7 @@ import {
   paymentMethodOptions,
   sizeOptions,
   timingOptions,
+  workTypeOptions,
   worryOptions,
   type DiagnosisOption,
 } from "@/data/gaikou/diagnosisQuestions";
@@ -31,7 +32,7 @@ export function questionForStep(step: number): ChatQuestion {
       description: "現在は東海3県に対応しています",
     };
   }
-  if (step === 7) {
+  if (step === 8) {
     return {
       title: "診断結果をお届けするため、\nお客様情報をご入力ください",
     };
@@ -46,19 +47,21 @@ export function answerLinesForStep(step: number, answers: DiagnosisAnswers): str
     case 1:
       return [[answers.prefecture, answers.municipality].filter(Boolean).join(" ")];
     case 2:
+      return [labelOf(workTypeOptions, answers.workType)];
+    case 3:
       return answers.constructionTypes.map((id) => labelOf(constructionTypeOptions, id));
-    case 3: {
+    case 4: {
       const lines = answers.worries.map((id) => labelOf(worryOptions, id));
       if (answers.worries.includes("other") && answers.worriesOther.trim()) {
         lines.push(`「${answers.worriesOther.trim()}」`);
       }
       return lines;
     }
-    case 4:
-      return [labelOf(sizeOptions, answers.size)];
     case 5:
+      return [labelOf(sizeOptions, answers.size)];
+    case 6:
       return [labelOf(timingOptions, answers.timing)];
-    case 6: {
+    case 7: {
       const lines = [labelOf(budgetOptions, answers.budget)];
       if (answers.paymentMethod) {
         lines.push(`支払い方法：${labelOf(paymentMethodOptions, answers.paymentMethod)}`);
