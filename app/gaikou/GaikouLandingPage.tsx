@@ -7,7 +7,6 @@ import HeroCtaSection from "@/components/gaikou/HeroCtaSection";
 import DirectAppealSection from "@/components/gaikou/DirectAppealSection";
 import CTABlock from "@/components/gaikou/CTABlock";
 import WorksGrid from "@/components/gaikou/WorksGrid";
-import TestimonialsSection from "@/components/gaikou/TestimonialsSection";
 import StaffSection from "@/components/gaikou/StaffSection";
 import ProblemsSection from "@/components/gaikou/ProblemsSection";
 import SolutionsSection from "@/components/gaikou/SolutionsSection";
@@ -57,8 +56,9 @@ export default function GaikouLandingPage() {
           {/* 3. 施工事例 */}
           <WorksGrid />
 
-          {/* 4. お客様の声 */}
-          <TestimonialsSection />
+          {/* 4. お客様の声：実際の声が揃うまで一時非表示（2026-07-14 オーナー指示）。
+              復活時は components/gaikou/TestimonialsSection を再インポートして
+              data/gaikou/testimonials.ts を本物の声に差し替える */}
 
           {/* 5. 料金目安 */}
           <PriceSection />
