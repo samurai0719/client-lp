@@ -1,5 +1,5 @@
 // 高長建設 顧客管理 PWA Service Worker
-const CACHE_NAME = "takanaga-crm-v1";
+const CACHE_NAME = "takanaga-crm-v2";
 const OFFLINE_URL = "/admin/offline";
 
 // キャッシュする静的アセット（顧客情報はキャッシュしない）
@@ -35,6 +35,14 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
+
+  // ページ遷移（ナビゲーション）はSWで横取りしない。
+  // 横取りするとサーバー側リダイレクト（例: /admin → /admin/login）が
+  // "redirected response" になり、standalone/WebView が
+  // "This page couldn't load" で読み込みに失敗するため、ブラウザに委ねる。
+  if (event.request.mode === "navigate") {
+    return;
+  }
 
   // API・顧客データはキャッシュしない
   if (
