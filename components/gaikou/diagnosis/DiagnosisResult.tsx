@@ -64,7 +64,7 @@ export default function DiagnosisResult({ workType, constructionTypes, estimate 
             今回の概算目安
           </p>
           <p className="mt-1 text-[18px] sm:text-[20px] font-extrabold tracking-tight text-[#d9601a]">
-            {estimate.label}
+            約{estimate.minMan}万円〜
           </p>
           <p className="mt-1 text-[11.5px] text-[#8a7a55] leading-relaxed">
             対象：{estimate.works.join("・")}／正式な金額は無料の現地調査後に確定します。

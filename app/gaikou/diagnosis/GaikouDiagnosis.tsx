@@ -292,7 +292,8 @@ export default function GaikouDiagnosis() {
           answers,
           utm,
           eventId,
-          estimate: estimate ? { label: estimate.label, works: estimate.works } : null,
+          // お客様に表示した金額（最安のみ）と同じ表記で保存する
+          estimate: estimate ? { label: `約${estimate.minMan}万円〜`, works: estimate.works } : null,
         }),
       });
       if (!res.ok) throw new Error(`status ${res.status}`);

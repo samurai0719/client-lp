@@ -20,16 +20,13 @@ export default function DiagnosisEstimateCard({ estimate }: DiagnosisEstimateCar
 
       {estimate ? (
         <>
+          {/* 表示は最安の金額のみ（上限は出さない） */}
           <p className="mt-2 text-[15px] sm:text-base font-bold text-[#10302a] leading-relaxed">
             今回の内容では、概算
             <span className="mx-1 text-[26px] sm:text-[30px] font-extrabold tracking-tight text-[#d9601a]">
               {estimate.minMan}
             </span>
-            万円〜
-            <span className="mx-1 text-[26px] sm:text-[30px] font-extrabold tracking-tight text-[#d9601a]">
-              {estimate.maxMan}
-            </span>
-            万円が目安です
+            万円〜が目安です
           </p>
           <p className="mt-1.5 text-[12px] text-[#8a7a55]">対象：{estimate.works.join("・")}</p>
           {estimate.hasUnpriced && (
