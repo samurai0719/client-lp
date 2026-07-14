@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useEffect, type FormEvent } from "react";
+import { useId, useRef, useState, useEffect, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { Calculator, Paperclip } from "lucide-react";
 import { serviceAreas } from "./data";
@@ -8,6 +8,7 @@ import SectionHeading from "./SectionHeading";
 import SectionBackdrop from "./SectionBackdrop";
 import { captureUtm, loadUtm } from "@/lib/utm/storage";
 import { SIMULATOR_ESTIMATE_STORAGE_KEY } from "@/lib/calculate-exterior-estimate";
+import { fireMetaLead, generateLeadEventId } from "@/lib/analytics/metaLead";
 
 // シミュレーターから引き継がれる概算価格
 type SimulatorEstimateHandoff = {
@@ -58,6 +59,8 @@ export default function ContactSection() {
   const [website, setWebsite] = useState("");
   // シミュレーターの概算価格（あれば問い合わせ内容に添えて送信する）
   const [simEstimate, setSimEstimate] = useState<SimulatorEstimateHandoff | null>(null);
+  // Meta Pixel Lead の発火済み管理（二重クリック・再レンダリングでの重複発火防止）
+  const leadFired = useRef(false);
 
   // UTMをキャプチャ
   useEffect(() => {
@@ -102,11 +105,15 @@ export default function ContactSection() {
       .filter(Boolean)
       .join("\n");
 
+    // CAPI併用時の重複除外用ID（PixelのeventIDと送信ペイロードで同じ値を使う）
+    const eventId = generateLeadEventId();
+
     try {
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          eventId,
           name: name.trim(),
           phone: phone.trim(),
           email: email.trim() || undefined,
@@ -136,9 +143,17 @@ export default function ContactSection() {
         return;
       }
 
+      // Meta Pixel Lead：APIレスポンス成功後に両Pixelへ1回だけ発火
+      // （サンクスページのPageViewはLeadの代用にしない）
+      if (!leadFired.current) {
+        leadFired.current = true;
+        fireMetaLead(eventId, "gaikou-contact-form");
+      }
+
       // 専用サンクスページへはフルページ遷移にする
       // （SPA遷移だとMeta PixelのPageViewが発火せず、URLベースのCV計測ができないため）
-      window.location.assign("/gaikou/thanks");
+      // Leadイベントのビーコン送出を待つため、遷移をわずかに遅らせる
+      setTimeout(() => window.location.assign("/gaikou/thanks"), 300);
     } catch {
       setSubmitError("通信エラーが発生しました。お手数ですがお電話でご連絡ください。");
       setSubmitting(false);

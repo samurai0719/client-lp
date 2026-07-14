@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ChevronLeft, Paperclip, MapPin } from "lucide-react";
 import type { DiagnosisContact } from "./types";
 import type { Prefecture } from "@/data/gaikou/municipalities";
+import CouponBadge from "./CouponBadge";
 
 type DiagnosisContactFormProps = {
   prefecture: Prefecture | null;
@@ -40,7 +41,7 @@ export default function DiagnosisContactForm({
   onBack,
   onSubmit,
   submitting,
-  submitLabel = "無料診断を完了する",
+  submitLabel = "10%OFFで無料見積もりを依頼する",
 }: DiagnosisContactFormProps) {
   const baseId = useId();
   const [errors, setErrors] = useState<FormErrors>({});
@@ -224,6 +225,10 @@ export default function DiagnosisContactForm({
         </div>
 
         <div className="space-y-2 pt-1">
+          {/* 送信ボタン付近にも10%OFF訴求を表示する */}
+          <p className="text-center">
+            <CouponBadge />
+          </p>
           <button type="submit" disabled={submitting} className="gaikou-cta-btn w-full disabled:opacity-60">
             <span className="gaikou-cta-btn-inner">{submitting ? "送信しています…" : submitLabel}</span>
           </button>

@@ -31,7 +31,7 @@ export default function WarrantySection() {
         <SectionHeading
           eyebrow="WARRANTY"
           title={"保証・アフターサポート"}
-          description={"保証内容は確定後にあらためてご案内します。架空の年数は掲載していません"}
+          description={"保証内容・保証期間は、工事内容や使用商品によって異なります。お見積もり時に対象範囲と期間を分かりやすくご説明します。"}
         />
 
         <div className="mt-10 md:mt-14 grid sm:grid-cols-3 gap-3 sm:gap-4">

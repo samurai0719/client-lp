@@ -17,12 +17,9 @@ export type DiagnosisAnswers = {
   /** 工事種別（new-construction=新築外構 / renovation=外構リフォーム） */
   workType: string | null;
   constructionTypes: string[];
-  worries: string[];
-  worriesOther: string;
   size: string | null;
+  /** 工事希望時期（任意） */
   timing: string | null;
-  budget: string | null;
-  paymentMethod: string | null;
   contact: DiagnosisContact;
 };
 
@@ -31,12 +28,8 @@ export const initialDiagnosisAnswers: DiagnosisAnswers = {
   municipality: null,
   workType: null,
   constructionTypes: [],
-  worries: [],
-  worriesOther: "",
   size: null,
   timing: null,
-  budget: null,
-  paymentMethod: null,
   contact: {
     name: "",
     phone: "",
@@ -49,4 +42,5 @@ export const initialDiagnosisAnswers: DiagnosisAnswers = {
   },
 };
 
-export const TOTAL_STEPS = 8;
+// STEP1: 地域 / STEP2: 工事種別＋工事内容 / STEP3: 広さ＋希望時期 / STEP4: 概算表示＋連絡先
+export const TOTAL_STEPS = 4;

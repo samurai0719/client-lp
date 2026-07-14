@@ -1,10 +1,14 @@
 "use client";
 
-// 外構プラン無料診断（チャットボット形式UI）
+// 外構プラン無料診断（チャットボット形式UI・4ステップ構成）
 //
-// 質問内容・順番・選択肢・必須任意・バリデーション・送信ペイロード
-// （POST /api/gaikou-contact {answers, utm}）は従来のステップ形式と同一。
-// 変更したのは見た目と回答方法（チャット履歴形式）のみ。
+// STEP1: 地域（都道府県＋市区町村チップ）
+// STEP2: 工事種別（新築外構/外構リフォーム）＋希望する工事内容
+// STEP3: 施工予定の広さ＋工事希望時期（任意）
+// STEP4: 概算価格の表示 → 連絡先入力 → 確認画面なしでそのまま送信
+//
+// 送信ペイロードは POST /api/gaikou-contact {answers, utm, eventId}。
+// 送信成功後に Meta Pixel の Lead を両Pixelへ1回だけ発火する（fireMetaLead）。
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -23,13 +27,15 @@ import DiagnosisProgress from "@/components/gaikou/diagnosis/DiagnosisProgress";
 import DiagnosisOptionCard from "@/components/gaikou/diagnosis/DiagnosisOptionCard";
 import AreaSelector from "@/components/gaikou/diagnosis/AreaSelector";
 import DiagnosisContactForm from "@/components/gaikou/diagnosis/DiagnosisContactForm";
+import DiagnosisEstimateCard from "@/components/gaikou/diagnosis/DiagnosisEstimateCard";
 import DiagnosisResult from "@/components/gaikou/diagnosis/DiagnosisResult";
 import { BotMessage, TypingBubble, UserMessage } from "@/components/gaikou/diagnosis/chat/ChatBubbles";
-import DiagnosisConfirmation from "@/components/gaikou/diagnosis/chat/DiagnosisConfirmation";
 import { answerLinesForStep, questionForStep } from "@/components/gaikou/diagnosis/chat/summary";
 import {
-  diagnosisQuestions,
-  paymentMethodOptions,
+  constructionTypeOptions,
+  sizeOptions,
+  timingOptions,
+  workTypeOptions,
 } from "@/data/gaikou/diagnosisQuestions";
 import type { Prefecture } from "@/data/gaikou/municipalities";
 import {
@@ -40,13 +46,15 @@ import {
 } from "@/components/gaikou/diagnosis/types";
 import { getUtmRecord } from "@/components/gaikou/utm";
 import { trackEvent } from "@/lib/analytics/track";
+import { fireMetaLead, generateLeadEventId } from "@/lib/analytics/metaLead";
+import { calculateDiagnosisEstimate } from "@/lib/gaikou-diagnosis-estimate";
 
-// v2: 質問2に工事種別（新築外構/外構リフォーム）を追加しステップ番号が変わったためキーを更新
-const STATE_STORAGE_KEY = "gaikou-diagnosis-state-v2";
+// v3: 4ステップ構成へ短縮したためキーを更新（旧キーの途中状態は引き継がない）
+const STATE_STORAGE_KEY = "gaikou-diagnosis-state-v3";
 const UTM_STORAGE_KEY = "gaikou-diagnosis-utm-v1";
 const STARTED_FLAG_KEY = "gaikou-diagnosis-started-v1";
 
-type Phase = "question" | "confirm" | "result";
+type Phase = "question" | "result";
 
 type PersistedState = {
   step: number;
@@ -61,9 +69,9 @@ const TRUST_POINTS = [
   { icon: Clock, text: "入力時間約1分" },
 ];
 
-// 案内役からの最初の挨拶（1問目の質問文自体は変更していない）
+// 案内役からの最初の挨拶
 const GREETING_LINES = [
-  "こんにちは。\n外構プラン診断をご利用いただきありがとうございます。\nいくつかの質問に答えていただくと、お客様に合った外構プランをご案内できます。",
+  "こんにちは。\n外構プラン診断をご利用いただきありがとうございます。\n4つのステップに答えていただくと、概算費用の目安とお客様に合った外構プランをご案内できます。",
   "それでは、外構について教えてください。",
 ];
 
@@ -93,14 +101,15 @@ export default function GaikouDiagnosis() {
   // 次の質問を表示する前の「入力中…」表示
   const [typing, setTyping] = useState(false);
 
-  const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   // 現在の質問の直前に置くアンカー。質問文が画面上部に見える位置へスクロールする
   const questionAnchorRef = useRef<HTMLDivElement>(null);
   // ユーザー操作直後だけ自動スクロールする（履歴を読んでいる最中に飛ばさない）
   const scrollArmedUntil = useRef(0);
   const historyArmed = useRef(false);
+  // Lead・完了イベントの発火済み管理（二重クリック・再レンダリングでの重複発火防止）
   const inquiryCompleted = useRef(false);
+  const leadFired = useRef(false);
   const stepRef = useRef(step);
   const phaseRef = useRef(phase);
   stepRef.current = step;
@@ -114,7 +123,7 @@ export default function GaikouDiagnosis() {
     }
   }, []);
 
-  // 回答・質問番号が変わるたびにsessionStorageへ保存（送信完了前のみ・従来と同一キー）
+  // 回答・質問番号が変わるたびにsessionStorageへ保存（送信完了前のみ・従来と同一キー体系）
   useEffect(() => {
     if (phase === "result") return;
     const payload: PersistedState = { step, answers };
@@ -133,13 +142,15 @@ export default function GaikouDiagnosis() {
     }
   }, []);
 
-  // 計測: 質問表示（同一ステップの重複送信はしない）
+  // 計測: ステップ表示（同一ステップの重複送信はしない）
   const lastViewedStep = useRef<number | null>(null);
   useEffect(() => {
     if (phase !== "question") return;
     if (lastViewedStep.current === step) return;
     lastViewedStep.current = step;
     trackEvent("diagnosis_step_view", { step });
+    // 連絡先入力（STEP4）到達＝問い合わせ開始
+    if (step === 4) trackEvent("inquiry_started");
   }, [step, phase]);
 
   // ステップが変わったら短い「入力中…」を挟んで次の質問を表示する
@@ -154,7 +165,6 @@ export default function GaikouDiagnosis() {
   }, [step, phase]);
 
   // ユーザー操作直後のみ自動スクロールする。
-  // 質問中は「現在の質問の先頭」へ合わせ、選択肢が多くても質問文が見える位置に保つ。
   useEffect(() => {
     if (Date.now() > scrollArmedUntil.current) return;
     const id = requestAnimationFrame(() => {
@@ -167,28 +177,15 @@ export default function GaikouDiagnosis() {
     return () => cancelAnimationFrame(id);
   }, [step, typing, phase, submitError, answers.prefecture]);
 
-  useEffect(() => {
-    return () => {
-      if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
-    };
-  }, []);
-
-  // ブラウザの「戻る」を診断内の「ひとつ前の質問に戻る」に変換する
-  // （回答済みの状態で誤ってLPへ戻ってしまうのを防ぐ）
+  // ブラウザの「戻る」を診断内の「ひとつ前のステップに戻る」に変換する
   useEffect(() => {
     const onPopState = () => {
       if (phaseRef.current === "result") return;
-      if (phaseRef.current === "confirm") {
-        setPhase("question");
-        armScroll();
-        window.history.pushState({ gaikouDiagnosis: true }, "");
-        return;
-      }
       if (stepRef.current > 1) {
         goBack();
         window.history.pushState({ gaikouDiagnosis: true }, "");
       } else {
-        // 1問目まで戻ったら、次の「戻る」でページを離れられるようにする
+        // STEP1まで戻ったら、次の「戻る」でページを離れられるようにする
         historyArmed.current = false;
       }
     };
@@ -220,13 +217,6 @@ export default function GaikouDiagnosis() {
     setStep((s) => Math.max(1, s - 1));
   }
 
-  function scheduleAutoAdvance() {
-    if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
-    autoAdvanceTimer.current = setTimeout(() => {
-      goNext();
-    }, 300);
-  }
-
   function setPrefecture(prefecture: Prefecture) {
     armScroll();
     setAnswers((prev) => ({ ...prev, prefecture, municipality: null }));
@@ -236,32 +226,25 @@ export default function GaikouDiagnosis() {
     setAnswers((prev) => ({ ...prev, municipality }));
   }
 
-  function toggleMulti(field: "constructionTypes" | "worries", optionId: string) {
+  function setWorkType(optionId: string) {
+    setAnswers((prev) => ({ ...prev, workType: optionId }));
+  }
+
+  function toggleConstructionType(optionId: string) {
     setAnswers((prev) => {
-      const current = prev[field];
+      const current = prev.constructionTypes;
       const next = current.includes(optionId) ? current.filter((id) => id !== optionId) : [...current, optionId];
-      return { ...prev, [field]: next };
+      return { ...prev, constructionTypes: next };
     });
   }
 
-  function setSingleAndAdvance(field: "workType" | "size" | "timing", optionId: string) {
-    setAnswers((prev) => ({ ...prev, [field]: optionId }));
-    trackEvent("diagnosis_answer", { step: stepRef.current, field });
-    armScroll();
-    armHistoryGuard();
-    scheduleAutoAdvance();
+  function setSize(optionId: string) {
+    setAnswers((prev) => ({ ...prev, size: optionId }));
   }
 
-  function setBudget(optionId: string) {
-    setAnswers((prev) => ({ ...prev, budget: optionId }));
-  }
-
-  function setPaymentMethod(optionId: string) {
-    setAnswers((prev) => ({ ...prev, paymentMethod: prev.paymentMethod === optionId ? null : optionId }));
-  }
-
-  function setWorriesOther(text: string) {
-    setAnswers((prev) => ({ ...prev, worriesOther: text }));
+  function setTiming(optionId: string) {
+    // 任意項目のため、同じ選択肢をもう一度押すと解除できる
+    setAnswers((prev) => ({ ...prev, timing: prev.timing === optionId ? null : optionId }));
   }
 
   function setContact(contact: DiagnosisContact) {
@@ -271,21 +254,6 @@ export default function GaikouDiagnosis() {
   function confirmStep(field: string) {
     trackEvent("diagnosis_answer", { step: stepRef.current, field });
     goNext();
-  }
-
-  // 連絡先フォームのバリデーション通過後、最終確認へ進む
-  function goToConfirmation() {
-    trackEvent("diagnosis_answer", { step: 8, field: "contact" });
-    trackEvent("inquiry_started");
-    armScroll();
-    setSubmitError("");
-    setPhase("confirm");
-  }
-
-  function backToContactForm() {
-    armScroll();
-    setSubmitError("");
-    setPhase("question");
   }
 
   async function handleFinalSubmit() {
@@ -302,12 +270,21 @@ export default function GaikouDiagnosis() {
       }
     })();
 
+    // 表示した概算をリードにも添付する（管理画面・CRMで確認できる）
+    const estimate = calculateDiagnosisEstimate(answers);
+    // CAPI併用時の重複除外用ID（PixelのeventIDと送信ペイロードで同じ値を使う）
+    const eventId = generateLeadEventId();
+
     try {
-      // 送信ペイロードは従来と同一（{answers, utm}）。API・CRM保存処理は変更しない。
       const res = await fetch("/api/gaikou-contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers, utm }),
+        body: JSON.stringify({
+          answers,
+          utm,
+          eventId,
+          estimate: estimate ? { label: estimate.label, works: estimate.works } : null,
+        }),
       });
       if (!res.ok) throw new Error(`status ${res.status}`);
 
@@ -315,6 +292,11 @@ export default function GaikouDiagnosis() {
       if (!inquiryCompleted.current) {
         inquiryCompleted.current = true;
         trackEvent("inquiry_completed");
+      }
+      // Meta Pixel Lead：APIレスポンス成功後に両Pixelへ1回だけ発火
+      if (!leadFired.current) {
+        leadFired.current = true;
+        fireMetaLead(eventId, "gaikou-diagnosis");
       }
       armScroll();
       setPhase("result");
@@ -328,11 +310,11 @@ export default function GaikouDiagnosis() {
     }
   }
 
-  const currentQuestion = diagnosisQuestions.find((q) => q.step === step);
-  const completedSteps = phase === "confirm" ? 7 : step - 1;
+  const completedSteps = step - 1;
   const showCurrentQuestion = phase === "question" && !typing;
+  const estimate = step === 4 || phase === "result" ? calculateDiagnosisEstimate(answers) : null;
 
-  // ── 回答エリア（現在の質問の選択肢） ─────────────────────────────
+  // ── 回答エリア（現在のステップの入力パネル） ───────────────────────
   function renderAnswerPanel() {
     if (step === 1) {
       return (
@@ -346,197 +328,136 @@ export default function GaikouDiagnosis() {
           <button
             type="button"
             onClick={() => confirmStep("area")}
-            disabled={!answers.municipality}
+            disabled={!answers.municipality?.trim()}
             className="gaikou-cta-btn w-full disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <span className="gaikou-cta-btn-inner">次の質問へ</span>
+            <span className="gaikou-cta-btn-inner">次へ進む</span>
           </button>
         </div>
       );
     }
 
-    // 質問2: 工事種別（新築外構 / 外構リフォーム）。選択すると自動で次へ進む
-    if (step === 2 && currentQuestion) {
+    if (step === 2) {
       return (
-        <div className="grid sm:grid-cols-2 gap-2">
-          {currentQuestion.options.map((option) => (
-            <DiagnosisOptionCard
-              key={option.id}
-              label={option.label}
-              iconKey={option.iconKey}
-              selected={answers.workType === option.id}
-              onClick={() => setSingleAndAdvance("workType", option.id)}
-            />
-          ))}
-        </div>
-      );
-    }
-
-    if (step === 3 && currentQuestion) {
-      return (
-        <div className="space-y-3">
-          <div className="grid sm:grid-cols-2 gap-2">
-            {currentQuestion.options.map((option) => (
-              <DiagnosisOptionCard
-                key={option.id}
-                label={option.label}
-                iconKey={option.iconKey}
-                multi
-                selected={answers.constructionTypes.includes(option.id)}
-                onClick={() => toggleMulti("constructionTypes", option.id)}
-              />
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={() => confirmStep("constructionTypes")}
-            disabled={answers.constructionTypes.length === 0}
-            className="gaikou-cta-btn w-full disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            <span className="gaikou-cta-btn-inner">この内容で次へ</span>
-          </button>
-        </div>
-      );
-    }
-
-    if (step === 4 && currentQuestion) {
-      return (
-        <div className="space-y-3">
-          <div className="grid sm:grid-cols-2 gap-2">
-            {currentQuestion.options.map((option) => (
-              <DiagnosisOptionCard
-                key={option.id}
-                label={option.label}
-                iconKey={option.iconKey}
-                multi
-                selected={answers.worries.includes(option.id)}
-                onClick={() => toggleMulti("worries", option.id)}
-              />
-            ))}
-          </div>
-          {answers.worries.includes("other") && (
-            <div className="gd-chat-appear">
-              <label htmlFor="worries-other" className="block text-sm font-semibold text-[#10302a] mb-1.5">
-                具体的にご記入ください
-              </label>
-              <textarea
-                id="worries-other"
-                rows={2}
-                value={answers.worriesOther}
-                onChange={(e) => setWorriesOther(e.target.value)}
-                className="w-full rounded-xl border border-[#dcd6c4] bg-white px-4 py-3 text-[15px] outline-none focus:border-[#2f7d5a] focus:ring-2 focus:ring-[#2f7d5a]/20 resize-none"
-              />
-            </div>
-          )}
-          <button
-            type="button"
-            onClick={() => confirmStep("worries")}
-            disabled={answers.worries.length === 0}
-            className="gaikou-cta-btn w-full disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            <span className="gaikou-cta-btn-inner">この内容で次へ</span>
-          </button>
-        </div>
-      );
-    }
-
-    if (step === 5 && currentQuestion) {
-      return (
-        <div className="grid sm:grid-cols-2 gap-2">
-          {currentQuestion.options.map((option) => (
-            <DiagnosisOptionCard
-              key={option.id}
-              label={option.label}
-              iconKey={option.iconKey}
-              selected={answers.size === option.id}
-              onClick={() => setSingleAndAdvance("size", option.id)}
-            />
-          ))}
-        </div>
-      );
-    }
-
-    if (step === 6 && currentQuestion) {
-      return (
-        <div className="grid sm:grid-cols-2 gap-2">
-          {currentQuestion.options.map((option) => (
-            <DiagnosisOptionCard
-              key={option.id}
-              label={option.label}
-              iconKey={option.iconKey}
-              selected={answers.timing === option.id}
-              onClick={() => setSingleAndAdvance("timing", option.id)}
-            />
-          ))}
-        </div>
-      );
-    }
-
-    if (step === 7 && currentQuestion) {
-      return (
-        <div className="space-y-3">
-          <div className="grid sm:grid-cols-2 gap-2">
-            {currentQuestion.options.map((option) => (
-              <DiagnosisOptionCard
-                key={option.id}
-                label={option.label}
-                iconKey={option.iconKey}
-                selected={answers.budget === option.id}
-                onClick={() => setBudget(option.id)}
-              />
-            ))}
-          </div>
-
+        <div className="space-y-4">
           <div>
-            <p className="text-sm font-semibold text-[#10302a] mb-2">
-              支払い方法について <span className="text-xs text-[#8a9a90] font-normal">（任意）</span>
-            </p>
-            <div className="grid sm:grid-cols-3 gap-2">
-              {paymentMethodOptions.map((option) => (
+            <p className="text-sm font-semibold text-[#10302a] mb-2">工事の種類</p>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {workTypeOptions.map((option) => (
                 <DiagnosisOptionCard
                   key={option.id}
                   label={option.label}
                   iconKey={option.iconKey}
-                  selected={answers.paymentMethod === option.id}
-                  onClick={() => setPaymentMethod(option.id)}
+                  selected={answers.workType === option.id}
+                  onClick={() => setWorkType(option.id)}
                 />
               ))}
             </div>
-            <p className="mt-2.5 text-[11px] text-[#8a9a90] leading-relaxed">
-              ローンの審査や契約は各金融機関とお客様との間で行われます。
-              <br />
-              申請に必要な見積書や工事関係書類をご用意します。
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold text-[#10302a] mb-2">
+              希望する工事内容 <span className="text-xs text-[#8a9a90] font-normal">（複数選択可）</span>
             </p>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {constructionTypeOptions.map((option) => (
+                <DiagnosisOptionCard
+                  key={option.id}
+                  label={option.label}
+                  iconKey={option.iconKey}
+                  multi
+                  selected={answers.constructionTypes.includes(option.id)}
+                  onClick={() => toggleConstructionType(option.id)}
+                />
+              ))}
+            </div>
           </div>
 
           <button
             type="button"
-            onClick={() => confirmStep("budget")}
-            disabled={!answers.budget}
+            onClick={() => confirmStep("workType-constructionTypes")}
+            disabled={!answers.workType || answers.constructionTypes.length === 0}
             className="gaikou-cta-btn w-full disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <span className="gaikou-cta-btn-inner">次の質問へ</span>
+            <span className="gaikou-cta-btn-inner">次へ進む</span>
           </button>
         </div>
       );
     }
 
-    if (step === 8) {
+    if (step === 3) {
       return (
-        <DiagnosisContactForm
-          prefecture={answers.prefecture}
-          municipality={answers.municipality}
-          contact={answers.contact}
-          onChange={setContact}
-          onBackToArea={() => {
-            armScroll();
-            setStep(1);
-          }}
-          onBack={goBack}
-          onSubmit={goToConfirmation}
-          submitting={submitting}
-          submitLabel="入力内容を確認する"
-        />
+        <div className="space-y-4">
+          <div>
+            <p className="text-sm font-semibold text-[#10302a] mb-2">施工をご希望の広さ</p>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {sizeOptions.map((option) => (
+                <DiagnosisOptionCard
+                  key={option.id}
+                  label={option.label}
+                  iconKey={option.iconKey}
+                  selected={answers.size === option.id}
+                  onClick={() => setSize(option.id)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold text-[#10302a] mb-2">
+              工事のご希望時期 <span className="text-xs text-[#8a9a90] font-normal">（任意）</span>
+            </p>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {timingOptions.map((option) => (
+                <DiagnosisOptionCard
+                  key={option.id}
+                  label={option.label}
+                  iconKey={option.iconKey}
+                  selected={answers.timing === option.id}
+                  onClick={() => setTiming(option.id)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => confirmStep("size-timing")}
+            disabled={!answers.size}
+            className="gaikou-cta-btn w-full disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <span className="gaikou-cta-btn-inner">概算の目安を見る</span>
+          </button>
+        </div>
+      );
+    }
+
+    if (step === 4) {
+      return (
+        <div className="space-y-4">
+          {/* 電話番号などの入力前に、選択内容に応じた概算価格帯を表示する */}
+          <DiagnosisEstimateCard estimate={estimate} />
+
+          {submitError && (
+            <p role="alert" className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {submitError}
+            </p>
+          )}
+
+          <DiagnosisContactForm
+            prefecture={answers.prefecture}
+            municipality={answers.municipality}
+            contact={answers.contact}
+            onChange={setContact}
+            onBackToArea={() => {
+              armScroll();
+              setStep(1);
+            }}
+            onBack={goBack}
+            onSubmit={handleFinalSubmit}
+            submitting={submitting}
+          />
+        </div>
       );
     }
 
@@ -545,7 +466,7 @@ export default function GaikouDiagnosis() {
 
   return (
     <div className="gaikou-lp min-h-screen w-full min-w-0 overflow-x-hidden bg-[#fdfbf6]">
-      <h1 className="sr-only">外構プラン無料診断｜岐阜県・愛知県・三重県対応の外構リフォーム診断フォーム</h1>
+      <h1 className="sr-only">外構プラン無料診断｜岐阜県・愛知県・三重県対応の外構工事 概算診断フォーム</h1>
 
       <MotionConfigWrapper>
         {phase !== "result" && <DiagnosisProgress step={step} />}
@@ -581,14 +502,18 @@ export default function GaikouDiagnosis() {
 
         <main className="max-w-xl mx-auto px-4 sm:px-6 pb-[calc(48px+env(safe-area-inset-bottom))]">
           {phase === "result" ? (
-            <DiagnosisResult workType={answers.workType} worries={answers.worries} />
+            <DiagnosisResult
+              workType={answers.workType}
+              constructionTypes={answers.constructionTypes}
+              estimate={estimate}
+            />
           ) : (
             <div className="space-y-2.5 sm:space-y-3 pt-2" aria-live="polite">
               {/* 最初の挨拶 */}
               <BotMessage showName>{GREETING_LINES[0]}</BotMessage>
               <BotMessage>{GREETING_LINES[1]}</BotMessage>
 
-              {/* 回答済みの質問と回答（会話履歴） */}
+              {/* 回答済みのステップと回答（会話履歴） */}
               {Array.from({ length: completedSteps }, (_, i) => i + 1).map((s) => {
                 const q = questionForStep(s);
                 return (
@@ -604,8 +529,8 @@ export default function GaikouDiagnosis() {
                 );
               })}
 
-              {/* 現在の質問（アンカーは固定ヘッダーの高さぶん余白を確保） */}
-              <div ref={questionAnchorRef} className="scroll-mt-[92px]" aria-hidden="true" />
+              {/* 現在のステップ（アンカーは固定ヘッダーの高さぶん余白を確保） */}
+              <div ref={questionAnchorRef} className="scroll-mt-[124px]" aria-hidden="true" />
               {phase === "question" && typing && <TypingBubble />}
               {showCurrentQuestion && (
                 <BotMessage showName>
@@ -622,37 +547,17 @@ export default function GaikouDiagnosis() {
               {showCurrentQuestion && (
                 <div className="gd-chat-appear pt-1">
                   {renderAnswerPanel()}
-                  {step > 1 && step < 8 && (
+                  {step > 1 && step < 4 && (
                     <button
                       type="button"
                       onClick={goBack}
                       className="mx-auto mt-3 flex items-center justify-center gap-1 min-h-[44px] px-3 text-sm font-semibold text-[#6b7a73] hover:text-[#10302a] transition-colors"
                     >
                       <ChevronLeft className="w-4 h-4" aria-hidden="true" />
-                      ひとつ前の質問に戻る
+                      ひとつ前に戻る
                     </button>
                   )}
                 </div>
-              )}
-
-              {/* 最終確認 */}
-              {phase === "confirm" && (
-                <>
-                  <BotMessage showName>
-                    <span className="font-bold">ありがとうございます。入力内容をご確認ください。</span>
-                    {"\n"}
-                    よろしければ「この内容で無料見積もりを依頼する」を押してください。
-                  </BotMessage>
-                  <div className="gd-chat-appear">
-                    <DiagnosisConfirmation
-                      answers={answers}
-                      submitting={submitting}
-                      submitError={submitError}
-                      onEdit={backToContactForm}
-                      onSubmit={handleFinalSubmit}
-                    />
-                  </div>
-                </>
               )}
 
               <div ref={bottomRef} aria-hidden="true" />

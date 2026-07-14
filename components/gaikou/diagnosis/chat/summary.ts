@@ -1,15 +1,11 @@
 // チャット履歴用：質問文・回答テキストの導出。
-// 質問文・選択肢は data/gaikou/diagnosisQuestions.ts を参照し、ここで重複定義しない。
+// 選択肢は data/gaikou/diagnosisQuestions.ts を参照し、ここで重複定義しない。
 
 import {
-  budgetOptions,
   constructionTypeOptions,
-  diagnosisQuestions,
-  paymentMethodOptions,
   sizeOptions,
   timingOptions,
   workTypeOptions,
-  worryOptions,
   type DiagnosisOption,
 } from "@/data/gaikou/diagnosisQuestions";
 import type { DiagnosisAnswers } from "../types";
@@ -24,53 +20,49 @@ export type ChatQuestion = {
   description?: string;
 };
 
-// 各ステップの質問文（既存の質問文をそのまま使用。文言変更禁止）
+// 各ステップの質問文（4ステップ構成）
 export function questionForStep(step: number): ChatQuestion {
-  if (step === 1) {
-    return {
-      title: "工事をご希望の地域を教えてください",
-      description: "現在は東海3県に対応しています",
-    };
+  switch (step) {
+    case 1:
+      return {
+        title: "工事をご希望の地域を教えてください",
+        description: "現在は東海3県に対応しています",
+      };
+    case 2:
+      return {
+        title: "ご希望の工事を教えてください",
+        description: "工事内容は複数選択できます",
+      };
+    case 3:
+      return {
+        title: "施工をご希望の広さと時期を教えてください",
+        description: "希望時期は任意です",
+      };
+    case 4:
+      return {
+        title: "概算の目安が出ました。\n無料見積もりのご連絡先をご入力ください",
+      };
+    default:
+      return { title: "" };
   }
-  if (step === 8) {
-    return {
-      title: "診断結果をお届けするため、\nお客様情報をご入力ください",
-    };
-  }
-  const question = diagnosisQuestions.find((q) => q.step === step);
-  return { title: question?.title ?? "", description: question?.description };
 }
 
-// 各ステップの回答表示（ユーザー側吹き出し・確認画面で使用）
+// 各ステップの回答表示（ユーザー側吹き出しで使用）
 export function answerLinesForStep(step: number, answers: DiagnosisAnswers): string[] {
   switch (step) {
     case 1:
       return [[answers.prefecture, answers.municipality].filter(Boolean).join(" ")];
-    case 2:
-      return [labelOf(workTypeOptions, answers.workType)];
-    case 3:
-      return answers.constructionTypes.map((id) => labelOf(constructionTypeOptions, id));
-    case 4: {
-      const lines = answers.worries.map((id) => labelOf(worryOptions, id));
-      if (answers.worries.includes("other") && answers.worriesOther.trim()) {
-        lines.push(`「${answers.worriesOther.trim()}」`);
-      }
-      return lines;
+    case 2: {
+      const lines = [labelOf(workTypeOptions, answers.workType)];
+      lines.push(...answers.constructionTypes.map((id) => labelOf(constructionTypeOptions, id)));
+      return lines.filter(Boolean);
     }
-    case 5:
-      return [labelOf(sizeOptions, answers.size)];
-    case 6:
-      return [labelOf(timingOptions, answers.timing)];
-    case 7: {
-      const lines = [labelOf(budgetOptions, answers.budget)];
-      if (answers.paymentMethod) {
-        lines.push(`支払い方法：${labelOf(paymentMethodOptions, answers.paymentMethod)}`);
-      }
-      return lines;
+    case 3: {
+      const lines = [labelOf(sizeOptions, answers.size)];
+      if (answers.timing) lines.push(`希望時期：${labelOf(timingOptions, answers.timing)}`);
+      return lines.filter(Boolean);
     }
     default:
       return [];
   }
 }
-
-export const paymentMethodLabel = (id: string | null) => labelOf(paymentMethodOptions, id);

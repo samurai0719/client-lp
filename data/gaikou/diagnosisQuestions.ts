@@ -1,19 +1,13 @@
-// 外構プラン無料診断の質問データ（質問2〜7）。
-// 質問1（地域）はAreaSelector、質問8（連絡先）はDiagnosisContactFormで個別に扱う。
+// 外構プラン無料診断の選択肢データ。
+// 診断は4ステップ構成（STEP1: 地域 / STEP2: 工事種別＋工事内容 /
+// STEP3: 広さ＋希望時期（任意） / STEP4: 概算表示＋連絡先）。
+// worryOptions・budgetOptions・paymentMethodOptions は旧フォーマットの
+// 送信データをAPI側で日本語ラベルに変換するために残している。
 
 export type DiagnosisOption = {
   id: string;
   label: string;
   iconKey?: string;
-};
-
-export type DiagnosisQuestionDef = {
-  step: 2 | 3 | 4 | 5 | 6 | 7;
-  type: "multi" | "single";
-  title: string;
-  description?: string;
-  options: DiagnosisOption[];
-  allowOther?: boolean;
 };
 
 // 工事種別（新築外構 / 外構リフォーム）。送信データ・管理画面・CRMにもこのラベルで保存する
@@ -22,6 +16,7 @@ export const workTypeOptions: DiagnosisOption[] = [
   { id: "renovation", label: "外構リフォーム", iconKey: "renovation" },
 ];
 
+// 希望する工事内容（旧「希望工事」と「現在のお悩み」を統合した1つの質問）
 export const constructionTypeOptions: DiagnosisOption[] = [
   { id: "concrete", label: "砂利からコンクリートにしたい", iconKey: "layers" },
   { id: "expand-parking", label: "駐車場を広げたい", iconKey: "car-front" },
@@ -33,19 +28,6 @@ export const constructionTypeOptions: DiagnosisOption[] = [
   { id: "turf-tile-deck", label: "人工芝・タイルデッキを設置したい", iconKey: "grid-3x3" },
   { id: "full-renovation", label: "外構全体をリフォームしたい", iconKey: "home" },
   { id: "undecided", label: "まだ具体的に決まっていない", iconKey: "circle-help" },
-];
-
-export const worryOptions: DiagnosisOption[] = [
-  { id: "gravel-scatter", label: "砂利が道路や玄関へ飛び散る", iconKey: "wind" },
-  { id: "mud-puddle", label: "雨の日に泥や水たまりができる", iconKey: "cloud-rain" },
-  { id: "weeding", label: "草むしりが大変", iconKey: "sprout" },
-  { id: "parking-shortage", label: "車を停める場所が足りない", iconKey: "car-front" },
-  { id: "privacy", label: "外からの視線が気になる", iconKey: "eye" },
-  { id: "tree-rock-maintenance", label: "庭木や庭石の管理が大変", iconKey: "tree-deciduous" },
-  { id: "outdated", label: "外構が古くなっている", iconKey: "construction" },
-  { id: "price-unknown", label: "適正な工事価格が分からない", iconKey: "circle-help" },
-  { id: "unsure-which-work", label: "どの工事が合うか分からない", iconKey: "compass" },
-  { id: "other", label: "その他", iconKey: "ellipsis" },
 ];
 
 export const sizeOptions: DiagnosisOption[] = [
@@ -70,57 +52,32 @@ export const timingOptions: DiagnosisOption[] = [
   { id: "price-only", label: "まずは金額だけ知りたい", iconKey: "calculator" },
 ];
 
+// ── 以下は旧フォーマット互換用（API側のラベル変換で使用。診断UIでは未使用） ──
+
+export const worryOptions: DiagnosisOption[] = [
+  { id: "gravel-scatter", label: "砂利が道路や玄関へ飛び散る" },
+  { id: "mud-puddle", label: "雨の日に泥や水たまりができる" },
+  { id: "weeding", label: "草むしりが大変" },
+  { id: "parking-shortage", label: "車を停める場所が足りない" },
+  { id: "privacy", label: "外からの視線が気になる" },
+  { id: "tree-rock-maintenance", label: "庭木や庭石の管理が大変" },
+  { id: "outdated", label: "外構が古くなっている" },
+  { id: "price-unknown", label: "適正な工事価格が分からない" },
+  { id: "unsure-which-work", label: "どの工事が合うか分からない" },
+  { id: "other", label: "その他" },
+];
+
 export const budgetOptions: DiagnosisOption[] = [
-  { id: "under-30", label: "30万円未満", iconKey: "coins" },
-  { id: "30-50", label: "30〜50万円", iconKey: "coins" },
-  { id: "50-100", label: "50〜100万円", iconKey: "wallet" },
-  { id: "100-200", label: "100〜200万円", iconKey: "banknote" },
-  { id: "over-200", label: "200万円以上", iconKey: "banknote" },
-  { id: "undecided", label: "まだ決めていない", iconKey: "calculator" },
+  { id: "under-30", label: "30万円未満" },
+  { id: "30-50", label: "30〜50万円" },
+  { id: "50-100", label: "50〜100万円" },
+  { id: "100-200", label: "100〜200万円" },
+  { id: "over-200", label: "200万円以上" },
+  { id: "undecided", label: "まだ決めていない" },
 ];
 
 export const paymentMethodOptions: DiagnosisOption[] = [
-  { id: "cash", label: "現金・銀行振込", iconKey: "banknote" },
-  { id: "loan", label: "銀行リフォームローンを検討", iconKey: "landmark" },
-  { id: "consult", label: "相談して決めたい", iconKey: "messages-square" },
-];
-
-export const diagnosisQuestions: DiagnosisQuestionDef[] = [
-  {
-    step: 2,
-    type: "single",
-    title: "ご希望の工事を教えてください",
-    options: workTypeOptions,
-  },
-  {
-    step: 3,
-    type: "multi",
-    title: "どのような工事をご希望ですか？",
-    options: constructionTypeOptions,
-  },
-  {
-    step: 4,
-    type: "multi",
-    title: "現在、どのようなことでお困りですか？",
-    options: worryOptions,
-    allowOther: true,
-  },
-  {
-    step: 5,
-    type: "single",
-    title: "施工をご希望の広さを教えてください",
-    options: sizeOptions,
-  },
-  {
-    step: 6,
-    type: "single",
-    title: "いつ頃までに工事をご希望ですか？",
-    options: timingOptions,
-  },
-  {
-    step: 7,
-    type: "single",
-    title: "ご予算の目安を教えてください",
-    options: budgetOptions,
-  },
+  { id: "cash", label: "現金・銀行振込" },
+  { id: "loan", label: "銀行リフォームローンを検討" },
+  { id: "consult", label: "相談して決めたい" },
 ];

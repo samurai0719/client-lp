@@ -139,3 +139,11 @@ export const municipalities = {
 export type Prefecture = keyof typeof municipalities;
 
 export const prefectures = Object.keys(municipalities) as Prefecture[];
+
+// 診断STEP1でチップ表示する主要市町村（municipalities に含まれる名称のみ使用する）。
+// ここに無い市町村は「その他の市町村」から入力してもらう。
+export const majorMunicipalities: Record<Prefecture, readonly string[]> = {
+  岐阜県: ["岐阜市", "大垣市", "各務原市", "多治見市", "関市", "可児市", "羽島市", "美濃加茂市", "瑞穂市", "岐南町", "笠松町"],
+  愛知県: ["名古屋市", "一宮市", "春日井市", "小牧市", "江南市", "犬山市", "稲沢市", "岩倉市", "北名古屋市", "清須市", "あま市"],
+  三重県: ["四日市市", "桑名市", "鈴鹿市", "津市", "いなべ市", "亀山市", "名張市", "伊賀市", "松阪市", "東員町", "菰野町"],
+};

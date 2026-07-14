@@ -38,18 +38,19 @@ const CONSTRUCTION_TYPE_MAP: Record<string, string> = {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { answers, utm } = body as {
+    // worries/budget/paymentMethod は旧4〜8問フォーマットの互換用（新UIでは送信されない）
+    const { answers, utm, estimate } = body as {
       answers: {
         prefecture: string | null;
         municipality: string | null;
         // 工事種別（new-construction=新築外構 / renovation=外構リフォーム）。旧クライアントは未送信のため任意
         workType?: string | null;
         constructionTypes: string[];
-        worries: string[];
+        worries?: string[];
         worriesOther?: string;
         size?: string | null;
-        timing: string | null;
-        budget: string | null;
+        timing?: string | null;
+        budget?: string | null;
         paymentMethod?: string | null;
         contact: {
           name: string;
@@ -61,6 +62,8 @@ export async function POST(req: Request) {
         };
       };
       utm?: Record<string, string>;
+      /** 診断STEP4で表示した概算目安（リード情報に添付する） */
+      estimate?: { label: string; works: string[] } | null;
     };
 
     const { contact } = answers;
@@ -99,17 +102,19 @@ export async function POST(req: Request) {
           ? nameMismatchNote(contact.name, customerResult.existingName)
           : null;
 
-        // お悩み（「その他」の自由入力があれば併記）
-        const worryLabels = answers.worries
-          .map((w) => labelOf(worryOptions, w))
-          .filter(Boolean);
-        if (answers.worries.includes("other") && answers.worriesOther?.trim()) {
+        // お悩み（旧フォーマット互換。「その他」の自由入力があれば併記）
+        const worries = answers.worries ?? [];
+        const worryLabels = worries.map((w) => labelOf(worryOptions, w)).filter(Boolean);
+        if (worries.includes("other") && answers.worriesOther?.trim()) {
           worryLabels.push(`「${answers.worriesOther.trim()}」`);
         }
 
         const notes = [
           mismatchNote,
           workTypeLabel ? `工事種別：${workTypeLabel}` : null,
+          estimate?.label
+            ? `概算目安：${estimate.label}（対象：${estimate.works.join("・")}）※現地調査後に正式見積もり`
+            : null,
           contact.note ? `備考：${contact.note}` : null,
           worryLabels.length > 0 ? `お悩み：${worryLabels.join("、")}` : null,
           answers.size ? `希望の広さ：${labelOf(sizeOptions, answers.size)}` : null,

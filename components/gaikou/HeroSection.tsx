@@ -31,10 +31,13 @@ export default function HeroSection() {
     <section className="relative w-full bg-white" aria-label="ファーストビュー">
       <picture>
         <source media="(min-width: 1024px)" srcSet={desktopProps.srcSet} />
+        {/* デスクトップでは直下のCTAが初期表示に収まるよう、FVの高さを画面の75%までに抑える
+            （object-contain のため画像は切れず、左右に余白が出るだけ） */}
         <img
           {...mobileProps}
           alt={mobileProps.alt}
           style={{ width: "100%", height: "auto", display: "block" }}
+          className="lg:max-h-[70vh] lg:object-contain lg:mx-auto"
         />
       </picture>
     </section>
