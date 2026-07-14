@@ -10,7 +10,11 @@ import {
   calculateSimulatorEstimate,
   type SimulatorEstimate,
 } from "./calculate-exterior-estimate";
-import type { CarCount } from "../config/exterior-pricing";
+import {
+  diagnosisEstimateDiscount,
+  diagnosisEstimateFloor,
+  type CarCount,
+} from "../config/exterior-pricing";
 
 // 診断の工事内容ID → リフォームシミュレーターの概算ID
 const REFORM_ESTIMATE_ID: Record<string, string | null> = {
@@ -73,6 +77,19 @@ export function calculateDiagnosisEstimate(input: DiagnosisEstimateInput): Simul
     : calculateSimulatorEstimate(estimateIds, { parkingCars });
 
   if (!estimate) return null;
+  const adjusted = applyDiagnosisDiscount(estimate);
   // 概算に含められなかった工事（一式・未定など）があれば注記フラグを立てる
-  return { ...estimate, hasUnpriced: estimate.hasUnpriced || hasUnmapped };
+  return { ...adjusted, hasUnpriced: estimate.hasUnpriced || hasUnmapped };
+}
+
+// 診断表示用の調整：レンジ全体から diagnosisEstimateDiscount を差し引く
+// （下限は diagnosisEstimateFloor を下回らない）
+function applyDiagnosisDiscount(estimate: SimulatorEstimate): SimulatorEstimate {
+  const YEN_PER_MAN = 10_000;
+  const minYen = Math.max(diagnosisEstimateFloor, estimate.minMan * YEN_PER_MAN - diagnosisEstimateDiscount);
+  const maxYen = Math.max(minYen, estimate.maxMan * YEN_PER_MAN - diagnosisEstimateDiscount);
+  const minMan = Math.round(minYen / YEN_PER_MAN);
+  const maxMan = Math.round(maxYen / YEN_PER_MAN);
+  const label = minMan === maxMan ? `約${minMan}万円` : `約${minMan}万円〜${maxMan}万円`;
+  return { ...estimate, minMan, maxMan, label };
 }
