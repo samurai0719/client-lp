@@ -352,7 +352,7 @@ export default function GaikouDiagnosis() {
         <div className="space-y-4">
           <div>
             <p className="text-sm font-semibold text-[#10302a] mb-2">工事の種類</p>
-            <div className="grid sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {workTypeOptions.map((option) => (
                 <DiagnosisOptionCard
                   key={option.id}
@@ -371,7 +371,7 @@ export default function GaikouDiagnosis() {
               <p className="text-sm font-semibold text-[#10302a] mb-2">
                 希望する工事内容 <span className="text-xs text-[#8a9a90] font-normal">（複数選択可）</span>
               </p>
-              <div className="grid sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {constructionOptionsForWorkType(answers.workType).map((option) => (
                   <DiagnosisOptionCard
                     key={option.id}
@@ -403,7 +403,7 @@ export default function GaikouDiagnosis() {
         <div className="space-y-4">
           <div>
             <p className="text-sm font-semibold text-[#10302a] mb-2">施工をご希望の広さ</p>
-            <div className="grid sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {sizeOptions.map((option) => (
                 <DiagnosisOptionCard
                   key={option.id}
@@ -420,7 +420,7 @@ export default function GaikouDiagnosis() {
             <p className="text-sm font-semibold text-[#10302a] mb-2">
               工事のご希望時期 <span className="text-xs text-[#8a9a90] font-normal">（任意）</span>
             </p>
-            <div className="grid sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {timingOptions.map((option) => (
                 <DiagnosisOptionCard
                   key={option.id}

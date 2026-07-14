@@ -140,13 +140,13 @@ export default function DiagnosisOptionCard({ label, iconKey, selected, onClick,
       role={multi ? "checkbox" : "radio"}
       aria-checked={selected}
       onClick={onClick}
-      className={`w-full min-h-[48px] flex items-center gap-2.5 rounded-xl border-2 px-3 py-2 text-left transition-colors duration-150 ${
+      className={`w-full min-h-[48px] flex items-center gap-2 sm:gap-2.5 rounded-xl border-2 px-2.5 sm:px-3 py-2 text-left transition-colors duration-150 ${
         selected ? "border-[#2f7d5a] bg-[#eaf3ee]" : "border-[#e7e3d8] bg-white hover:border-[#cfe3d6]"
       }`}
     >
       {Icon && (
         <span
-          className={`flex items-center justify-center w-7 h-7 rounded-full shrink-0 ${
+          className={`flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full shrink-0 ${
             selected ? "bg-[#1f4d3d] text-white" : "bg-[#f3eee0] text-[#7a8a82]"
           }`}
         >
@@ -157,7 +157,7 @@ export default function DiagnosisOptionCard({ label, iconKey, selected, onClick,
         {label}
       </span>
       <span
-        className={`shrink-0 w-5 h-5 flex items-center justify-center border-2 transition-colors ${
+        className={`shrink-0 w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center border-2 transition-colors ${
           multi ? "rounded-md" : "rounded-full"
         } ${selected ? "bg-[#2f7d5a] border-[#2f7d5a] text-white" : "border-[#cbd5c9] text-transparent"}`}
         aria-hidden="true"
