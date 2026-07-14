@@ -27,18 +27,17 @@ const REFORM_ESTIMATE_ID: Record<string, string | null> = {
   undecided: null,
 };
 
-// 診断の工事内容ID → 新築外構シミュレーターの概算ID
+// 診断の工事内容ID（新築外構用 nc- 接頭辞）→ 新築外構シミュレーターの概算ID
 const NEW_CONSTRUCTION_ESTIMATE_ID: Record<string, string | null> = {
-  concrete: "parking-concrete",
-  "expand-parking": "parking-concrete",
-  "garden-to-parking": "parking-concrete",
-  carport: "carport",
-  "weed-control": "artificial-grass",
-  "privacy-fence": "fence",
-  "turf-tile-deck": "artificial-grass",
-  "remove-trees-rocks": null,
-  "full-renovation": "full-exterior",
-  undecided: null,
+  "nc-parking-concrete": "parking-concrete",
+  "nc-carport": "carport",
+  "nc-gate-post": "gate-mailbox",
+  "nc-approach": "entrance",
+  "nc-fence": "fence",
+  "nc-garden": "artificial-grass",
+  "nc-full-set": "full-exterior",
+  // 内容未定は概算対象外（現地調査でご案内）
+  "nc-undecided": null,
 };
 
 // 診断の広さID → 駐車場台数（概算精度を上げるためのヒント）

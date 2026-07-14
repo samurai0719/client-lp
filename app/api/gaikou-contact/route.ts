@@ -24,6 +24,7 @@ function labelOf(options: DiagnosisOption[], id: string | null | undefined): str
 }
 
 const CONSTRUCTION_TYPE_MAP: Record<string, string> = {
+  // 外構リフォームの工事内容
   concrete: "駐車場リフォーム",
   "expand-parking": "駐車場リフォーム",
   "garden-to-parking": "駐車場リフォーム",
@@ -33,6 +34,15 @@ const CONSTRUCTION_TYPE_MAP: Record<string, string> = {
   "remove-trees-rocks": "植栽工事",
   "turf-tile-deck": "植栽工事",
   "full-renovation": "駐車場リフォーム",
+  // 新築外構の工事内容（nc- 接頭辞。ラベルは /api/new-exterior-contact と揃える）
+  "nc-parking-concrete": "駐車場コンクリート（新築）",
+  "nc-carport": "エクステリア（カーポート・フェンスなど）",
+  "nc-gate-post": "門柱・ポスト工事",
+  "nc-approach": "アプローチ工事",
+  "nc-fence": "フェンス・塀工事",
+  "nc-garden": "庭・人工芝工事",
+  "nc-full-set": "新築外構一式",
+  "nc-undecided": "新築外構（内容未定）",
 };
 
 export async function POST(req: Request) {

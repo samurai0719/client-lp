@@ -3,11 +3,15 @@
 
 import {
   constructionTypeOptions,
+  newConstructionTypeOptions,
   sizeOptions,
   timingOptions,
   workTypeOptions,
   type DiagnosisOption,
 } from "@/data/gaikou/diagnosisQuestions";
+
+// 工事内容はリフォーム用・新築用の両方からラベルを引けるようにする
+const allConstructionOptions = [...constructionTypeOptions, ...newConstructionTypeOptions];
 import type { DiagnosisAnswers } from "../types";
 
 function labelOf(options: DiagnosisOption[], id: string | null): string {
@@ -54,7 +58,7 @@ export function answerLinesForStep(step: number, answers: DiagnosisAnswers): str
       return [[answers.prefecture, answers.municipality].filter(Boolean).join(" ")];
     case 2: {
       const lines = [labelOf(workTypeOptions, answers.workType)];
-      lines.push(...answers.constructionTypes.map((id) => labelOf(constructionTypeOptions, id)));
+      lines.push(...answers.constructionTypes.map((id) => labelOf(allConstructionOptions, id)));
       return lines.filter(Boolean);
     }
     case 3: {

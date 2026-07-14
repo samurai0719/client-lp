@@ -32,7 +32,7 @@ import DiagnosisResult from "@/components/gaikou/diagnosis/DiagnosisResult";
 import { BotMessage, TypingBubble, UserMessage } from "@/components/gaikou/diagnosis/chat/ChatBubbles";
 import { answerLinesForStep, questionForStep } from "@/components/gaikou/diagnosis/chat/summary";
 import {
-  constructionTypeOptions,
+  constructionOptionsForWorkType,
   sizeOptions,
   timingOptions,
   workTypeOptions,
@@ -49,8 +49,8 @@ import { trackEvent } from "@/lib/analytics/track";
 import { fireMetaLead, generateLeadEventId } from "@/lib/analytics/metaLead";
 import { calculateDiagnosisEstimate } from "@/lib/gaikou-diagnosis-estimate";
 
-// v3: 4ステップ構成へ短縮したためキーを更新（旧キーの途中状態は引き継がない）
-const STATE_STORAGE_KEY = "gaikou-diagnosis-state-v3";
+// v4: 新築外構選択時の工事内容選択肢（nc-）を分離したためキーを更新（旧キーの途中状態は引き継がない）
+const STATE_STORAGE_KEY = "gaikou-diagnosis-state-v4";
 const UTM_STORAGE_KEY = "gaikou-diagnosis-utm-v1";
 const STARTED_FLAG_KEY = "gaikou-diagnosis-started-v1";
 
@@ -227,7 +227,16 @@ export default function GaikouDiagnosis() {
   }
 
   function setWorkType(optionId: string) {
-    setAnswers((prev) => ({ ...prev, workType: optionId }));
+    setAnswers((prev) => {
+      // 工事内容の選択肢は種別ごとに異なるため、種別を切り替えたら
+      // 新しい選択肢に存在しない選択を破棄する
+      const validIds = new Set(constructionOptionsForWorkType(optionId).map((o) => o.id));
+      return {
+        ...prev,
+        workType: optionId,
+        constructionTypes: prev.constructionTypes.filter((id) => validIds.has(id)),
+      };
+    });
   }
 
   function toggleConstructionType(optionId: string) {
@@ -355,23 +364,26 @@ export default function GaikouDiagnosis() {
             </div>
           </div>
 
-          <div>
-            <p className="text-sm font-semibold text-[#10302a] mb-2">
-              希望する工事内容 <span className="text-xs text-[#8a9a90] font-normal">（複数選択可）</span>
-            </p>
-            <div className="grid sm:grid-cols-2 gap-2">
-              {constructionTypeOptions.map((option) => (
-                <DiagnosisOptionCard
-                  key={option.id}
-                  label={option.label}
-                  iconKey={option.iconKey}
-                  multi
-                  selected={answers.constructionTypes.includes(option.id)}
-                  onClick={() => toggleConstructionType(option.id)}
-                />
-              ))}
+          {/* 工事内容は種別（新築外構/外構リフォーム）に合わせた選択肢を表示する */}
+          {answers.workType && (
+            <div className="gd-chat-appear">
+              <p className="text-sm font-semibold text-[#10302a] mb-2">
+                希望する工事内容 <span className="text-xs text-[#8a9a90] font-normal">（複数選択可）</span>
+              </p>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {constructionOptionsForWorkType(answers.workType).map((option) => (
+                  <DiagnosisOptionCard
+                    key={option.id}
+                    label={option.label}
+                    iconKey={option.iconKey}
+                    multi
+                    selected={answers.constructionTypes.includes(option.id)}
+                    onClick={() => toggleConstructionType(option.id)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <button
             type="button"

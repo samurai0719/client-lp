@@ -17,6 +17,7 @@ export const workTypeOptions: DiagnosisOption[] = [
 ];
 
 // 希望する工事内容（旧「希望工事」と「現在のお悩み」を統合した1つの質問）
+// ※外構リフォーム選択時の選択肢。新築外構は newConstructionTypeOptions を表示する
 export const constructionTypeOptions: DiagnosisOption[] = [
   { id: "concrete", label: "砂利からコンクリートにしたい", iconKey: "layers" },
   { id: "expand-parking", label: "駐車場を広げたい", iconKey: "car-front" },
@@ -29,6 +30,23 @@ export const constructionTypeOptions: DiagnosisOption[] = [
   { id: "full-renovation", label: "外構全体をリフォームしたい", iconKey: "home" },
   { id: "undecided", label: "まだ具体的に決まっていない", iconKey: "circle-help" },
 ];
+
+// 新築外構を選んだ場合の工事内容（/new-exterior 診断と同じ内容。IDは nc- 接頭辞で区別する）
+export const newConstructionTypeOptions: DiagnosisOption[] = [
+  { id: "nc-parking-concrete", label: "駐車場コンクリート", iconKey: "layers" },
+  { id: "nc-carport", label: "カーポート", iconKey: "warehouse" },
+  { id: "nc-gate-post", label: "門柱・ポスト", iconKey: "mailbox" },
+  { id: "nc-approach", label: "アプローチ", iconKey: "footprints" },
+  { id: "nc-fence", label: "フェンス・目隠し", iconKey: "fence" },
+  { id: "nc-garden", label: "庭・人工芝", iconKey: "sprout" },
+  { id: "nc-full-set", label: "外構一式", iconKey: "home" },
+  { id: "nc-undecided", label: "まだ決まっていない", iconKey: "circle-help" },
+];
+
+/** 工事種別に応じた工事内容の選択肢を返す */
+export function constructionOptionsForWorkType(workType: string | null): DiagnosisOption[] {
+  return workType === "new-construction" ? newConstructionTypeOptions : constructionTypeOptions;
+}
 
 export const sizeOptions: DiagnosisOption[] = [
   { id: "under-10", label: "10㎡未満", iconKey: "land-plot" },
