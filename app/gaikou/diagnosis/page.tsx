@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import GaikouDiagnosis from "./GaikouDiagnosis";
 import TakanagaMetaPixel from "@/components/analytics/TakanagaMetaPixel";
+import LpInsightTracker from "@/components/analytics/LpInsightTracker";
 
 export const metadata: Metadata = {
   title: "外構プラン無料診断｜岐阜・愛知・三重の外構リフォーム",
@@ -15,6 +16,8 @@ export default function GaikouDiagnosisPage() {
   return (
     <>
       <TakanagaMetaPixel />
+      {/* LP Insight: 診断ページもヒートマップ計測し、完了時のCV送信(fireLpInsightLead)を可能にする */}
+      <LpInsightTracker />
       {/* Ptengine（外構プラン無料診断ページ限定） */}
       <Script id="ptengine-tag-diagnosis" src="https://js.ptengine.jp/2b4rnqyi.js" strategy="afterInteractive" />
       <GaikouDiagnosis />

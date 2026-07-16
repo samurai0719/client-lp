@@ -47,6 +47,7 @@ import {
 import { getUtmRecord } from "@/components/gaikou/utm";
 import { trackEvent } from "@/lib/analytics/track";
 import { fireMetaLead, generateLeadEventId } from "@/lib/analytics/metaLead";
+import { fireLpInsightLead } from "@/components/analytics/lpInsightLead";
 import { calculateDiagnosisEstimate } from "@/lib/gaikou-diagnosis-estimate";
 
 // v4: 新築外構選択時の工事内容選択肢（nc-）を分離したためキーを更新（旧キーの途中状態は引き継がない）
@@ -307,6 +308,8 @@ export default function GaikouDiagnosis() {
       if (!leadFired.current) {
         leadFired.current = true;
         fireMetaLead(eventId, "gaikou-diagnosis");
+        // LP Insight にもCVを送信（ヒートマップ側のコンバージョン計測）
+        fireLpInsightLead("lead", 1);
       }
       armScroll();
       setPhase("result");
