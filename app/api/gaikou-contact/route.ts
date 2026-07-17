@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
 import {
@@ -21,6 +22,45 @@ import {
 function labelOf(options: DiagnosisOption[], id: string | null | undefined): string | null {
   if (!id) return null;
   return options.find((o) => o.id === id)?.label ?? id;
+}
+
+// お問い合わせ内容を管理者通知メールの本文に整形する
+function buildNotificationEmail(
+  contact: {
+    name: string;
+    phone: string;
+    email: string;
+    contactTime?: string;
+    note: string;
+    addressDetail: string;
+  },
+  prefecture: string | null,
+  municipality: string | null,
+  workTypes: string[],
+  estimate: { label: string; works: string[] } | null | undefined,
+  now: string,
+): string {
+  const address = [prefecture, municipality, contact.addressDetail]
+    .filter((v) => v && v.trim())
+    .join("");
+  const lines = [
+    "外構プラン無料診断フォームよりお問い合わせを受け付けました。",
+    "",
+    `受付日時　　：${now}`,
+    `お名前　　　：${contact.name} 様`,
+    `電話番号　　：${contact.phone}`,
+    `メール　　　：${contact.email || "（未入力）"}`,
+    `ご住所　　　：${address || "（未入力）"}`,
+    `ご希望工事　：${workTypes.length > 0 ? workTypes.join("、") : "（未選択）"}`,
+    estimate?.label
+      ? `概算目安　　：${estimate.label}（対象：${estimate.works.join("・")}）`
+      : null,
+    contact.contactTime ? `連絡希望時間：${contact.contactTime}` : null,
+    contact.note ? `備考　　　　：${contact.note}` : null,
+    "",
+    "※詳細は顧客管理システムをご確認ください。",
+  ];
+  return lines.filter((l) => l !== null).join("\n");
 }
 
 const CONSTRUCTION_TYPE_MAP: Record<string, string> = {
@@ -81,6 +121,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "お名前と電話番号は必須です" }, { status: 400 });
     }
 
+    // 工事種別（新築外構/外構リフォーム）はwork_typesの先頭に入れ、管理画面の一覧で見えるようにする
+    // メール通知でも使うためブロック外で算出する
+    const workTypeLabel = labelOf(workTypeOptions, answers.workType);
+    const uniqueTypes = [
+      ...new Set([
+        ...(workTypeLabel ? [workTypeLabel] : []),
+        ...answers.constructionTypes
+          .map((t) => CONSTRUCTION_TYPE_MAP[t])
+          .filter((v): v is string => Boolean(v)),
+      ]),
+    ];
+    if (uniqueTypes.length === 0) uniqueTypes.push("その他");
+
     if (isSupabaseAdminConfigured()) {
       const db = createAdminClient();
 
@@ -100,13 +153,6 @@ export async function POST(req: Request) {
 
       if (customerResult.ok) {
         const customer = { id: customerResult.customerId };
-        // 工事種別（新築外構/外構リフォーム）はwork_typesの先頭に入れ、管理画面の一覧で見えるようにする
-        const workTypeLabel = labelOf(workTypeOptions, answers.workType);
-        const workTypes = answers.constructionTypes
-          .map((t) => CONSTRUCTION_TYPE_MAP[t])
-          .filter((v): v is string => Boolean(v));
-        const uniqueTypes = [...new Set([...(workTypeLabel ? [workTypeLabel] : []), ...workTypes])];
-        if (uniqueTypes.length === 0) uniqueTypes.push("その他");
 
         const mismatchNote = customerResult.matchedExisting
           ? nameMismatchNote(contact.name, customerResult.existingName)
@@ -174,6 +220,48 @@ export async function POST(req: Request) {
           }
         }
       }
+    }
+
+    // 管理者への通知メール（info.ryuya@gmail.com 等へ顧客情報を送信）
+    // 二重送信の場合は上で早期 return 済みなのでここには来ない
+    const apiKey = process.env.RESEND_API_KEY;
+    if (apiKey) {
+      const now = new Date().toLocaleString("ja-JP", {
+        timeZone: "Asia/Tokyo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const fromEmail = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+      // 常に info.ryuya@gmail.com へ送信。NOTIFICATION_EMAIL が設定されていれば併せて送る
+      const recipients = [
+        ...new Set(
+          ["info.ryuya@gmail.com", process.env.NOTIFICATION_EMAIL].filter(
+            (v): v is string => Boolean(v),
+          ),
+        ),
+      ];
+      const resend = new Resend(apiKey);
+      await resend.emails
+        .send({
+          from: fromEmail,
+          to: recipients,
+          subject: `【外構LP】${contact.name} 様よりお問い合わせ`,
+          text: buildNotificationEmail(
+            contact,
+            answers.prefecture,
+            answers.municipality,
+            uniqueTypes,
+            estimate,
+            now,
+          ),
+        })
+        .catch((err) => {
+          // メール失敗でも CRM 保存は完了しているため問い合わせ自体は成功扱い
+          console.error("[gaikou-contact] Notify email failed:", err);
+        });
     }
 
     return NextResponse.json({ success: true });
