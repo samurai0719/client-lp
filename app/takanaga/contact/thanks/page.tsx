@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/data/takanaga/siteConfig";
+import LpInsightConversion from "@/components/analytics/LpInsightConversion";
 
 export const metadata: Metadata = {
   title: "お問い合わせ受付完了",
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
 export default function ThanksPage() {
   return (
     <div className="flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 bg-(--tkn-bg)">
+      {/* LP Insight: HP問い合わせ完了のCV送信(トラッカーはtakanaga layoutで読込済) */}
+      <LpInsightConversion name="lead" value={1} />
       <div className="text-center max-w-md">
         <div className="w-16 h-16 rounded-full bg-(--tkn-blue-light) flex items-center justify-center mx-auto mb-6">
           <CheckCircle size={32} className="text-(--tkn-blue)" />
