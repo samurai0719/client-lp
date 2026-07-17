@@ -6,7 +6,6 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
 import {
-  LayoutDashboard,
   Users,
   Calendar,
   BarChart3,
@@ -17,7 +16,6 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { href: "/admin", label: "ホーム", icon: LayoutDashboard, exact: true },
   { href: "/admin/leads", label: "顧客", icon: Users, exact: false },
   { href: "/admin/schedule", label: "予定", icon: Calendar, exact: false },
   { href: "/admin/ads", label: "広告", icon: BarChart3, exact: false },

@@ -1,10 +1,6 @@
-import AdminShell from "@/components/admin/AdminShell";
-import DashboardContent from "./_components/DashboardContent";
+import { redirect } from "next/navigation";
 
-export default function AdminDashboardPage() {
-  return (
-    <AdminShell>
-      <DashboardContent />
-    </AdminShell>
-  );
+// ホーム（ダッシュボード）は廃止。/admin は顧客一覧へ転送する。
+export default function AdminIndexPage() {
+  redirect("/admin/leads");
 }
