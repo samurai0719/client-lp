@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { lpPriceTable } from "@/config/exterior-pricing";
+import { municipalities } from "@/data/gaikou/municipalities";
 
 export type WorkItem = {
   id: number;
@@ -347,18 +348,22 @@ export const faqs: FaqItem[] = [
   { q: "追加料金は発生しますか？", a: "現地の状況によって追加工事が必要になる場合があります。その際は事前にご説明し、お客様の承諾なく追加工事を行うことはありません。" },
   { q: "支払いのタイミングはいつですか？", a: "工事内容によって異なります。契約時に支払いタイミングについても合わせてご説明します。" },
   { q: "銀行のリフォームローンは利用できますか？", a: "ご利用いただける場合があります。詳しくはお問い合わせ時にご相談ください。" },
-  { q: "対応エリアはどこですか？", a: "岐阜市、各務原市、羽島市など岐阜県内を中心に対応しています。エリア外でも、まずはお気軽にご相談ください。" },
+  { q: "対応エリアはどこですか？", a: "岐阜県は全域に対応しています。愛知県・三重県の一部エリアにも対応。エリア外でも、まずはお気軽にご相談ください。" },
 ];
 
 export type PrefectureAreas = {
   prefecture: string;
   cities: string[];
+  /** 県内全域対応（対応エリアセクションで「全域対応」と表示する） */
+  coversAll?: boolean;
 };
 
 export const serviceAreasByPrefecture: PrefectureAreas[] = [
   {
     prefecture: "岐阜県",
-    cities: ["岐阜市", "大垣市", "各務原市", "可児市", "羽島市", "瑞穂市", "本巣市", "山県市", "関市", "多治見市", "美濃加茂市"],
+    // 岐阜県は全域対応。市町村一覧は data/gaikou/municipalities.ts を単一ソースとする
+    cities: [...municipalities.岐阜県],
+    coversAll: true,
   },
   {
     prefecture: "愛知県",

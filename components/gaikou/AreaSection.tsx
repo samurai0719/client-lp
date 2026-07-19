@@ -41,7 +41,7 @@ export default function AreaSection() {
         <SectionHeading
           eyebrow="AREA"
           title="対応エリア"
-          description="東海三県（岐阜・愛知・三重）で対応しています。エリア外もまずはご相談ください。"
+          description="岐阜県は全域に対応。愛知県・三重県の近隣エリアにも対応しています。エリア外もまずはご相談ください。"
         />
 
         <div className="mt-10 md:mt-14 flex flex-col gap-8">
@@ -62,6 +62,11 @@ export default function AreaSection() {
                   <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
                   {group.prefecture}
                 </span>
+                {group.coversAll && (
+                  <span className="inline-flex items-center rounded-full bg-[#fff7ec] border border-[#e8a25a] px-3 py-1 text-[12px] sm:text-[13px] font-bold text-[#a85a1f]">
+                    県内全域対応
+                  </span>
+                )}
               </div>
 
               {/* City badges */}
