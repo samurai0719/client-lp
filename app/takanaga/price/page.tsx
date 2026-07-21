@@ -1,10 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Banknote, CircleDollarSign, CircleCheckBig, Landmark, ShieldCheck } from "lucide-react";
 import PageHero from "@/components/takanaga/common/PageHero";
 import CTASection from "@/components/takanaga/common/CTASection";
 import { visiblePriceItems, costFactors } from "@/data/takanaga/prices";
 import { siteConfig } from "@/data/takanaga/siteConfig";
+
+// お支払い方法：現金（着工前20%・完了後80%の分割払い）。銀行振込・リフォームローンにも対応。
+// components/gaikou/data.ts の paymentInfoItems と内容を揃える（表記の統一）。
+const paymentInfo = [
+  { icon: Banknote, title: "現金でのお支払いに対応", body: "現金でのお支払いをお受けしています。銀行振込でのお支払いも可能です。" },
+  { icon: CircleDollarSign, title: "着工前：工事代金の20%", body: "ご契約後、着工前に工事代金の20%をお支払いいただきます。" },
+  { icon: CircleCheckBig, title: "完了後：残り80%", body: "施工完了・仕上がりのご確認後に、残りの80%をお支払いいただきます。" },
+  { icon: Landmark, title: "リフォームローンのご相談も可能", body: "銀行のリフォームローンをご希望の場合もご相談いただけます。詳しくはお問い合わせください。" },
+];
+
+// 保証期間の目安（外構工事業界で一般的な水準：構造物2年・植栽の枯れ保証半年）。
+// 実際の年数は根拠のある業界水準に基づく（コンクリート土間・ブロック塀・フェンス等）。
+const warrantyInfo = [
+  { title: "施工箇所（コンクリート・ブロック塀・フェンス・門柱など）", period: "2年保証" },
+  { title: "芝生・植栽", period: "半年（枯れ保証）" },
+  { title: "カーポート等の既製品", period: "各メーカーの保証に準じます" },
+];
 
 export const metadata: Metadata = {
   title: "外構工事の料金・費用目安",
@@ -83,6 +100,52 @@ export default function PricePage() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* お支払い方法 */}
+          <div>
+            <h2 className="text-xl font-bold text-(--tkn-navy-deep) mb-2">お支払い方法</h2>
+            <p className="text-sm text-(--tkn-text-muted) mb-6 leading-relaxed">
+              現金でのお支払いに対応しています。着工前に工事代金の20%、施工完了後に残り80%をお支払いいただく分割払いです。
+            </p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {paymentInfo.map((item) => (
+                <li key={item.title} className="tkn-card p-4 sm:p-5">
+                  <item.icon size={20} className="text-(--tkn-blue) mb-2" aria-hidden />
+                  <p className="text-sm font-bold text-(--tkn-navy-deep)">{item.title}</p>
+                  <p className="mt-1 text-xs text-(--tkn-text-muted) leading-relaxed">{item.body}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-(--tkn-text-muted) mt-4 leading-relaxed">
+              ※お支払い時期・方法の詳細はご契約時にご説明します。銀行のリフォームローンをご希望の場合もご相談ください。
+            </p>
+          </div>
+
+          {/* 保証期間 */}
+          <div>
+            <h2 className="text-xl font-bold text-(--tkn-navy-deep) mb-2 flex items-center gap-2">
+              <ShieldCheck size={22} className="text-(--tkn-blue)" aria-hidden />
+              保証期間の目安
+            </h2>
+            <p className="text-sm text-(--tkn-text-muted) mb-6 leading-relaxed">
+              工事後の不具合については、状況を確認のうえ対応しています。保証期間の目安は以下のとおりです。
+            </p>
+            <div className="tkn-card overflow-hidden">
+              <table className="w-full text-sm">
+                <tbody className="divide-y divide-(--tkn-border)">
+                  {warrantyInfo.map((item) => (
+                    <tr key={item.title}>
+                      <td className="px-5 py-4 text-(--tkn-navy-deep) font-medium">{item.title}</td>
+                      <td className="px-5 py-4 text-right whitespace-nowrap text-(--tkn-blue) font-bold">{item.period}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-(--tkn-text-muted) mt-4 leading-relaxed">
+              ※自然災害・経年劣化・お客様による破損・当社以外の工事による不具合は対象外となる場合があります。使用商品によって保証内容が異なる場合は、お見積もり時にご説明します。
+            </p>
           </div>
 
           {/* 費用について */}

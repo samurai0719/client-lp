@@ -19,6 +19,7 @@ import AdditionalCostSection from "@/components/gaikou/AdditionalCostSection";
 import QualitySection from "@/components/gaikou/QualitySection";
 import FlowSection from "@/components/gaikou/FlowSection";
 import PlanSection from "@/components/gaikou/PlanSection";
+import PaymentSection from "@/components/gaikou/PaymentSection";
 import WarrantySection from "@/components/gaikou/WarrantySection";
 import FAQSection from "@/components/gaikou/FAQSection";
 import AreaSection from "@/components/gaikou/AreaSection";
@@ -81,6 +82,7 @@ export default function GaikouLandingPage() {
           <ServicesSection />
           <QualitySection />
           <PlanSection />
+          <PaymentSection />
           <WarrantySection />
 
           {/* 8. FAQ / 9. 対応エリア */}
