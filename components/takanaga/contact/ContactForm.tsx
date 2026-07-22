@@ -101,10 +101,15 @@ export default function ContactForm() {
     };
 
     try {
+      // 写真・資料が添付されている場合は multipart/form-data で1リクエストにまとめて送信する
+      // （Content-Typeヘッダーは指定しない＝ブラウザがboundary付きで自動設定する）
+      const fd = new FormData();
+      fd.append("payload", JSON.stringify(payload));
+      files.forEach((file) => fd.append("images", file));
+
       const res = await fetch("/api/takanaga-contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: fd,
       });
 
       if (!res.ok) {

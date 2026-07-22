@@ -101,6 +101,9 @@ export default function GaikouDiagnosis() {
   const [submitError, setSubmitError] = useState("");
   // 次の質問を表示する前の「入力中…」表示
   const [typing, setTyping] = useState(false);
+  // 現場写真の実体。File はJSONへ変換できないため、sessionStorageへ保存されるanswersには
+  // 含めず、別のstateとして保持する（送信時にのみ使用）
+  const [contactPhotoFile, setContactPhotoFile] = useState<File | null>(null);
 
   const bottomRef = useRef<HTMLDivElement>(null);
   // 現在の質問の直前に置くアンカー。質問文が画面上部に見える位置へスクロールする
@@ -286,16 +289,22 @@ export default function GaikouDiagnosis() {
     const eventId = generateLeadEventId();
 
     try {
+      const payload = {
+        answers,
+        utm,
+        eventId,
+        // お客様に表示した金額（最安のみ）と同じ表記で保存する
+        estimate: estimate ? { label: `約${estimate.minMan}万円〜`, works: estimate.works } : null,
+      };
+
+      // 現場写真が添付されている場合は multipart/form-data で1リクエストにまとめて送信する
+      const fd = new FormData();
+      fd.append("payload", JSON.stringify(payload));
+      if (contactPhotoFile) fd.append("images", contactPhotoFile);
+
       const res = await fetch("/api/gaikou-contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          answers,
-          utm,
-          eventId,
-          // お客様に表示した金額（最安のみ）と同じ表記で保存する
-          estimate: estimate ? { label: `約${estimate.minMan}万円〜`, works: estimate.works } : null,
-        }),
+        body: fd,
       });
       if (!res.ok) throw new Error(`status ${res.status}`);
 
@@ -472,6 +481,7 @@ export default function GaikouDiagnosis() {
             onBack={goBack}
             onSubmit={handleFinalSubmit}
             submitting={submitting}
+            onPhotoFileChange={setContactPhotoFile}
           />
         </div>
       );

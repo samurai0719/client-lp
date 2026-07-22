@@ -8,6 +8,8 @@ import {
   findRecentDuplicateLead,
   nameMismatchNote,
 } from "@/lib/crm/customers";
+import { parseJsonOrMultipart } from "@/lib/http/parseRequestBody";
+import { uploadLeadImages } from "@/lib/storage/leadImages";
 
 const WORK_TYPE_MAP: Record<string, string> = {
   parking: "駐車場リフォーム",
@@ -105,7 +107,7 @@ function buildAutoReplyBody(name: string): string {
   ].join("\n");
 }
 
-async function saveToCrm(data: TakanagaContactInput): Promise<void> {
+async function saveToCrm(data: TakanagaContactInput, files: File[]): Promise<void> {
   if (!isSupabaseAdminConfigured()) return;
   try {
     const db = createAdminClient();
@@ -139,7 +141,14 @@ async function saveToCrm(data: TakanagaContactInput): Promise<void> {
 
     // 二重送信（同じ内容の直近リード）は新規作成しない
     const duplicateLeadId = await findRecentDuplicateLead(db, customer.id, uniqueTypes, leadMessage);
-    if (duplicateLeadId) return;
+    if (duplicateLeadId) {
+      if (files.length > 0) {
+        await uploadLeadImages(db, duplicateLeadId, files, "original").catch((err) =>
+          console.error("[takanaga-contact] duplicate lead image upload failed:", err)
+        );
+      }
+      return;
+    }
 
     const { data: lead, error: leadErr } = await db
       .from("leads")
@@ -164,6 +173,12 @@ async function saveToCrm(data: TakanagaContactInput): Promise<void> {
         activity_type: "inquiry_received",
         content: "高長建設HPのお問い合わせフォームより受け付けました",
       });
+
+      if (files.length > 0) {
+        await uploadLeadImages(db, lead.id, files, "original").catch((err) =>
+          console.error("[takanaga-contact] image upload failed:", err)
+        );
+      }
     }
   } catch (err) {
     console.error("[takanaga-contact] CRM save error:", err);
@@ -191,7 +206,7 @@ async function notifyCrmWebhook(data: TakanagaContactInput): Promise<void> {
 
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as TakanagaContactInput;
+    const { body, files } = await parseJsonOrMultipart<TakanagaContactInput>(req);
 
     // 基本バリデーション
     if (!body.name || !body.phone || !body.email || !body.prefecture || !body.city) {
@@ -214,7 +229,7 @@ export async function POST(req: Request) {
     });
 
     // CRM: Supabase に顧客・リードを保存（メール送信より先に await して確実に保存）
-    await saveToCrm(body);
+    await saveToCrm(body, files);
 
     // CRM webhook（非同期、失敗しても続行）
     void notifyCrmWebhook(body);

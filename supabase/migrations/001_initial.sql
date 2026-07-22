@@ -229,19 +229,8 @@ create policy "push_subscriptions_own" on push_subscriptions
 create policy "notification_logs_select_auth" on notification_logs
   for select using (auth.role() = 'authenticated');
 
--- ============================================================
 -- Storage bucket: lead-images（private）
--- ============================================================
--- Supabase Storage の設定画面、または以下のSQL で作成してください
--- insert into storage.buckets (id, name, public) values ('lead-images', 'lead-images', false);
---
--- Storage RLS:
--- create policy "lead_images_read" on storage.objects
---   for select using (bucket_id = 'lead-images' and auth.role() = 'authenticated');
--- create policy "lead_images_insert" on storage.objects
---   for insert with check (bucket_id = 'lead-images' and auth.role() = 'service_role');
--- create policy "lead_images_delete" on storage.objects
---   for delete using (bucket_id = 'lead-images' and auth.role() = 'authenticated');
+-- バケット本体とRLSポリシーの作成は 003_lead_images_storage_bucket.sql で行う。
 
 -- ============================================================
 -- profiles への INSERT は Supabase Auth の trigger で自動作成する

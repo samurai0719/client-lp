@@ -2,13 +2,18 @@
 
 import { useId, useRef, useState, useEffect, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { Calculator, Paperclip } from "lucide-react";
+import { Calculator, Paperclip, X } from "lucide-react";
 import { serviceAreas } from "./data";
 import SectionHeading from "./SectionHeading";
 import SectionBackdrop from "./SectionBackdrop";
 import { captureUtm, loadUtm } from "@/lib/utm/storage";
 import { SIMULATOR_ESTIMATE_STORAGE_KEY } from "@/lib/calculate-exterior-estimate";
 import { fireMetaLead, generateLeadEventId } from "@/lib/analytics/metaLead";
+import {
+  ALLOWED_LEAD_IMAGE_TYPES,
+  MAX_LEAD_IMAGE_FILES,
+  MAX_LEAD_IMAGE_SIZE,
+} from "@/lib/storage/leadImageConstraints";
 
 // シミュレーターから引き継がれる概算価格
 type SimulatorEstimateHandoff = {
@@ -61,6 +66,10 @@ export default function ContactSection() {
   const [simEstimate, setSimEstimate] = useState<SimulatorEstimateHandoff | null>(null);
   // Meta Pixel Lead の発火済み管理（二重クリック・再レンダリングでの重複発火防止）
   const leadFired = useRef(false);
+  // 添付写真
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [photoError, setPhotoError] = useState("");
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   // UTMをキャプチャ
   useEffect(() => {
@@ -77,6 +86,22 @@ export default function ContactSection() {
 
   function toggleWorkType(option: string) {
     setWorkTypes((prev) => (prev.includes(option) ? prev.filter((v) => v !== option) : [...prev, option]));
+  }
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = Array.from(e.target.files ?? []);
+    const valid = selected.filter((f) => ALLOWED_LEAD_IMAGE_TYPES.includes(f.type) && f.size <= MAX_LEAD_IMAGE_SIZE);
+    setPhotoError(
+      valid.length < selected.length
+        ? "対応していない形式、または10MBを超えるファイルは添付できません。"
+        : ""
+    );
+    setPhotos((prev) => [...prev, ...valid].slice(0, MAX_LEAD_IMAGE_FILES));
+    if (photoInputRef.current) photoInputRef.current.value = "";
+  }
+
+  function removePhoto(index: number) {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -109,31 +134,38 @@ export default function ContactSection() {
     const eventId = generateLeadEventId();
 
     try {
+      const payload = {
+        eventId,
+        name: name.trim(),
+        phone: phone.trim(),
+        email: email.trim() || undefined,
+        city: city || undefined,
+        workTypes,
+        inquiryMessage: inquiryMessage || undefined,
+        designStyle: currentState || undefined,
+        utmSource: utm.utm_source,
+        utmMedium: utm.utm_medium,
+        utmCampaign: utm.utm_campaign,
+        utmContent: utm.utm_content,
+        utmTerm: utm.utm_term,
+        fbclid: utm.fbclid,
+        gclid: utm.gclid,
+        ttclid: utm.ttclid,
+        landingPage: utm.landing_page,
+        referrer: utm.referrer,
+        deviceType: utm.device_type,
+        website, // honeypot
+      };
+
+      // 写真が添付されている場合は multipart/form-data で1リクエストにまとめて送信する
+      // （Content-Typeヘッダーは指定しない＝ブラウザがboundary付きで自動設定する）
+      const fd = new FormData();
+      fd.append("payload", JSON.stringify(payload));
+      photos.forEach((file) => fd.append("images", file));
+
       const res = await fetch("/api/inquiries", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          eventId,
-          name: name.trim(),
-          phone: phone.trim(),
-          email: email.trim() || undefined,
-          city: city || undefined,
-          workTypes,
-          inquiryMessage: inquiryMessage || undefined,
-          designStyle: currentState || undefined,
-          utmSource: utm.utm_source,
-          utmMedium: utm.utm_medium,
-          utmCampaign: utm.utm_campaign,
-          utmContent: utm.utm_content,
-          utmTerm: utm.utm_term,
-          fbclid: utm.fbclid,
-          gclid: utm.gclid,
-          ttclid: utm.ttclid,
-          landingPage: utm.landing_page,
-          referrer: utm.referrer,
-          deviceType: utm.device_type,
-          website, // honeypot
-        }),
+        body: fd,
       });
 
       if (!res.ok) {
@@ -375,12 +407,42 @@ export default function ContactSection() {
             </label>
             <label
               htmlFor={`${baseId}-photo`}
-              className="flex items-center gap-2.5 rounded-xl border border-dashed border-[#bcc7c1] px-4 py-4 text-sm text-[#6b7a73] cursor-pointer"
+              className={`flex items-center gap-2.5 rounded-xl border border-dashed border-[#bcc7c1] px-4 py-4 text-sm text-[#6b7a73] cursor-pointer ${
+                photos.length >= MAX_LEAD_IMAGE_FILES ? "opacity-50 pointer-events-none" : ""
+              }`}
             >
               <Paperclip className="w-4 h-4 shrink-0" aria-hidden="true" />
-              気になる場所のお写真があれば添付してください
+              気になる場所のお写真があれば添付してください（{photos.length}/{MAX_LEAD_IMAGE_FILES}）
             </label>
-            <input id={`${baseId}-photo`} type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" />
+            <input
+              id={`${baseId}-photo`}
+              ref={photoInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/heic"
+              multiple
+              onChange={handlePhotoChange}
+              className="sr-only"
+            />
+            <p className="mt-1.5 text-xs text-[#8a9a90]">1ファイル10MB以内、最大{MAX_LEAD_IMAGE_FILES}枚まで</p>
+            {photoError && <p className="mt-1.5 text-xs text-[#c0392b]">{photoError}</p>}
+            {photos.length > 0 && (
+              <ul className="mt-2.5 space-y-1.5">
+                {photos.map((f, i) => (
+                  <li key={`${f.name}-${i}`} className="flex items-center gap-2 rounded-lg bg-[#f9f7f1] px-3 py-2 text-xs text-[#3d4a45]">
+                    <span className="truncate flex-1">{f.name}</span>
+                    <span className="shrink-0 text-[#8a9a90]">{(f.size / 1024 / 1024).toFixed(1)}MB</span>
+                    <button
+                      type="button"
+                      onClick={() => removePhoto(i)}
+                      className="shrink-0 text-[#8a9a90] hover:text-[#c0392b] transition-colors"
+                      aria-label={`${f.name}を削除`}
+                    >
+                      <X className="w-3.5 h-3.5" aria-hidden="true" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div>

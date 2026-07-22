@@ -7,9 +7,8 @@ import {
   findRecentDuplicateLead,
   nameMismatchNote,
 } from "@/lib/crm/customers";
-
-const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+import { parseJsonOrMultipart } from "@/lib/http/parseRequestBody";
+import { uploadLeadImages } from "@/lib/storage/leadImages";
 
 // 簡易レート制限（メモリ内、サーバー再起動でリセット）
 const ipMap = new Map<string, { count: number; resetAt: number }>();
@@ -37,8 +36,9 @@ export async function POST(request: NextRequest) {
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 
   let body: Record<string, unknown>;
+  let files: File[];
   try {
-    body = await request.json();
+    ({ body, files } = await parseJsonOrMultipart<Record<string, unknown>>(request));
   } catch {
     return NextResponse.json({ error: "不正なリクエスト" }, { status: 400 });
   }
@@ -125,6 +125,11 @@ export async function POST(request: NextRequest) {
   // 二重送信（同じ内容の直近リード）は新規作成せず既存リードを返す
   const duplicateLeadId = await findRecentDuplicateLead(adminClient, customerId, workTypes, leadMessage);
   if (duplicateLeadId) {
+    if (files.length > 0) {
+      await uploadLeadImages(adminClient, duplicateLeadId, files, "original").catch((err) =>
+        console.error("[inquiries] duplicate lead image upload failed:", err)
+      );
+    }
     return NextResponse.json({ success: true, leadId: duplicateLeadId, duplicate: true });
   }
 
@@ -166,7 +171,7 @@ export async function POST(request: NextRequest) {
     user_agent: request.headers.get("user-agent") ?? null,
   });
 
-  // 画像紐付け
+  // 画像紐付け（AIシミュレーターの生成画像パスがあれば従来どおり記録）
   const imageInserts: Array<{
     lead_id: string; image_type: string; storage_path: string;
   }> = [];
@@ -174,6 +179,13 @@ export async function POST(request: NextRequest) {
   (generatedImagePaths ?? []).forEach((p) => imageInserts.push({ lead_id: leadId, image_type: "generated", storage_path: p }));
   if (imageInserts.length > 0) {
     await adminClient.from("lead_images").insert(imageInserts);
+  }
+
+  // フォームに添付された写真をアップロード
+  if (files.length > 0) {
+    await uploadLeadImages(adminClient, leadId, files, "original").catch((err) =>
+      console.error("[inquiries] image upload failed:", err)
+    );
   }
 
   // 活動ログ

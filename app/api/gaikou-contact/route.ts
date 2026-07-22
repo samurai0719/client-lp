@@ -16,6 +16,8 @@ import {
   worryOptions,
   type DiagnosisOption,
 } from "@/data/gaikou/diagnosisQuestions";
+import { parseJsonOrMultipart } from "@/lib/http/parseRequestBody";
+import { uploadLeadImages } from "@/lib/storage/leadImages";
 
 // 診断の回答IDを管理画面用の日本語ラベルへ変換する
 // （旧実装は "within-1y" 等の生IDのまま保存され、管理画面で読めなかった）
@@ -87,7 +89,7 @@ const CONSTRUCTION_TYPE_MAP: Record<string, string> = {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const { body, files } = await parseJsonOrMultipart<Record<string, unknown>>(req);
     // worries/budget/paymentMethod は旧4〜8問フォーマットの互換用（新UIでは送信されない）
     const { answers, utm, estimate } = body as {
       answers: {
@@ -185,6 +187,11 @@ export async function POST(req: Request) {
         // 二重送信（同じ内容の直近リード）は新規作成しない
         const duplicateLeadId = await findRecentDuplicateLead(db, customer.id, uniqueTypes, notes || null);
         if (duplicateLeadId) {
+          if (files.length > 0) {
+            await uploadLeadImages(db, duplicateLeadId, files, "original").catch((err) =>
+              console.error("[gaikou-contact] duplicate lead image upload failed:", err)
+            );
+          }
           return NextResponse.json({ success: true, duplicate: true });
         }
 
@@ -217,6 +224,12 @@ export async function POST(req: Request) {
               utm_campaign: utm.utm_campaign || null,
               landing_page: utm.landing_page || null,
             });
+          }
+
+          if (files.length > 0) {
+            await uploadLeadImages(db, lead.id, files, "original").catch((err) =>
+              console.error("[gaikou-contact] image upload failed:", err)
+            );
           }
         }
       }

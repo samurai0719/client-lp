@@ -18,6 +18,8 @@ type DiagnosisContactFormProps = {
   submitting: boolean;
   /** 送信ボタンの文言（チャットUIでは確認画面へ進むため差し替え可能にする） */
   submitLabel?: string;
+  /** 選択された現場写真の実体（sessionStorageへ保存するanswersには含めないため、別経路で親へ渡す） */
+  onPhotoFileChange?: (file: File | null) => void;
 };
 
 type FormErrors = {
@@ -42,6 +44,7 @@ export default function DiagnosisContactForm({
   onSubmit,
   submitting,
   submitLabel = "10%OFFで無料見積もりを依頼する",
+  onPhotoFileChange,
 }: DiagnosisContactFormProps) {
   const baseId = useId();
   const [errors, setErrors] = useState<FormErrors>({});
@@ -186,7 +189,11 @@ export default function DiagnosisContactForm({
             type="file"
             accept="image/*"
             className="sr-only"
-            onChange={(e) => set("photoName", e.target.files?.[0]?.name ?? "")}
+            onChange={(e) => {
+              const file = e.target.files?.[0] ?? null;
+              set("photoName", file?.name ?? "");
+              onPhotoFileChange?.(file);
+            }}
           />
         </div>
 
