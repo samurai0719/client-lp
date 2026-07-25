@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Sparkles, Info, Calculator } from "lucide-react";
 import type { SimulatorEstimate } from "@/lib/calculate-exterior-estimate";
 import CouponBadge from "./CouponBadge";
+import PhoneCallNotice from "../PhoneCallNotice";
 
 type DiagnosisResultProps = {
   workType: string | null;
@@ -56,6 +57,8 @@ export default function DiagnosisResult({ workType, constructionTypes, estimate 
         <br />
         内容を確認のうえ、担当者よりご連絡いたします。
       </p>
+
+      <PhoneCallNotice />
 
       {estimate && (
         <div className="mt-6 rounded-2xl bg-[#fff7ec] border border-[#e8a25a] px-4 py-4 text-left">

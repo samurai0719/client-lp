@@ -4,6 +4,7 @@ import { CheckCircle2, Phone } from "lucide-react";
 import TakanagaMetaPixel from "@/components/analytics/TakanagaMetaPixel";
 import LpInsightTracker from "@/components/analytics/LpInsightTracker";
 import LpInsightConversion from "@/components/analytics/LpInsightConversion";
+import PhoneCallNotice from "@/components/gaikou/PhoneCallNotice";
 
 // /gaikou LP最下部の問い合わせフォーム専用のサンクスページ。
 // 共用の /thanks と分離し、このフォーム経由のCVをURL単位で計測できるようにする。
@@ -36,6 +37,8 @@ export default function GaikouThanksPage() {
             お急ぎの場合は、お電話でもお問い合わせいただけます。
           </p>
         </div>
+
+        <PhoneCallNotice />
 
         <a
           href="tel:0582-37-5050"

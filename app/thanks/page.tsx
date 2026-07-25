@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, Phone } from "lucide-react";
+import PhoneCallNotice from "@/components/gaikou/PhoneCallNotice";
 
 export const metadata: Metadata = {
   // metadata未設定だとルートlayoutの看護師LP向けタイトルを継承してしまうため必ず上書きする
@@ -28,6 +29,8 @@ export default function ThanksPage() {
             お急ぎの場合は、お電話でもお問い合わせいただけます。
           </p>
         </div>
+
+        <PhoneCallNotice />
 
         <a
           href="tel:0582-37-5050"

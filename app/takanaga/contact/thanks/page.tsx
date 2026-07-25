@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight, PhoneIncoming } from "lucide-react";
 import { siteConfig } from "@/data/takanaga/siteConfig";
 import LpInsightConversion from "@/components/analytics/LpInsightConversion";
 
@@ -22,10 +22,27 @@ export default function ThanksPage() {
         <h1 className="text-2xl font-bold text-(--tkn-navy-deep) mb-3">
           お問い合わせを受け付けました
         </h1>
-        <p className="text-(--tkn-text-muted) text-base leading-relaxed mb-8">
+        <p className="text-(--tkn-text-muted) text-base leading-relaxed mb-6">
           内容を確認の上、担当者よりご連絡いたします。
           返信には数日いただく場合がございます。
         </p>
+
+        <div className="mb-8 rounded-xl bg-(--tkn-blue-light) border border-(--tkn-border) px-4 py-3.5 text-left">
+          <p className="flex items-center gap-1.5 text-xs font-bold text-(--tkn-navy-deep)">
+            <PhoneIncoming size={16} className="text-(--tkn-blue) shrink-0" aria-hidden />
+            担当者からのお電話について
+          </p>
+          <p className="mt-1 text-base font-extrabold text-(--tkn-navy-deep)">
+            <a href="tel:09023467395" className="underline decoration-2 underline-offset-2">
+              090-2346-7395
+            </a>{" "}
+            からご連絡いたします
+          </p>
+          <p className="mt-1 text-xs text-(--tkn-text-muted) leading-relaxed">
+            この番号からの着信に、ぜひご対応いただけますようお願いいたします。
+          </p>
+        </div>
+
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/" className="tkn-btn-primary">
             トップページへ
