@@ -38,7 +38,7 @@ export default function ThanksPage() {
             </a>{" "}
             からご連絡いたします
           </p>
-          <p className="mt-1 text-xs text-(--tkn-text-muted) leading-relaxed">
+          <p className="mt-1 text-sm font-semibold text-(--tkn-text) leading-relaxed">
             この番号からの着信に、ぜひご対応いただけますようお願いいたします。
           </p>
         </div>

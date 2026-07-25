@@ -19,7 +19,7 @@ export default function PhoneCallNotice() {
         </a>{" "}
         からご連絡いたします
       </p>
-      <p className="mt-1 text-[11.5px] sm:text-xs text-[#6b7a73] leading-relaxed">
+      <p className="mt-1 text-[13px] sm:text-sm font-semibold text-[#3d4a45] leading-relaxed">
         この番号からの着信に、ぜひご対応いただけますようお願いいたします。
       </p>
     </div>
