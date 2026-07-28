@@ -4,7 +4,7 @@ import { use, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import {
   ArrowLeft, Phone, Mail, MapPin, ChevronDown, ChevronUp,
-  Plus, Pencil, Trash2, Save, X, AlertTriangle, CheckCircle2
+  Plus, Pencil, Trash2, Save, X, AlertTriangle, CheckCircle2, Download
 } from "lucide-react";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { formatCurrency, formatDate, formatPhone, isPast } from "@/lib/utils/format";
@@ -171,6 +171,34 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
     await loadData();
   }
 
+  // 署名付きURLは別ドメイン(Supabase)のため<a download>が効かない。
+  // Blobとして取得し、元のファイル名で端末に保存させる。
+  async function handleDownloadImage(img: LeadImage) {
+    if (!img.signed_url) return;
+    try {
+      const res = await fetch(img.signed_url);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = img.original_filename || `${img.id}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      // 取得失敗時は新規タブで開き、手動保存できるようにする
+      window.open(img.signed_url, "_blank");
+    }
+  }
+
+  // 添付されている全画像をまとめて保存する
+  async function handleDownloadAllImages() {
+    for (const img of images) {
+      await handleDownloadImage(img);
+    }
+  }
+
   if (loading) {
     return <div className="py-16 text-center text-sm text-[#6b7a73]">読み込み中...</div>;
   }
@@ -271,10 +299,19 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
       {/* 画像 */}
       {images.length > 0 && (
         <div className={sectionClass}>
-          <h2 className="text-sm font-bold text-[#10302a]">画像</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold text-[#10302a]">画像</h2>
+            <button
+              onClick={handleDownloadAllImages}
+              className="flex items-center gap-1.5 text-xs font-medium text-[#174f3f] bg-[#e7f0ea] hover:bg-[#d7e6dd] px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <Download className="w-3.5 h-3.5" />
+              すべて保存（{images.length}枚）
+            </button>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {images.map((img) => (
-              <div key={img.id} className="relative group">
+              <div key={img.id} className="relative">
                 {img.signed_url && (
                   <img
                     src={img.signed_url}
@@ -282,15 +319,25 @@ export default function LeadDetailContent({ paramsPromise }: Props) {
                     className="w-full aspect-square object-cover rounded-xl border border-[#e7e3d8]"
                   />
                 )}
-                <div className="absolute inset-0 flex flex-col items-end justify-end p-2 gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-xs bg-black/60 text-white px-2 py-0.5 rounded-full">
-                    {IMAGE_TYPE_LABELS[img.image_type] ?? img.image_type}
-                  </span>
+                {/* 種別ラベル（左上・常時表示） */}
+                <span className="absolute top-2 left-2 text-xs bg-black/60 text-white px-2 py-0.5 rounded-full">
+                  {IMAGE_TYPE_LABELS[img.image_type] ?? img.image_type}
+                </span>
+                {/* 操作ボタン（右下・常時表示。モバイルでもタップ可能） */}
+                <div className="absolute bottom-2 right-2 flex gap-1.5">
+                  <button
+                    onClick={() => handleDownloadImage(img)}
+                    title="保存"
+                    className="p-1.5 bg-white/90 text-[#174f3f] rounded-lg shadow-sm hover:bg-white"
+                  >
+                    <Download className="w-4 h-4" />
+                  </button>
                   <button
                     onClick={() => handleDeleteImage(img.id)}
-                    className="p-1 bg-red-500 text-white rounded-lg"
+                    title="削除"
+                    className="p-1.5 bg-white/90 text-red-600 rounded-lg shadow-sm hover:bg-white"
                   >
-                    <Trash2 className="w-3 h-3" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>
