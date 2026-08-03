@@ -116,6 +116,13 @@ const nextConfig: NextConfig = {
 
     return {
       beforeFiles: [
+        // 施工管理LP（レバジョブ）: public/sekou-kanri/index.html を静的配信する。
+        // Next.jsのルート(app/sekou-kanri)は廃止し、納品HTMLをそのまま配信している。
+        // /sekou-kanri/ は Next.js が /sekou-kanri へ308正規化するため、両方同じページになる。
+        {
+          source: "/sekou-kanri",
+          destination: "/sekou-kanri/index.html",
+        },
         {
           source: "/",
           has: [{ type: "host", value: "golfprayer-joutatu.com" }],
