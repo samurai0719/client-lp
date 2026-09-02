@@ -5,12 +5,19 @@ import {
   OrbitRings,
   TopographicLines,
 } from "@/components/adofy-corp/decorations";
-import { resolveLocalImage } from "@/lib/resolveLocalImage";
 import MascotFigure from "@/components/adofy-corp/visuals/MascotFigure";
 
 export default function ProfilePage() {
   const photoClipId = useId().replace(/:/g, "");
-  const photoSrc = resolveLocalImage("images/profile", "representative");
+  /*
+    代表者写真。
+    以前は実行時に fs で public/ を探索していたが、client-lp の public は 264MB あり、
+    Next のファイルトレースがその全体をサーバー関数へ取り込んで
+    Vercel の 250MB 上限を超えデプロイが失敗していた。
+    実行時のファイル探索はやめ、パスを直接指定する（差し替えは下の1行を変えるだけ）。
+    写真を外す場合は null にすればプレースホルダー表示に戻る。
+  */
+  const photoSrc: string | null = "/images/profile/representative.webp";
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-surface text-ink">
