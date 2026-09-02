@@ -116,17 +116,61 @@ export async function POST(req: Request) {
     if (error) {
       // 個人情報を含めずに、原因追跡に必要な情報だけ残す
       console.error("[consultations] insert failed:", error.code, error.message);
+
+      /*
+        DB保存に失敗しても、問い合わせ自体を失わないようにする。
+        通知メールが送れたなら担当者には届いているため受付成立とみなす。
+        （メールも送れなかった場合のみエラーを返し、利用者に再送を促す）
+      */
+      const mailed = await notify(result.row, undefined, { dbFailed: true });
+      if (mailed) {
+        void pushNotify(result.row);
+        return NextResponse.json({ success: true });
+      }
       return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
     }
 
-    // 通知メールは失敗しても受付は成立させる（保存が完了しているため）
+    // 通知は失敗しても受付は成立させる（保存が完了しているため）
     void notify(result.row, data?.id as string | undefined);
+    void pushNotify(result.row);
 
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("[consultations] unexpected error:", err instanceof Error ? err.message : err);
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 500 });
   }
+}
+
+/* ── プッシュ通知 ─────────────────────────────────────────────────────────
+   既存CRMの新規問い合わせ通知と同じ仕組み（/api/push/send）を使う。
+   管理画面をホーム画面に追加している端末へ即時に届く。
+   ───────────────────────────────────────────────────────────────────────── */
+async function pushNotify(row: ConsultationRow): Promise<void> {
+  const base = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000";
+
+  const plan = row.selected_plan ? LABEL.plan[row.selected_plan] ?? "" : "";
+  const body = [
+    `${row.prefecture}の${row.company_name}様`,
+    plan ? `／${plan}` : "",
+    "から無料相談が届きました。",
+  ].join("");
+
+  await fetch(`${base}/api/push/send`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-cron-secret": process.env.CRON_SECRET ?? "",
+    },
+    body: JSON.stringify({
+      title: "adofy 新しい無料相談",
+      body,
+      url: "/admin/consultations",
+    }),
+  }).catch(() => {
+    // 通知が届かなくても受付は成立している
+  });
 }
 
 /* ── 通知メール ───────────────────────────────────────────────────────── */
@@ -156,9 +200,13 @@ function line(label: string, value: string | null | undefined): string {
   return `${label}：${value && value.length > 0 ? value : "未入力"}`;
 }
 
-async function notify(row: ConsultationRow, id?: string): Promise<void> {
+async function notify(
+  row: ConsultationRow,
+  id?: string,
+  opts: { dbFailed?: boolean } = {}
+): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return;
+  if (!apiKey) return false;
 
   try {
     const to = process.env.ADOFY_NOTIFICATION_EMAIL
@@ -190,12 +238,21 @@ async function notify(row: ConsultationRow, id?: string): Promise<void> {
       id ? `管理ID：${id}` : "",
     ].filter(Boolean).join("\n");
 
-    await resend.emails.send({
+    const { error: sendError } = await resend.emails.send({
       from,
       to,
-      subject: `【adofy】${row.company_name} 様より無料相談のお申し込み`,
-      text,
+      // DB保存に失敗した回は件名で気づけるようにする（手動でDBへ登録するため）
+      subject: opts.dbFailed
+        ? `【adofy・要手動登録】${row.company_name} 様より無料相談のお申し込み`
+        : `【adofy】${row.company_name} 様より無料相談のお申し込み`,
+      text: opts.dbFailed
+        ? `※このお申し込みはデータベースに保存できませんでした。管理画面には表示されないため、内容を控えてください。\n\n${text}`
+        : text,
     });
+    if (sendError) {
+      console.error("[consultations] notify email failed:", sendError.name);
+      return false;
+    }
 
     // 申込者への受付確認メール（メールアドレスの入力がある場合のみ）
     if (row.email) {
@@ -222,7 +279,9 @@ async function notify(row: ConsultationRow, id?: string): Promise<void> {
         // 申込者への返信失敗は受付の成否に影響させない
       });
     }
+    return true;
   } catch (err) {
     console.error("[consultations] notify failed:", err instanceof Error ? err.message : err);
+    return false;
   }
 }
