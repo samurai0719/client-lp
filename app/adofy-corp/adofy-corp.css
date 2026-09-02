@@ -1,0 +1,109 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   adofy コーポレートサイト専用スタイル
+   カラートークンは app/globals.css（:root + @theme inline）に定義済み。
+   ここには装飾アニメーションなど、このサイトだけで使うものを置く。
+   html / body へのグローバル指定は他LPに影響するため持ち込まない。
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ---- Decoration motion: very slow & subtle only ---- */
+@keyframes deco-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes deco-spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes deco-fade {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.deco-float {
+  animation: deco-float 9s ease-in-out infinite;
+}
+
+.deco-spin-slow {
+  animation: deco-spin-slow 70s linear infinite;
+  transform-origin: center;
+}
+
+.deco-fade {
+  animation: deco-fade 6s ease-in-out infinite;
+}
+
+/* ---- Header: smoothly condenses after the first ~24px of scroll ---- */
+.header-bar {
+  transition: padding 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.header-bar.is-scrolled {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 8px 24px rgba(23, 32, 51, 0.05);
+}
+
+/* ---- CTA section: gradient drifts, never repaints abruptly ---- */
+@keyframes gradient-drift {
+  0%,
+  100% {
+    background-position: 12% 18%;
+  }
+  50% {
+    background-position: 88% 82%;
+  }
+}
+
+.cta-gradient {
+  background-image: linear-gradient(135deg, #eaf2ff 0%, #fdf3e4 50%, #ffe7c8 100%);
+  background-size: 180% 180%;
+  animation: gradient-drift 36s ease-in-out infinite;
+}
+
+/* ---- Partner marquee: a slow, quiet pass — never a fast ticker ---- */
+@keyframes marquee-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.partner-marquee-track {
+  animation: marquee-slide 38s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deco-float,
+  .deco-spin-slow,
+  .deco-fade {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

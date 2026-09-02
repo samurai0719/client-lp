@@ -1,5 +1,42 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   adofy コーポレートサイト（/adofy-corp）用のカラートークン
+   既存LPと名前が衝突しないことを確認済み。
+   --background / --foreground は他LPに影響するため :root では上書きせず、
+   .adofy-corp スコープ内でのみ切り替える。
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  --color-surface: #ffffff;
+  --color-surface-soft: #fcfcfa;
+  --color-mist-blue: #f2f7ff;
+  --color-mist-gray: #f7f8fa;
+  --color-mist-ivory: #fff9f1;
+  --color-footer: #f2f5fa;
+
+  --color-ink: #172033;
+  --color-ink-soft: #5b6475;
+
+  --color-accent-blue: #2563eb;
+  --color-accent-blue-soft: #60a5fa;
+  --color-accent-amber: #f59e0b;
+
+  --color-border-soft: rgba(37, 99, 235, 0.12);
+  --color-border-soft-hover: rgba(37, 99, 235, 0.28);
+
+  --shadow-soft: 0 12px 36px rgba(23, 32, 51, 0.06);
+  --shadow-hover: 0 18px 50px rgba(23, 32, 51, 0.1);
+}
+
+/* コーポレートサイトだけ地色を変える */
+.adofy-corp {
+  --background: #fcfcfa;
+  --foreground: #172033;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
@@ -8,6 +45,22 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* adofy コーポレートサイト用（text-ink / bg-mist-blue / shadow-soft などを生成） */
+  --color-surface: var(--color-surface);
+  --color-surface-soft: var(--color-surface-soft);
+  --color-mist-blue: var(--color-mist-blue);
+  --color-mist-gray: var(--color-mist-gray);
+  --color-mist-ivory: var(--color-mist-ivory);
+  --color-footer: var(--color-footer);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-accent-blue: var(--color-accent-blue);
+  --color-accent-blue-soft: var(--color-accent-blue-soft);
+  --color-accent-amber: var(--color-accent-amber);
+  --color-border-soft: var(--color-border-soft);
+  --color-border-soft-hover: var(--color-border-soft-hover);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-hover: var(--shadow-hover);
   --font-sans: var(--font-geist-sans), "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 }

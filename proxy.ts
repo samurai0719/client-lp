@@ -34,6 +34,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL("/gaikou", request.url));
   }
 
+  // ── adofy-site.com のルート ───────────────────────────────────────────────
+  // / = コーポレートサイト。takanaga と同じ理由で beforeFiles ではなく
+  // ここで排他的に書き換える（リダイレクトではないためループしない）。
+  const isAdofyHost = hostname === "adofy-site.com" || hostname === "www.adofy-site.com";
+  if (isAdofyHost && pathname === "/") {
+    return NextResponse.rewrite(new URL("/adofy-corp", request.url));
+  }
+
   // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）
   if (isAuthBypassEnabled()) {
     if (pathname === "/admin/login") {

@@ -5,18 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
-import {
-  Users,
-  Calendar,
-  BarChart3,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-} from "lucide-react";
+import { BarChart3, Calendar, LogOut, Menu, MessageSquare, Settings, Users, X } from "lucide-react";
 
 const navItems = [
   { href: "/admin/leads", label: "顧客", icon: Users, exact: false },
+  { href: "/admin/consultations", label: "相談", icon: MessageSquare, exact: false },
   { href: "/admin/schedule", label: "予定", icon: Calendar, exact: false },
   { href: "/admin/ads", label: "広告", icon: BarChart3, exact: false },
   { href: "/admin/settings", label: "設定", icon: Settings, exact: false },
