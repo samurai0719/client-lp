@@ -31,8 +31,10 @@ export const SITE = {
   tagline: "建設業専門の集客ホームページ制作",
   description:
     "建設業に特化した集客ホームページ制作。外構工事の集客実績と広告運用のノウハウをもとに、問い合わせ・受注・採用につながるホームページを制作します。",
-  /** 本番ドメインが決まったらここを変更する（OGP・構造化データが参照） */
+  /** コーポレートサイト（メインドメイン） */
   url: "https://adofy-site.com",
+  /** 建設業特化LP（サブドメイン）。LPのOGP・構造化データが参照する */
+  lpUrl: "https://lp.adofy-site.com",
 } as const;
 
 export const NAV = [

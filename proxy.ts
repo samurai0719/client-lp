@@ -34,12 +34,17 @@ export async function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL("/gaikou", request.url));
   }
 
-  // ── adofy-site.com のルート ───────────────────────────────────────────────
-  // / = コーポレートサイト。takanaga と同じ理由で beforeFiles ではなく
-  // ここで排他的に書き換える（リダイレクトではないためループしない）。
-  const isAdofyHost = hostname === "adofy-site.com" || hostname === "www.adofy-site.com";
-  if (isAdofyHost && pathname === "/") {
+  // ── adofy のルート ──────────────────────────────────────────────────
+  // adofy-site.com     = コーポレートサイト
+  // lp.adofy-site.com  = 建設業特化LP
+  // takanaga と同じ理由で beforeFiles ではなくここで排他的に書き換える。
+  const isAdofyCorpHost =
+    hostname === "adofy-site.com" || hostname === "www.adofy-site.com";
+  if (isAdofyCorpHost && pathname === "/") {
     return NextResponse.rewrite(new URL("/adofy-corp", request.url));
+  }
+  if (hostname === "lp.adofy-site.com" && pathname === "/") {
+    return NextResponse.rewrite(new URL("/adofy", request.url));
   }
 
   // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）

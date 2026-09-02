@@ -22,22 +22,27 @@ const takanagaHpPaths = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// adofy-site.com のURL構成
-//   /            → /adofy-corp            (コーポレートサイト)
-//   /profile     → /adofy-corp/profile
-//   /works/xxx   → /adofy-corp/works/xxx
-//   /lp          → /adofy                 (建設業特化の集客LP)
-//   /contact     → そのまま（無料相談フォーム）
-//   /admin       → そのまま（管理画面）
-// ※ ルート(/)の書き換えだけは proxy.ts で処理する（takanagaと同じ理由で、
-//    beforeFiles に置くとマッチ後も評価が続き連鎖するため）
+// adofy のURL構成（2サイトをホストで分ける）
+//
+//   adofy-site.com            = コーポレートサイト（メイン）
+//     /            → /adofy-corp
+//     /profile     → /adofy-corp/profile
+//     /works/xxx   → /adofy-corp/works/xxx
+//     /contact     → そのまま（無料相談フォーム）
+//
+//   lp.adofy-site.com         = 建設業特化の集客LP（広告の着地先）
+//     /            → /adofy
+//     /contact     → そのまま（無料相談フォーム）
+//
+// ※ 各ホストのルート(/)の書き換えは proxy.ts で処理する
+//    （takanagaと同じ理由。beforeFiles に置くとマッチ後も評価が続き連鎖するため）
 const adofyHosts = ["adofy-site.com", "www.adofy-site.com"];
+const adofyLpHosts = ["lp.adofy-site.com"];
 
-// public: 公開URL / internal: appルート
+// コーポレートサイトのサブページ（public: 公開URL / internal: appルート）
 const adofyPaths = [
   { public: "profile", internal: "adofy-corp/profile" },
   { public: "works", internal: "adofy-corp/works" },
-  { public: "lp", internal: "adofy" },
 ];
 
 const nextConfig: NextConfig = {
@@ -77,27 +82,46 @@ const nextConfig: NextConfig = {
       ])
     );
 
-    // adofy-site.com: 内部ルートへの直アクセスは公開URLへ寄せる（重複URLを作らない）
-    const adofyRedirects = adofyHosts.flatMap((host) => [
-      {
-        source: "/adofy",
-        has: [{ type: "host" as const, value: host }],
-        destination: "/lp",
-        statusCode: 301,
-      },
-      {
-        source: "/adofy-corp",
-        has: [{ type: "host" as const, value: host }],
-        destination: "/",
-        statusCode: 301,
-      },
-      {
-        source: "/adofy-corp/:rest*",
-        has: [{ type: "host" as const, value: host }],
-        destination: "/:rest*",
-        statusCode: 301,
-      },
-    ]);
+    // 内部ルートへの直アクセスは公開URLへ寄せる（重複URLを作らない）
+    const adofyRedirects = [
+      // コーポレート側
+      ...adofyHosts.flatMap((host) => [
+        {
+          source: "/adofy-corp",
+          has: [{ type: "host" as const, value: host }],
+          destination: "/",
+          statusCode: 301,
+        },
+        {
+          source: "/adofy-corp/:rest*",
+          has: [{ type: "host" as const, value: host }],
+          destination: "/:rest*",
+          statusCode: 301,
+        },
+        // LPはサブドメインへ移したため、旧URL(/lp)を救済する
+        {
+          source: "/lp",
+          has: [{ type: "host" as const, value: host }],
+          destination: "https://lp.adofy-site.com/",
+          statusCode: 301,
+        },
+        {
+          source: "/adofy",
+          has: [{ type: "host" as const, value: host }],
+          destination: "https://lp.adofy-site.com/",
+          statusCode: 301,
+        },
+      ]),
+      // LP側
+      ...adofyLpHosts.flatMap((host) => [
+        {
+          source: "/adofy",
+          has: [{ type: "host" as const, value: host }],
+          destination: "/",
+          statusCode: 301,
+        },
+      ]),
+    ];
 
     // 旧公開URL /price → 新公開URL /pricing（2026-07-04まで公開していたURL）
     const priceRedirects = takanagaHosts.flatMap((host) => [
@@ -190,7 +214,7 @@ const nextConfig: NextConfig = {
         // コーポレートHPサブページ
         ...subpathRewrites,
 
-        // ── adofy-site.com ──────────────────────────────────────────────────
+        // ── adofy-site.com（コーポレート） ──────────────────────────────
         // ルート(/)は proxy.ts で処理する。ここではサブパスのみ扱う。
         ...adofyHosts.flatMap((host) => [
           ...adofyPaths.map(({ public: pub, internal }) => ({

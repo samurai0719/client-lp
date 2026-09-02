@@ -19,17 +19,17 @@ import { FAQS, PLANS, SITE } from "@/components/adofy/config";
 const TITLE = "建設業専門の集客ホームページ制作｜adofy";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE.url),
+  metadataBase: new URL(SITE.lpUrl),
   title: TITLE,
   description: SITE.description,
-  alternates: { canonical: "/lp" },
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "ja_JP",
     siteName: SITE.name,
     title: TITLE,
     description: SITE.description,
-    url: "/lp",
+    url: "/",
   },
   twitter: {
     card: "summary_large_image",
@@ -65,7 +65,7 @@ function StructuredData() {
       },
       {
         "@type": "Service",
-        "@id": `${SITE.url}/lp#service`,
+        "@id": `${SITE.lpUrl}/#service`,
         name: "建設業専門の集客ホームページ制作",
         serviceType: "ホームページ制作・Web集客支援",
         provider: { "@id": `${SITE.url}/#organization` },
@@ -82,7 +82,7 @@ function StructuredData() {
       },
       {
         "@type": "FAQPage",
-        "@id": `${SITE.url}/lp#faq`,
+        "@id": `${SITE.lpUrl}/#faq`,
         mainEntity: FAQS.map((item) => ({
           "@type": "Question",
           name: item.q,

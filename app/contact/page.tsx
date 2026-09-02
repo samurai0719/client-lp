@@ -11,7 +11,7 @@ const DESC =
   "建設会社・建設業の個人事業主向けの無料相談フォームです。現在の集客状況やこれから増やしたい仕事をお聞かせください。相談無料・無理な営業はありません。";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE.url),
+  metadataBase: new URL(SITE.lpUrl),
   title: TITLE,
   description: DESC,
   alternates: { canonical: "/contact" },
