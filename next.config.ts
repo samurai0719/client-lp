@@ -46,6 +46,21 @@ const adofyPaths = [
 ];
 
 const nextConfig: NextConfig = {
+  /*
+    public/ をサーバー関数のバンドルから除外する。
+
+    一部のページがビルド時に fs で public/ を読んでいるため
+    （lib/nurse-ranking/publicImage.ts・lib/gaikoReview/gallery.ts）、
+    Next のファイルトレースが public 全体（264MB）を関数へ取り込み、
+    Vercel の 250MB 上限を超えてデプロイが失敗していた。
+
+    該当ページはいずれも静的プリレンダリング（○）で、fs の実行は
+    ビルド時のみ。実行時に public/ を読む必要はなく、静的アセットは
+    CDN から配信されるため除外して問題ない。
+  */
+  outputFileTracingExcludes: {
+    "**/*": ["./public/**"],
+  },
   experimental: {
     // iCloud同期(Desktop & Documents)が .next/dev/cache/turbopack の永続キャッシュファイルと
     // 競合し、開発サーバーがクラッシュする問題を避けるため無効化
