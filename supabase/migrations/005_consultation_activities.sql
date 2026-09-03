@@ -35,22 +35,9 @@ create index if not exists consultation_activities_consultation_idx
   on consultation_activities (consultation_id, created_at desc);
 
 -- ── RLS ─────────────────────────────────────────────────────
--- 相談本体と同じ方針。ブラウザからの直接操作は許可せず、
--- 参照・追加は管理画面にログインしたユーザーのみ。
--- 書き込みは実際にはサーバー側APIが service role で行う。
+-- アプリからの読み書きはサーバー側APIが service role で行うため、
+-- ユーザートークンからの直接アクセスは許可しない（ポリシーを作らない）。
 alter table consultation_activities enable row level security;
-
-drop policy if exists "consultation_activities_select_auth" on consultation_activities;
-create policy "consultation_activities_select_auth" on consultation_activities
-  for select using (auth.role() = 'authenticated');
-
-drop policy if exists "consultation_activities_insert_auth" on consultation_activities;
-create policy "consultation_activities_insert_auth" on consultation_activities
-  for insert with check (auth.role() = 'authenticated');
-
-drop policy if exists "consultation_activities_delete_auth" on consultation_activities;
-create policy "consultation_activities_delete_auth" on consultation_activities
-  for delete using (auth.role() = 'authenticated');
 
 -- ── 相談本体に「次にやること」を持たせる ────────────────────
 -- 予定管理（別途実装予定）とも共有する項目。

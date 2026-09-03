@@ -1,10 +1,7 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { Inbox, TrendingUp } from "lucide-react";
 import AdofyAdminShell from "@/components/adofy-admin/AdofyAdminShell";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdofyAccess } from "@/lib/auth/adofyCheck";
 import { CONSULTATION_LABELS as L, STATUS_LABELS } from "./consultations/_lib/labels";
 
 export const dynamic = "force-dynamic";
@@ -19,10 +16,7 @@ type Row = {
 };
 
 export default async function AdofyDashboardPage() {
-  const supabase = await createClient();
-  const access = await requireAdofyAccess(supabase);
-  if (!access) redirect("/admin/login");
-
+  // 権限の確認は app/adofy-admin/layout.tsx で行っている
   const db = createAdminClient();
   const { data } = await db
     .from("consultations")

@@ -1,8 +1,6 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import AdofyAdminShell from "@/components/adofy-admin/AdofyAdminShell";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdofyAccess } from "@/lib/auth/adofyCheck";
 import ConsultationDetail from "./_components/ConsultationDetail";
 import type { Consultation } from "../_lib/labels";
 
@@ -17,10 +15,7 @@ export default async function ConsultationDetailPage({
 }) {
   const { id } = await params;
 
-  const supabase = await createClient();
-  const admin = await requireAdofyAccess(supabase);
-  if (!admin) redirect("/admin/login");
-
+  // 権限の確認は app/adofy-admin/layout.tsx で行っている
   const db = createAdminClient();
   const [{ data: consultation }, { data: activities }] = await Promise.all([
     db.from("consultations").select("*").eq("id", id).single(),
