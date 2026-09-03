@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, type FormEvent } from "react";
-import { useAdminBrand } from "@/components/admin/brand";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
@@ -9,7 +8,6 @@ import { isSupabaseConfigured } from "@/lib/supabase/check";
 const bypassEnabled = process.env.NEXT_PUBLIC_AUTH_BYPASS_ENABLED === "true";
 
 export default function AdminLoginPage() {
-  const brand = useAdminBrand();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,9 +63,9 @@ export default function AdminLoginPage() {
         {/* ロゴ */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#174f3f] mb-4">
-            <span className="text-white text-2xl font-bold">{brand.initials}</span>
+            <span className="text-white text-2xl font-bold">TN</span>
           </div>
-          <h1 className="text-xl font-bold text-[#10302a]">{brand.name} {brand.subtitle}</h1>
+          <h1 className="text-xl font-bold text-[#10302a]">高長建設 顧客管理</h1>
           <p className="text-sm text-[#6b7a73] mt-1">管理者ログイン</p>
         </div>
 

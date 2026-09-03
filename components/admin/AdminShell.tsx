@@ -1,16 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useAdminBrand } from "@/components/admin/brand";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
-import { BarChart3, Calendar, LogOut, Menu, MessageSquare, Settings, Users, X } from "lucide-react";
+import { BarChart3, Calendar, LogOut, Menu, Settings, Users, X } from "lucide-react";
 
 const navItems = [
-  { href: "/admin/leads", label: "高長建設", icon: Users, exact: false },
-  { href: "/admin/consultations", label: "adofy", icon: MessageSquare, exact: false },
+  { href: "/admin/leads", label: "顧客", icon: Users, exact: false },
   { href: "/admin/schedule", label: "予定", icon: Calendar, exact: false },
   { href: "/admin/ads", label: "広告", icon: BarChart3, exact: false },
   { href: "/admin/settings", label: "設定", icon: Settings, exact: false },
@@ -19,7 +17,6 @@ const navItems = [
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const brand = useAdminBrand();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   async function handleLogout() {
@@ -41,11 +38,11 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       <div className="p-5 flex items-center justify-between border-b border-[#e7e3d8]">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-[#174f3f] flex items-center justify-center shrink-0">
-            <span className="text-white text-sm font-bold">{brand.initials}</span>
+            <span className="text-white text-sm font-bold">TN</span>
           </div>
           <div>
-            <p className="text-sm font-bold text-[#10302a] leading-tight">{brand.name}</p>
-            <p className="text-xs text-[#6b7a73]">{brand.subtitle}</p>
+            <p className="text-sm font-bold text-[#10302a] leading-tight">高長建設</p>
+            <p className="text-xs text-[#6b7a73]">顧客管理</p>
           </div>
         </div>
         {onClose && (
@@ -124,9 +121,9 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           </button>
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-[#174f3f] flex items-center justify-center">
-              <span className="text-white text-xs font-bold">{brand.initials}</span>
+              <span className="text-white text-xs font-bold">TN</span>
             </div>
-            <span className="text-sm font-bold text-[#10302a]">{brand.name} {brand.subtitle}</span>
+            <span className="text-sm font-bold text-[#10302a]">高長建設 顧客管理</span>
           </div>
         </header>
 

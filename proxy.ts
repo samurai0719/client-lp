@@ -60,7 +60,8 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (!pathname.startsWith("/admin")) {
+  // /admin と /adofy-admin はログイン必須（権限の細かい判定は各ルート側で行う）
+  if (!pathname.startsWith("/admin") && !pathname.startsWith("/adofy-admin")) {
     return NextResponse.next();
   }
 
@@ -101,5 +102,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/takanaga", "/admin/:path*"],
+  matcher: ["/", "/takanaga", "/admin/:path*", "/adofy-admin/:path*"],
 };

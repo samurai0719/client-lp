@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdmin, unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { requireAdofyAccess, forbiddenResponse } from "@/lib/auth/adofyCheck";
 
 /**
  * adofy 無料相談リードの一覧取得・ステータス更新。
@@ -13,8 +13,8 @@ const STATUSES = ["new", "contacted", "in_progress", "won", "lost", "spam"] as c
 
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
-  const admin = await requireAdmin(supabase);
-  if (!admin) return unauthorizedResponse();
+  const admin = await requireAdofyAccess(supabase);
+  if (!admin) return forbiddenResponse();
 
   const { searchParams } = request.nextUrl;
   const page = Math.max(1, Number(searchParams.get("page") ?? 1));
@@ -56,8 +56,8 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   const supabase = await createClient();
-  const admin = await requireAdmin(supabase);
-  if (!admin) return unauthorizedResponse();
+  const admin = await requireAdofyAccess(supabase);
+  if (!admin) return forbiddenResponse();
 
   let body: { id?: string; status?: string };
   try {

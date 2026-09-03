@@ -127,6 +127,15 @@ const nextConfig: NextConfig = {
           statusCode: 301,
         },
       ]),
+      // adofyドメインで /admin を開いたら adofy専用の管理画面へ送る。
+      // /admin は高長建設専用（提携先の外構業者もログインする）ため、
+      // adofy側から迷い込まないようにする。
+      ...adofyHosts.map((host) => ({
+        source: "/admin",
+        has: [{ type: "host" as const, value: host }],
+        destination: "/adofy-admin/consultations",
+        statusCode: 307 as const,
+      })),
       // LP側
       ...adofyLpHosts.flatMap((host) => [
         {
