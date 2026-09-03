@@ -139,6 +139,16 @@ export const RESULTS: ResultItem[] = [
     label: "RIZAP GOLF｜広告運用 × 記事LP制作",
     caption: "ターゲット分析・クリエイティブ改善・記事LP最適化",
   },
+  {
+    image: "/images/adofy/ad-02-mynavi-pharmacist.webp",
+    w: 1672,
+    h: 941,
+    alt:
+      "AD PERFORMANCE 02 マイナビ薬剤師。広告運用と診断LP制作。好条件の求人を、求職者につなげる。" +
+      "ターゲット分析、クリエイティブ改善、診断LP最適化。広告から応募まで一貫設計。",
+    label: "マイナビ薬剤師｜広告運用 × 診断LP制作",
+    caption: "ターゲット分析・クリエイティブ改善・診断LP最適化",
+  },
 ];
 
 /**
