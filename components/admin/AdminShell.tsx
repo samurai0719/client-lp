@@ -5,7 +5,15 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
-import { BarChart3, Calendar, LogOut, Menu, Settings, Users, X } from "lucide-react";
+import {
+  Users,
+  Calendar,
+  BarChart3,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
 
 const navItems = [
   { href: "/admin/leads", label: "顧客", icon: Users, exact: false },
