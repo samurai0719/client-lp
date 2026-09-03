@@ -2,6 +2,10 @@ import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { LineGrid, CornerSpark } from "@/components/adofy-corp/decorations";
 import WorkImage from "@/components/adofy-corp/visuals/WorkImage";
+import { corpMetadata } from "@/components/adofy-corp/seo";
+import { CorpStructuredData, worksBreadcrumb } from "@/components/adofy-corp/StructuredData";
+
+export const metadata = corpMetadata("works/mynavi-pharmacist");
 
 const workConcerns = [
   "残業を減らしたい",
@@ -12,7 +16,9 @@ const workConcerns = [
 
 export default function MynaviPharmacistWorksPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-mist-gray text-ink">
+    <>
+      <CorpStructuredData breadcrumb={worksBreadcrumb("works/mynavi-pharmacist")} />
+      <main className="relative min-h-screen overflow-hidden bg-mist-gray text-ink">
       <LineGrid className="absolute inset-0 text-ink" opacity={0.05} cell={64} />
 
       <section className="relative px-5 py-20 md:px-10">
@@ -145,5 +151,6 @@ export default function MynaviPharmacistWorksPage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

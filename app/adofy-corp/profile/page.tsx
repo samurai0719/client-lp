@@ -6,6 +6,10 @@ import {
   TopographicLines,
 } from "@/components/adofy-corp/decorations";
 import MascotFigure from "@/components/adofy-corp/visuals/MascotFigure";
+import { corpMetadata } from "@/components/adofy-corp/seo";
+import { CorpStructuredData, worksBreadcrumb } from "@/components/adofy-corp/StructuredData";
+
+export const metadata = corpMetadata("profile");
 
 export default function ProfilePage() {
   const photoClipId = useId().replace(/:/g, "");
@@ -20,7 +24,9 @@ export default function ProfilePage() {
   const photoSrc: string | null = "/images/profile/representative.webp";
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-surface text-ink">
+    <>
+      <CorpStructuredData breadcrumb={worksBreadcrumb("profile")} />
+      <main className="relative min-h-screen overflow-hidden bg-surface text-ink">
       <DotGrid
         className="absolute right-0 top-0 hidden h-[60%] w-[26rem] text-accent-blue sm:block"
         opacity={0.1}
@@ -200,5 +206,6 @@ export default function ProfilePage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

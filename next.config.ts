@@ -266,6 +266,20 @@ const nextConfig: NextConfig = {
           })),
         ]),
 
+        // adofy-site.com の sitemap.xml / robots.txt
+        ...adofyHosts.flatMap((host) => [
+          {
+            source: "/sitemap.xml",
+            has: [{ type: "host" as const, value: host }],
+            destination: "/adofy-corp/sitemap.xml",
+          },
+          {
+            source: "/robots.txt",
+            has: [{ type: "host" as const, value: host }],
+            destination: "/adofy-corp/robots.txt",
+          },
+        ]),
+
         // sitemap.xml / robots.txt を takanaga 用にプロキシ
         {
           source: "/sitemap.xml",
