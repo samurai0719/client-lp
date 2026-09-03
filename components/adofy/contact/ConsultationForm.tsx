@@ -14,6 +14,7 @@ import {
   markSubmitted, saveForm, saveStep, track, trackStep, type Attribution,
 } from "./formState";
 import { ChoiceCards, ChoiceChecks, Question, SelectField, TextField } from "./fields";
+import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
 
 const CONFIRM_STEP = TOTAL_STEPS - 1; // 最後は確認画面
 
@@ -179,6 +180,8 @@ export default function ConsultationForm() {
       }
 
       track("consultation_complete", { plan: data.selectedPlan }, { once: false });
+      // Meta広告の成果計測。APIが成功したこの分岐でのみ、adofyのPixelへ1回だけ送る
+      fireAdofyLead("consultation_form");
       markSubmitted();
       clearForm();
       clearAttribution();

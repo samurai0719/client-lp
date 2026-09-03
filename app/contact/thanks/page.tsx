@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../../adofy/adofy.css";
 import "../contact.css";
+import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import { ContactHeader, ThanksBody } from "@/components/adofy/contact/ContactChrome";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default function ThanksPage() {
   return (
     <div className="adf-lp adf-contact">
+      <AdofyMetaPixel />
       <ContactHeader />
       <main className="adf-contact__main adf-contact__main--thanks">
         <ThanksBody />

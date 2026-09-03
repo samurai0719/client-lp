@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./adofy.css";
 
+import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
+
 import { CursorGlow, Header, Loader, MobileFixedCta, ScrollProgress, SmoothScroll } from "@/components/adofy/Chrome";
 import HeroSection from "@/components/adofy/HeroSection";
 import ResultsSection from "@/components/adofy/ResultsSection";
@@ -116,6 +118,7 @@ export default function AdofyPage() {
         }}
       />
       <StructuredData />
+      <AdofyMetaPixel />
 
       <div className="adf-lp" id="top">
         <Loader />

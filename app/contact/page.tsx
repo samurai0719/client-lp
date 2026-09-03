@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import "../adofy/adofy.css";
 import "./contact.css";
+import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import ConsultationForm from "@/components/adofy/contact/ConsultationForm";
 import { ContactHeader } from "@/components/adofy/contact/ContactChrome";
 import { SITE } from "@/components/adofy/config";
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="adf-lp adf-contact">
+      <AdofyMetaPixel />
       <ContactHeader />
 
       <main className="adf-contact__main">
