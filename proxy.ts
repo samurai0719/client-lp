@@ -93,6 +93,18 @@ export async function proxy(request: NextRequest) {
   if (pathname === "/admin/login" && user) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
+  if (pathname === "/adofy-admin/login" && user) {
+    return NextResponse.redirect(new URL("/adofy-admin", request.url));
+  }
+
+  // adofy側は adofy専用のログイン画面へ送る（高長建設の画面を見せない）
+  const isAdofyAdmin = pathname.startsWith("/adofy-admin");
+  if (isAdofyAdmin) {
+    if (pathname !== "/adofy-admin/login" && !user) {
+      return NextResponse.redirect(new URL("/adofy-admin/login", request.url));
+    }
+    return supabaseResponse;
+  }
 
   if (pathname !== "/admin/login" && !user) {
     return NextResponse.redirect(new URL("/admin/login", request.url));

@@ -18,7 +18,7 @@ export default function AdofyAdminShell({ children }: { children: React.ReactNod
       const supabase = createClient();
       await supabase.auth.signOut();
     }
-    router.push("/admin/login");
+    router.push("/adofy-admin/login");
     router.refresh();
   }
 
