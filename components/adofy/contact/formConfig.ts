@@ -61,7 +61,11 @@ export const PROBLEM_CHOICES: Choice[] = [
 
 export const PLAN_CHOICES: Choice[] = [
   { value: "start", label: "30万円｜スタートプラン" },
-  { value: "growth", label: "50万円｜集客強化プラン" },
+  {
+    value: "growth",
+    label: "50万円｜集客強化プラン・条件付き全額返金保証",
+    note: "全額返金保証には適用条件があります。詳細はご契約前に書面でご案内します。",
+  },
   {
     value: "max",
     label: "70万円｜MAXプラン・条件付き全額返金保証",

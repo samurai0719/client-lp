@@ -15,6 +15,7 @@ import {
 } from "./formState";
 import { ChoiceCards, ChoiceChecks, Question, SelectField, TextField } from "./fields";
 import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
+import { fireLpInsightLead } from "@/components/analytics/lpInsightLead";
 
 const CONFIRM_STEP = TOTAL_STEPS - 1; // 最後は確認画面
 
@@ -182,6 +183,9 @@ export default function ConsultationForm() {
       track("consultation_complete", { plan: data.selectedPlan }, { once: false });
       // Meta広告の成果計測。APIが成功したこの分岐でのみ、adofyのPixelへ1回だけ送る
       fireAdofyLead("consultation_form");
+      // LP Insight のコンバージョン。/contact/thanks はURL直打ちでも開けるため、
+      // 完了ページ側ではなくここ（API成功時）で送る
+      fireLpInsightLead("lead", 1);
       markSubmitted();
       clearForm();
       clearAttribution();

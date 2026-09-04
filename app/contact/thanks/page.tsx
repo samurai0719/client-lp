@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../../adofy/adofy.css";
 import "../contact.css";
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
+import LpInsightTracker, { ADOFY_LP_PROJECT_ID } from "@/components/analytics/LpInsightTracker";
 import { ContactHeader, ThanksBody } from "@/components/adofy/contact/ContactChrome";
 
 export const metadata: Metadata = {
@@ -14,6 +15,7 @@ export default function ThanksPage() {
   return (
     <div className="adf-lp adf-contact">
       <AdofyMetaPixel />
+      <LpInsightTracker projectId={ADOFY_LP_PROJECT_ID} />
       <ContactHeader />
       <main className="adf-contact__main adf-contact__main--thanks">
         <ThanksBody />

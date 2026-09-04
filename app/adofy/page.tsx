@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./adofy.css";
 
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
+import LpInsightTracker, { ADOFY_LP_PROJECT_ID } from "@/components/analytics/LpInsightTracker";
 
 import { CursorGlow, Header, Loader, MobileFixedCta, ScrollProgress, SmoothScroll } from "@/components/adofy/Chrome";
 import HeroSection from "@/components/adofy/HeroSection";
@@ -119,6 +120,8 @@ export default function AdofyPage() {
       />
       <StructuredData />
       <AdofyMetaPixel />
+      {/* LP Insight: クリック/スクロール/アテンションのヒートマップ計測 */}
+      <LpInsightTracker projectId={ADOFY_LP_PROJECT_ID} />
 
       <div className="adf-lp" id="top">
         <Loader />

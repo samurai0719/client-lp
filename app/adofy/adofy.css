@@ -680,9 +680,9 @@
     画像の実寸比と完全に一致させる。
     ずらすと object-fit: cover が働き、クリエイティブ内の文字（特に下部の注記）が切れる。
     比率で高さを確保しているので、読み込み前後でレイアウトシフトも起きない。
-    SP: 1086 × 1448（3:4）
+    SP: 941 × 1672（縦長）
   */
-  aspect-ratio: 1086 / 1448;
+  aspect-ratio: 941 / 1672;
 }
 @media (min-width: 768px) {
   /* PC・タブレット: 1672 × 941（16:9） */
@@ -1412,6 +1412,13 @@
   letter-spacing: 0.08em;
   border-bottom-left-radius: var(--adf-radius);
   z-index: 3;
+}
+/* 返金保証シール（右上）と併記するプランでは、重ならないよう左上に置く */
+.adf-plan__badge--left {
+  right: auto;
+  left: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: var(--adf-radius);
 }
 .adf-plan__label {
   font-family: var(--font-geist-mono), monospace;

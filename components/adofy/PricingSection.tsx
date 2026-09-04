@@ -56,8 +56,11 @@ function PlanCard({ plan, index }: { plan: Plan; index: number }) {
       className={`adf-plan adf-reveal adf-reveal--up${plan.featured ? " adf-plan--feature" : ""}`}
       style={stagger(index)}
     >
-      {plan.badge && !plan.guard ? (
-        <span className="adf-plan__badge">{plan.badge}</span>
+      {/* 保証シールは右上に出るため、バッジと併記するときは左上へ逃がす */}
+      {plan.badge ? (
+        <span className={`adf-plan__badge${plan.guard ? " adf-plan__badge--left" : ""}`}>
+          {plan.badge}
+        </span>
       ) : null}
       {plan.guard ? <GuaranteeBadge /> : null}
 
