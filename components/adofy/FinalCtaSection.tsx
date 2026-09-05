@@ -1,5 +1,6 @@
 "use client";
 
+import { CTA_URGENCY } from "./config";
 import { useInView } from "./motion";
 import { CtaBlock } from "./ui";
 
@@ -22,6 +23,13 @@ export default function FinalCtaSection() {
           <p className="adf-final__lead">
             まずは現在の集客状況や、これから受注したい工事についてお聞かせください。
             ホームページが必要かどうかも含めて、無料でご相談いただけます。
+          </p>
+
+          {/* CTAの直前に置く後押しの一文。文言は config.ts の CTA_URGENCY */}
+          <p className="adf-final__urgent">
+            {CTA_URGENCY.map((phrase) => (
+              <span key={phrase}>{phrase}</span>
+            ))}
           </p>
         </div>
 
