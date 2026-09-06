@@ -60,15 +60,9 @@ export const PROBLEM_CHOICES: Choice[] = [
 ];
 
 export const PLAN_CHOICES: Choice[] = [
-  { value: "start", label: "30万円｜スタートプラン" },
   {
-    value: "growth",
-    label: "50万円｜集客強化プラン・条件付き全額返金保証",
-    note: "全額返金保証には適用条件があります。詳細はご契約前に書面でご案内します。",
-  },
-  {
-    value: "max",
-    label: "70万円｜MAXプラン・条件付き全額返金保証",
+    value: "standard",
+    label: "20万円｜集客ホームページ制作・条件付き全額返金保証",
     note: "全額返金保証には適用条件があります。詳細はご契約前に書面でご案内します。",
   },
   { value: "consult", label: "相談して決めたい" },
@@ -154,16 +148,20 @@ export const EMPTY_FORM: FormData = {
   preferredContactTime: "",
 };
 
-/** ステップの見出し（進捗表示と確認画面の見出しに使う） */
+/**
+ * ステップの見出し（進捗表示と確認画面の見出しに使う）。
+ *
+ * 入力完了まで約1分に収めるため、質問は4問に絞っている。
+ * 外した質問（事業形態・役職・市区町村・現在のHP・現在のお悩み・希望プラン・希望時期）は
+ * DBの列もサーバー側の許可リストもそのまま残してあるので、
+ * 復活させる場合は STEP_TITLES と validateStep、ConsultationForm の該当ブロックを戻すだけでよい。
+ *
+ * 希望プランだけは、料金表のCTA（/contact?plan=xxx）から自動で引き継ぐため質問しない。
+ */
 export const STEP_TITLES = [
-  "事業形態",
-  "会社情報",
   "主な事業内容",
-  "現在のホームページ",
-  "相談内容",
-  "現在のお悩み",
-  "希望プラン",
-  "希望時期",
+  "ご相談内容",
+  "会社情報",
   "ご連絡先",
   "入力内容の確認",
 ] as const;
@@ -180,50 +178,25 @@ export function normalizePlanParam(value: string | null): string {
 export function validateStep(step: number, data: FormData): string | null {
   switch (step) {
     case 0:
-      return data.businessType ? null : "事業形態をご選択ください。";
-    case 1:
-      if (!data.companyName.trim()) return "会社名・屋号をご入力ください。";
-      if (!data.contactName.trim()) return "ご担当者名をご入力ください。";
-      if (!data.prefecture) return "都道府県をご選択ください。";
-      return null;
-    case 2:
-      if (data.industries.length === 0) return "主な事業内容を1つ以上ご選択ください。";
+      if (data.industries.length === 0) return "主な事業内容をご選択ください。";
       if (data.industries.includes("other") && !data.industryOther.trim()) {
         return "その他の事業内容をご入力ください。";
       }
       return null;
-    case 3:
-      if (!data.hasWebsite) return "現在のホームページの有無をご選択ください。";
-      if (data.hasWebsite === "yes" && !data.websiteUrl.trim()) {
-        return "ホームページのURLをご入力ください。";
-      }
-      return null;
-    case 4:
-      if (data.consultationTopics.length === 0) return "相談したい内容を1つ以上ご選択ください。";
+    case 1:
+      if (data.consultationTopics.length === 0) return "ご相談したい内容をご選択ください。";
       if (data.consultationTopics.includes("other") && !data.consultationOther.trim()) {
         return "その他の相談内容をご入力ください。";
       }
       return null;
-    case 5:
-      if (data.currentProblems.length === 0) return "現在のお悩みを1つ以上ご選択ください。";
-      if (data.currentProblems.includes("other") && !data.problemOther.trim()) {
-        return "その他のお悩みをご入力ください。";
-      }
+    case 2:
+      if (!data.companyName.trim()) return "会社名・屋号をご入力ください。";
+      if (!data.contactName.trim()) return "ご担当者名をご入力ください。";
+      if (!data.prefecture) return "都道府県をご選択ください。";
       return null;
-    case 6:
-      return data.selectedPlan ? null : "気になっているプランをご選択ください。";
-    case 7:
-      return data.desiredTiming ? null : "制作を始めたい時期をご選択ください。";
-    case 8: {
-      if (!data.preferredContactMethod) return "希望する連絡方法をご選択ください。";
+    case 3: {
       const hasPhone = data.phone.trim().length > 0;
       const hasEmail = data.email.trim().length > 0;
-      if (data.preferredContactMethod === "phone" && !hasPhone) {
-        return "電話でのご連絡をご希望の場合は、電話番号をご入力ください。";
-      }
-      if (data.preferredContactMethod === "email" && !hasEmail) {
-        return "メールでのご連絡をご希望の場合は、メールアドレスをご入力ください。";
-      }
       if (!hasPhone && !hasEmail) {
         return "電話番号またはメールアドレスのいずれかをご入力ください。";
       }

@@ -16,7 +16,12 @@ export const PROBLEM_VALUES = [
   "subcontract", "lowprice", "noleads", "referral", "nohpinquiry",
   "norecruit", "nodiff", "noweb", "other",
 ] as const;
-export const PLAN_VALUES = ["start", "growth", "max", "consult"] as const;
+/*
+  standard = 現行の20万円プラン。
+  start / growth / max は3プラン時代の値で、既存データが持っているため許可リストに残す
+  （消すと、古いタブから送られた値が黙って捨てられる）。
+*/
+export const PLAN_VALUES = ["standard", "consult", "start", "growth", "max"] as const;
 export const TIMING_VALUES = ["asap", "1month", "3months", "6months", "undecided"] as const;
 export const CONTACT_METHODS = ["phone", "email", "any"] as const;
 export const CONTACT_TIMES = ["9-12", "12-15", "15-18", "18-", "any"] as const;

@@ -21,7 +21,7 @@ export function ContactHeader() {
             <circle cx="12" cy="12" r="9" />
             <path d="M12 7v5.5l3.5 2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          入力時間 約2分
+          入力時間 約1分
         </span>
       </div>
     </header>

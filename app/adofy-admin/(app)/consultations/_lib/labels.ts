@@ -81,6 +81,8 @@ export const CONSULTATION_LABELS = {
     nodiff: "差別化できない", noweb: "Webが分からない", other: "その他",
   } as Record<string, string>,
   plan: {
+    standard: "集客HP(20万)",
+    // 以下は3プラン時代の値（既存データの表示用）
     start: "スタート(30万)", growth: "集客強化(50万)",
     max: "MAX(70万)", consult: "相談して決めたい",
   } as Record<string, string>,

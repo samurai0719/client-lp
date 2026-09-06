@@ -180,10 +180,12 @@ const LABEL = {
     corporation: "法人", sole: "個人事業主", planned: "開業予定", other: "その他",
   } as Record<string, string>,
   plan: {
+    standard: "20万円｜集客ホームページ制作",
+    consult: "相談して決めたい",
+    // 以下は3プラン時代の値（既存データの表示用）
     start: "30万円｜スタートプラン",
     growth: "50万円｜集客強化プラン",
     max: "70万円｜MAXプラン",
-    consult: "相談して決めたい",
   } as Record<string, string>,
   timing: {
     asap: "できるだけ早く", "1month": "1ヶ月以内", "3months": "3ヶ月以内",

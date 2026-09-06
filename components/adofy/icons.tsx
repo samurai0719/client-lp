@@ -278,7 +278,7 @@ export function IndustryIcon({ id }: { id: IndustryId }) {
   );
 }
 
-/* ── 8. 返金保証バッジ（MAXプラン） ─────────────────────────────────────── */
+/* ── 8. 返金保証バッジ ──────────────────────────────────────────────────── */
 
 export function GuaranteeBadge() {
   return (

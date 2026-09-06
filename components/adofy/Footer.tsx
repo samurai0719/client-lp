@@ -50,7 +50,7 @@ const LEGAL: LegalDoc[] = [
       { term: "販売事業者", desc: PREPARING },
       { term: "運営統括責任者", desc: PREPARING },
       { term: "所在地・連絡先", desc: PREPARING },
-      { term: "販売価格", desc: "各プランの記載金額（税込・税別の表記は確定後に掲載します）" },
+      { term: "販売価格", desc: "20万円（税込・税別の表記は確定後に掲載します）" },
       { term: "代金の支払時期・方法", desc: PREPARING },
       { term: "役務の提供時期", desc: PREPARING },
       { term: "キャンセル・返金", desc: PREPARING },

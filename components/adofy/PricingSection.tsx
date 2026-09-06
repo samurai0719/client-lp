@@ -21,13 +21,14 @@ export default function PricingSection() {
       <div className="adf-container">
         <SectionHeading
           eyebrow="Pricing"
-          title="目的に合わせて選べる3つのプラン"
+          title="料金は20万円の1プランのみ"
           id="adf-pricing-h"
           center
-          lead="現在の集客状況とこれから受注したい工事に合わせて、必要なプランをご提案します。"
+          lead="プランを分けず、集客に必要な内容をひとつにまとめました。制作の進め方は、現在の集客状況をうかがったうえでご提案します。"
         />
 
-        <div className="adf-plans">
+        {/* プランが1つのときは中央に1枚だけ置く（複数に戻せば自動で横並びに戻る） */}
+        <div className={`adf-plans${PLANS.length === 1 ? " adf-plans--single" : ""}`}>
           {PLANS.map((plan, i) => (
             <PlanCard key={plan.id} plan={plan} index={i} />
           ))}

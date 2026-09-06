@@ -56,7 +56,7 @@ export default function FlowSection() {
         </div>
 
         <p className="adf-flow__note">
-          無理な営業は行いません。現在の課題や目標を確認したうえで、必要なプランをご提案します。
+          無理な営業は行いません。現在の課題や目標を確認したうえで、最適な進め方をご提案します。
         </p>
       </div>
     </section>

@@ -1346,6 +1346,15 @@
   .adf-plans { grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: center; }
 }
 
+/* プランが1つのとき。横に伸ばさず中央に1枚だけ置く */
+.adf-plans--single { max-width: 560px; margin-inline: auto; }
+@media (min-width: 1024px) {
+  .adf-plans--single { grid-template-columns: 1fr; }
+  /* 比較相手がいないので、目立たせるための拡大は不要 */
+  .adf-plans--single .adf-plan--feature { transform: none; }
+  .adf-plans--single .adf-plan--feature:hover { transform: translateY(-6px); }
+}
+
 .adf-plan {
   position: relative;
   display: flex;

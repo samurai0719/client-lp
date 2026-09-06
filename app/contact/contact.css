@@ -202,6 +202,19 @@
   .adf-choices--col2 { grid-template-columns: repeat(2, 1fr); }
 }
 
+/*
+  選択肢が多い質問（業種など）用。
+  スマートフォンでも2列にして縦スクロール量を半分に減らす。
+  1列のまま12項目を並べると、選ぶまでに画面2つ分スクロールすることになる。
+*/
+.adf-choices--compact { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.adf-choices--compact .adf-choice {
+  min-height: 50px;
+  padding: 11px 12px;
+  gap: 9px;
+}
+.adf-choices--compact .adf-choice__label { font-size: 13.5px; }
+
 .adf-choice {
   display: flex;
   align-items: flex-start;

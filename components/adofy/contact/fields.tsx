@@ -17,16 +17,19 @@ export function ChoiceCards({
   value,
   onChange,
   columns = 2,
+  compact = false,
 }: {
   name: string;
   choices: Choice[];
   value: string;
   onChange: (v: string) => void;
   columns?: 1 | 2;
+  /** 選択肢が多い質問向け。スマートフォンでも2列に並べ、1画面に収まる量を増やす */
+  compact?: boolean;
 }) {
   return (
     <div
-      className={`adf-choices adf-choices--col${columns}`}
+      className={`adf-choices adf-choices--col${columns}${compact ? " adf-choices--compact" : ""}`}
       role="radiogroup"
       aria-label={name}
     >

@@ -3,9 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
-  BUSINESS_TYPE_CHOICES, CONTACT_METHOD_CHOICES, CONTACT_TIME_CHOICES,
-  EMPTY_FORM, HAS_WEBSITE_CHOICES, INDUSTRY_CHOICES, PLAN_CHOICES,
-  PREFECTURES, PROBLEM_CHOICES, STEP_TITLES, TIMING_CHOICES, TOPIC_CHOICES,
+  CONTACT_TIME_CHOICES, EMPTY_FORM, INDUSTRY_CHOICES, PLAN_CHOICES,
+  PREFECTURES, STEP_TITLES, TOPIC_CHOICES,
   TOTAL_STEPS, firstIncompleteStep, normalizePlanParam, validateStep,
   type Choice, type FormData,
 } from "./formConfig";
@@ -13,7 +12,7 @@ import {
   captureAttribution, clearAttribution, clearForm, loadForm, loadStep,
   markSubmitted, saveForm, saveStep, track, trackStep, type Attribution,
 } from "./formState";
-import { ChoiceCards, ChoiceChecks, Question, SelectField, TextField } from "./fields";
+import { ChoiceCards, Question, SelectField, TextField } from "./fields";
 import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
 import { fireLpInsightLead } from "@/components/analytics/lpInsightLead";
 
@@ -82,21 +81,6 @@ export default function ConsultationForm() {
     track("consultation_form_start");
   }, []);
 
-  const toggle = useCallback(
-    (key: "industries" | "consultationTopics" | "currentProblems", value: string) => {
-      setData((d) => {
-        const cur = d[key];
-        return {
-          ...d,
-          [key]: cur.includes(value) ? cur.filter((v) => v !== value) : [...cur, value],
-        };
-      });
-      setError("");
-      track("consultation_form_start");
-    },
-    []
-  );
-
   const scrollTop = useCallback(() => {
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
@@ -151,6 +135,13 @@ export default function ConsultationForm() {
       return;
     }
 
+    /*
+      希望連絡方法は質問を減らすため画面から外し、入力された連絡先から決める。
+      （電話だけ＝電話、メールだけ＝メール、両方＝どちらでもよい）
+    */
+    const method =
+      data.phone.trim() && data.email.trim() ? "any" : data.phone.trim() ? "phone" : "email";
+
     submitting.current = true;
     setSending(true);
     setError("");
@@ -163,6 +154,7 @@ export default function ConsultationForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
+          preferredContactMethod: method,
           privacyAgreed: true,
           companyWebsite: honeypot,
           elapsedMs: Date.now() - startedAt.current,
@@ -245,54 +237,15 @@ export default function ConsultationForm() {
 
       <div className="adf-form__panel" key={step}>
         {step === 0 && (
-          <Question step={1} total={TOTAL_STEPS} title="事業形態を教えてください">
+          <Question step={1} total={TOTAL_STEPS} title="主な事業内容を教えてください">
             <ChoiceCards
-              name="事業形態"
-              choices={BUSINESS_TYPE_CHOICES}
-              value={data.businessType}
-              onChange={(v) => chooseAndAdvance({ businessType: v })}
-            />
-          </Question>
-        )}
-
-        {step === 1 && (
-          <Question step={2} total={TOTAL_STEPS} title="会社情報をご入力ください">
-            <TextField
-              label="会社名・屋号" required autoComplete="organization"
-              value={data.companyName} onChange={(v) => update({ companyName: v })}
-              placeholder="例：株式会社adofy建設"
-            />
-            <TextField
-              label="ご担当者名" required autoComplete="name"
-              value={data.contactName} onChange={(v) => update({ contactName: v })}
-              placeholder="例：山田 太郎"
-            />
-            <TextField
-              label="役職" autoComplete="organization-title"
-              value={data.position} onChange={(v) => update({ position: v })}
-              placeholder="例：代表取締役"
-            />
-            <SelectField
-              label="都道府県" required autoComplete="address-level1"
-              options={PREFECTURES} value={data.prefecture}
-              onChange={(v) => update({ prefecture: v })}
-            />
-            <TextField
-              label="市区町村" autoComplete="address-level2"
-              value={data.city} onChange={(v) => update({ city: v })}
-              placeholder="例：岐阜市"
-            />
-          </Question>
-        )}
-
-        {step === 2 && (
-          <Question
-            step={3} total={TOTAL_STEPS} title="主な事業内容を教えてください"
-            description="複数選択できます。"
-          >
-            <ChoiceChecks
-              name="主な事業内容" choices={INDUSTRY_CHOICES} columns={2}
-              values={data.industries} onToggle={(v) => toggle("industries", v)}
+              name="主な事業内容" choices={INDUSTRY_CHOICES} columns={2} compact
+              value={data.industries[0] ?? ""}
+              onChange={(v) =>
+                v === "other"
+                  ? update({ industries: [v] })
+                  : chooseAndAdvance({ industries: [v], industryOther: "" })
+              }
             />
             {data.industries.includes("other") ? (
               <TextField
@@ -304,33 +257,16 @@ export default function ConsultationForm() {
           </Question>
         )}
 
-        {step === 3 && (
-          <Question step={4} total={TOTAL_STEPS} title="現在、会社のホームページはありますか？">
+        {step === 1 && (
+          <Question step={2} total={TOTAL_STEPS} title="今回ご相談したい内容を教えてください">
             <ChoiceCards
-              name="現在のホームページ" choices={HAS_WEBSITE_CHOICES}
-              value={data.hasWebsite}
+              name="相談内容" choices={TOPIC_CHOICES} columns={1}
+              value={data.consultationTopics[0] ?? ""}
               onChange={(v) =>
-                v === "yes" ? update({ hasWebsite: v }) : chooseAndAdvance({ hasWebsite: v })
+                v === "other"
+                  ? update({ consultationTopics: [v] })
+                  : chooseAndAdvance({ consultationTopics: [v], consultationOther: "" })
               }
-            />
-            {data.hasWebsite === "yes" ? (
-              <TextField
-                label="ホームページURL" required type="url" inputMode="url" autoComplete="url"
-                value={data.websiteUrl} onChange={(v) => update({ websiteUrl: v })}
-                placeholder="https://example.co.jp"
-              />
-            ) : null}
-          </Question>
-        )}
-
-        {step === 4 && (
-          <Question
-            step={5} total={TOTAL_STEPS} title="今回相談したい内容を教えてください"
-            description="複数選択できます。"
-          >
-            <ChoiceChecks
-              name="相談内容" choices={TOPIC_CHOICES}
-              values={data.consultationTopics} onToggle={(v) => toggle("consultationTopics", v)}
             />
             {data.consultationTopics.includes("other") ? (
               <TextField
@@ -341,77 +277,47 @@ export default function ConsultationForm() {
           </Question>
         )}
 
-        {step === 5 && (
+        {step === 2 && (
+          <Question step={3} total={TOTAL_STEPS} title="会社情報をご入力ください">
+            <TextField
+              label="会社名・屋号" required autoComplete="organization"
+              value={data.companyName} onChange={(v) => update({ companyName: v })}
+              placeholder="例：株式会社adofy建設"
+            />
+            <TextField
+              label="ご担当者名" required autoComplete="name"
+              value={data.contactName} onChange={(v) => update({ contactName: v })}
+              placeholder="例：山田 太郎"
+            />
+            <SelectField
+              label="都道府県" required autoComplete="address-level1"
+              options={PREFECTURES} value={data.prefecture}
+              onChange={(v) => update({ prefecture: v })}
+            />
+          </Question>
+        )}
+
+        {step === 3 && (
           <Question
-            step={6} total={TOTAL_STEPS} title="現在のお悩みに近いものを選択してください"
-            description="複数選択できます。"
-          >
-            <ChoiceChecks
-              name="現在のお悩み" choices={PROBLEM_CHOICES}
-              values={data.currentProblems} onToggle={(v) => toggle("currentProblems", v)}
-            />
-            {data.currentProblems.includes("other") ? (
-              <TextField
-                label="その他のお悩み" required
-                value={data.problemOther} onChange={(v) => update({ problemOther: v })}
-              />
-            ) : null}
-          </Question>
-        )}
-
-        {step === 6 && (
-          <Question step={7} total={TOTAL_STEPS} title="現在気になっているプランはありますか？">
-            <ChoiceCards
-              name="希望プラン" choices={PLAN_CHOICES} columns={1}
-              value={data.selectedPlan}
-              onChange={(v) => chooseAndAdvance({ selectedPlan: v })}
-            />
-          </Question>
-        )}
-
-        {step === 7 && (
-          <Question step={8} total={TOTAL_STEPS} title="ホームページ制作を始めたい時期を教えてください">
-            <ChoiceCards
-              name="希望時期" choices={TIMING_CHOICES}
-              value={data.desiredTiming}
-              onChange={(v) => chooseAndAdvance({ desiredTiming: v })}
-            />
-          </Question>
-        )}
-
-        {step === 8 && (
-          <Question
-            step={9} total={TOTAL_STEPS} title="ご連絡先をご入力ください"
+            step={4} total={TOTAL_STEPS} title="ご連絡先をご入力ください"
             description="電話番号とメールアドレスは、どちらか一方のご入力で送信できます。"
           >
             <TextField
               label="電話番号" type="tel" inputMode="tel" autoComplete="tel"
               value={data.phone} onChange={(v) => update({ phone: v })}
               placeholder="0581234567"
-              required={data.preferredContactMethod === "phone"}
             />
             <TextField
               label="メールアドレス" type="email" inputMode="email" autoComplete="email"
               value={data.email} onChange={(v) => update({ email: v })}
               placeholder="info@example.co.jp"
-              required={data.preferredContactMethod === "email"}
             />
-            <div className="adf-field">
-              <p className="adf-field__label">
-                希望する連絡方法<span className="adf-field__req">必須</span>
-              </p>
-              <ChoiceCards
-                name="希望する連絡方法" choices={CONTACT_METHOD_CHOICES}
-                value={data.preferredContactMethod}
-                onChange={(v) => update({ preferredContactMethod: v })}
-              />
-            </div>
             <div className="adf-field">
               <p className="adf-field__label">
                 連絡しやすい時間帯<span className="adf-field__req">必須</span>
               </p>
               <ChoiceCards
-                name="連絡しやすい時間帯" choices={CONTACT_TIME_CHOICES}
+                name="連絡しやすい時間帯" choices={CONTACT_TIME_CHOICES} compact
                 value={data.preferredContactTime}
                 onChange={(v) => update({ preferredContactTime: v })}
               />
@@ -500,34 +406,32 @@ function ConfirmPanel({
   onEdit: (step: number) => void;
   onSubmit: () => void;
 }) {
-  const rows: { step: number; label: string; value: string }[] = [
-    { step: 0, label: "事業形態", value: labelOf(BUSINESS_TYPE_CHOICES, data.businessType) },
+  /*
+    step を持たない行（希望プラン）は料金表のCTAから引き継いだ値で、
+    フォーム内に対応する質問が無いため「編集」ボタンを出さない。
+  */
+  const rows: { step?: number; label: string; value: string }[] = [
+    { step: 0, label: "主な事業内容", value: labelsOf(INDUSTRY_CHOICES, data.industries, data.industryOther) },
+    { step: 1, label: "ご相談内容", value: labelsOf(TOPIC_CHOICES, data.consultationTopics, data.consultationOther) },
     {
-      step: 1, label: "会社情報",
+      step: 2, label: "会社情報",
       value: [
         data.companyName,
-        `ご担当者：${data.contactName}${data.position ? `（${data.position}）` : ""}`,
-        `所在地：${data.prefecture}${data.city}`,
+        `ご担当者：${data.contactName}`,
+        `所在地：${data.prefecture}`,
       ].filter(Boolean).join(" / "),
     },
-    { step: 2, label: "主な事業内容", value: labelsOf(INDUSTRY_CHOICES, data.industries, data.industryOther) },
     {
-      step: 3, label: "現在のホームページ",
-      value: `${labelOf(HAS_WEBSITE_CHOICES, data.hasWebsite)}${data.websiteUrl ? ` / ${data.websiteUrl}` : ""}`,
-    },
-    { step: 4, label: "相談内容", value: labelsOf(TOPIC_CHOICES, data.consultationTopics, data.consultationOther) },
-    { step: 5, label: "現在のお悩み", value: labelsOf(PROBLEM_CHOICES, data.currentProblems, data.problemOther) },
-    { step: 6, label: "希望プラン", value: labelOf(PLAN_CHOICES, data.selectedPlan) },
-    { step: 7, label: "希望時期", value: labelOf(TIMING_CHOICES, data.desiredTiming) },
-    {
-      step: 8, label: "ご連絡先",
+      step: 3, label: "ご連絡先",
       value: [
         data.phone && `電話：${data.phone}`,
         data.email && `メール：${data.email}`,
-        `希望連絡方法：${labelOf(CONTACT_METHOD_CHOICES, data.preferredContactMethod)}`,
         `時間帯：${labelOf(CONTACT_TIME_CHOICES, data.preferredContactTime)}`,
       ].filter(Boolean).join(" / "),
     },
+    ...(data.selectedPlan
+      ? [{ label: "気になっているプラン", value: labelOf(PLAN_CHOICES, data.selectedPlan) }]
+      : []),
   ];
 
   return (
@@ -542,9 +446,11 @@ function ConfirmPanel({
             <dt>{r.label}</dt>
             <dd>
               <span>{r.value || "未入力"}</span>
-              <button type="button" className="adf-confirm__edit" onClick={() => onEdit(r.step)}>
-                編集
-              </button>
+              {r.step !== undefined ? (
+                <button type="button" className="adf-confirm__edit" onClick={() => onEdit(r.step as number)}>
+                  編集
+                </button>
+              ) : null}
             </dd>
           </div>
         ))}
