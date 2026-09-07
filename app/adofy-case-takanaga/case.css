@@ -1,11 +1,11 @@
 /*
   高長建設のPR記事。
-  配色は adofy LP の変数をそのまま使う（白〜アイボリー / ネイビー / オレンジ）。
+  配色は adofy LP の変数をそのまま使う（白 / ネイビー / オレンジ）。
   読み物なので、LP本体より行間を広く、1段落を短く見せる。
 */
 
 .adf-case {
-  background: var(--adf-paper);
+  background: #fff;
   color: var(--adf-text);
 }
 
@@ -30,6 +30,18 @@
   letter-spacing: 0.02em;
   text-align: center;
 }
+
+/* プレビュー時だけ出す案内 */
+.adf-case__preview-bar {
+  margin: 0;
+  padding: 10px 20px;
+  background: var(--adf-accent-deep);
+  color: #fff;
+  font-size: 12.5px;
+  line-height: 1.7;
+  text-align: center;
+}
+.adf-case__preview-bar b { font-weight: 800; }
 
 /* ── ファーストビュー ────────────────────────────────────────────────── */
 .adf-case__fv {
@@ -62,51 +74,123 @@
 }
 
 /* ── 本文 ────────────────────────────────────────────────────────────── */
-.adf-case__article { padding-bottom: 8px; }
-
 .adf-case__body {
   max-width: 720px;
   margin-inline: auto;
-  padding: 36px 20px 8px;
+  padding: 40px 22px 8px;
 }
 
 .adf-case__title {
-  margin: 0 0 26px;
-  font-size: clamp(23px, 5.6vw, 34px);
+  margin: 0 0 30px;
+  font-size: clamp(24px, 6vw, 36px);
   font-weight: 800;
-  line-height: 1.62;
+  line-height: 1.6;
   letter-spacing: -0.01em;
   color: var(--adf-navy-900);
 }
 .adf-case__title span { display: block; }
 .adf-case__title-hit { color: var(--adf-accent-deep); }
 
+/* リード文 */
 .adf-case__lead {
-  padding: 20px 22px;
+  padding: 22px 24px;
   border-left: 3px solid var(--adf-accent);
   background: var(--adf-paper-2);
 }
 .adf-case__lead p:first-child { margin-top: 0; }
-.adf-case__lead p:last-child { margin-bottom: 0; }
+.adf-case__lead > div > p:last-child { margin-bottom: 0; }
 
-.adf-case__section { margin-top: 52px; }
+.adf-case__section { margin-top: 56px; }
 
 .adf-case__h2 {
-  margin: 0 0 20px;
-  padding-bottom: 12px;
+  margin: 0 0 22px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--adf-line);
-  font-size: clamp(19px, 4.6vw, 25px);
+  font-size: clamp(20px, 4.8vw, 26px);
   font-weight: 800;
   line-height: 1.6;
   color: var(--adf-navy-900);
 }
+/* 章番号。読み進める位置が分かるようにする */
+.adf-case__h2-no {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--adf-accent);
+}
 
 /* 段落。スマートフォンで読みやすいよう、行間を広めに取る */
 .adf-case p {
-  margin: 0 0 18px;
-  font-size: 15.5px;
-  line-height: 2.1;
+  margin: 0 0 20px;
+  font-size: 16.5px;
+  line-height: 1.95;
   color: var(--adf-text);
+}
+
+.adf-case__list {
+  margin: 0 0 20px;
+  padding-left: 1.2em;
+  list-style: none;
+}
+.adf-case__list li {
+  position: relative;
+  margin-bottom: 8px;
+  font-size: 16.5px;
+  line-height: 1.9;
+  color: var(--adf-text);
+}
+.adf-case__list li::before {
+  content: "";
+  position: absolute;
+  left: -1.2em;
+  top: 0.85em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--adf-accent);
+}
+
+/* ── 確認待ちの仮原稿（プレビューでのみ表示） ────────────────────────── */
+.adf-case__pending {
+  margin-bottom: 20px;
+  padding: 18px 20px 2px;
+  border: 1.5px dashed var(--adf-accent);
+  border-radius: var(--adf-radius);
+  background: rgba(242, 106, 27, 0.05);
+}
+.adf-case__pending-label {
+  margin: 0 0 12px !important;
+  font-size: 12px !important;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.6 !important;
+  color: var(--adf-accent-deep) !important;
+}
+
+/* ── 編集部補足（高長建設の言葉ではない） ────────────────────────────── */
+.adf-case__editor {
+  margin: 28px 0 20px;
+  padding: 18px 20px;
+  border: 1px solid var(--adf-line);
+  border-radius: var(--adf-radius);
+  background: var(--adf-paper-2);
+}
+.adf-case__editor-label {
+  margin: 0 0 8px !important;
+  font-size: 11.5px !important;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.6 !important;
+  color: var(--adf-text-mute) !important;
+}
+.adf-case__editor-text {
+  margin: 0 !important;
+  font-size: 14.5px !important;
+  line-height: 1.9 !important;
+  color: var(--adf-text-mute) !important;
 }
 
 /* ── 施工写真 ────────────────────────────────────────────────────────── */
@@ -118,7 +202,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  margin-top: 26px;
+  margin-top: 28px;
 }
 .adf-case__photos > :first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
 @media (min-width: 600px) {
@@ -143,12 +227,13 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
-  margin: 28px 0 16px;
+  margin: 30px 0 16px;
 }
 @media (min-width: 560px) {
   .adf-case__cards { grid-template-columns: repeat(2, 1fr); }
 }
-.adf-case__card {
+.adf-case__card,
+.adf-case__compare-card {
   padding: 22px 20px;
   border: 1.5px solid var(--adf-line);
   border-radius: var(--adf-radius-lg);
@@ -156,7 +241,8 @@
   text-align: center;
 }
 /* 22件の側だけ強調する */
-.adf-case__card.is-hit {
+.adf-case__card.is-hit,
+.adf-case__compare-card.is-hit {
   border-color: var(--adf-accent);
   background: linear-gradient(180deg, rgba(242, 106, 27, 0.08), rgba(242, 106, 27, 0.02));
 }
@@ -188,9 +274,51 @@
   color: var(--adf-navy-900);
   font-variant-numeric: tabular-nums;
 }
-.adf-case__card.is-hit .adf-case__card-value b { color: var(--adf-accent-deep); }
+.adf-case__card.is-hit .adf-case__card-value b,
+.adf-case__compare-card.is-hit .adf-case__card-value b { color: var(--adf-accent-deep); }
 .adf-case__card-unit { font-size: 16px; font-weight: 800; color: var(--adf-navy-900); }
-.adf-case__card.is-hit .adf-case__card-unit { color: var(--adf-accent-deep); }
+.adf-case__card.is-hit .adf-case__card-unit,
+.adf-case__compare-card.is-hit .adf-case__card-unit { color: var(--adf-accent-deep); }
+
+/* ── 依頼前 → 依頼後 ─────────────────────────────────────────────────── */
+.adf-case__compare {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0 8px;
+}
+@media (min-width: 700px) {
+  /* PCは横並び。中央に「依頼」を挟む */
+  .adf-case__compare { grid-template-columns: 1fr auto 1fr; gap: 18px; }
+}
+.adf-case__compare-card { margin: 0; }
+.adf-case__compare-bridge {
+  margin: 0 !important;
+  font-size: 12.5px !important;
+  font-weight: 700;
+  line-height: 1.7 !important;
+  text-align: center;
+  color: var(--adf-text-mute) !important;
+  white-space: nowrap;
+}
+/* 矢印。スマホは下向き、PCは右向き */
+.adf-case__compare-arrow {
+  display: block;
+  width: 100%;
+  height: 18px;
+  margin-bottom: 4px;
+  background: var(--adf-accent);
+  clip-path: polygon(45% 0, 55% 0, 55% 62%, 66% 62%, 50% 100%, 34% 62%, 45% 62%);
+}
+@media (min-width: 700px) {
+  .adf-case__compare-arrow {
+    width: 34px;
+    height: 14px;
+    margin: 0 auto 6px;
+    clip-path: polygon(0 38%, 62% 38%, 62% 0, 100% 50%, 62% 100%, 62% 62%, 0 62%);
+  }
+}
 
 /* ── 注記 ────────────────────────────────────────────────────────────── */
 .adf-case__note {
@@ -207,66 +335,95 @@
 /* ── CTA ─────────────────────────────────────────────────────────────── */
 .adf-case__cta {
   display: flex;
-  justify-content: center;
-  margin-top: 30px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+.adf-case__cta-note {
+  margin: 0 !important;
+  font-size: 12.5px !important;
+  line-height: 1.7 !important;
+  color: var(--adf-text-mute) !important;
 }
 
-/* ── サービス案内（体験談と区別するため背景を変える） ────────────────── */
+/* ── サービス案内（体験談と区別するため淡いアイボリーにする） ─────────── */
 .adf-case__service {
-  margin-top: 56px;
-  padding: 48px 20px 52px;
-  background: var(--adf-navy-900);
+  margin-top: 60px;
+  padding: 46px 22px 54px;
+  background: #faf7f1;
+  border-top: 1px solid #e8e0d3;
 }
 .adf-case__service-inner {
-  max-width: 640px;
+  max-width: 720px;
   margin-inline: auto;
+}
+.adf-case__service-divider {
+  margin: 0 0 26px !important;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e2d8c8;
+  font-size: 12.5px !important;
+  font-weight: 700;
+  line-height: 1.7 !important;
+  letter-spacing: 0.02em;
+  color: #7a6a53 !important;
   text-align: center;
 }
-.adf-case__service-eyebrow {
-  margin: 0 0 18px !important;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 11px !important;
-  letter-spacing: 0.16em;
-  color: var(--adf-accent-hi) !important;
-}
-.adf-case__service-target {
-  margin: 0 0 10px !important;
-  font-size: 14px !important;
-  font-weight: 700;
-  color: var(--adf-text-inv-mute) !important;
-}
 .adf-case__service-title {
-  margin: 0 0 26px;
-  font-size: clamp(22px, 5.4vw, 30px);
+  margin: 0 0 22px;
+  font-size: clamp(20px, 4.8vw, 27px);
   font-weight: 800;
   line-height: 1.6;
-  color: #fff;
+  color: var(--adf-navy-900);
+}
+.adf-case__service-title span { display: block; }
+.adf-case__service-body {
+  margin: 0 0 18px !important;
+  color: #4a4033 !important;
+}
+
+/* 価格・保証。体験談本文と混ざらないよう、白いカードに載せる */
+.adf-case__offer {
+  margin-top: 30px;
+  padding: 28px 24px 30px;
+  background: #fff;
+  border: 1px solid #e8e0d3;
+  border-radius: var(--adf-radius-lg);
+  text-align: center;
+}
+.adf-case__offer-title {
+  margin: 0 0 20px !important;
+  font-size: clamp(17px, 4.2vw, 21px) !important;
+  font-weight: 800;
+  line-height: 1.6 !important;
+  color: var(--adf-navy-900) !important;
 }
 .adf-case__price {
   display: flex;
   align-items: baseline;
   justify-content: center;
   gap: 14px;
-  margin: 0 0 6px;
-  padding-top: 22px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.2);
+  margin: 0 0 8px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--adf-line);
 }
 .adf-case__price dt {
   font-size: 14px;
   font-weight: 700;
-  color: var(--adf-text-inv-mute);
+  color: var(--adf-text-mute);
 }
 .adf-case__price dd {
   margin: 0;
   font-size: clamp(30px, 8vw, 40px);
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--adf-navy-900);
 }
 .adf-case__price-note {
   margin: 0 0 24px !important;
-  font-size: 12px !important;
-  color: var(--adf-text-inv-mute) !important;
+  font-size: 12.5px !important;
+  line-height: 1.9 !important;
+  color: var(--adf-text-mute) !important;
 }
 .adf-case__guarantee {
   display: inline-block;
@@ -274,29 +431,28 @@
   padding: 11px 22px;
   border: 1px solid rgba(242, 106, 27, 0.55);
   border-radius: var(--adf-radius);
-  background: rgba(242, 106, 27, 0.12);
+  background: rgba(242, 106, 27, 0.08);
   font-size: clamp(15px, 4vw, 18px) !important;
   font-weight: 800;
   line-height: 1.6 !important;
-  color: var(--adf-accent-hi) !important;
+  color: var(--adf-accent-deep) !important;
 }
 .adf-case__guarantee-note {
-  margin: 0 auto 4px !important;
+  margin: 0 auto !important;
   max-width: 40em;
   font-size: 12.5px !important;
   line-height: 1.9 !important;
-  color: var(--adf-text-inv-mute) !important;
+  color: var(--adf-text-mute) !important;
 }
 .adf-case__guarantee-note a {
   margin-left: 6px;
-  color: var(--adf-accent-hi);
+  color: var(--adf-accent-deep);
   font-weight: 700;
   white-space: nowrap;
 }
 .adf-case__service-disclaimer {
-  margin: 22px auto 0 !important;
-  max-width: 40em;
+  margin: 22px 0 0 !important;
   font-size: 12.5px !important;
   line-height: 1.9 !important;
-  color: var(--adf-text-inv-mute) !important;
+  color: #7a6a53 !important;
 }
