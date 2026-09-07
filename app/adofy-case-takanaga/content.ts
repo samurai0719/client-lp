@@ -71,9 +71,16 @@ export const PR_LABEL = "PR｜adofyの集客支援サービスをご紹介しま
 
 /**
  * h1。ファーストビュー画像に大きな見出しが入っているため、
- * ここでは同じ文言を巨大に二重表示せず、簡潔な一行にする。
+ * ここでは同じ文言を巨大に二重表示せず、簡潔に整える。
+ * 「高長建設が、」で改行する（読点で切って、主語と結果を分ける）。
  */
-export const TITLE = "外構会社・高長建設が、adofyに集客を依頼してからの話。";
+export const TITLE_LINES = [
+  "外構会社・高長建設が、",
+  "adofyに集客を依頼した結果。",
+] as const;
+
+/** metadata用（改行を除いた1行版） */
+export const TITLE = TITLE_LINES.join("");
 
 export const DESCRIPTION =
   "外構会社である私たち高長建設が、adofyに集客支援を依頼した取り組みの記録です。依頼前の問い合わせ0件から、支援開始後1ヶ月で22件の問い合わせにつながりました。22件は問い合わせ件数であり、成約件数ではありません。";
@@ -443,7 +450,13 @@ export const CTA_LEADS = {
   end: "まずは今の状況を、聞かせてください。",
 } as const;
 
-export const CTA_NOTE = "adofyの相談フォームへ移動します";
+/**
+ * 記事のボタン文言（2行）。
+ * LP本体の CTA_LABEL は変えない（あちらは自社サイト内なので「公式サイトで」が付くと不自然なため）。
+ */
+export const CTA_LABEL_LINES = ["adofy公式サイトで", "無料で相談してみる"] as const;
+
+export const CTA_NOTE = "相談無料・オンライン相談対応";
 
 /* ── サービス案内（ここから先は高長建設の体験談ではない） ───────────── */
 

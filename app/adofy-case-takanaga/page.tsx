@@ -5,14 +5,13 @@ import "./case.css";
 
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import LpInsightTracker, { ADOFY_LP_PROJECT_ID } from "@/components/analytics/LpInsightTracker";
-import Footer from "@/components/adofy/Footer";
-import { CtaButton, LogoMark } from "@/components/adofy/ui";
+import { LogoMark } from "@/components/adofy/ui";
 import { REFUND_DISCLOSURE, RESULTS, RESULTS_NOTE, SITE } from "@/components/adofy/config";
-import { ScreenShot, StickyCta, ZoomableImage } from "./ArticleParts";
+import { ArticleCta, ScreenShot, StickyCta, ZoomableImage } from "./ArticleParts";
 import {
   CTA_LEADS, CTA_NOTE, DESCRIPTION, HERO, IMG_CONCERNS, IMG_CONSULTATION,
   IMG_SERVICE, LEAD, OTHER_RESULTS, OTHER_RESULTS_EXCLUDE, PR_LABEL,
-  RESULT_CARDS, RESULT_NOTE, SECTIONS, SERVICE, SHOWCASE, TITLE,
+  RESULT_CARDS, RESULT_NOTE, SECTIONS, SERVICE, SHOWCASE, TITLE, TITLE_LINES,
   type Chunk, type Item,
 } from "./content";
 
@@ -114,7 +113,11 @@ export default async function AdofyCaseTakanagaPage({
         </div>
 
         <div className="adf-case__body">
-          <h1 className="adf-case__title">{TITLE}</h1>
+          <h1 className="adf-case__title">
+            {TITLE_LINES.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </h1>
 
           <div className="adf-case__lead">
             <Chunks chunks={LEAD} preview={preview} />
@@ -244,10 +247,20 @@ export default async function AdofyCaseTakanagaPage({
 
       <StickyCta firstCtaId={FIRST_CTA_ID} hideWhenVisibleIds={STICKY_HIDE_IDS} />
 
-      {/* 追従CTAがフッター（運営者情報・プライバシーポリシー）を覆わないようにする */}
-      <div id={FOOTER_ID}>
-        <Footer />
-      </div>
+      {/*
+        記事なので、LPの大きなフッター（サービス内容・料金プラン等のナビ）は置かない。
+        ただし広告記事として運営者情報・プライバシーポリシー・特商法表記への導線は必要なので、
+        LP側のフッターの該当項目を開くリンクだけを最小限で残す。
+        追従CTAがこの表記を覆わないよう、id を付けて監視対象にしている。
+      */}
+      <footer className="adf-case__foot" id={FOOTER_ID}>
+        <ul className="adf-case__foot-links">
+          <li><a href="/adofy#operator">運営者情報</a></li>
+          <li><a href="/adofy#privacy">プライバシーポリシー</a></li>
+          <li><a href="/adofy#tokushoho">特定商取引法に基づく表記</a></li>
+        </ul>
+        <small className="adf-case__foot-copy">Copyright © adofy</small>
+      </footer>
     </div>
   );
 }
@@ -258,7 +271,7 @@ function CtaBlock({ id, lead }: { id?: string; lead: string }) {
   return (
     <div className="adf-case__cta" id={id}>
       <p className="adf-case__cta-lead">{lead}</p>
-      <CtaButton />
+      <ArticleCta />
       <p className="adf-case__cta-note">{CTA_NOTE}</p>
     </div>
   );

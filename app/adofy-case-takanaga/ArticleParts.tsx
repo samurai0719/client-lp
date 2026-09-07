@@ -1,8 +1,28 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { CtaButton } from "@/components/adofy/ui";
-import { CTA_NOTE, type ArticleImage, type ShowcaseItem } from "./content";
+import { ArrowIcon } from "@/components/adofy/ui";
+import { CTA_HREF, CTA_EXTERNAL } from "@/components/adofy/config";
+import { CTA_LABEL_LINES, CTA_NOTE, type ArticleImage, type ShowcaseItem } from "./content";
+
+/**
+ * 記事用のCTAボタン。
+ * LP本体の CtaButton とは別に用意している（文言が2行で、記事向けに大きく丸くしているため）。
+ * 遷移先は LP と同じ CTA_HREF（既存の相談フォーム）。
+ */
+export function ArticleCta({ size = "lg" }: { size?: "lg" | "sm" }) {
+  const external = CTA_EXTERNAL ? { target: "_blank" as const, rel: "noopener noreferrer" } : {};
+  return (
+    <a href={CTA_HREF} className={`adf-case__btn${size === "sm" ? " adf-case__btn--sm" : ""}`} {...external}>
+      <span className="adf-case__btn-label">
+        {CTA_LABEL_LINES.map((line) => (
+          <span key={line}>{line}</span>
+        ))}
+      </span>
+      <ArrowIcon size={size === "sm" ? 17 : 20} />
+    </a>
+  );
+}
 
 /**
  * 本文中の画像。
@@ -222,7 +242,7 @@ export function StickyCta({
 
   return (
     <div className={`adf-case__sticky${show ? " is-on" : ""}`} aria-hidden={!show}>
-      <CtaButton size="sm" />
+      <ArticleCta size="sm" />
       <p className="adf-case__sticky-note">{CTA_NOTE}</p>
     </div>
   );

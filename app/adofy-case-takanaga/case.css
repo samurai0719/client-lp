@@ -74,6 +74,7 @@
   h1。ファーストビュー画像に大きな見出しが入っているため、
   ここで同じ主張を巨大に繰り返さず、記事の題名として控えめに置く。
 */
+.adf-case__title span { display: block; }
 .adf-case__title {
   margin: 0 0 24px;
   padding-bottom: 18px;
@@ -575,3 +576,100 @@
   line-height: 1.7;
   color: var(--adf-text-mute);
 }
+
+/* ── 記事のフッター ──────────────────────────────────────────────────── */
+/* LPの大きなフッターは置かず、広告記事に必要な表記への導線だけを残す */
+.adf-case__foot {
+  padding: 26px 18px calc(30px + env(safe-area-inset-bottom));
+  background: var(--adf-navy-900);
+  text-align: center;
+}
+.adf-case__foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 20px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+.adf-case__foot-links a {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--adf-text-inv-mute);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.adf-case__foot-links a:hover { color: #fff; }
+.adf-case__foot-copy {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── 記事のCTAボタン ─────────────────────────────────────────────────── */
+/*
+  記事用に、LP本体のボタンより大きく・丸くする。
+  文言が2行なので、行間を詰めて縦に間延びしないようにしている。
+*/
+.adf-case__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 460px;
+  min-height: 78px;
+  padding: 16px 26px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--adf-accent) 0%, var(--adf-accent-deep) 100%);
+  box-shadow: 0 14px 30px -12px rgba(242, 106, 27, 0.65);
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.2s var(--adf-ease), box-shadow 0.2s var(--adf-ease);
+}
+.adf-case__btn-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+/* 1行目は案内、2行目が行動。2行目を大きくして押す場所だと分かるようにする */
+.adf-case__btn-label span:first-child {
+  font-size: clamp(12.5px, 3.4vw, 14px);
+  font-weight: 700;
+  line-height: 1.5;
+  opacity: 0.92;
+}
+.adf-case__btn-label span:last-child {
+  font-size: clamp(17px, 4.6vw, 21px);
+  font-weight: 800;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+@media (hover: hover) {
+  .adf-case__btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 34px -12px rgba(242, 106, 27, 0.75);
+  }
+}
+.adf-case__btn:focus-visible {
+  outline: 3px solid var(--adf-navy-900);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .adf-case__btn { transition: none; }
+  .adf-case__btn:hover { transform: none; }
+}
+
+/* 追従CTA用の小さめ版 */
+.adf-case__btn--sm {
+  min-height: 60px;
+  padding: 10px 20px;
+  gap: 10px;
+  box-shadow: 0 8px 20px -10px rgba(242, 106, 27, 0.6);
+}
+.adf-case__btn--sm .adf-case__btn-label span:first-child { font-size: 11.5px; }
+.adf-case__btn--sm .adf-case__btn-label span:last-child { font-size: 16px; }
+
+/* 追従CTAの中身は上のボタンで完結するため、幅指定だけ上書きする */
+.adf-case__sticky .adf-case__btn { max-width: 460px; }
