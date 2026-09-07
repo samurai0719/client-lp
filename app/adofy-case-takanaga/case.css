@@ -1,40 +1,45 @@
 /*
-  高長建設のPR記事。
-  配色は adofy LP の変数をそのまま使う（白 / ネイビー / オレンジ）。
-  読み物なので、LP本体より行間を広く、1段落を短く見せる。
+  高長建設のPR記事（体験談型の記事LP）。
+
+  ・サイドバーなしの一列レイアウト。本文は中央寄せで最大720px。
+  ・「短い本文 → 強調 → 画像 → 本文」のリズムで読ませる。
+  ・全段落をカードで囲わず、要点・実績・サービス案内だけをボックスにする。
+  ・配色は adofy LP の変数（白 / ネイビー / オレンジ）＋強調用の淡い黄色。
 */
 
 .adf-case {
   background: #fff;
-  color: var(--adf-text);
+  color: #2c3440;
+  --case-marker: #fff2a8;      /* 重要な一文に敷く淡い黄色 */
+  --case-max: 720px;
 }
 
 /* ── ヘッダー（ロゴのみ。記事に集中させる） ─────────────────────────── */
 .adf-case__header {
   display: flex;
   align-items: center;
-  height: 60px;
-  padding-inline: 20px;
+  height: 56px;
+  padding-inline: 18px;
   background: var(--adf-navy-900);
 }
 
 /* ── PR表記 ──────────────────────────────────────────────────────────── */
 .adf-case__pr {
   margin: 0;
-  padding: 9px 20px;
+  padding: 11px 18px;
   background: var(--adf-paper-2);
   border-bottom: 1px solid var(--adf-line);
   color: var(--adf-text-mute);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  line-height: 1.6;
   text-align: center;
 }
 
 /* プレビュー時だけ出す案内 */
 .adf-case__preview-bar {
   margin: 0;
-  padding: 10px 20px;
+  padding: 10px 18px;
   background: var(--adf-accent-deep);
   color: #fff;
   font-size: 12.5px;
@@ -44,90 +49,67 @@
 .adf-case__preview-bar b { font-weight: 800; }
 
 /* ── ファーストビュー ────────────────────────────────────────────────── */
+/* 文字入りの画像なので、切り抜かずに全体を出す */
 .adf-case__fv {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background: #fff;
-  /* 画像の実寸比に合わせる。差し替え時はここも一緒に更新する */
-  aspect-ratio: 941 / 1672;
-}
-@media (min-width: 768px) {
-  .adf-case__fv { aspect-ratio: 1672 / 941; }
-}
-@media (min-width: 1440px) {
-  .adf-case__fv { max-width: 1440px; margin-inline: auto; }
+  max-width: 1100px;
+  margin-inline: auto;
 }
 .adf-case__fv-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   display: block;
-}
-/* 画像未設定：高さだけ確保した空白 */
-.adf-case__fv-blank {
-  position: absolute;
-  inset: 0;
-  background: var(--adf-paper-2);
+  width: 100%;
+  height: auto;
 }
 
 /* ── 本文 ────────────────────────────────────────────────────────────── */
 .adf-case__body {
-  max-width: 720px;
+  max-width: var(--case-max);
   margin-inline: auto;
-  padding: 40px 22px 8px;
+  padding: 30px 18px 0;
+}
+@media (min-width: 600px) {
+  .adf-case__body { padding-inline: 20px; }
 }
 
+/*
+  h1。ファーストビュー画像に大きな見出しが入っているため、
+  ここで同じ主張を巨大に繰り返さず、記事の題名として控えめに置く。
+*/
 .adf-case__title {
-  margin: 0 0 30px;
-  font-size: clamp(24px, 6vw, 36px);
+  margin: 0 0 24px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--adf-navy-900);
+  font-size: clamp(19px, 4.6vw, 24px);
   font-weight: 800;
-  line-height: 1.6;
-  letter-spacing: -0.01em;
+  line-height: 1.7;
   color: var(--adf-navy-900);
 }
-.adf-case__title span { display: block; }
-.adf-case__title-hit { color: var(--adf-accent-deep); }
 
 /* リード文 */
 .adf-case__lead {
-  padding: 22px 24px;
+  padding: 20px 20px 4px;
   border-left: 3px solid var(--adf-accent);
   background: var(--adf-paper-2);
 }
-.adf-case__lead p:first-child { margin-top: 0; }
-.adf-case__lead > div > p:last-child { margin-bottom: 0; }
+.adf-case__lead p:last-child { margin-bottom: 16px; }
 
-.adf-case__section { margin-top: 56px; }
+.adf-case__section { margin-top: 46px; }
 
 .adf-case__h2 {
-  margin: 0 0 22px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--adf-line);
-  font-size: clamp(20px, 4.8vw, 26px);
+  margin: 0 0 20px;
+  padding-left: 14px;
+  border-left: 5px solid var(--adf-accent);
+  font-size: clamp(19px, 4.6vw, 25px);
   font-weight: 800;
   line-height: 1.6;
   color: var(--adf-navy-900);
 }
-/* 章番号。読み進める位置が分かるようにする */
-.adf-case__h2-no {
-  display: block;
-  margin-bottom: 6px;
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: var(--adf-accent);
-}
 
-/* 段落。スマートフォンで読みやすいよう、行間を広めに取る */
+/* 段落。読み物として、行間を広めに取る */
 .adf-case p {
   margin: 0 0 20px;
   font-size: 16.5px;
   line-height: 1.95;
-  color: var(--adf-text);
+  color: #2c3440;
 }
 
 .adf-case__list {
@@ -140,7 +122,6 @@
   margin-bottom: 8px;
   font-size: 16.5px;
   line-height: 1.9;
-  color: var(--adf-text);
 }
 .adf-case__list li::before {
   content: "";
@@ -153,27 +134,22 @@
   background: var(--adf-accent);
 }
 
-/*
-  本文の強調。オレンジのアンダーラインを引く。
-  ・本文中に他の下線が無いため、リンクとは読み違えられない
-  ・skip-ink を切って、日本語の下に伸びる字でも線が途切れないようにする
-  ・太字を併用し、拾い読みでも目に入るようにする
-*/
+/* ── 強調 ────────────────────────────────────────────────────────────── */
+/* 重要な一文：淡い黄色のマーカー。1つの見出し内で重ねすぎない */
 .adf-case__em {
-  background: none;
-  color: inherit;
+  background: linear-gradient(transparent 58%, var(--case-marker) 58%);
+  font-weight: 700;
+}
+/* 要点の語（22件・20万円 など）：オレンジ */
+.adf-case__hit {
+  color: var(--adf-accent-deep);
   font-weight: 800;
-  text-decoration: underline;
-  text-decoration-color: var(--adf-accent);
-  text-decoration-thickness: 3px;
-  text-underline-offset: 6px;
-  text-decoration-skip-ink: none;
 }
 
 /* ── 確認待ちの仮原稿（プレビューでのみ表示） ────────────────────────── */
 .adf-case__pending {
   margin-bottom: 20px;
-  padding: 18px 20px 2px;
+  padding: 18px 18px 2px;
   border: 1.5px dashed var(--adf-accent);
   border-radius: var(--adf-radius);
   background: rgba(242, 106, 27, 0.05);
@@ -182,61 +158,74 @@
   margin: 0 0 12px !important;
   font-size: 12px !important;
   font-weight: 800;
-  letter-spacing: 0.04em;
   line-height: 1.6 !important;
   color: var(--adf-accent-deep) !important;
 }
 
-/* ── 編集部補足（高長建設の言葉ではない） ────────────────────────────── */
-.adf-case__editor {
-  margin: 28px 0 20px;
-  padding: 18px 20px;
+/* ── 本文中の画像 ────────────────────────────────────────────────────── */
+.adf-case__figure {
+  margin: 6px 0 26px;
+}
+.adf-case__figure-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
   border: 1px solid var(--adf-line);
-  border-radius: var(--adf-radius);
-  background: var(--adf-paper-2);
+  border-radius: var(--adf-radius-lg);
+  background: none;
+  cursor: zoom-in;
+  overflow: hidden;
+  line-height: 0;
 }
-.adf-case__editor-label {
-  margin: 0 0 8px !important;
-  font-size: 11.5px !important;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  line-height: 1.6 !important;
-  color: var(--adf-text-mute) !important;
+.adf-case__figure-btn:focus-visible {
+  outline: 3px solid var(--adf-accent);
+  outline-offset: 2px;
 }
-.adf-case__editor-text {
-  margin: 0 !important;
-  font-size: 14.5px !important;
-  line-height: 1.9 !important;
-  color: var(--adf-text-mute) !important;
+/* 文字入りのため、切り抜かず全体を表示する */
+.adf-case__figure-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.adf-case__figure-cap {
+  margin-top: 7px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--adf-text-mute);
+  text-align: right;
 }
 
-/* ── 施工写真 ────────────────────────────────────────────────────────── */
-/*
-  スマートフォンでは1枚目を大きく、残り2枚を並べる編集レイアウト。
-  3枚を縦積みにすると、写真が入るまでの空白が画面2つ分になってしまう。
-*/
-.adf-case__photos {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 28px;
+/* 拡大表示 */
+.adf-case__zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 12px 20px;
+  background: rgba(7, 26, 48, 0.92);
+  cursor: zoom-out;
 }
-.adf-case__photos > :first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
-@media (min-width: 600px) {
-  .adf-case__photos { grid-template-columns: repeat(3, 1fr); }
-  .adf-case__photos > :first-child { grid-column: auto; aspect-ratio: 4 / 3; }
+.adf-case__zoom-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
-.adf-case__photo {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: var(--adf-radius);
-  display: block;
-}
-/* 写真が入るまでの空白。枠だけ確保しておく */
-.adf-case__photo--blank {
-  background: var(--adf-paper-2);
-  border: 1px dashed var(--adf-line);
+.adf-case__zoom-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 9px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 /* ── 実績カード ──────────────────────────────────────────────────────── */
@@ -244,24 +233,21 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
-  margin: 30px 0 16px;
+  margin: 28px 0 14px;
 }
 @media (min-width: 560px) {
   .adf-case__cards { grid-template-columns: repeat(2, 1fr); }
 }
-.adf-case__card,
-.adf-case__compare-card {
-  padding: 22px 20px;
+.adf-case__card {
+  padding: 20px;
   border: 1.5px solid var(--adf-line);
   border-radius: var(--adf-radius-lg);
   background: #fff;
   text-align: center;
 }
-/* 22件の側だけ強調する */
-.adf-case__card.is-hit,
-.adf-case__compare-card.is-hit {
+.adf-case__card.is-hit {
   border-color: var(--adf-accent);
-  background: linear-gradient(180deg, rgba(242, 106, 27, 0.08), rgba(242, 106, 27, 0.02));
+  background: linear-gradient(180deg, rgba(242, 106, 27, 0.09), rgba(242, 106, 27, 0.02));
 }
 .adf-case__card-term {
   margin: 0 0 8px !important;
@@ -278,6 +264,7 @@
   margin: 0 !important;
   line-height: 1 !important;
 }
+/* 「問い合わせ」を数字のすぐ横に置き、成約件数と読まれないようにする */
 .adf-case__card-label {
   font-size: 13px;
   font-weight: 700;
@@ -285,62 +272,19 @@
 }
 .adf-case__card-value b {
   font-family: var(--font-geist-mono), monospace;
-  font-size: clamp(40px, 11vw, 54px);
+  font-size: clamp(42px, 12vw, 58px);
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--adf-navy-900);
   font-variant-numeric: tabular-nums;
 }
-.adf-case__card.is-hit .adf-case__card-value b,
-.adf-case__compare-card.is-hit .adf-case__card-value b { color: var(--adf-accent-deep); }
-.adf-case__card-unit { font-size: 16px; font-weight: 800; color: var(--adf-navy-900); }
-.adf-case__card.is-hit .adf-case__card-unit,
-.adf-case__compare-card.is-hit .adf-case__card-unit { color: var(--adf-accent-deep); }
+.adf-case__card.is-hit .adf-case__card-value b { color: var(--adf-accent-deep); }
+.adf-case__card-unit { font-size: 17px; font-weight: 800; color: var(--adf-navy-900); }
+.adf-case__card.is-hit .adf-case__card-unit { color: var(--adf-accent-deep); }
 
-/* ── 依頼前 → 依頼後 ─────────────────────────────────────────────────── */
-.adf-case__compare {
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: center;
-  gap: 14px;
-  margin: 4px 0 8px;
-}
-@media (min-width: 700px) {
-  /* PCは横並び。中央に「依頼」を挟む */
-  .adf-case__compare { grid-template-columns: 1fr auto 1fr; gap: 18px; }
-}
-.adf-case__compare-card { margin: 0; }
-.adf-case__compare-bridge {
-  margin: 0 !important;
-  font-size: 12.5px !important;
-  font-weight: 700;
-  line-height: 1.7 !important;
-  text-align: center;
-  color: var(--adf-text-mute) !important;
-  white-space: nowrap;
-}
-/* 矢印。スマホは下向き、PCは右向き */
-.adf-case__compare-arrow {
-  display: block;
-  width: 100%;
-  height: 18px;
-  margin-bottom: 4px;
-  background: var(--adf-accent);
-  clip-path: polygon(45% 0, 55% 0, 55% 62%, 66% 62%, 50% 100%, 34% 62%, 45% 62%);
-}
-@media (min-width: 700px) {
-  .adf-case__compare-arrow {
-    width: 34px;
-    height: 14px;
-    margin: 0 auto 6px;
-    clip-path: polygon(0 38%, 62% 38%, 62% 0, 100% 50%, 62% 100%, 62% 62%, 0 62%);
-  }
-}
-
-/* ── 注記 ────────────────────────────────────────────────────────────── */
 .adf-case__note {
   margin: 0 !important;
-  padding: 14px 16px;
+  padding: 13px 15px;
   border: 1px solid var(--adf-line);
   border-radius: var(--adf-radius);
   background: var(--adf-paper-2);
@@ -355,7 +299,15 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 32px;
+  margin: 34px 0 8px;
+}
+.adf-case__cta-lead {
+  margin: 0 !important;
+  font-size: 15px !important;
+  font-weight: 700;
+  line-height: 1.8 !important;
+  text-align: center;
+  color: var(--adf-navy-900) !important;
 }
 .adf-case__cta-note {
   margin: 0 !important;
@@ -366,50 +318,45 @@
 
 /* ── サービス案内（体験談と区別するため淡いアイボリーにする） ─────────── */
 .adf-case__service {
-  margin-top: 60px;
-  padding: 46px 22px 54px;
+  margin-top: 52px;
+  padding: 40px 18px 46px;
   background: #faf7f1;
   border-top: 1px solid #e8e0d3;
 }
 .adf-case__service-inner {
-  max-width: 720px;
+  max-width: var(--case-max);
   margin-inline: auto;
 }
 .adf-case__service-divider {
-  margin: 0 0 26px !important;
-  padding-bottom: 14px;
+  margin: 0 0 24px !important;
+  padding-bottom: 13px;
   border-bottom: 1px solid #e2d8c8;
-  font-size: 12.5px !important;
+  font-size: 13px !important;
   font-weight: 700;
   line-height: 1.7 !important;
-  letter-spacing: 0.02em;
   color: #7a6a53 !important;
   text-align: center;
 }
 .adf-case__service-title {
-  margin: 0 0 22px;
+  margin: 0 0 20px;
   font-size: clamp(20px, 4.8vw, 27px);
   font-weight: 800;
   line-height: 1.6;
   color: var(--adf-navy-900);
 }
 .adf-case__service-title span { display: block; }
-.adf-case__service-body {
-  margin: 0 0 18px !important;
-  color: #4a4033 !important;
-}
+.adf-case__service-body { color: #4a4033 !important; }
 
-/* 価格・保証。体験談本文と混ざらないよう、白いカードに載せる */
 .adf-case__offer {
-  margin-top: 30px;
-  padding: 28px 24px 30px;
+  margin-top: 8px;
+  padding: 26px 20px 28px;
   background: #fff;
   border: 1px solid #e8e0d3;
   border-radius: var(--adf-radius-lg);
   text-align: center;
 }
 .adf-case__offer-title {
-  margin: 0 0 20px !important;
+  margin: 0 0 18px !important;
   font-size: clamp(17px, 4.2vw, 21px) !important;
   font-weight: 800;
   line-height: 1.6 !important;
@@ -421,23 +368,19 @@
   justify-content: center;
   gap: 14px;
   margin: 0 0 8px;
-  padding-top: 20px;
+  padding-top: 18px;
   border-top: 1px dashed var(--adf-line);
 }
-.adf-case__price dt {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--adf-text-mute);
-}
+.adf-case__price dt { font-size: 14px; font-weight: 700; color: var(--adf-text-mute); }
 .adf-case__price dd {
   margin: 0;
   font-size: clamp(30px, 8vw, 40px);
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--adf-navy-900);
+  color: var(--adf-accent-deep);
 }
 .adf-case__price-note {
-  margin: 0 0 24px !important;
+  margin: 0 0 22px !important;
   font-size: 12.5px !important;
   line-height: 1.9 !important;
   color: var(--adf-text-mute) !important;
@@ -445,7 +388,7 @@
 .adf-case__guarantee {
   display: inline-block;
   margin: 0 0 10px !important;
-  padding: 11px 22px;
+  padding: 11px 20px;
   border: 1px solid rgba(242, 106, 27, 0.55);
   border-radius: var(--adf-radius);
   background: rgba(242, 106, 27, 0.08);
@@ -468,8 +411,57 @@
   white-space: nowrap;
 }
 .adf-case__service-disclaimer {
-  margin: 22px 0 0 !important;
+  margin: 20px 0 0 !important;
   font-size: 12.5px !important;
   line-height: 1.9 !important;
   color: #7a6a53 !important;
+}
+
+/* ── 記事末尾のCTA ───────────────────────────────────────────────────── */
+.adf-case__end {
+  padding: 40px 18px 46px;
+  background: var(--adf-navy-900);
+}
+.adf-case__end-inner { max-width: var(--case-max); margin-inline: auto; }
+.adf-case__end .adf-case__cta { margin: 0; }
+.adf-case__end .adf-case__cta-lead { color: #fff !important; }
+.adf-case__end .adf-case__cta-note { color: var(--adf-text-inv-mute) !important; }
+
+/* ── スマートフォンの追従CTA ─────────────────────────────────────────── */
+/*
+  記事内の最初のCTAを通過してから出し、最終CTAが見えたら引っ込める。
+  フッターや最終CTAを覆わないようにするため。
+*/
+.adf-case__sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid var(--adf-line);
+  box-shadow: 0 -6px 20px -12px rgba(11, 36, 64, 0.5);
+  transform: translateY(110%);
+  transition: transform 0.28s var(--adf-ease);
+  pointer-events: none;
+}
+.adf-case__sticky.is-on { transform: translateY(0); pointer-events: auto; }
+.adf-case__sticky .adf-cta { width: 100%; max-width: 420px; }
+.adf-case__sticky-note {
+  margin: 0 !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  color: var(--adf-text-mute) !important;
+}
+/* PCでは記事内のCTAで足りるため出さない */
+@media (min-width: 768px) {
+  .adf-case__sticky { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .adf-case__sticky { transition: none; }
 }

@@ -8,37 +8,48 @@ import LpInsightTracker, { ADOFY_LP_PROJECT_ID } from "@/components/analytics/Lp
 import Footer from "@/components/adofy/Footer";
 import { CtaButton, LogoMark } from "@/components/adofy/ui";
 import { REFUND_DISCLOSURE, SITE } from "@/components/adofy/config";
+import { StickyCta, ZoomableImage } from "./ArticleParts";
 import {
-  COMPARE, DESCRIPTION, EDITOR_NOTE, HERO, LEAD, MID_CTA_NOTE, PR_LABEL,
-  RESULT_CARDS, RESULT_NOTE, SECTIONS, SERVICE, TITLE_LINES, TITLE_PLAIN,
-  WORK_PHOTOS, type Chunk, type Item,
+  CTA_LEADS, CTA_NOTE, DESCRIPTION, HERO, IMG_CONCERNS, IMG_CONSULTATION,
+  IMG_SERVICE, LEAD, PR_LABEL, RESULT_CARDS, RESULT_NOTE, SECTIONS, SERVICE,
+  TITLE, type Chunk, type Item,
 } from "./content";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.lpUrl),
-  title: TITLE_PLAIN,
+  title: `${TITLE}｜PR`,
   description: DESCRIPTION,
   openGraph: {
     type: "article",
     locale: "ja_JP",
     siteName: SITE.name,
-    title: TITLE_PLAIN,
+    title: TITLE,
     description: DESCRIPTION,
+    images: [HERO.pc],
   },
   // 広告の受け皿となるPR記事のため、検索結果には出さない（LP本体との重複を避ける）
   robots: { index: false, follow: true },
 };
 
+/** 記事内の最初のCTAと最終CTA。追従CTAの出し入れに使う */
+const FIRST_CTA_ID = "cta-after-result";
+const FINAL_CTA_ID = "cta-end";
+const FOOTER_ID = "article-footer";
+/** 追従CTAを隠す相手。最終CTAとフッターは絶対に覆わない */
+const STICKY_HIDE_IDS = [FINAL_CTA_ID, FOOTER_ID] as const;
+
+/** 本文以外の要素（画像・カード・CTA）を持つ章。本文が空でも表示する */
+const SECTIONS_WITH_EXTRA = new Set(["before", "start", "result"]);
+
 /**
- * 高長建設のPR記事。
+ * 高長建設のPR記事（体験談型の記事LP）。
  *
- * 語り手は高長建設（「私たち」「当社」）。adofy側からの事例紹介ではない。
+ * 語り手は高長建設（「私たち」「当社」）。サービス案内の章から adofy の説明に切り替わる。
  * 原稿は content.ts に集約してあり、高長建設の確認・修正はそのファイルだけで完結する。
  *
  * ▼ 未確認の段落について
  *   content.ts の pending 付きチャンクは、まだ本人確認が取れていない仮原稿。
  *   既定（公開表示）では描画せず、?preview=1 のときだけ「確認待ち」と分かる形で出す。
- *   確認が取れた段落は content.ts 側で pending を外す。
  *
  * ▼ 計測
  *   /adofy と同じものを1つずつ置く（重複設置しない）。
@@ -76,17 +87,25 @@ export default async function AdofyCaseTakanagaPage({
       ) : null}
 
       <article className="adf-case__article">
-        {/* ファーストビュー。画像が入るまでは高さだけ確保した空白 */}
-        <HeroMedia />
+        {/* ファーストビュー。画像に見出しが入っているため、h1は下に簡潔に置く */}
+        <div className="adf-case__fv">
+          <picture>
+            <source media="(min-width: 768px)" srcSet={HERO.pc} width={HERO.pcW} height={HERO.pcH} />
+            <img
+              className="adf-case__fv-img"
+              src={HERO.sp}
+              alt={HERO.alt}
+              width={HERO.spW}
+              height={HERO.spH}
+              fetchPriority="high"
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
+        </div>
 
         <div className="adf-case__body">
-          <h1 className="adf-case__title">
-            {TITLE_LINES.map((line, i) => (
-              <span key={line} className={i === 0 ? "adf-case__title-hit" : ""}>
-                {line}
-              </span>
-            ))}
-          </h1>
+          <h1 className="adf-case__title">{TITLE}</h1>
 
           <div className="adf-case__lead">
             <Chunks chunks={LEAD} preview={preview} />
@@ -101,45 +120,33 @@ export default async function AdofyCaseTakanagaPage({
             if (visible.length === 0 && !SECTIONS_WITH_EXTRA.has(section.id)) return null;
 
             return (
-            <section key={section.id} className="adf-case__section" aria-labelledby={`h-${section.id}`}>
-              <h2 className="adf-case__h2" id={`h-${section.id}`}>
-                <span className="adf-case__h2-no">{section.no}</span>
-                {section.heading}
-              </h2>
+              <section key={section.id} className="adf-case__section" aria-labelledby={`h-${section.id}`}>
+                <h2 className="adf-case__h2" id={`h-${section.id}`}>
+                  {section.heading}
+                </h2>
 
-              <Chunks chunks={section.chunks} preview={preview} />
+                <Chunks chunks={section.chunks} preview={preview} />
 
-              {/* 01 の直後に、高長建設の施工写真を置く */}
-              {section.id === "before" ? <WorkPhotos /> : null}
+                {/* 悩みを読んだあとに、悩みの画像を出す */}
+                {section.id === "before" ? <ZoomableImage image={IMG_CONCERNS} /> : null}
 
-              {/* 04 の編集部補足。本文（高長建設の言葉）とは区別する */}
-              {section.id === "tell" ? (
-                <aside className="adf-case__editor">
-                  <p className="adf-case__editor-label">{EDITOR_NOTE.label}</p>
-                  <p className="adf-case__editor-text">{EDITOR_NOTE.text}</p>
-                </aside>
-              ) : null}
+                {/* 相談から見せ方の話へ渡す位置 */}
+                {section.id === "start" ? <ZoomableImage image={IMG_CONSULTATION} /> : null}
 
-              {/* 05 の実績カード */}
-              {section.id === "result" ? <ResultCards /> : null}
-
-              {/* 06 の中間CTA */}
-              {section.id === "after" ? (
-                <div className="adf-case__cta">
-                  <CtaButton />
-                  <p className="adf-case__cta-note">{MID_CTA_NOTE}</p>
-                </div>
-              ) : null}
-
-              {/* 07 の依頼前・依頼後カード */}
-              {section.id === "review" ? <CompareCards /> : null}
-            </section>
+                {/* 実績と、その直下の注記、そして最初のCTA */}
+                {section.id === "result" ? (
+                  <>
+                    <ResultCards />
+                    <CtaBlock id={FIRST_CTA_ID} lead={CTA_LEADS.afterResult} />
+                  </>
+                ) : null}
+              </section>
             );
           })}
         </div>
       </article>
 
-      {/* ── 09 サービス案内（ここから先は高長建設の体験談ではない） ────── */}
+      {/* ── サービス案内（ここから先は高長建設の体験談ではない） ────────── */}
       <section className="adf-case__service" aria-labelledby="h-service">
         <div className="adf-case__service-inner">
           <p className="adf-case__service-divider">{SERVICE.divider}</p>
@@ -156,6 +163,9 @@ export default async function AdofyCaseTakanagaPage({
             </p>
           ))}
 
+          <ZoomableImage image={IMG_SERVICE} />
+
+          {/* 画像に描かれた条件を、HTMLでも読める形で置く */}
           <div className="adf-case__offer">
             <p className="adf-case__offer-title">{SERVICE.offer}</p>
 
@@ -172,23 +182,41 @@ export default async function AdofyCaseTakanagaPage({
               <a href="/adofy#refund">適用条件を見る</a>
             </p>
 
-            <div className="adf-case__cta">
-              <CtaButton />
-              <p className="adf-case__cta-note">{MID_CTA_NOTE}</p>
-            </div>
+            <CtaBlock lead={CTA_LEADS.service} />
           </div>
 
           <p className="adf-case__service-disclaimer">{SERVICE.disclaimer}</p>
         </div>
       </section>
 
-      <Footer />
+      {/* ── 記事末尾のCTA ─────────────────────────────────────────────── */}
+      <section className="adf-case__end" aria-label="無料相談">
+        <div className="adf-case__end-inner">
+          <CtaBlock id={FINAL_CTA_ID} lead={CTA_LEADS.end} />
+        </div>
+      </section>
+
+      <StickyCta firstCtaId={FIRST_CTA_ID} hideWhenVisibleIds={STICKY_HIDE_IDS} />
+
+      {/* 追従CTAがフッター（運営者情報・プライバシーポリシー）を覆わないようにする */}
+      <div id={FOOTER_ID}>
+        <Footer />
+      </div>
     </div>
   );
 }
 
-/** 本文以外の要素（写真・カード・CTA）を持つ章。本文が空でも表示する */
-const SECTIONS_WITH_EXTRA = new Set(["before", "tell", "result", "after", "review"]);
+/* ── CTA ──────────────────────────────────────────────────────────────── */
+
+function CtaBlock({ id, lead }: { id?: string; lead: string }) {
+  return (
+    <div className="adf-case__cta" id={id}>
+      <p className="adf-case__cta-lead">{lead}</p>
+      <CtaButton />
+      <p className="adf-case__cta-note">{CTA_NOTE}</p>
+    </div>
+  );
+}
 
 /* ── 本文のかたまり ───────────────────────────────────────────────────── */
 
@@ -227,41 +255,59 @@ function ItemView({ item }: { item: Item }) {
       </ul>
     );
   }
-  return <p>{emphasize(item.p, item.em)}</p>;
-}
-
-/**
- * 段落内の指定文字列にマーカー線を引く。
- * 本文は content.ts の文字列がそのまま出るだけで、強調の有無で文言は変わらない。
- */
-function emphasize(text: string, em?: readonly string[]) {
-  if (!em || em.length === 0) return text;
-
-  let rest = text;
-  const out: React.ReactNode[] = [];
-
-  for (const phrase of em) {
-    const at = rest.indexOf(phrase);
-    // 本文に無い指定は無視する（文言を書き換えてまで強調しない）
-    if (at === -1) continue;
-    if (at > 0) out.push(rest.slice(0, at));
-    out.push(
-      <mark key={`${phrase}-${out.length}`} className="adf-case__em">
-        {phrase}
-      </mark>
-    );
-    rest = rest.slice(at + phrase.length);
-  }
-  out.push(rest);
-
-  return out;
+  return <p>{highlight(item.p, item.em, item.hit)}</p>;
 }
 
 function keyOf(item: Item): string {
   return "list" in item ? item.list.join("|") : item.p;
 }
 
-/* ── 実績・比較カード ─────────────────────────────────────────────────── */
+/**
+ * 段落内の強調。
+ *   em  … 淡い黄色のマーカーを敷く一文
+ *   hit … オレンジで目立たせる要点（22件 など）
+ * 本文に無い指定は無視する（文言を書き換えてまで強調しない）。
+ */
+function highlight(text: string, em?: readonly string[], hit?: readonly string[]) {
+  const marks = [
+    ...(em ?? []).map((phrase) => ({ phrase, cls: "adf-case__em" })),
+    ...(hit ?? []).map((phrase) => ({ phrase, cls: "adf-case__hit" })),
+  ];
+  if (marks.length === 0) return text;
+
+  // 長い指定から順に処理し、短い語が先に切り出されて入れ子になるのを防ぐ
+  marks.sort((a, b) => b.phrase.length - a.phrase.length);
+
+  type Part = string | React.ReactElement;
+  let nodes: Part[] = [text];
+
+  for (const { phrase, cls } of marks) {
+    const next: Part[] = [];
+    for (const [ni, node] of nodes.entries()) {
+      if (typeof node !== "string") {
+        next.push(node);
+        continue;
+      }
+      const at = node.indexOf(phrase);
+      if (at === -1) {
+        next.push(node);
+        continue;
+      }
+      if (at > 0) next.push(node.slice(0, at));
+      next.push(
+        <span key={`${cls}-${ni}-${phrase}`} className={cls}>
+          {phrase}
+        </span>
+      );
+      const tail = node.slice(at + phrase.length);
+      if (tail) next.push(tail);
+    }
+    nodes = next;
+  }
+  return nodes;
+}
+
+/* ── 実績 ─────────────────────────────────────────────────────────────── */
 
 function ResultCards() {
   return (
@@ -283,96 +329,5 @@ function ResultCards() {
       </div>
       <p className="adf-case__note">{RESULT_NOTE}</p>
     </>
-  );
-}
-
-/** 依頼前 → 依頼後。PCは横並び、スマホは上下に並ぶ */
-function CompareCards() {
-  return (
-    <div className="adf-case__compare">
-      <div className="adf-case__compare-card">
-        <p className="adf-case__card-term">{COMPARE.before.term}</p>
-        <p className="adf-case__card-value">
-          <span className="adf-case__card-label">{COMPARE.before.label}</span>
-          <b>{COMPARE.before.value}</b>
-          <span className="adf-case__card-unit">{COMPARE.before.unit}</span>
-        </p>
-      </div>
-
-      <p className="adf-case__compare-bridge">
-        <span aria-hidden="true" className="adf-case__compare-arrow" />
-        {COMPARE.bridge}
-      </p>
-
-      <div className="adf-case__compare-card is-hit">
-        <p className="adf-case__card-term">{COMPARE.after.term}</p>
-        <p className="adf-case__card-value">
-          <span className="adf-case__card-label">{COMPARE.after.label}</span>
-          <b>{COMPARE.after.value}</b>
-          <span className="adf-case__card-unit">{COMPARE.after.unit}</span>
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* ── 画像 ─────────────────────────────────────────────────────────────── */
-
-/**
- * ファーストビュー。
- * 画像が未設定の間は、比率で高さを確保した空白を出す（差し替え時にレイアウトが動かない）。
- */
-function HeroMedia() {
-  const hasImage = Boolean(HERO.pc || HERO.sp);
-
-  return (
-    <div className="adf-case__fv">
-      {hasImage ? (
-        <picture>
-          {HERO.pc ? (
-            <source media="(min-width: 768px)" srcSet={HERO.pc} width={HERO.pcW} height={HERO.pcH} />
-          ) : null}
-          <img
-            className="adf-case__fv-img"
-            src={(HERO.sp ?? HERO.pc) as string}
-            alt={HERO.alt}
-            width={HERO.spW}
-            height={HERO.spH}
-            fetchPriority="high"
-            loading="eager"
-            decoding="async"
-          />
-        </picture>
-      ) : (
-        <div className="adf-case__fv-blank" />
-      )}
-    </div>
-  );
-}
-
-/**
- * 高長建設の施工写真。
- * 確認済みの写真を受け取るまでは空白の枠だけを置く。
- * 架空の画像を実績として掲載しないため、ここに仮画像を入れないこと。
- */
-function WorkPhotos() {
-  return (
-    <div className="adf-case__photos">
-      {WORK_PHOTOS.map((photo, i) =>
-        photo.src ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            key={photo.src}
-            className="adf-case__photo"
-            src={photo.src}
-            alt={photo.alt}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div key={`blank-${i}`} className="adf-case__photo adf-case__photo--blank" />
-        )
-      )}
-    </div>
   );
 }
