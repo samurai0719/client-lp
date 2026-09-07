@@ -153,6 +153,23 @@
   background: var(--adf-accent);
 }
 
+/*
+  本文の強調。オレンジのアンダーラインを引く。
+  ・本文中に他の下線が無いため、リンクとは読み違えられない
+  ・skip-ink を切って、日本語の下に伸びる字でも線が途切れないようにする
+  ・太字を併用し、拾い読みでも目に入るようにする
+*/
+.adf-case__em {
+  background: none;
+  color: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-color: var(--adf-accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  text-decoration-skip-ink: none;
+}
+
 /* ── 確認待ちの仮原稿（プレビューでのみ表示） ────────────────────────── */
 .adf-case__pending {
   margin-bottom: 20px;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type React from "react";
 import "../adofy/adofy.css";
 import "./case.css";
 
@@ -226,7 +227,34 @@ function ItemView({ item }: { item: Item }) {
       </ul>
     );
   }
-  return <p>{item.p}</p>;
+  return <p>{emphasize(item.p, item.em)}</p>;
+}
+
+/**
+ * 段落内の指定文字列にマーカー線を引く。
+ * 本文は content.ts の文字列がそのまま出るだけで、強調の有無で文言は変わらない。
+ */
+function emphasize(text: string, em?: readonly string[]) {
+  if (!em || em.length === 0) return text;
+
+  let rest = text;
+  const out: React.ReactNode[] = [];
+
+  for (const phrase of em) {
+    const at = rest.indexOf(phrase);
+    // 本文に無い指定は無視する（文言を書き換えてまで強調しない）
+    if (at === -1) continue;
+    if (at > 0) out.push(rest.slice(0, at));
+    out.push(
+      <mark key={`${phrase}-${out.length}`} className="adf-case__em">
+        {phrase}
+      </mark>
+    );
+    rest = rest.slice(at + phrase.length);
+  }
+  out.push(rest);
+
+  return out;
 }
 
 function keyOf(item: Item): string {
