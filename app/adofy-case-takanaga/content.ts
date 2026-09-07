@@ -454,7 +454,7 @@ export const CTA_LEADS = {
  * 記事のボタン文言（2行）。
  * LP本体の CTA_LABEL は変えない（あちらは自社サイト内なので「公式サイトで」が付くと不自然なため）。
  */
-export const CTA_LABEL_LINES = ["adofy公式サイトで", "無料で相談してみる"] as const;
+export const CTA_LABEL_LINES = ["adofy公式サイト", "無料で相談してみる"] as const;
 
 export const CTA_NOTE = "相談無料・オンライン相談対応";
 
