@@ -1883,6 +1883,51 @@
 /* 文節を塊として扱い、語の途中で改行させない */
 .adf-final__urgent span { display: inline-block; }
 
+/* 代表者ブロック（特徴セクションの下） */
+.adf-rep {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 44px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--adf-radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+}
+.adf-rep__photo {
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(242, 106, 27, 0.55);
+}
+.adf-rep__role {
+  margin: 0 0 2px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--adf-accent-hi);
+}
+.adf-rep__name {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 800;
+  color: #fff;
+}
+.adf-rep__msg {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.95;
+  color: var(--adf-text-inv-mute);
+}
+/* スマートフォンでは写真を上に置いて中央寄せにする */
+@media (max-width: 599px) {
+  .adf-rep { flex-direction: column; gap: 16px; text-align: center; padding: 22px 18px; }
+  .adf-rep__photo { width: 88px; height: 88px; }
+  .adf-rep__msg { text-align: left; }
+}
+
 /* ─────────────────────────────────────────────────────────────────────────────
    21. フッター
    ───────────────────────────────────────────────────────────────────────────── */

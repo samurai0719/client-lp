@@ -1,6 +1,6 @@
 "use client";
 
-import { FEATURES } from "./config";
+import { FEATURES, REPRESENTATIVE } from "./config";
 import { stagger, useInView, useScrollSteps } from "./motion";
 import { BlueprintGrid, CheckIcon, SectionHeading } from "./ui";
 
@@ -47,8 +47,42 @@ export default function FeaturesSection() {
             </div>
           </div>
         </div>
+
+        <RepresentativeCard />
       </div>
     </section>
+  );
+}
+
+/**
+ * 代表者の紹介。
+ * 「誰が作るのか」を見せて信頼を補強する。
+ * 名前と写真が揃うまでは何も出さない（仮の人物を載せないため）。
+ */
+function RepresentativeCard() {
+  const ref = useInView<HTMLDivElement>({ threshold: 0.3 });
+  const { name, role, photo, photoW, photoH, message } = REPRESENTATIVE;
+
+  if (!name || !photo) return null;
+
+  return (
+    <div ref={ref} className="adf-rep adf-reveal adf-reveal--up">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        className="adf-rep__photo"
+        src={photo}
+        alt={`${name}の顔写真`}
+        width={photoW}
+        height={photoH}
+        loading="lazy"
+        decoding="async"
+      />
+      <div className="adf-rep__body">
+        <p className="adf-rep__role">{role}</p>
+        <p className="adf-rep__name">{name}</p>
+        <p className="adf-rep__msg">{message}</p>
+      </div>
+    </div>
   );
 }
 
