@@ -465,3 +465,113 @@
 @media (prefers-reduced-motion: reduce) {
   .adf-case__sticky { transition: none; }
 }
+
+/* ── adofyの他の実績 ─────────────────────────────────────────────────── */
+/*
+  高長建設の体験談から、adofyの情報へ話が移る場所。
+  本文の白地とは変えて、区切りが分かるようにする。
+*/
+.adf-case__others {
+  margin-top: 52px;
+  padding: 40px 18px 44px;
+  background: var(--adf-paper-2);
+  border-top: 1px solid var(--adf-line);
+}
+.adf-case__others-inner {
+  max-width: var(--case-max);
+  margin-inline: auto;
+}
+.adf-case__others-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin: 26px 0 18px;
+}
+.adf-case__other { margin: 0; }
+/* 文字入りの実績画像なので、切り抜かず全体を出す */
+.adf-case__other-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--adf-line);
+  border-radius: var(--adf-radius-lg);
+  background: #fff;
+}
+.adf-case__other-cap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 9px;
+  line-height: 1.7;
+}
+.adf-case__other-cap b {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--adf-navy-900);
+}
+.adf-case__other-cap span {
+  font-size: 12.5px;
+  color: var(--adf-text-mute);
+}
+
+/* ── 制作してもらったもの（実際の画面） ──────────────────────────────── */
+.adf-case__showcase { margin-top: 34px; }
+
+.adf-case__h3 {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border-radius: var(--adf-radius);
+  background: var(--adf-navy-900);
+  color: #fff;
+  font-size: clamp(16px, 4.2vw, 20px);
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.adf-case__shot { margin: 26px 0 30px; }
+/*
+  縦長のスマホ画面。PCで引き伸ばさず、最大420pxで中央に置く。
+  スマホでは本文幅いっぱいに出して、画面の中身が読める大きさにする。
+*/
+.adf-case__shot-btn {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  padding: 0;
+  /* 画像内のボタンを記事のCTAと混同させないよう、端末画面として枠で囲う */
+  border: 1px solid var(--adf-line-strong, #c9d4e0);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 28px -18px rgba(11, 36, 64, 0.55);
+  overflow: hidden;
+  cursor: zoom-in;
+  line-height: 0;
+}
+.adf-case__shot-btn:focus-visible {
+  outline: 3px solid var(--adf-accent);
+  outline-offset: 3px;
+}
+/* 縦横比を保ったまま全体を出す（引き伸ばさない・切り抜かない） */
+.adf-case__shot-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.adf-case__shot-cap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 420px;
+  margin: 12px auto 0;
+}
+.adf-case__shot-text {
+  font-size: 15px;
+  line-height: 1.9;
+  color: #2c3440;
+}
+.adf-case__shot-note {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--adf-text-mute);
+}

@@ -584,3 +584,42 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+
+/* ── 診断のファーストビュー ──────────────────────────────────────────── */
+/*
+  約2:1の横長画像。画面を覆うヒーローにはしない。
+  幅390pxのスマホで画像の高さは約195px、上下の余白を含めても250px程度に収め、
+  最初の質問がこの下から見え始めるようにする（100vh や大きな min-height は使わない）。
+*/
+.adf-contact__hero {
+  max-width: 720px;
+  margin: 0 auto 18px;
+  padding: 10px 0 0;
+}
+/*
+  スマートフォンでは本文の左右余白いっぱいまで広げる。
+  幅390pxで画像の高さが約195pxになり、上下の余白を含めても220px前後に収まる。
+*/
+@media (max-width: 599px) {
+  .adf-contact__hero {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    padding-top: 4px;
+    margin-bottom: 16px;
+  }
+  .adf-contact__hero-img { border-radius: 0; }
+}
+.adf-contact__hero-img {
+  display: block;
+  width: 100%;
+  height: auto;              /* 縦横比を保ち、王冠や文字を切り抜かない */
+  border-radius: var(--adf-radius);
+}
+
+/* 画像のすぐ下は、画像内の見出しを繰り返さない短い一行にする */
+.adf-contact__intro .adf-contact__title {
+  font-size: clamp(15px, 4vw, 18px);
+  line-height: 1.7;
+}

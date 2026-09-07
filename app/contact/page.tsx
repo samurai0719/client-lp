@@ -30,12 +30,27 @@ export default function ContactPage() {
       <ContactHeader />
 
       <main className="adf-contact__main">
+        {/*
+          診断のファーストビュー。
+          画面いっぱいのヒーローにはせず、最初の質問がこの下から見え始める高さに収める。
+          画像内の見出し・実績を下で繰り返さないため、この下は短い一行と補足だけにする。
+        */}
+        <div className="adf-contact__hero">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="adf-contact__hero-img"
+            src="/images/adofy/adofy-diagnosis-hero.webp"
+            alt="外構・外壁塗装・リフォーム会社の方へ。あなたの会社に合う集客方法を診断。adofyの集客支援実績100社以上、累計集客数2000人以上。"
+            width={1774}
+            height={887}
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+
         <div className="adf-contact__intro">
-          <h1 className="adf-contact__title">ホームページ制作について無料で相談する</h1>
-          <p className="adf-contact__lead">
-            現在の集客状況や、これから増やしたい仕事についてお聞かせください。
-            内容を確認したうえで、貴社に合ったホームページと集客方法をご提案します。
-          </p>
+          <h1 className="adf-contact__title">かんたんな質問に答えるだけ。入力は約1分です。</h1>
           <ul className="adf-contact__badges">
             <li>相談無料</li>
             <li>無理な営業なし</li>

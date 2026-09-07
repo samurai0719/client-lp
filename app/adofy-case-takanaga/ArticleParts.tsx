@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CtaButton } from "@/components/adofy/ui";
-import { CTA_NOTE, type ArticleImage } from "./content";
+import { CTA_NOTE, type ArticleImage, type ShowcaseItem } from "./content";
 
 /**
  * 本文中の画像。
@@ -77,6 +77,82 @@ export function ZoomableImage({
             alt={image.alt}
             width={image.w}
             height={image.h}
+            decoding="async"
+          />
+        </div>
+      ) : null}
+    </figure>
+  );
+}
+
+/**
+ * 実際の画面のスクリーンショット。
+ *
+ * ・イメージ画像ではなく実物なので「イメージ」注記は付けない。
+ * ・縦長のスマホ画面なので、PCでは最大420pxに抑えて中央に置く。
+ * ・タップで拡大できる。拡大表示にも同じ加工済み画像を使う。
+ * ・画像内のボタンはスクリーンショットの一部。記事のCTAと区別するため枠を付ける。
+ */
+export function ScreenShot({ item }: { item: ShowcaseItem }) {
+  const [open, setOpen] = useState(false);
+  const close = useCallback(() => setOpen(false), []);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open, close]);
+
+  return (
+    <figure className="adf-case__shot">
+      <button
+        type="button"
+        className="adf-case__shot-btn"
+        onClick={() => setOpen(true)}
+        aria-label={`画面を拡大する：${item.alt}`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="adf-case__shot-img"
+          src={item.src}
+          alt={item.alt}
+          width={item.w}
+          height={item.h}
+          loading="lazy"
+          decoding="async"
+        />
+      </button>
+      <figcaption className="adf-case__shot-cap">
+        <span className="adf-case__shot-text">{item.text}</span>
+        {item.note ? <span className="adf-case__shot-note">{item.note}</span> : null}
+      </figcaption>
+
+      {open ? (
+        <div
+          className="adf-case__zoom"
+          role="dialog"
+          aria-modal="true"
+          aria-label="画面の拡大表示"
+          onClick={close}
+        >
+          <button type="button" className="adf-case__zoom-close" onClick={close}>
+            閉じる
+          </button>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="adf-case__zoom-img"
+            src={item.src}
+            alt={item.alt}
+            width={item.w}
+            height={item.h}
             decoding="async"
           />
         </div>

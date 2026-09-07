@@ -7,12 +7,13 @@ import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import LpInsightTracker, { ADOFY_LP_PROJECT_ID } from "@/components/analytics/LpInsightTracker";
 import Footer from "@/components/adofy/Footer";
 import { CtaButton, LogoMark } from "@/components/adofy/ui";
-import { REFUND_DISCLOSURE, SITE } from "@/components/adofy/config";
-import { StickyCta, ZoomableImage } from "./ArticleParts";
+import { REFUND_DISCLOSURE, RESULTS, RESULTS_NOTE, SITE } from "@/components/adofy/config";
+import { ScreenShot, StickyCta, ZoomableImage } from "./ArticleParts";
 import {
   CTA_LEADS, CTA_NOTE, DESCRIPTION, HERO, IMG_CONCERNS, IMG_CONSULTATION,
-  IMG_SERVICE, LEAD, PR_LABEL, RESULT_CARDS, RESULT_NOTE, SECTIONS, SERVICE,
-  TITLE, type Chunk, type Item,
+  IMG_SERVICE, LEAD, OTHER_RESULTS, OTHER_RESULTS_EXCLUDE, PR_LABEL,
+  RESULT_CARDS, RESULT_NOTE, SECTIONS, SERVICE, SHOWCASE, TITLE,
+  type Chunk, type Item,
 } from "./content";
 
 export const metadata: Metadata = {
@@ -38,8 +39,16 @@ const FOOTER_ID = "article-footer";
 /** 追従CTAを隠す相手。最終CTAとフッターは絶対に覆わない */
 const STICKY_HIDE_IDS = [FINAL_CTA_ID, FOOTER_ID] as const;
 
+/**
+ * adofyの他の実績。外構の事例（＝この記事の語り手である高長建設）は除く。
+ * 画像が無い項目も落とす（白紙の枠を並べないため）。
+ */
+const OTHER_RESULTS_LIST = RESULTS.filter(
+  (item) => item.image && !OTHER_RESULTS_EXCLUDE.includes(item.image as never)
+);
+
 /** 本文以外の要素（画像・カード・CTA）を持つ章。本文が空でも表示する */
-const SECTIONS_WITH_EXTRA = new Set(["before", "start", "result"]);
+const SECTIONS_WITH_EXTRA = new Set(["before", "start", "tell", "result"]);
 
 /**
  * 高長建設のPR記事（体験談型の記事LP）。
@@ -133,6 +142,9 @@ export default async function AdofyCaseTakanagaPage({
                 {/* 相談から見せ方の話へ渡す位置 */}
                 {section.id === "start" ? <ZoomableImage image={IMG_CONSULTATION} /> : null}
 
+                {/* 制作してもらったもの（実際の画面）。実績の話へ渡す前に置く */}
+                {section.id === "tell" ? <Showcase /> : null}
+
                 {/* 実績と、その直下の注記、そして最初のCTA */}
                 {section.id === "result" ? (
                   <>
@@ -145,6 +157,40 @@ export default async function AdofyCaseTakanagaPage({
           })}
         </div>
       </article>
+
+      {/* ── adofyの他の実績（外構の事例は除く） ───────────────────────── */}
+      <section className="adf-case__others" aria-labelledby="h-others">
+        <div className="adf-case__others-inner">
+          <h2 className="adf-case__h2" id="h-others">{OTHER_RESULTS.heading}</h2>
+
+          {OTHER_RESULTS.body.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
+
+          <div className="adf-case__others-grid">
+            {OTHER_RESULTS_LIST.map((item) => (
+              <figure key={item.image} className="adf-case__other">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="adf-case__other-img"
+                  src={item.image as string}
+                  alt={item.alt ?? item.label ?? "adofyの集客実績"}
+                  width={item.w}
+                  height={item.h}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <figcaption className="adf-case__other-cap">
+                  <b>{item.label}</b>
+                  {item.caption ? <span>{item.caption}</span> : null}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <p className="adf-case__note">※ {RESULTS_NOTE}</p>
+        </div>
+      </section>
 
       {/* ── サービス案内（ここから先は高長建設の体験談ではない） ────────── */}
       <section className="adf-case__service" aria-labelledby="h-service">
@@ -305,6 +351,22 @@ function highlight(text: string, em?: readonly string[], hit?: readonly string[]
     nodes = next;
   }
   return nodes;
+}
+
+/* ── 制作してもらったもの ─────────────────────────────────────────────── */
+
+function Showcase() {
+  return (
+    <div className="adf-case__showcase">
+      <h3 className="adf-case__h3">{SHOWCASE.heading}</h3>
+      {SHOWCASE.body.map((text) => (
+        <p key={text}>{text}</p>
+      ))}
+      {SHOWCASE.items.map((item) => (
+        <ScreenShot key={item.src} item={item} />
+      ))}
+    </div>
+  );
 }
 
 /* ── 実績 ─────────────────────────────────────────────────────────────── */
