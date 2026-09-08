@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./adofy-corp.css";
 
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
+import LpInsightTracker, { ADOFY_CORP_PROJECT_ID } from "@/components/analytics/LpInsightTracker";
 
 export const metadata: Metadata = {
   title: {
@@ -18,6 +19,7 @@ export default function AdofyCorpLayout({ children }: { children: React.ReactNod
     <div className="adofy-corp flex min-h-screen flex-col">
       {/* コーポレートサイト配下は全ページ共通で1回だけ読み込む（重複設置しない） */}
       <AdofyMetaPixel />
+      <LpInsightTracker projectId={ADOFY_CORP_PROJECT_ID} />
       {children}
     </div>
   );

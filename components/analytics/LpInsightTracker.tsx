@@ -10,8 +10,14 @@ const TRACKER_SRC = "https://lp-insight-rosy.vercel.app/tracker.js";
 const GAIKOU_LP_PROJECT_ID = "063ecbb7-8412-422d-90dc-dca0a4a24fda";
 /** 高長建設コーポレートHP用 */
 export const TAKANAGA_HP_PROJECT_ID = "375fd391-9df4-42d9-be2b-51f7f50f6026";
-/** adofy集客LP用 (/adofy, /contact, /contact/thanks) */
+/** adofy集客LP用 (/adofy, /contact, /contact/thanks, /adofy-case-takanaga) */
 export const ADOFY_LP_PROJECT_ID = "5f3419a3-3090-43e5-9107-cfe2c6568d96";
+/*
+  adofyコーポレートサイト用 (/adofy-corp 配下)。
+  集客LPとはドメインもページ構成も違うため、LPと同じプロジェクトに混ぜず別に取る
+  （高長建設も 外構LP / コーポレートHP で分けている）。
+*/
+export const ADOFY_CORP_PROJECT_ID = "c3af2e56-edee-42bf-ad5a-4e22f735a7a4";
 
 export default function LpInsightTracker({
   projectId = GAIKOU_LP_PROJECT_ID,
