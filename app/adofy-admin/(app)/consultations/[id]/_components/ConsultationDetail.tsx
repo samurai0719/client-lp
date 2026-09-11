@@ -129,9 +129,16 @@ export default function ConsultationDetail({
 
       <div className="mb-5">
         <h1 className="text-xl font-bold text-slate-900">{row.company_name}</h1>
+        {/* 氏名は問い合わせ対応で最初に見る項目なので、会社名の次に大きく出す */}
+        <p className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          <span className="text-xs font-bold text-slate-400">ご担当者</span>
+          <span className="text-lg font-bold text-slate-900">{row.contact_name}</span>
+          {row.position ? (
+            <span className="text-sm text-slate-500">（{row.position}）</span>
+          ) : null}
+        </p>
         <p className="mt-1 text-sm text-slate-500">
-          {row.contact_name}
-          {row.position ? `（${row.position}）` : ""} ／ {row.prefecture}
+          {row.prefecture}
           {row.city ?? ""} ／ 受付 {formatDateTime(row.created_at)}
         </p>
       </div>
@@ -172,6 +179,16 @@ export default function ConsultationDetail({
         <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5">
           <h2 className="mb-4 text-sm font-bold text-slate-900">相談内容</h2>
           <dl className="grid gap-3 text-sm">
+            <Row
+              label="ご担当者名"
+              value={
+                <span className="font-bold text-slate-900">
+                  {row.contact_name}
+                  {row.position ? `（${row.position}）` : ""}
+                </span>
+              }
+            />
+            <Row label="会社名・屋号" value={row.company_name} />
             <Row label="事業形態" value={mapOne(L.business, row.business_type)} />
             <Row
               label="電話"

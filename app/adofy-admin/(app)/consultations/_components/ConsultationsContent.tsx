@@ -136,9 +136,20 @@ export default function ConsultationsContent() {
                     <span className="block truncate font-bold text-slate-900">
                       {r.company_name}
                     </span>
+                    {/* 誰からの相談か一目で分かるよう、氏名は独立した行にする */}
+                    <span className="mt-0.5 flex items-baseline gap-1.5 truncate">
+                      <span className="flex-none text-[11px] font-bold text-slate-400">
+                        ご担当者
+                      </span>
+                      <span className="truncate text-sm font-bold text-slate-800">
+                        {r.contact_name}
+                      </span>
+                    </span>
                     <span className="block truncate text-xs text-slate-500">
-                      {r.contact_name} ／ {r.prefecture}
-                      {r.city ?? ""} ／ {mapOne(L.plan, r.selected_plan)} ／{" "}
+                      {r.prefecture}
+                      {r.city ?? ""}
+                      {/* 希望プランは選ばれている場合だけ出す（現在は料金表のCTA経由でのみ入る） */}
+                      {r.selected_plan ? ` ／ ${mapOne(L.plan, r.selected_plan)}` : ""} ／{" "}
                       {formatDateTime(r.created_at)}
                     </span>
                     <span className="mt-1 block truncate text-xs text-slate-400">
