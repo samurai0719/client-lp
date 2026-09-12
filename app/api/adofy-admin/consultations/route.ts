@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdofyAccess, forbiddenResponse } from "@/lib/auth/adofyCheck";
+import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
 
 /**
  * adofy 無料相談リードの一覧取得・ステータス更新。
@@ -22,6 +23,15 @@ export async function GET(request: NextRequest) {
   const q = (searchParams.get("q") ?? "").trim().toLowerCase();
   const status = searchParams.get("status") ?? "";
 
+  // サーバーのDB設定漏れは「取得に失敗」では原因が分からないため、先に分けて返す
+  if (!isSupabaseAdminConfigured()) {
+    console.error("[admin/consultations] Supabase admin is not configured");
+    return NextResponse.json(
+      { error: "サーバーのデータベース設定が未完了です（SUPABASE_SERVICE_ROLE_KEY を確認してください）" },
+      { status: 500 }
+    );
+  }
+
   const db = createAdminClient();
   let query = db
     .from("consultations")
@@ -37,7 +47,11 @@ export async function GET(request: NextRequest) {
 
   if (error) {
     console.error("[admin/consultations] select failed:", error.code, error.message);
-    return NextResponse.json({ error: "取得に失敗しました" }, { status: 500 });
+    // 原因追跡のため、エラーコードだけ画面にも出す（管理者しか見られない画面）
+    return NextResponse.json(
+      { error: `取得に失敗しました（${error.code || "unknown"}）` },
+      { status: 500 }
+    );
   }
 
   let rows = data ?? [];

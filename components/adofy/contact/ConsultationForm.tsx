@@ -137,10 +137,9 @@ export default function ConsultationForm() {
 
     /*
       希望連絡方法は質問を減らすため画面から外し、入力された連絡先から決める。
-      （電話だけ＝電話、メールだけ＝メール、両方＝どちらでもよい）
+      電話番号は必須なので、メールも入っていれば「どちらでもよい」、無ければ「電話」。
     */
-    const method =
-      data.phone.trim() && data.email.trim() ? "any" : data.phone.trim() ? "phone" : "email";
+    const method = data.email.trim() ? "any" : "phone";
 
     submitting.current = true;
     setSending(true);
@@ -300,10 +299,10 @@ export default function ConsultationForm() {
         {step === 3 && (
           <Question
             step={4} total={TOTAL_STEPS} title="ご連絡先をご入力ください"
-            description="電話番号とメールアドレスは、どちらか一方のご入力で送信できます。"
+            description="電話番号は必須です。メールアドレスは任意でご入力ください。"
           >
             <TextField
-              label="電話番号" type="tel" inputMode="tel" autoComplete="tel"
+              label="電話番号" required type="tel" inputMode="tel" autoComplete="tel"
               value={data.phone} onChange={(v) => update({ phone: v })}
               placeholder="0581234567"
             />

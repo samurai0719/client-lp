@@ -176,15 +176,10 @@ export function validateConsultation(body: ConsultationInput): ValidationResult 
   const phone = normalizePhone(body.phone);
   const email = normalizeEmail(body.email);
 
-  // 電話・メールは最低どちらか一方。希望連絡方法に応じて必須を切り替える
-  if (method === "phone" && !phone) {
-    return { ok: false, message: "電話でのご連絡をご希望の場合は、電話番号をご入力ください。" };
-  }
-  if (method === "email" && !email) {
-    return { ok: false, message: "メールでのご連絡をご希望の場合は、メールアドレスをご入力ください。" };
-  }
-  if (!phone && !email) {
-    return { ok: false, message: "電話番号またはメールアドレスのいずれかをご入力ください。" };
+  // 電話番号は必須。メールアドレスは任意。
+  // normalizePhone は桁数（9〜11桁）が合わない場合も null を返す
+  if (!phone) {
+    return { ok: false, message: "電話番号をご確認のうえ、ご入力ください。" };
   }
 
   const utm = body.utm ?? {};

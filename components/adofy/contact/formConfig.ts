@@ -195,21 +195,18 @@ export function validateStep(step: number, data: FormData): string | null {
       if (!data.prefecture) return "都道府県をご選択ください。";
       return null;
     case 3: {
-      const hasPhone = data.phone.trim().length > 0;
-      const hasEmail = data.email.trim().length > 0;
-      if (!hasPhone && !hasEmail) {
-        return "電話番号またはメールアドレスのいずれかをご入力ください。";
+      // 電話番号は必須。メールアドレスは任意。
+      const phone = data.phone.trim();
+      if (!phone) return "電話番号をご入力ください。";
+      const digits = phone
+        .replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
+        .replace(/[^\d]/g, "");
+      if (digits.length < 9 || digits.length > 11) {
+        return "電話番号の桁数をご確認ください。";
       }
-      if (hasEmail && !/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(data.email.trim())) {
+      const email = data.email.trim();
+      if (email && !/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(email)) {
         return "メールアドレスの形式をご確認ください。";
-      }
-      if (hasPhone) {
-        const digits = data.phone
-          .replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
-          .replace(/[^\d]/g, "");
-        if (digits.length < 9 || digits.length > 11) {
-          return "電話番号の桁数をご確認ください。";
-        }
       }
       if (!data.preferredContactTime) return "連絡しやすい時間帯をご選択ください。";
       return null;
