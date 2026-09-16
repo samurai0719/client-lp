@@ -78,3 +78,11 @@ http://localhost:3000/gaikou
 
 現在 `takanagakensetu.com` はこのLPに向いています。変更しないでください。
 
+
+---
+
+## いざかや 蛍（岐阜県各務原市）ホームページ提案
+
+- ローカルURL: `http://localhost:3000/hotaru`（提案段階のため noindex・未デプロイ）
+- 店舗情報・確認状況: `config/hotaru.ts`
+- 詳細・公開前の確認リスト: [`app/hotaru/README.md`](app/hotaru/README.md)
