@@ -15,7 +15,9 @@ import {
   Sparkles,
   MapPin,
   CheckCircle2,
+  Truck,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import {
   DotGrid,
   WaveDivider,
@@ -57,7 +59,17 @@ const partners = [
   },
 ];
 
-const services = [
+type Service = {
+  icon: LucideIcon;
+  title: string;
+  lines: string[];
+  /** 自社サービスなど、アイコンの代わりにロゴを出す場合に指定 */
+  logo?: { src: string; alt: string };
+  /** カード下部に出す導線 (任意) */
+  link?: { href: string; label: string; external?: boolean };
+};
+
+const services: Service[] = [
   {
     icon: Megaphone,
     title: "成果報酬型広告運用",
@@ -77,6 +89,20 @@ const services = [
     icon: BarChart3,
     title: "マーケティング支援",
     lines: ["数値分析・改善提案・導線設計まで、", "売上最大化に向けた施策を一貫して支援します。"],
+  },
+  {
+    icon: Truck,
+    title: "自社サービス運営「ドラテク」",
+    lines: [
+      "トラックドライバー向けの求人紹介・転職支援サービス「ドラテク」を自社で運営。",
+      "集客から面談・入社後のフォローまで、adofy自身が事業者として取り組んでいます。",
+    ],
+    logo: { src: "/images/driver/logo-mark.png", alt: "ドラテク" },
+    link: {
+      href: "https://driver.taxidriver-beginner.com/",
+      label: "ドラテクのサイトを見る",
+      external: true,
+    },
   },
 ];
 
@@ -486,7 +512,7 @@ export default function HomeContent() {
                   />
                 </div>
                 <p className="relative text-[clamp(1rem,2vw,1.2rem)] leading-[1.85] tracking-[0.01em] text-ink-soft">
-                  株式会社adofyは、岐阜を拠点にWebマーケティング支援を行うIT企業です。
+                  adofyは、岐阜を拠点にWebマーケティング支援を行うIT企業です。
                   見た目の美しさだけではなく、広告効果・問い合わせ・売上につながる設計を重視し、
                   制作から改善まで伴走します。
                 </p>
@@ -498,7 +524,7 @@ export default function HomeContent() {
                 variant="analytics"
                 label="adofy Team"
                 imageBase="/images/about/performance"
-                alt="株式会社adofyのメンバーがミーティングをしている様子"
+                alt="adofyのメンバーがミーティングをしている様子"
               />
             </ScrollReveal>
           </div>
@@ -554,11 +580,11 @@ export default function HomeContent() {
           </div>
 
           <div
-            className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-3 lg:grid-rows-2 lg:[grid-template-areas:'a_b_b'_'a_c_d']"
+            className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-3 lg:grid-rows-3 lg:[grid-template-areas:'a_b_b'_'a_c_d'_'e_e_e']"
           >
             {services.map((service, index) => {
               const Icon = service.icon;
-              const areaClass = ["lg:[grid-area:a]", "lg:[grid-area:b]", "lg:[grid-area:c]", "lg:[grid-area:d]"][index];
+              const areaClass = ["lg:[grid-area:a]", "lg:[grid-area:b]", "lg:[grid-area:c]", "lg:[grid-area:d]", "lg:[grid-area:e]"][index];
               const isFeatured = index === 0;
 
               return (
@@ -593,13 +619,31 @@ export default function HomeContent() {
                   </svg>
 
                   <div className="flex items-start justify-between">
-                    <div
-                      className={`flex items-center justify-center rounded-2xl bg-accent-blue text-white transition duration-300 group-hover:scale-105 ${
-                        isFeatured ? "h-16 w-16" : "h-14 w-14"
-                      }`}
-                    >
-                      <Icon className={isFeatured ? "h-7 w-7" : "h-6 w-6"} />
-                    </div>
+                    {service.logo ? (
+                      /* 自社サービスはロゴをそのまま見せる（紺色ロゴのため白地のまま） */
+                      <div
+                        className={`flex items-center justify-center rounded-2xl border border-border-soft bg-white p-2 transition duration-300 group-hover:scale-105 ${
+                          isFeatured ? "h-16 w-16" : "h-14 w-14"
+                        }`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={service.logo.src}
+                          alt={service.logo.alt}
+                          width={512}
+                          height={512}
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className={`flex items-center justify-center rounded-2xl bg-accent-blue text-white transition duration-300 group-hover:scale-105 ${
+                          isFeatured ? "h-16 w-16" : "h-14 w-14"
+                        }`}
+                      >
+                        <Icon className={isFeatured ? "h-7 w-7" : "h-6 w-6"} />
+                      </div>
+                    )}
                     <span className="text-right text-xs font-black uppercase tracking-widest text-accent-blue/40">
                       0{index + 1}
                     </span>
@@ -620,6 +664,19 @@ export default function HomeContent() {
                       </span>
                     ))}
                   </p>
+
+                  {service.link && (
+                    <a
+                      href={service.link.href}
+                      {...(service.link.external
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                      className="mt-5 inline-flex w-fit items-center gap-1.5 text-xs font-black tracking-tight text-accent-blue transition hover:gap-2.5"
+                    >
+                      {service.link.label}
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  )}
                 </motion.div>
               );
             })}

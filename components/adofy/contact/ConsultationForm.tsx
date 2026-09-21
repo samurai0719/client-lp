@@ -281,7 +281,7 @@ export default function ConsultationForm() {
             <TextField
               label="会社名・屋号" required autoComplete="organization"
               value={data.companyName} onChange={(v) => update({ companyName: v })}
-              placeholder="例：株式会社adofy建設"
+              placeholder="例：adofy建設"
             />
             <TextField
               label="ご担当者名" required autoComplete="name"

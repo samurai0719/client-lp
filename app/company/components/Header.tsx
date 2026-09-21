@@ -35,7 +35,7 @@ export default function Header() {
             adofy
           </span>
           <span className="hidden sm:block text-[10px] font-medium text-slate-400 tracking-widest">
-            株式会社adofy
+            アドフィー
           </span>
         </a>
 

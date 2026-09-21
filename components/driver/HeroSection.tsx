@@ -23,16 +23,29 @@ export default function HeroSection({ onAnswer }: HeroSectionProps) {
   return (
     <section className="w-full bg-white">
 
-      {/* ── サービスヘッダー ── */}
+      {/* ── サービスヘッダー ──
+           ロゴは紺色のため、青グラデーション上では白いチップに載せてコントラストを確保。
+           ロゴ画像: public/images/driver/logo.png (ロゴマーク+ロゴタイプの縦組み)
+      */}
       <header className="bg-gradient-to-r from-blue-800 to-blue-600 text-white">
-        <div className="px-4 py-2.5 flex items-center justify-between">
-          <div>
+        <div className="px-4 py-2.5 flex items-center gap-3">
+          <h1 className="shrink-0">
+            <img
+              src="/images/driver/logo.png"
+              alt="ドラテク"
+              width={640}
+              height={645}
+              className="h-11 w-auto block bg-white rounded-lg p-1.5 shadow-sm"
+            />
+          </h1>
+          <div className="min-w-0">
             <p className="text-[9px] font-semibold tracking-widest text-blue-200 uppercase">
               Doratech Driver Career
             </p>
-            <h1 className="text-sm font-bold leading-tight">ドラテク</h1>
+            <p className="text-[13px] font-bold leading-tight">
+              ドライバー求人・転職サービス
+            </p>
           </div>
-          {/* 「無料・登録不要」削除済み */}
         </div>
       </header>
 

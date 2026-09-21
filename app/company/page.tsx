@@ -53,6 +53,14 @@ const SERVICES = [
     title: "クリエイティブ制作",
     body: "広告バナー、訴求画像、Web掲載用のクリエイティブ制作にも対応します。",
   },
+  {
+    icon: "Truck",
+    title: "自社サービス運営「ドラテク」",
+    body: "トラックドライバー向けの求人紹介・転職支援サービス「ドラテク」を自社で運営しています。",
+    // アイコンの代わりにサービスロゴを表示します
+    logo: { src: "/images/driver/logo-mark.png", alt: "ドラテク" },
+    href: "https://driver.taxidriver-beginner.com/",
+  },
 ];
 
 const RESULTS = [
@@ -110,11 +118,11 @@ const STEPS = [
 ];
 
 const COMPANY_INFO = [
-  { label: "会社名", value: "株式会社adofy（アドフィー）" },
+  { label: "屋号", value: "adofy（アドフィー）" },
   {
     label: "事業内容",
     value:
-      "ホームページ制作 / LP制作 / Web集客支援 / 外壁塗装関連事業支援 / クリエイティブ制作",
+      "ホームページ制作 / LP制作 / Web集客支援 / 外壁塗装関連事業支援 / クリエイティブ制作 / 自社サービス運営（ドラテク）",
   },
   { label: "所在地", value: "岐阜県" },
   { label: "対応エリア", value: "全国対応" },
@@ -235,12 +243,32 @@ const IconCheck = () => (
   </svg>
 );
 
+const IconTruck = () => (
+  <svg
+    className="w-5 h-5"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="M3 17V6a1 1 0 0 1 1-1h10v12" />
+    <path d="M14 9h4l3 3v5h-2" />
+    <circle cx="7.5" cy="17.5" r="2" />
+    <circle cx="17.5" cy="17.5" r="2" />
+    <path d="M9.5 17.5h6" />
+  </svg>
+);
+
 const SERVICE_ICONS: Record<string, () => React.ReactNode> = {
   Globe: IconGlobe,
   Layout: IconLayout,
   TrendingUp: IconTrend,
   Home: IconHome,
   Image: IconImage,
+  Truck: IconTruck,
 };
 
 // ── Shared Components ─────────────────────────────────────────────────────────
@@ -327,7 +355,7 @@ export default function CompanyPage() {
           <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm mb-10">
             <span className="w-1.5 h-1.5 rounded-full bg-slate-900 shrink-0" />
             <span className="text-[12px] font-medium text-slate-600 tracking-wider">
-              株式会社adofy（アドフィー）
+              adofy（アドフィー）
             </span>
           </div>
 
@@ -483,7 +511,7 @@ export default function CompanyPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {SERVICES.map(({ icon, title, body }) => {
+          {SERVICES.map(({ icon, title, body, logo, href }) => {
             const Icon = SERVICE_ICONS[icon];
             return (
               <div
@@ -499,13 +527,37 @@ export default function CompanyPage() {
                     transform: "translate(30%, -30%)",
                   }}
                 />
-                <span className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-100 text-slate-600 mb-5">
-                  <Icon />
-                </span>
+                {logo ? (
+                  <span className="inline-flex items-center justify-center w-11 h-11 rounded-xl border border-slate-200 bg-white p-1.5 mb-5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={logo.src}
+                      alt={logo.alt}
+                      width={512}
+                      height={512}
+                      className="w-full h-full object-contain"
+                    />
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-100 text-slate-600 mb-5">
+                    <Icon />
+                  </span>
+                )}
                 <h3 className="text-base font-bold text-slate-900 mb-3 leading-snug">
                   {title}
                 </h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{body}</p>
+                {href && (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-slate-900 hover:gap-2.5 transition-all"
+                  >
+                    サイトを見る
+                    <span aria-hidden>→</span>
+                  </a>
+                )}
               </div>
             );
           })}
@@ -768,7 +820,7 @@ export default function CompanyPage() {
                 adofy
               </p>
               <p className="text-[11px] text-slate-500 tracking-wider">
-                株式会社adofy（アドフィー）
+                アドフィー
               </p>
             </div>
 
@@ -795,7 +847,7 @@ export default function CompanyPage() {
           <div className="h-px bg-white/5 mb-8" />
 
           <p className="text-[11px] text-slate-600 text-center tracking-wide">
-            © {new Date().getFullYear()} 株式会社adofy. All rights reserved.
+            © {new Date().getFullYear()} adofy. All rights reserved.
           </p>
         </div>
       </footer>

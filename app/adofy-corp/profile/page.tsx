@@ -91,7 +91,7 @@ export default function ProfilePage() {
               <div className="relative mt-6">
                 <p className="text-sm text-ink-soft">Representative</p>
                 <h1 className="mt-2 text-3xl font-black text-ink">塚本 隼平</h1>
-                <p className="mt-2 text-ink-soft">株式会社adofy 代表</p>
+                <p className="mt-2 text-ink-soft">adofy 代表</p>
               </div>
             </div>
 

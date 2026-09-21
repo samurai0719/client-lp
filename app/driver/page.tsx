@@ -8,6 +8,7 @@ const DESCRIPTION =
   '未経験から始められるトラックドライバーのお仕事探しは「ドラテク」。高収入求人あり・資格取得支援あり。かんたんな質問に答えて無料登録すると、あなたに合う求人をドラテクがご案内します。';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: TITLE,
   description: DESCRIPTION,
   applicationName: SITE_NAME,
@@ -18,11 +19,13 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: SITE_URL,
     locale: 'ja_JP',
+    images: [{ url: '/images/driver/logo.png', width: 640, height: 645, alt: 'ドラテク' }],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: TITLE,
     description: DESCRIPTION,
+    images: ['/images/driver/logo.png'],
   },
 };
 
@@ -35,6 +38,7 @@ const JSON_LD = {
       '@id': `${SITE_URL}#organization`,
       name: SITE_NAME,
       url: SITE_URL,
+      logo: `${SITE_URL}images/driver/logo.png`,
       description: 'トラックドライバーの求人紹介・転職支援サービス「ドラテク」。',
     },
     {

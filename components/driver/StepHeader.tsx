@@ -13,8 +13,18 @@ export default function StepHeader({ currentStep, totalSteps }: StepHeaderProps)
       <div className="max-w-lg mx-auto">
         {/* ロゴ + ステップカウンター */}
         <div className="px-4 pt-2 pb-1 flex items-center justify-between">
-          <span className="text-sm font-bold text-blue-700 tracking-wide">
-            ドラテク
+          <span className="flex items-center gap-1.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/driver/logo-mark.png"
+              alt=""
+              width={512}
+              height={512}
+              className="h-5 w-5 object-contain block"
+            />
+            <span className="text-sm font-bold text-blue-800 tracking-wide">
+              ドラテク
+            </span>
           </span>
           <span className="text-xs font-semibold text-slate-500">
             STEP{' '}
