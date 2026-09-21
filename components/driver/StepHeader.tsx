@@ -14,7 +14,7 @@ export default function StepHeader({ currentStep, totalSteps }: StepHeaderProps)
         {/* ロゴ + ステップカウンター */}
         <div className="px-4 pt-2 pb-1 flex items-center justify-between">
           <span className="text-sm font-bold text-blue-700 tracking-wide">
-            ドライバー転職ナビ
+            ドラテク
           </span>
           <span className="text-xs font-semibold text-slate-500">
             STEP{' '}

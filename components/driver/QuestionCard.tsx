@@ -16,14 +16,16 @@ export interface Choice {
 }
 
 interface QuestionCardProps {
-  /** STEP 1〜3 内の番号 (StepHeader と同期) */
+  /** STEP 1〜totalSteps 内の番号 (StepHeader と同期) */
   stepNumber: number;
+  /** 全ステップ数 (StepHeader と同期) */
+  totalSteps?: number;
   question: string;
   choices: Choice[];
-  /** 通常ステップ: 選択したら呼ばれる */
+  /** 選択したら呼ばれる */
   onSelect?: (answer: string) => void;
-  /** 最終ステップ: 選択時に遷移するアフィリエイトURL */
-  affiliateUrl?: string;
+  /** 最終質問のとき true: 「選択後、無料登録へ進みます」の注記を表示 */
+  isFinal?: boolean;
   /**
    * 'grid' = 2列グリッド → ChoiceButton は縦型カード (cardLayout='card')
    * 'stack' = 縦1列    → ChoiceButton は横型リスト (cardLayout='list')
@@ -33,27 +35,26 @@ interface QuestionCardProps {
 
 export default function QuestionCard({
   stepNumber,
+  totalSteps = 7,
   question,
   choices,
   onSelect,
-  affiliateUrl,
+  isFinal = false,
   layout = 'grid',
 }: QuestionCardProps) {
-  const isFinal = Boolean(affiliateUrl);
-
   return (
     <section className="px-5 py-8 animate-fade-in">
 
       {/* 質問ヘッダー */}
       <div className="text-center mb-6">
         <p className="text-[10px] font-bold tracking-[0.2em] text-blue-500 uppercase mb-2">
-          STEP {stepNumber} / 3
+          STEP {stepNumber} / {totalSteps}
         </p>
         <h2 className="text-xl font-bold text-slate-800 leading-snug">{question}</h2>
         <p className="text-xs text-slate-400 mt-2">あてはまるものを選んでください</p>
         {isFinal && (
           <p className="mt-2 text-xs font-medium text-orange-500 bg-orange-50 inline-block px-3 py-1 rounded-full">
-            選択後、求人情報ページへご案内します
+            選択後、無料登録フォームへ進みます
           </p>
         )}
       </div>
@@ -72,7 +73,6 @@ export default function QuestionCard({
               imageSrc={c.imageSrc}
               cardLayout="list"
               onClick={onSelect ? () => onSelect(c.label) : undefined}
-              href={affiliateUrl}
             />
           ))}
         </div>
@@ -90,7 +90,6 @@ export default function QuestionCard({
                 choices.length % 2 !== 0 && i === choices.length - 1 ? 'col-span-2' : ''
               }
               onClick={onSelect ? () => onSelect(c.label) : undefined}
-              href={affiliateUrl}
             />
           ))}
         </div>

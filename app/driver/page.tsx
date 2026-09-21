@@ -1,18 +1,61 @@
 import type { Metadata } from 'next';
 import DriverContent from '@/components/driver/DriverContent';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// A8アフィリエイトリンク管理
-// 遷移先URLはここで一元管理しています。変更する場合はこの定数を書き換えてください。
-// ─────────────────────────────────────────────────────────────────────────────
-const AFFILIATE_URL = 'https://px.a8.net/svt/ejp?a8mat=4B1HTK+EPVUPU+2JK4+5SLUXU';
+const SITE_NAME = 'ドラテク';
+const SITE_URL = 'https://driver.taxidriver-beginner.com/';
+const TITLE = 'ドラテク | ドライバー求人・転職サービス｜無料登録で求人をご案内';
+const DESCRIPTION =
+  '未経験から始められるトラックドライバーのお仕事探しは「ドラテク」。高収入求人あり・資格取得支援あり。かんたんな質問に答えて無料登録すると、あなたに合う求人をドラテクがご案内します。';
 
 export const metadata: Metadata = {
-  title: 'ドライバー転職ナビ | 高収入・未経験歓迎の求人を無料確認',
-  description:
-    '未経験から始められるトラックドライバー転職。高収入求人あり・資格取得支援あり。簡単な質問に答えて、あなたに合う求人情報を今すぐ確認しましょう。',
+  title: TITLE,
+  description: DESCRIPTION,
+  applicationName: SITE_NAME,
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    title: TITLE,
+    description: DESCRIPTION,
+    url: SITE_URL,
+    locale: 'ja_JP',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+};
+
+/** 構造化データ: ドラテクを運営主体として明示します */
+const JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: 'トラックドライバーの求人紹介・転職支援サービス「ドラテク」。',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}#website`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      inLanguage: 'ja',
+      publisher: { '@id': `${SITE_URL}#organization` },
+    },
+  ],
 };
 
 export default function Page() {
-  return <DriverContent affiliateUrl={AFFILIATE_URL} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
+      <DriverContent />
+    </>
+  );
 }

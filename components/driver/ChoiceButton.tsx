@@ -10,8 +10,6 @@ interface ChoiceButtonProps {
    */
   imageSrc?: string;
   onClick?: () => void;
-  /** A8等アフィリエイトリンクへ遷移する場合に指定 */
-  href?: string;
   /**
    * 'card' = 縦型 (画像上 + テキスト下・中央寄せ) → グリッド2列に適している
    * 'list' = 横型 (画像左 + テキスト中 + 矢印右)   → スタック1列に適している
@@ -56,7 +54,6 @@ export default function ChoiceButton({
   subLabel,
   imageSrc,
   onClick,
-  href,
   cardLayout = 'list',
   selected = false,
   className = '',
@@ -104,7 +101,7 @@ export default function ChoiceButton({
      ・img に max-h-full / max-w-full + object-contain でリサイズなく収める
      ・テキストを text-center で統一
   ──────────────────────────────────────────────────── */
-  const CardInner = () => (
+  const cardInner = (
     <div className="flex flex-col h-full">
       {selected && <CheckBadge />}
 
@@ -141,7 +138,7 @@ export default function ChoiceButton({
      │ [img/ph]  label / subLabel        ›   │
      └────────────────────────────────────────┘
   ──────────────────────────────────────────── */
-  const ListInner = () => (
+  const listInner = (
     <div className="flex items-center gap-3 px-4 py-4">
       {/* 画像エリア (左): 固定サイズ + object-contain */}
       <div className="w-14 h-14 shrink-0 rounded-lg border border-blue-100/80
@@ -165,15 +162,7 @@ export default function ChoiceButton({
     </div>
   );
 
-  const inner = cardLayout === 'card' ? <CardInner /> : <ListInner />;
-
-  if (href) {
-    return (
-      <a href={href} rel="nofollow sponsored" className={baseWrapper}>
-        {inner}
-      </a>
-    );
-  }
+  const inner = cardLayout === 'card' ? cardInner : listInner;
 
   return (
     <button type="button" onClick={onClick} className={baseWrapper}>

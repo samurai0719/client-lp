@@ -14,7 +14,7 @@ const BADGES = ['✓ 未経験歓迎', '✓ 資格取得支援あり', '✓ 高�
  * 画像差し替え:
  *   現在は Wixstatic の URL を直接参照しています。
  *   ローカル画像に差し替える場合は FV_IMAGE_SRC を
- *   "/images/driver-fv.png" に変更し、public/images/ に画像を配置してください。
+ *   "/images/driver/fv.png" に変更し、public/images/driver/ に画像を配置してください。
  */
 const FV_IMAGE_SRC =
   'https://static.wixstatic.com/media/5ebda9_99d3d0d773514fa1acce476635216af6~mv2.png';
@@ -23,23 +23,14 @@ export default function HeroSection({ onAnswer }: HeroSectionProps) {
   return (
     <section className="w-full bg-white">
 
-      {/* ── 【1】PR表記 ──
-           法的要件として最上部に配置。デザインを崩さず自然に入れる。
-      */}
-      <div className="bg-slate-50 border-b border-slate-200 px-4 py-1.5 text-center">
-        <span className="text-[11px] font-semibold text-slate-500 tracking-wide">
-          【PR】レバジョブ
-        </span>
-      </div>
-
       {/* ── サービスヘッダー ── */}
       <header className="bg-gradient-to-r from-blue-800 to-blue-600 text-white">
         <div className="px-4 py-2.5 flex items-center justify-between">
           <div>
             <p className="text-[9px] font-semibold tracking-widest text-blue-200 uppercase">
-              Driver Career Support
+              Doratech Driver Career
             </p>
-            <h1 className="text-sm font-bold leading-tight">ドライバー転職ナビ</h1>
+            <h1 className="text-sm font-bold leading-tight">ドラテク</h1>
           </div>
           {/* 「無料・登録不要」削除済み */}
         </div>
@@ -53,7 +44,7 @@ export default function HeroSection({ onAnswer }: HeroSectionProps) {
       <div className="w-full bg-gradient-to-br from-blue-900 to-blue-600">
         <img
           src={FV_IMAGE_SRC}
-          alt="トラックドライバー転職ナビ メインビジュアル"
+          alt="ドラテク トラックドライバー求人 メインビジュアル"
           className="w-full h-auto block"
         />
       </div>

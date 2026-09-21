@@ -50,16 +50,23 @@ const LICENSE_CHOICES = [
 
 interface LicenseQuestionProps {
   stepNumber: number;
-  affiliateUrl: string;
+  /** 全ステップ数 (StepHeader と同期) */
+  totalSteps?: number;
+  /** 選択したら呼ばれる */
+  onSelect?: (answer: string) => void;
 }
 
-export default function LicenseQuestion({ stepNumber, affiliateUrl }: LicenseQuestionProps) {
+export default function LicenseQuestion({
+  stepNumber,
+  totalSteps = 7,
+  onSelect,
+}: LicenseQuestionProps) {
   return (
     <section className="px-5 py-8 animate-fade-in">
 
       <div className="text-center mb-6">
         <p className="text-[10px] font-bold tracking-[0.2em] text-blue-500 uppercase mb-2">
-          STEP {stepNumber} / 3
+          STEP {stepNumber} / {totalSteps}
         </p>
         <h2 className="text-xl font-bold text-slate-800 leading-snug">
           どんな免許をお持ちですか？
@@ -74,7 +81,11 @@ export default function LicenseQuestion({ stepNumber, affiliateUrl }: LicenseQue
             subLabel={c.subLabel}
             imageSrc={c.imageSrc}
             cardLayout="card"
-            href={affiliateUrl}
+            onClick={
+              onSelect
+                ? () => onSelect(c.subLabel ? `${c.label}${c.subLabel}` : c.label)
+                : undefined
+            }
           />
         ))}
       </div>
