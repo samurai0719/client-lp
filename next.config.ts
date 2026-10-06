@@ -39,6 +39,16 @@ const takanagaHpPaths = [
 const adofyHosts = ["adofy-site.com", "www.adofy-site.com"];
 const adofyLpHosts = ["lp.adofy-site.com"];
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 採用レスキュー（adofy の採用支援サービス）
+//   saiyo.adofy-site.com
+//     /                → /saiyo-rescue            （LP。proxy.ts で書き換え）
+//     /thanks          → /saiyo-rescue/thanks     （送信完了）
+//     /contact         → /#contact へリダイレクト （フォームはLP内）
+//     /admin           → /adofy-admin/saiyo-rescue（管理画面。adofy管理者のみ）
+// ─────────────────────────────────────────────────────────────────────────────
+const saiyoHosts = ["saiyo.adofy-site.com"];
+
 // コーポレートサイトのサブページ（public: 公開URL / internal: appルート）
 const adofyPaths = [
   { public: "profile", internal: "adofy-corp/profile" },
@@ -194,6 +204,23 @@ const nextConfig: NextConfig = {
       ...priceRedirects,
       ...subpathRedirects,
           ...adofyRedirects,
+      // 採用レスキュー
+      ...saiyoHosts.flatMap((host) => [
+        { source: "/contact", has: [{ type: "host" as const, value: host }], destination: "/#contact", statusCode: 302 as const },
+        { source: "/admin", has: [{ type: "host" as const, value: host }], destination: "/adofy-admin/saiyo-rescue", statusCode: 307 as const },
+        { source: "/admin/leads", has: [{ type: "host" as const, value: host }], destination: "/adofy-admin/saiyo-rescue/leads", statusCode: 307 as const },
+        { source: "/admin/leads/:id", has: [{ type: "host" as const, value: host }], destination: "/adofy-admin/saiyo-rescue/leads/:id", statusCode: 307 as const },
+        // 内部パスへの直アクセスは公開URLへ寄せる
+        { source: "/saiyo-rescue", has: [{ type: "host" as const, value: host }], destination: "/", statusCode: 301 as const },
+        { source: "/saiyo-rescue/thanks", has: [{ type: "host" as const, value: host }], destination: "/thanks", statusCode: 301 as const },
+      ]),
+      // adofy-site.com/saiyo-rescue で開かれた場合も専用ドメインへ
+      ...adofyHosts.map((host) => ({
+        source: "/saiyo-rescue",
+        has: [{ type: "host" as const, value: host }],
+        destination: "https://saiyo.adofy-site.com/",
+        statusCode: 301 as const,
+      })),
 ];
   },
   async rewrites() {
@@ -241,6 +268,14 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
           destination: "/driver",
         },
+
+        // ── saiyo.adofy-site.com（採用レスキュー） ─────────────────────
+        // ルート(/)は proxy.ts で処理する
+        ...saiyoHosts.map((host) => ({
+          source: "/thanks",
+          has: [{ type: "host" as const, value: host }],
+          destination: "/saiyo-rescue/thanks",
+        })),
 
         // ── takanagakensetu.com ────────────────────────────────────────
         // 「/ → コーポレートHP」「/takanaga → 外構LP」の2つの書き換えは

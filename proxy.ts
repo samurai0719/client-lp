@@ -47,6 +47,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL("/adofy", request.url));
   }
 
+  // ── 採用レスキュー（saiyo.adofy-site.com） ────────────────────────────
+  if (hostname === "saiyo.adofy-site.com" && pathname === "/") {
+    return NextResponse.rewrite(new URL("/saiyo-rescue", request.url));
+  }
+
   // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）
   if (isAuthBypassEnabled()) {
     if (pathname === "/admin/login") {

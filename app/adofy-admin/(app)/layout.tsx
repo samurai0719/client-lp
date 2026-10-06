@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdofyAccess, isAdofyAccessConfigured } from "@/lib/auth/adofyCheck";
+import { isAuthBypassEnabled } from "@/lib/auth/bypass";
 
 /*
   adofy専用の管理画面。
@@ -19,8 +20,8 @@ export default async function AdofyAdminLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // 未ログインならログイン画面へ
-  if (!user) redirect("/adofy-admin/login");
+  // 未ログインならログイン画面へ（ローカル / Preview の認証バイパス時のみ素通り。Productionでは常に無効）
+  if (!user && !isAuthBypassEnabled()) redirect("/adofy-admin/login");
 
   const access = await requireAdofyAccess(supabase);
 
@@ -36,7 +37,7 @@ export default async function AdofyAdminLayout({
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
             現在ログイン中のアカウント
             <br />
-            <span className="font-bold text-slate-900">{user.email}</span>
+            <span className="font-bold text-slate-900">{user?.email}</span>
             <br />
             には adofy 管理画面の権限が付いていません。
           </p>
