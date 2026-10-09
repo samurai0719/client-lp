@@ -258,7 +258,33 @@ function extractSiteTitle(html: string): string | null {
 
 /* ── 本体 ─────────────────────────────────────────────────────────── */
 
+/**
+ * 登録されているURLで開けない場合に試す別の形。
+ * 例：https://www.example.jp/ の証明書が www 無しにしか対応していない／https 非対応 など、
+ * 中小の運送会社のサイトでよくある設定ミスを吸収する。
+ */
+function urlVariants(websiteUrl: string): string[] {
+  const u = new URL(websiteUrl);
+  const hosts = u.hostname.startsWith("www.") ? [u.hostname, u.hostname.slice(4)] : [u.hostname, `www.${u.hostname}`];
+  const out: string[] = [];
+  for (const proto of [u.protocol, u.protocol === "https:" ? "http:" : "https:"]) {
+    for (const h of hosts) out.push(`${proto}//${h}${u.pathname}${u.search}`);
+  }
+  return [...new Set(out)];
+}
+
 export async function crawlCompanySite(websiteUrl: string): Promise<CrawlResult> {
+  let last: CrawlResult | null = null;
+  for (const url of urlVariants(websiteUrl)) {
+    const r = await crawlOnce(url);
+    // 開けた（またはrobots.txtで禁止されていた）ら、それを結果にする。接続できない場合だけ別の形を試す
+    if (r.status !== "failed" || /^HTTP \d/.test(r.error ?? "")) return r;
+    last = r;
+  }
+  return last!;
+}
+
+async function crawlOnce(websiteUrl: string): Promise<CrawlResult> {
   const result: CrawlResult = {
     status: "checked",
     finalUrl: null,
