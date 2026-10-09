@@ -12,7 +12,7 @@ export default async function HpSearchPage() {
   const [waiting, registered, matched, mismatch, none] = await Promise.all([
     c((q) => q.is("website_url", null).is("email", null).eq("crawl_status", "no_website").is("website_source", null)),
     c((q) => q.eq("website_source", "chatgpt")),
-    c((q) => q.eq("website_source", "chatgpt").eq("email_status", "found")),
+    c((q) => q.in("website_source", ["chatgpt", "chatgpt_none"]).eq("email_status", "found")),
     c((q) => q.eq("website_source", "chatgpt_mismatch")),
     c((q) => q.eq("website_source", "chatgpt_none")),
   ]);
@@ -22,8 +22,8 @@ export default async function HpSearchPage() {
       <h1 className="mb-1 text-xl font-bold text-slate-900">HP探し（ChatGPT・手動）</h1>
       <p className="mb-4 text-sm leading-relaxed text-slate-600">
         HPが分からない会社を30社ずつ表示します。指示文ごとコピーしてChatGPTに貼り付け、返ってきた答えをここに貼り付けてください。
-        登録したURLは自動でHPを開き、<b>HP上に社名か電話番号があるときだけ</b>採用します（ChatGPTが別の会社のHPを答えることがあるため）。
-        その後、HPに公開されている窓口メールアドレスを自動で探します。
+        メールアドレスは<b>掲載ページを開いて実際に書かれているかを確認</b>してから登録し、目視確認で「送信OK」にするまで送りません。
+        公式HPは<b>HP上に社名か電話番号があるときだけ</b>採用し、その後HPに公開されている窓口メールアドレスも自動で探します。
       </p>
       <div className="mb-4 grid grid-cols-2 gap-2 text-center text-xs sm:grid-cols-5">
         {[

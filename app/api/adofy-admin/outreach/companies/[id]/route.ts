@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { authed, bad, str, UUID } from "@/lib/outreach/api";
-import { TABLES } from "@/lib/outreach/constants";
+import { CHATGPT_BLOCK_REASON, TABLES } from "@/lib/outreach/constants";
 import type { CompanyRow } from "@/lib/outreach/companies";
 import { enrichCompany } from "@/lib/outreach/enrich";
 import { markReplied, markUnsubscribed } from "@/lib/outreach/events";
@@ -54,6 +54,11 @@ export async function PATCH(req: Request, { params }: Params) {
     if (!["approved", "excluded", "pending"].includes(String(b.review))) return bad("値が不正です");
     patch.review_status = b.review;
     patch.reviewed_at = b.review === "pending" ? null : now;
+    // ChatGPT 経由のアドレスは、目視確認して「送信OK」にした時点で送信停止を解除する
+    if (b.review === "approved" && company.send_blocked_reason === CHATGPT_BLOCK_REASON) {
+      patch.send_blocked = false;
+      patch.send_blocked_reason = null;
+    }
   }
   if ("send_blocked" in b) {
     patch.send_blocked = Boolean(b.send_blocked);

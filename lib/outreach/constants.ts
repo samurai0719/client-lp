@@ -113,3 +113,6 @@ export const SUPPRESSION_REASON_LABEL: Record<string, string> = {
 };
 
 export const TEST_BATCH_SIZE = 100;
+
+/** ChatGPT 経由で登録したアドレスの送信停止理由（送信OKにすると解除される） */
+export const CHATGPT_BLOCK_REASON = "ChatGPT経由のアドレス（掲載ページを確認して送信OKにしてください）";

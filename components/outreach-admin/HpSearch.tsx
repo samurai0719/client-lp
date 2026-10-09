@@ -9,13 +9,21 @@ type Row = { id: string; key: string; name: string; address: string };
 
 function buildPrompt(rows: Row[]): string {
   return [
-    "以下の会社の「公式ホームページ」のURLを、Web検索で1社ずつ調べてください。",
+    "以下の運送会社について、Web検索で1社ずつ調べてください。",
+    "",
+    "調べること：",
+    "1. 公式ホームページのURL",
+    "2. 会社の問い合わせ用・採用用のメールアドレス（info@ / recruit@ / soumu@ など会社の窓口のもの）",
+    "3. そのメールアドレスが実際に書かれているページのURL",
     "",
     "ルール：",
-    "・会社名と所在地が一致する、その会社自身の公式サイトだけを答える",
-    "・Facebook・Instagram などのSNS、求人サイト、地図サイト、企業データベースのサイトは不可",
-    "・見つからない、または自信がない場合は「なし」と書く（推測で答えない）",
-    "・出力は「番号,URL」の形式で1行に1社。説明や前置きは不要",
+    "・会社名と所在地が一致する会社だけを答える（同名の別会社に注意）",
+    "・メールアドレスは、公式サイト、またはその会社自身が掲載している求人票・会社紹介ページなど、実際にページに書かれているものだけ",
+    "・メールアドレスを推測して作らない。担当者個人の名前のアドレスは除外",
+    "・「営業メールお断り」等の記載があるページのアドレスは除外",
+    "・公式HPがSNS・求人サイト・地図サイトしかない場合、公式HP欄は「なし」",
+    "・見つからない、または自信がない項目は「なし」と書く",
+    "・出力は「番号,公式HP,メールアドレス,メールが書かれているページURL」の形式で1行に1社。説明や前置きは不要",
     "",
     "番号,会社名,所在地",
     ...rows.map((r) => `${r.key},${r.name},${r.address}`),
@@ -31,6 +39,7 @@ export default function HpSearch() {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [rejected, setRejected] = useState<string[]>([]);
 
   async function load() {
     setBusy(true);
@@ -58,12 +67,19 @@ export default function HpSearch() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ids: rows.map((r) => r.id), text: answer }),
     });
-    const j = (await res.json().catch(() => ({}))) as { registered?: number; notFound?: number; error?: string };
+    const j = (await res.json().catch(() => ({}))) as {
+      hpRegistered?: number;
+      emailAdded?: number;
+      rejected?: string[];
+      notFound?: number;
+      error?: string;
+    };
     setBusy(false);
     if (!res.ok) return setMsg({ ok: false, text: j.error ?? "登録に失敗しました" });
+    setRejected(j.rejected ?? []);
     setMsg({
       ok: true,
-      text: `URLを${j.registered}社登録しました（見つからず ${j.notFound}社）。HPの確認とメール取得は自動で進みます。続けて次の30社を表示できます。`,
+      text: `メールアドレス ${j.emailAdded}件を登録（掲載ページで確認済み）・公式HP ${j.hpRegistered}件を登録・見つからず ${j.notFound}社。登録したアドレスは「確認待ち」で掲載ページを見て「送信OK」にしてください。`,
     });
     setRows([]);
     setAnswer("");
@@ -108,7 +124,7 @@ export default function HpSearch() {
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               rows={10}
-              placeholder={"1200001001422,https://www.example-unso.co.jp/\n1200001001892,なし"}
+              placeholder={"1200001001422,https://www.example-unso.co.jp/,info@example-unso.co.jp,https://www.example-unso.co.jp/company/\n1200001001892,なし,なし,なし"}
               className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-base sm:text-sm"
             />
             <button
@@ -119,11 +135,22 @@ export default function HpSearch() {
             >
               {busy ? "登録中…" : "登録する"}
             </button>
-            <p className="mt-1 text-xs text-slate-500">答えに含まれなかった会社・「なし」の会社は「見つからず」になり、次からは表示されません。</p>
+            <p className="mt-1 text-xs text-slate-500">
+              メールアドレスは、掲載ページを開いて本当に書かれているか・「営業メールお断り」がないかを確認してから登録します（1分ほどかかります）。
+              答えに含まれなかった会社・「なし」の会社は「見つからず」になり、次からは表示されません。
+            </p>
           </section>
         </>
       )}
       {msg && <p className={`rounded-lg p-3 text-sm font-bold ${msg.ok ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-700"}`}>{msg.text}</p>}
+      {rejected.length > 0 && (
+        <div className="rounded-lg bg-amber-50 p-3 text-xs text-amber-900">
+          <p className="font-bold">登録しなかったメールアドレス（{rejected.length}件）</p>
+          <ul className="mt-1 list-disc space-y-0.5 pl-5">
+            {rejected.map((r) => <li key={r}>{r}</li>)}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

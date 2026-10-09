@@ -395,3 +395,26 @@ async function crawlOnce(websiteUrl: string, expect?: ExpectedCompany): Promise<
     return { ...result, status: "failed", error: msg.slice(0, 200) };
   }
 }
+
+/**
+ * ChatGPT 等が「このページに載っている」と答えたメールアドレスを、実際にそのページを開いて確かめる。
+ * ・ページに本当にそのアドレスが書かれているか（AIの思い違い・作り話を防ぐ）
+ * ・同じページに「営業メールお断り」等の表示がないか
+ */
+export async function verifyEmailOnPage(
+  email: string,
+  pageUrl: string
+): Promise<{ ok: true; finalUrl: string; refusal: string | null } | { ok: false; reason: string }> {
+  try {
+    const u = new URL(pageUrl);
+    const robots = await loadRobots(u.origin);
+    if (!robotsAllows(robots, u)) return { ok: false, reason: "掲載ページが robots.txt でクロール禁止" };
+    const page = await safeFetch(pageUrl);
+    if (page.status >= 400) return { ok: false, reason: `掲載ページを開けません（HTTP ${page.status}）` };
+    const found = extractEmails(page.body).map((e) => e.trim().toLowerCase());
+    if (!found.includes(email.toLowerCase())) return { ok: false, reason: "掲載ページにそのアドレスが見当たりません" };
+    return { ok: true, finalUrl: page.url, refusal: detectRefusal(htmlToText(page.body)) };
+  } catch (err) {
+    return { ok: false, reason: `掲載ページを確認できません（${err instanceof Error ? err.message : String(err)}）`.slice(0, 200) };
+  }
+}

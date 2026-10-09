@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Check, ExternalLink, FileText, X } from "lucide-react";
 import type { CompanyRow } from "@/lib/outreach/companies";
-import { ADMIN_BASE, SOURCE_LABEL } from "@/lib/outreach/constants";
+import { ADMIN_BASE, CHATGPT_BLOCK_REASON, SOURCE_LABEL } from "@/lib/outreach/constants";
 import { formatJst } from "@/lib/outreach/format";
 import { CrawlBadge, OutreachStatusBadge, ReviewBadge } from "./Badges";
 
@@ -116,6 +116,7 @@ export default function CompaniesTable({ rows, reviewMode }: { rows: CompanyRow[
                   <ReviewBadge status={done[r.id] ?? r.review_status} />
                   <OutreachStatusBadge status={r.outreach_status} />
                   {r.refusal_notice && <span className="rounded-md bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-700">送信お断り表示</span>}
+                  {r.send_blocked_reason === CHATGPT_BLOCK_REASON && <span className="rounded-md bg-violet-50 px-2 py-0.5 text-xs font-bold text-violet-700">ChatGPT経由</span>}
                 </div>
                 <Evidence r={r} />
               </div>
@@ -168,6 +169,7 @@ export default function CompaniesTable({ rows, reviewMode }: { rows: CompanyRow[
                     <ReviewBadge status={done[r.id] ?? r.review_status} />
                     <OutreachStatusBadge status={r.outreach_status} />
                     {r.refusal_notice && <span className="rounded-md bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-700">送信お断り表示</span>}
+                    {r.send_blocked_reason === CHATGPT_BLOCK_REASON && <span className="rounded-md bg-violet-50 px-2 py-0.5 text-xs font-bold text-violet-700">ChatGPT経由</span>}
                   </div>
                 </td>
                 <td className="whitespace-nowrap px-3 py-2.5 text-xs text-slate-500">{formatJst(r.last_sent_at)}</td>
