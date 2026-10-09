@@ -1,5 +1,6 @@
 import SourceJobForm from "@/components/outreach-admin/SourceJobForm";
 import JobActions from "@/components/outreach-admin/JobActions";
+import ResearchHpButton from "@/components/outreach-admin/ResearchHpButton";
 import { getOutreachDb } from "@/lib/outreach/access";
 import { JOB_STATUS_LABEL, SOURCE_LABEL, TABLES } from "@/lib/outreach/constants";
 import { formatJst } from "@/lib/outreach/format";
@@ -12,6 +13,11 @@ export default async function SourcesPage() {
   const { db } = (await getOutreachDb())!;
   const { data, error } = await db.from(TABLES.jobs).select("*").order("created_at", { ascending: false }).limit(30);
   const jobs = (data ?? []) as JobRow[];
+  const { count: noWebsite } = await db
+    .from(TABLES.companies)
+    .select("id", { count: "exact", head: true })
+    .eq("crawl_status", "no_website")
+    .is("email", null);
   const { count: pendingCrawl } = await db.from(TABLES.companies).select("id", { count: "exact", head: true }).eq("crawl_status", "pending");
 
   return (
@@ -40,6 +46,8 @@ export default async function SourcesPage() {
           url_list: true,
         }}
       />
+
+      <ResearchHpButton count={noWebsite ?? 0} enabled={sourceConfigured("google_places")} />
 
       <section className="mt-6">
         <h2 className="mb-2 flex flex-wrap items-center gap-2 font-bold text-slate-900">

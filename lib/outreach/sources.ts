@@ -7,7 +7,7 @@ import {
   prefectureCode,
 } from "./constants";
 import { insertCompany, type CompanyInput } from "./companies";
-import { hasCorpType, normalizeUrl, splitAddress } from "./normalize";
+import { domainKey, hasCorpType, nameKey, normalizeUrl, splitAddress } from "./normalize";
 
 /**
  * 営業先企業の自動取得。
@@ -218,6 +218,47 @@ async function stepPlaces(job: JobRow): Promise<{ items: CompanyInput[]; next: J
   else if (k + 1 < keywords.length) next = { p, k: k + 1, token: null };
   else next = { p: p + 1, k: 0, token: null };
   return { items, next: next.p! >= prefs.length ? null : next };
+}
+
+/**
+ * 会社名＋住所から公式HPのURLを探す（gBizINFO・CSVでHPが分からない会社用）。
+ * Google Places のテキスト検索で上位3件を見て、社名と所在地（都道府県・市区町村）が
+ * 一致するものだけを採用する。似た名前の別会社のHPを誤って登録しないため、一致しなければ null。
+ */
+export async function placesFindWebsite(c: {
+  company_name: string;
+  prefecture: string | null;
+  city: string | null;
+  address: string | null;
+}): Promise<string | null> {
+  const key = process.env.GOOGLE_PLACES_API_KEY;
+  if (!key) return null;
+  const where = c.address || [c.prefecture, c.city].filter(Boolean).join("");
+  const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": key,
+      "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.websiteUri",
+    },
+    body: JSON.stringify({ textQuery: `${c.company_name} ${where}`.trim(), languageCode: "ja", regionCode: "JP", pageSize: 3 }),
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!res.ok) throw new Error(`Google Places HTTP ${res.status}`);
+  const data = (await res.json()) as { places?: Place[] };
+  const want = nameKey(c.company_name);
+  for (const pl of data.places ?? []) {
+    const got = nameKey(pl.displayName?.text ?? "");
+    const addr = (pl.formattedAddress ?? "").replace(/\s/g, "");
+    const nameOk = want.length >= 2 && (got === want || got.startsWith(want) || want.startsWith(got));
+    const placeOk = (!c.prefecture || addr.includes(c.prefecture)) && (!c.city || addr.includes(c.city));
+    if (nameOk && placeOk && pl.websiteUri) {
+      const url = normalizeUrl(pl.websiteUri);
+      // Googleマップに登録されたHPが SNS や求人サイトの場合は公式HPとして使わない
+      if (url && domainKey(url)) return `${new URL(url).origin}/`;
+    }
+  }
+  return null;
 }
 
 /* ── URL一覧 ──────────────────────────────────────────────────────── */

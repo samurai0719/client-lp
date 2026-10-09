@@ -3,7 +3,7 @@ import { TABLES } from "./constants";
 import type { CompanyRow } from "./companies";
 import { crawlCompanySite } from "./crawler";
 import { domainKey, nameKey } from "./normalize";
-import { gbizLookupWebsite } from "./sources";
+import { gbizLookupWebsite, placesFindWebsite } from "./sources";
 import { addSuppression } from "./suppress";
 
 /**
@@ -21,6 +21,19 @@ export async function enrichCompany(db: SupabaseClient, c: CompanyRow): Promise<
   if (!website && c.source === "gbizinfo" && c.corporate_number && process.env.GBIZINFO_API_TOKEN) {
     try {
       website = await gbizLookupWebsite(c.corporate_number);
+    } catch (err) {
+      await db
+        .from(TABLES.companies)
+        .update({ crawl_error: (err instanceof Error ? err.message : String(err)).slice(0, 200), last_checked_at: now })
+        .eq("id", c.id);
+      return; // 次回に再試行
+    }
+  }
+
+  // それでもHPが分からなければ、会社名＋住所で Google Places から探す（APIキーがある場合のみ）
+  if (!website && process.env.GOOGLE_PLACES_API_KEY) {
+    try {
+      website = await placesFindWebsite(c);
     } catch (err) {
       await db
         .from(TABLES.companies)
