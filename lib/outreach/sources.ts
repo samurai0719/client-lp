@@ -68,7 +68,25 @@ type GbizHojin = {
   postal_code?: string | null;
 };
 
+/**
+ * gBizINFO への負荷を抑えるため、同じ実行環境からのリクエストは1秒に1回までに直列化する
+ * （利用申請の「利用予定」にもこの頻度で申告している）。
+ */
+const GBIZ_MIN_INTERVAL_MS = 1100;
+let gbizQueue: Promise<void> = Promise.resolve();
+let gbizLastAt = 0;
+function gbizThrottle(): Promise<void> {
+  const turn = gbizQueue.then(async () => {
+    const wait = gbizLastAt + GBIZ_MIN_INTERVAL_MS - Date.now();
+    if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+    gbizLastAt = Date.now();
+  });
+  gbizQueue = turn.catch(() => {});
+  return turn;
+}
+
 async function gbizGet(path: string, params: Record<string, string> = {}): Promise<{ "hojin-infos"?: GbizHojin[]; totalPage?: string }> {
+  await gbizThrottle();
   const token = process.env.GBIZINFO_API_TOKEN;
   if (!token) throw new Error("GBIZINFO_API_TOKEN が未設定です");
   const qs = new URLSearchParams(params).toString();
