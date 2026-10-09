@@ -44,6 +44,7 @@ export type CompanyRow = {
   phone: string | null;
   phone_key: string | null;
   website_url: string | null;
+  website_source: string | null;
   domain: string | null;
   email: string | null;
   email_source_url: string | null;

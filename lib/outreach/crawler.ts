@@ -1,7 +1,7 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
 import { detectRefusal, judgeEmail } from "./emailPolicy";
-import { hostOf } from "./normalize";
+import { hostOf, nameKey, phoneKey } from "./normalize";
 
 /**
  * 営業先企業の公式HPを確認し、公開されている法人向けメールアドレスを探す。
@@ -39,6 +39,8 @@ export type CrawlResult = {
   contactFormUrl: string | null;
   companyProfileUrl: string | null;
   refusal: string | null;
+  /** expect を渡したときだけ：HP上に会社名または電話番号があったか（別会社のHPを誤登録しないため） */
+  identityMatched: boolean | null;
   error: string | null;
 };
 
@@ -273,10 +275,13 @@ function urlVariants(websiteUrl: string): string[] {
   return [...new Set(out)];
 }
 
-export async function crawlCompanySite(websiteUrl: string): Promise<CrawlResult> {
+/** 本人確認に使う情報（ChatGPT など、確実でない経路で見つけたHPのときに渡す） */
+export type ExpectedCompany = { name: string; phone?: string | null };
+
+export async function crawlCompanySite(websiteUrl: string, expect?: ExpectedCompany): Promise<CrawlResult> {
   let last: CrawlResult | null = null;
   for (const url of urlVariants(websiteUrl)) {
-    const r = await crawlOnce(url);
+    const r = await crawlOnce(url, expect);
     // 開けた（またはrobots.txtで禁止されていた）ら、それを結果にする。接続できない場合だけ別の形を試す
     if (r.status !== "failed" || /^HTTP \d/.test(r.error ?? "")) return r;
     last = r;
@@ -284,7 +289,7 @@ export async function crawlCompanySite(websiteUrl: string): Promise<CrawlResult>
   return last!;
 }
 
-async function crawlOnce(websiteUrl: string): Promise<CrawlResult> {
+async function crawlOnce(websiteUrl: string, expect?: ExpectedCompany): Promise<CrawlResult> {
   const result: CrawlResult = {
     status: "checked",
     finalUrl: null,
@@ -295,6 +300,7 @@ async function crawlOnce(websiteUrl: string): Promise<CrawlResult> {
     contactFormUrl: null,
     companyProfileUrl: null,
     refusal: null,
+    identityMatched: null,
     error: null,
   };
 
@@ -348,6 +354,16 @@ async function crawlOnce(websiteUrl: string): Promise<CrawlResult> {
 
     let best: { email: string; priority: number; source: string } | null = null;
     const rejected = new Set<string>();
+    if (expect) {
+      // 法人格・空白・記号を除いた社名、または電話番号（数字のみ）がどこかのページにあれば本人とみなす
+      const wantName = nameKey(expect.name);
+      const wantPhone = phoneKey(expect.phone ?? null);
+      result.identityMatched = pages.some((pg) => {
+        const t = htmlToText(pg.html);
+        return (wantName.length >= 2 && nameKey(t).includes(wantName)) || (wantPhone !== null && t.replace(/\D/g, "").includes(wantPhone));
+      });
+    }
+
     for (const page of pages) {
       const text = htmlToText(page.html);
       const refusal = detectRefusal(text);

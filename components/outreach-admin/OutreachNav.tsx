@@ -8,6 +8,7 @@ const items = [
   { href: ADMIN_BASE, label: "ダッシュボード", exact: true },
   { href: `${ADMIN_BASE}/companies`, label: "営業先企業" },
   { href: `${ADMIN_BASE}/sources`, label: "営業先の取得" },
+  { href: `${ADMIN_BASE}/hp-search`, label: "HP探し" },
   { href: `${ADMIN_BASE}/campaigns`, label: "営業メール" },
   { href: `${ADMIN_BASE}/import`, label: "CSV登録" },
   { href: `${ADMIN_BASE}/settings`, label: "設定" },

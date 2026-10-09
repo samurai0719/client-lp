@@ -56,7 +56,24 @@ export async function enrichCompany(db: SupabaseClient, c: CompanyRow): Promise<
     return;
   }
 
-  const r = await crawlCompanySite(website);
+  // ChatGPT で調べたURLは、HP上に社名か電話番号があるときだけ使う（もっともらしい別サイトを答えることがあるため）
+  const needsIdentity = c.website_source === "chatgpt";
+  const r = await crawlCompanySite(website, needsIdentity ? { name: c.corporate_name || c.company_name, phone: c.phone } : undefined);
+  if (needsIdentity && r.status === "checked" && r.identityMatched === false) {
+    await db
+      .from(TABLES.companies)
+      .update({
+        website_url: null,
+        website_source: "chatgpt_mismatch",
+        crawl_status: "no_website",
+        email_status: c.email ? c.email_status : "none",
+        crawl_error: `ChatGPTのURL（${website}）に社名・電話番号が見つからないため不採用`,
+        last_checked_at: now,
+        updated_at: now,
+      })
+      .eq("id", c.id);
+    return;
+  }
   const patch: Record<string, unknown> = {
     website_url: website,
     crawl_status: r.status,
