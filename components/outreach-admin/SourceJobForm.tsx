@@ -4,9 +4,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DEFAULT_GBIZ_KEYWORDS, DEFAULT_PLACES_KEYWORDS, PREFECTURE_NAMES } from "@/lib/outreach/constants";
 
-type Source = "gbizinfo" | "google_places" | "url_list";
+type Source = "nta" | "gbizinfo" | "google_places" | "url_list";
 
 const SOURCES: { key: Source; label: string; desc: string; env?: string }[] = [
+  {
+    key: "nta",
+    label: "国税庁 法人番号（おすすめ・無料）",
+    desc: "登記されている全法人のデータから、社名に「運送・運輸・物流・急便」等を含む会社を都道府県ごとに抽出。いちばん網羅的です。HPは gBizINFO の法人詳細から補います。",
+  },
   {
     key: "gbizinfo",
     label: "gBizINFO（政府の法人データ）",
@@ -24,7 +29,7 @@ const SOURCES: { key: Source; label: string; desc: string; env?: string }[] = [
 
 export default function SourceJobForm({ configured }: { configured: Record<Source, boolean> }) {
   const router = useRouter();
-  const [source, setSource] = useState<Source>(configured.gbizinfo ? "gbizinfo" : configured.google_places ? "google_places" : "url_list");
+  const [source, setSource] = useState<Source>("nta");
   const [prefs, setPrefs] = useState<string[]>([]);
   const [keywords, setKeywords] = useState("");
   const [urls, setUrls] = useState("");
@@ -66,7 +71,7 @@ export default function SourceJobForm({ configured }: { configured: Record<Sourc
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4">
       <h2 className="mb-3 font-bold text-slate-900">新しく取得する</h2>
-      <div className="grid gap-2 sm:grid-cols-3">
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
         {SOURCES.map((s) => (
           <button
             key={s.key}
@@ -108,6 +113,7 @@ export default function SourceJobForm({ configured }: { configured: Record<Sourc
               ))}
             </div>
           </div>
+          {source !== "nta" && (
           <label className="mt-4 block text-sm font-bold text-slate-700">
             検索キーワード（空欄なら既定）
             <input
@@ -117,6 +123,7 @@ export default function SourceJobForm({ configured }: { configured: Record<Sourc
               className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-base font-normal sm:text-sm"
             />
           </label>
+          )}
         </>
       ) : (
         <label className="mt-4 block text-sm font-bold text-slate-700">

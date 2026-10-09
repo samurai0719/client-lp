@@ -8,6 +8,7 @@ import {
 } from "./constants";
 import { insertCompany, type CompanyInput } from "./companies";
 import { domainKey, hasCorpType, nameKey, normalizeUrl, splitAddress } from "./normalize";
+import { fetchNtaTransportCompanies, type NtaCompany } from "./nta";
 
 /**
  * 営業先企業の自動取得。
@@ -17,12 +18,13 @@ import { domainKey, hasCorpType, nameKey, normalizeUrl, splitAddress } from "./n
  *   google_places  … Google Places API (Text Search) で「運送会社 ○○県」等を検索。
  *                    会社名・住所・電話・公式HPが取れる。
  *   url_list       … 管理者が貼り付けた公式HPのURL一覧を登録する。
+ *   nta            … 国税庁 法人番号公表サイトの全件データ（登記されている全法人）から社名で抽出。無料・登録不要。
  *
  * サーバーレスの実行時間に収まるよう、1回の呼び出しでは「1ページ分」だけ進め、
  * 進捗（cursor）をDBに保存する。cron や管理画面から繰り返し呼ぶと最後まで進む。
  */
 
-export type JobSource = "gbizinfo" | "google_places" | "url_list";
+export type JobSource = "nta" | "gbizinfo" | "google_places" | "url_list";
 
 export type JobParams = {
   prefectures?: string[];
@@ -36,7 +38,7 @@ export type JobRow = {
   id: string;
   source: JobSource;
   params: JobParams;
-  cursor: { p?: number; k?: number; page?: number; token?: string | null; i?: number };
+  cursor: { p?: number; k?: number; page?: number; token?: string | null; i?: number; pending?: NtaCompany[] | null };
   status: string;
   found_count: number;
   inserted_count: number;
@@ -49,6 +51,7 @@ export type JobRow = {
 };
 
 export function sourceConfigured(source: JobSource): boolean {
+  if (source === "nta") return true;
   if (source === "gbizinfo") return Boolean(process.env.GBIZINFO_API_TOKEN);
   if (source === "google_places") return Boolean(process.env.GOOGLE_PLACES_API_KEY);
   return true;
@@ -261,6 +264,42 @@ export async function placesFindWebsite(c: {
   return null;
 }
 
+/* ── 国税庁 法人番号公表サイト（全件データ） ─────────────────────────── */
+
+/** 1回の呼び出しで登録する件数（重複確認つきで1件ずつ登録するため、時間内に収まる数にする） */
+const NTA_INSERT_BATCH = 80;
+
+/**
+ * 1回目：都道府県のファイルをダウンロードして運送会社を抜き出し、cursor.pending に保存
+ * 2回目以降：pending から少しずつ登録 → 空になったら次の都道府県へ
+ */
+async function stepNta(job: JobRow): Promise<{ items: CompanyInput[]; next: JobRow["cursor"] | null; found: number }> {
+  const prefs = job.params.prefectures?.length ? job.params.prefectures : PREFECTURE_NAMES;
+  const p = job.cursor.p ?? 0;
+  if (p >= prefs.length) return { items: [], next: null, found: 0 };
+
+  if (!job.cursor.pending) {
+    const list = await fetchNtaTransportCompanies(prefs[p]);
+    return { items: [], next: { p, pending: list }, found: list.length };
+  }
+
+  const batch = job.cursor.pending.slice(0, NTA_INSERT_BATCH);
+  const rest = job.cursor.pending.slice(NTA_INSERT_BATCH);
+  const items: CompanyInput[] = batch.map((c) => ({
+    company_name: c.name,
+    corporate_name: c.name,
+    corporate_number: c.n,
+    prefecture: c.pref || prefs[p],
+    city: c.city || null,
+    address: `${c.pref}${c.city}${c.street}`,
+    source: "nta",
+    source_ref: c.n,
+    source_job_id: job.id,
+  }));
+  const next = rest.length > 0 ? { p, pending: rest } : p + 1 < prefs.length ? { p: p + 1, pending: null } : null;
+  return { items, next, found: 0 };
+}
+
 /* ── URL一覧 ──────────────────────────────────────────────────────── */
 
 const URL_BATCH = 50;
@@ -300,12 +339,14 @@ export async function runJobStep(db: SupabaseClient, job: JobRow): Promise<JobRo
   const current = locked as JobRow;
 
   try {
-    const step =
-      current.source === "gbizinfo"
-        ? await stepGbiz(current)
-        : current.source === "google_places"
-          ? await stepPlaces(current)
-          : await stepUrlList(current);
+    const step: { items: CompanyInput[]; next: JobRow["cursor"] | null; found?: number } =
+      current.source === "nta"
+        ? await stepNta(current)
+        : current.source === "gbizinfo"
+          ? await stepGbiz(current)
+          : current.source === "google_places"
+            ? await stepPlaces(current)
+            : await stepUrlList(current);
 
     let inserted = 0;
     let duplicate = 0;
@@ -313,6 +354,8 @@ export async function runJobStep(db: SupabaseClient, job: JobRow): Promise<JobRo
       const r = await insertCompany(db, item);
       if (r.result === "inserted") inserted++;
       else if (r.result === "duplicate") duplicate++;
+      // 登録できない（DBの設定不足など）まま進むと会社が取りこぼされるため、進捗を進めずに止める
+      else if (r.result === "error") throw new Error(`企業を登録できませんでした：${r.message}`);
     }
 
     const totalInserted = current.inserted_count + inserted;
@@ -320,7 +363,8 @@ export async function runJobStep(db: SupabaseClient, job: JobRow): Promise<JobRo
     const done = step.next === null || reachedMax;
     const patch = {
       cursor: step.next ?? current.cursor,
-      found_count: current.found_count + step.items.length,
+      // 国税庁データはダウンロード時に件数を数える（登録はその後の呼び出しで少しずつ）
+      found_count: current.found_count + (step.found ?? step.items.length),
       inserted_count: totalInserted,
       duplicate_count: current.duplicate_count + duplicate,
       status: done ? "completed" : "running",
@@ -333,7 +377,7 @@ export async function runJobStep(db: SupabaseClient, job: JobRow): Promise<JobRo
     return (data as JobRow) ?? { ...current, ...patch };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    const fatal = /未設定|HTTP 40[13]/.test(msg);
+    const fatal = /未設定|HTTP 40[13]|登録できませんでした/.test(msg);
     const patch = {
       status: fatal ? "failed" : "running",
       last_error: msg.slice(0, 300),

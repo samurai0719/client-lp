@@ -25,7 +25,7 @@ export type CompanyInput = {
   email_source_url?: string | null;
   contact_form_url?: string | null;
   company_profile_url?: string | null;
-  source: "gbizinfo" | "google_places" | "url_list" | "csv" | "manual";
+  source: "nta" | "gbizinfo" | "google_places" | "url_list" | "csv" | "manual";
   source_ref?: string | null;
   source_job_id?: string | null;
   notes?: string | null;
@@ -115,9 +115,9 @@ export function prepareCompany(input: CompanyInput) {
     notes: clean(input.notes, 2000),
     // メールが分かっていればHP確認を待たずに送信候補（確認待ち）にする
     email_status: email ? "found" : "unchecked",
-    // gBizINFO 由来は、検索結果にHPのURLが無くても法人詳細から取れることがあるため「未確認」にしておく
+    // gBizINFO・国税庁由来は、HPのURLが無くても gBizINFO の法人詳細から取れることがあるため「未確認」にしておく
     crawl_status:
-      website || (input.source === "gbizinfo" && input.corporate_number) ? "pending" : email ? "checked" : "no_website",
+      website || ((input.source === "gbizinfo" || input.source === "nta") && input.corporate_number) ? "pending" : email ? "checked" : "no_website",
   };
 }
 

@@ -41,6 +41,7 @@ export default async function SourcesPage() {
 
       <SourceJobForm
         configured={{
+          nta: true,
           gbizinfo: sourceConfigured("gbizinfo"),
           google_places: sourceConfigured("google_places"),
           url_list: true,

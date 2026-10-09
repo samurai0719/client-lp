@@ -40,6 +40,7 @@ export const DEFAULT_GBIZ_KEYWORDS = ["運送", "運輸", "物流", "急便", "�
 export const DEFAULT_PLACES_KEYWORDS = ["運送会社", "運輸会社", "物流会社"];
 
 export const SOURCE_LABEL: Record<string, string> = {
+  nta: "国税庁 法人番号",
   gbizinfo: "gBizINFO",
   google_places: "Google Places",
   url_list: "URL一覧",

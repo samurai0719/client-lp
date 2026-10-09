@@ -54,7 +54,7 @@ export async function runWorker(
   }
 
   if (stages.has("enrich") && Date.now() < deadline - 12_000) {
-    out.enriched = await enrichPending(db, { limit: 9, deadline: deadline - 10_000 });
+    out.enriched = await enrichPending(db, { limit: 15, deadline: deadline - 10_000 });
   }
 
   if (stages.has("links") && Date.now() - lastLinkSync > 10 * 60_000 && Date.now() < deadline - 5_000) {

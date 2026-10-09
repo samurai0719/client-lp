@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   if ("error" in a) return a.error;
   const b = a.body;
   const source = String(b.source ?? "") as JobSource;
-  if (!["gbizinfo", "google_places", "url_list"].includes(source)) return bad("取得元が不正です");
+  if (!["nta", "gbizinfo", "google_places", "url_list"].includes(source)) return bad("取得元が不正です");
   if (!sourceConfigured(source)) {
     return bad(source === "gbizinfo" ? "GBIZINFO_API_TOKEN が未設定です" : "GOOGLE_PLACES_API_KEY が未設定です");
   }

@@ -17,8 +17,8 @@ export async function enrichCompany(db: SupabaseClient, c: CompanyRow): Promise<
   const now = new Date().toISOString();
   let website = c.website_url;
 
-  // gBizINFO 由来でHP未登録なら、法人詳細からHPのURLを引く
-  if (!website && c.source === "gbizinfo" && c.corporate_number && process.env.GBIZINFO_API_TOKEN) {
+  // 法人番号が分かっていてHP未登録なら、gBizINFO の法人詳細からHPのURLを引く（無料）
+  if (!website && c.corporate_number && process.env.GBIZINFO_API_TOKEN) {
     try {
       website = await gbizLookupWebsite(c.corporate_number);
     } catch (err) {
