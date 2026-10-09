@@ -102,7 +102,9 @@ async function gbizGet(path: string, params: Record<string, string> = {}): Promi
 /** 法人番号から公式HPのURLを取得する（HP確認の段階で使う） */
 export async function gbizLookupWebsite(corporateNumber: string): Promise<string | null> {
   const data = await gbizGet(`/${encodeURIComponent(corporateNumber)}`);
-  return normalizeUrl(data["hojin-infos"]?.[0]?.company_url ?? null);
+  const url = normalizeUrl(data["hojin-infos"]?.[0]?.company_url ?? null);
+  // 「…/workplace.html#ikuji」のような下層ページが登録されていることがあるため、サイトのトップから確認する
+  return url ? `${new URL(url).origin}/` : null;
 }
 
 async function stepGbiz(job: JobRow): Promise<{ items: CompanyInput[]; next: JobRow["cursor"] | null }> {
