@@ -240,4 +240,4 @@ export const FAQ_PLAIN = FAQS.map((f) => ({
 
 export const FINAL_ZEROS = ["掲載しても0円。", "応募が来ても0円。", "面接しても0円。"] as const;
 
-export const REASSURE = ["登録・掲載・月額0円", "営業電話はしません", "採用できなければ0円"] as const;
+export const REASSURE = ["登録・掲載・月額0円", "ご登録後の営業電話なし", "採用できなければ0円"] as const;
