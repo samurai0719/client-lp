@@ -58,6 +58,16 @@ export async function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL("/driver/company", request.url));
   }
 
+  // ── ドラテク 営業メール管理 ────────────────────────────────────────
+  // /admin/outreach/* は adofy 管理画面（/adofy-admin/outreach/*）へ。
+  // 下の /admin 用ログインチェックより先に処理し、高長建設のログイン画面へ飛ばさない。
+  // （next.config.ts の redirects にも同じ設定があるが、評価順に依存しないようここでも処理する）
+  if (pathname === "/admin/outreach" || pathname.startsWith("/admin/outreach/")) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.replace(/^\/admin\/outreach/, "/adofy-admin/outreach");
+    return NextResponse.redirect(url, 307);
+  }
+
   // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）
   if (isAuthBypassEnabled()) {
     if (pathname === "/admin/login") {
@@ -112,7 +122,10 @@ export async function proxy(request: NextRequest) {
   const isAdofyAdmin = pathname.startsWith("/adofy-admin");
   if (isAdofyAdmin) {
     if (pathname !== "/adofy-admin/login" && !user) {
-      return NextResponse.redirect(new URL("/adofy-admin/login", request.url));
+      // ログイン後に元の画面（営業メール管理など）へ戻れるよう、行き先を渡す
+      const login = new URL("/adofy-admin/login", request.url);
+      if (pathname !== "/adofy-admin") login.searchParams.set("next", pathname);
+      return NextResponse.redirect(login);
     }
     return supabaseResponse;
   }

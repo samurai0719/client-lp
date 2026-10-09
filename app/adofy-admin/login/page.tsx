@@ -11,6 +11,13 @@ import { isSupabaseConfigured } from "@/lib/supabase/check";
   共用にすると adofy から入った人にも高長建設の名前が出てしまうため。
   認証基盤（Supabase Auth）は同じなので、アカウントは共通。
 */
+/** ログイン後の移動先。adofy 管理画面内のパスだけ許可する（外部サイトへの転送に使わせない） */
+function nextPath(): string {
+  if (typeof window === "undefined") return "/adofy-admin";
+  const next = new URLSearchParams(window.location.search).get("next") ?? "";
+  return /^\/adofy-admin(\/[\w\-/]*)?$/.test(next) ? next : "/adofy-admin";
+}
+
 export default function AdofyLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -25,7 +32,7 @@ export default function AdofyLoginPage() {
   async function handleLogin(e: FormEvent) {
     e.preventDefault();
     if (!supabaseReady) {
-      router.push("/adofy-admin");
+      router.push(nextPath());
       return;
     }
     setError("");
@@ -37,7 +44,7 @@ export default function AdofyLoginPage() {
       setError("メールアドレスまたはパスワードが正しくありません");
       return;
     }
-    router.push("/adofy-admin");
+    router.push(nextPath());
     router.refresh();
   }
 
