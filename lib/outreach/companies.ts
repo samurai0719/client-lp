@@ -115,7 +115,9 @@ export function prepareCompany(input: CompanyInput) {
     notes: clean(input.notes, 2000),
     // メールが分かっていればHP確認を待たずに送信候補（確認待ち）にする
     email_status: email ? "found" : "unchecked",
-    crawl_status: website ? "pending" : email ? "checked" : "no_website",
+    // gBizINFO 由来は、検索結果にHPのURLが無くても法人詳細から取れることがあるため「未確認」にしておく
+    crawl_status:
+      website || (input.source === "gbizinfo" && input.corporate_number) ? "pending" : email ? "checked" : "no_website",
   };
 }
 
