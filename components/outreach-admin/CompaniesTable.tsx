@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Check, ExternalLink, FileText, X } from "lucide-react";
 import type { CompanyRow } from "@/lib/outreach/companies";
-import { ADMIN_BASE, CHATGPT_BLOCK_REASON, SOURCE_LABEL } from "@/lib/outreach/constants";
+import { ADMIN_BASE, CHATGPT_BLOCK_REASON, PERSONAL_BLOCK_REASON, SOURCE_LABEL } from "@/lib/outreach/constants";
 import { formatJst } from "@/lib/outreach/format";
 import { CrawlBadge, OutreachStatusBadge, ReviewBadge } from "./Badges";
 
@@ -111,12 +111,14 @@ export default function CompaniesTable({ rows, reviewMode }: { rows: CompanyRow[
                   {[r.prefecture, r.city].filter(Boolean).join(" ") || "地域不明"}・{SOURCE_LABEL[r.source] ?? r.source}
                 </p>
                 <p className="mt-1 break-all text-sm text-slate-700">{r.email ?? <span className="text-slate-400">メールなし</span>}</p>
+                {r.phone && <p className="text-xs text-slate-500">TEL {r.phone}</p>}
                 <div className="mt-1.5 flex flex-wrap gap-1">
                   <CrawlBadge status={r.crawl_status} hasEmail={Boolean(r.email)} />
                   <ReviewBadge status={done[r.id] ?? r.review_status} />
                   <OutreachStatusBadge status={r.outreach_status} />
                   {r.refusal_notice && <span className="rounded-md bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-700">送信お断り表示</span>}
                   {r.send_blocked_reason === CHATGPT_BLOCK_REASON && <span className="rounded-md bg-violet-50 px-2 py-0.5 text-xs font-bold text-violet-700">ChatGPT経由</span>}
+                    {r.send_blocked_reason === PERSONAL_BLOCK_REASON && <span className="rounded-md bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-800">個人名・フリーメール</span>}
                 </div>
                 <Evidence r={r} />
               </div>
@@ -134,7 +136,7 @@ export default function CompaniesTable({ rows, reviewMode }: { rows: CompanyRow[
               {reviewMode && <th className="w-10 px-3 py-2" />}
               <th className="px-3 py-2">会社名</th>
               <th className="px-3 py-2">都道府県</th>
-              <th className="px-3 py-2">メールアドレス / HP</th>
+              <th className="px-3 py-2">メール / 電話 / HP</th>
               <th className="px-3 py-2">状態</th>
               <th className="px-3 py-2">最終送信</th>
               <th className="px-3 py-2">返信</th>
@@ -161,6 +163,7 @@ export default function CompaniesTable({ rows, reviewMode }: { rows: CompanyRow[
                 </td>
                 <td className="max-w-[22rem] px-3 py-2.5">
                   <span className="block break-all text-slate-800">{r.email ?? <span className="text-slate-400">メールなし</span>}</span>
+                  {r.phone && <span className="block text-xs text-slate-500">TEL {r.phone}</span>}
                   <Evidence r={r} />
                 </td>
                 <td className="px-3 py-2.5">
@@ -170,6 +173,7 @@ export default function CompaniesTable({ rows, reviewMode }: { rows: CompanyRow[
                     <OutreachStatusBadge status={r.outreach_status} />
                     {r.refusal_notice && <span className="rounded-md bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-700">送信お断り表示</span>}
                     {r.send_blocked_reason === CHATGPT_BLOCK_REASON && <span className="rounded-md bg-violet-50 px-2 py-0.5 text-xs font-bold text-violet-700">ChatGPT経由</span>}
+                    {r.send_blocked_reason === PERSONAL_BLOCK_REASON && <span className="rounded-md bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-800">個人名・フリーメール</span>}
                   </div>
                 </td>
                 <td className="whitespace-nowrap px-3 py-2.5 text-xs text-slate-500">{formatJst(r.last_sent_at)}</td>

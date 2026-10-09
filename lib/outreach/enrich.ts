@@ -1,8 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { TABLES } from "./constants";
+import { PERSONAL_BLOCK_REASON, TABLES } from "./constants";
 import type { CompanyRow } from "./companies";
 import { crawlCompanySite } from "./crawler";
-import { domainKey, nameKey } from "./normalize";
+import { domainKey, nameKey, phoneKey } from "./normalize";
 import { gbizLookupWebsite, placesFindWebsite } from "./sources";
 import { addSuppression } from "./suppress";
 
@@ -86,6 +86,7 @@ export async function enrichCompany(db: SupabaseClient, c: CompanyRow): Promise<
     if (d) patch.domain = d;
   }
   if (r.contactFormUrl && !c.contact_form_url) patch.contact_form_url = r.contactFormUrl;
+  if (r.phone && !c.phone) Object.assign(patch, await phonePatch(db, r.phone, c.id));
   if (r.companyProfileUrl && !c.company_profile_url) patch.company_profile_url = r.companyProfileUrl;
   if (r.siteTitle && PLACEHOLDER_NAME.test(c.company_name)) {
     patch.company_name = r.siteTitle;
@@ -103,6 +104,11 @@ export async function enrichCompany(db: SupabaseClient, c: CompanyRow): Promise<
       patch.email = r.email;
       patch.email_source_url = r.emailSourceUrl;
       patch.email_status = "found";
+      // 個人名・フリーメールは、目視確認して「送信OK」にするまで送らない
+      if (r.emailKind !== "role") {
+        patch.send_blocked = true;
+        patch.send_blocked_reason = PERSONAL_BLOCK_REASON;
+      }
     } else {
       patch.email_status = "none";
     }
@@ -126,6 +132,17 @@ export async function enrichCompany(db: SupabaseClient, c: CompanyRow): Promise<
 
   const email = (patch.email as string | undefined) ?? c.email;
   if (r.refusal && email) await addSuppression(db, email, "site_refusal", r.refusal);
+}
+
+/**
+ * 電話番号を登録するための差分。同じ番号の会社が既にあれば（グループ会社・同じ事務所など）登録しない。
+ * 電話番号は重複判定に使っているため、別の会社と同じ番号を入れると保存に失敗する。
+ */
+export async function phonePatch(db: SupabaseClient, phone: string, selfId: string): Promise<Record<string, unknown>> {
+  const key = phoneKey(phone);
+  if (!key) return {};
+  const { data } = await db.from(TABLES.companies).select("id").eq("phone_key", key).neq("id", selfId).limit(1);
+  return data && data.length > 0 ? {} : { phone, phone_key: key };
 }
 
 /** 未確認の会社を limit 件、時間内で処理する */

@@ -18,6 +18,7 @@ const FILTERS = [
   { key: "has_email", label: "メールあり" },
   { key: "no_email", label: "メールなし" },
   { key: "contact_form", label: "問い合わせフォームのみ" },
+  { key: "phone_only", label: "電話番号のみ" },
   { key: "unchecked", label: "未確認（HP）" },
   { key: "checked", label: "確認済み（HP）" },
   { key: "approved", label: "送信OK" },
@@ -40,6 +41,7 @@ function applyFilter(q: any, f: string) {
     case "has_email": return q.eq("email_status", "found");
     case "no_email": return q.eq("email_status", "none");
     case "contact_form": return q.neq("email_status", "found").not("contact_form_url", "is", null);
+    case "phone_only": return q.neq("email_status", "found").not("phone", "is", null);
     case "unchecked": return q.eq("crawl_status", "pending");
     case "checked": return q.neq("crawl_status", "pending");
     case "approved": return q.eq("review_status", "approved");
@@ -73,7 +75,7 @@ export default async function CompaniesPage({
   if (q) {
     const like = pgQuote(`%${escapeLike(q)}%`);
     query = query.or(
-      ["company_name", "corporate_name", "email", "prefecture", "city", "address", "website_url"].map((c) => `${c}.ilike.${like}`).join(",")
+      ["company_name", "corporate_name", "email", "phone", "prefecture", "city", "address", "website_url"].map((c) => `${c}.ilike.${like}`).join(",")
     );
   }
   // 確認待ちは取得の古い順（最初に取得した企業から確認する）、それ以外は新しい順
@@ -117,7 +119,7 @@ export default async function CompaniesPage({
           <input
             name="q"
             defaultValue={q}
-            placeholder="会社名・メール・地域で検索"
+            placeholder="会社名・メール・電話・地域で検索"
             className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-base sm:text-sm"
           />
         </div>

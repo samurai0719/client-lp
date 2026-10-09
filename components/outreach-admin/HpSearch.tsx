@@ -13,17 +13,18 @@ function buildPrompt(rows: Row[]): string {
     "",
     "調べること：",
     "1. 公式ホームページのURL",
-    "2. 会社の問い合わせ用・採用用のメールアドレス（info@ / recruit@ / soumu@ など会社の窓口のもの）",
+    "2. 会社の問い合わせ用・採用用のメールアドレス（info@ / recruit@ など会社の窓口を優先。無ければ担当者名やGmail等のアドレスでも可）",
     "3. そのメールアドレスが実際に書かれているページのURL",
+    "4. 会社の代表電話番号（FAX番号は不可）",
     "",
     "ルール：",
     "・会社名と所在地が一致する会社だけを答える（同名の別会社に注意）",
     "・メールアドレスは、公式サイト、またはその会社自身が掲載している求人票・会社紹介ページなど、実際にページに書かれているものだけ",
-    "・メールアドレスを推測して作らない。担当者個人の名前のアドレスは除外",
+    "・メールアドレスを推測して作らない（実際にページに書かれているものだけ）",
     "・「営業メールお断り」等の記載があるページのアドレスは除外",
     "・公式HPがSNS・求人サイト・地図サイトしかない場合、公式HP欄は「なし」",
     "・見つからない、または自信がない項目は「なし」と書く",
-    "・出力は「番号,公式HP,メールアドレス,メールが書かれているページURL」の形式で1行に1社。説明や前置きは不要",
+    "・出力は「番号,公式HP,メールアドレス,メールが書かれているページURL,電話番号」の形式で1行に1社。説明や前置きは不要",
     "",
     "番号,会社名,所在地",
     ...rows.map((r) => `${r.key},${r.name},${r.address}`),
@@ -70,6 +71,7 @@ export default function HpSearch() {
     const j = (await res.json().catch(() => ({}))) as {
       hpRegistered?: number;
       emailAdded?: number;
+      phoneAdded?: number;
       rejected?: string[];
       notFound?: number;
       error?: string;
@@ -79,7 +81,7 @@ export default function HpSearch() {
     setRejected(j.rejected ?? []);
     setMsg({
       ok: true,
-      text: `メールアドレス ${j.emailAdded}件を登録（掲載ページで確認済み）・公式HP ${j.hpRegistered}件を登録・見つからず ${j.notFound}社。登録したアドレスは「確認待ち」で掲載ページを見て「送信OK」にしてください。`,
+      text: `メールアドレス ${j.emailAdded}件を登録（掲載ページで確認済み）・公式HP ${j.hpRegistered}件・電話番号 ${j.phoneAdded}件を登録・見つからず ${j.notFound}社。登録したアドレスは「確認待ち」で掲載ページを見て「送信OK」にしてください。`,
     });
     setRows([]);
     setAnswer("");
@@ -124,7 +126,7 @@ export default function HpSearch() {
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               rows={10}
-              placeholder={"1200001001422,https://www.example-unso.co.jp/,info@example-unso.co.jp,https://www.example-unso.co.jp/company/\n1200001001892,なし,なし,なし"}
+              placeholder={"1200001001422,https://www.example-unso.co.jp/,info@example-unso.co.jp,https://www.example-unso.co.jp/company/,058-123-4567\n1200001001892,なし,なし,なし,なし"}
               className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-base sm:text-sm"
             />
             <button

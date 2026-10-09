@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { authed, bad, UUID } from "@/lib/outreach/api";
-import { CHATGPT_BLOCK_REASON, TABLES } from "@/lib/outreach/constants";
+import { REVIEW_BLOCK_REASONS, TABLES } from "@/lib/outreach/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -18,13 +18,13 @@ export async function POST(req: Request) {
     .update({ review_status: review, reviewed_at: review === "pending" ? null : now, updated_at: now })
     .in("id", ids);
   if (error) return bad("更新に失敗しました", 500);
-  // ChatGPT 経由のアドレスは、目視確認して「送信OK」にした時点で送信停止を解除する
+  // ChatGPT 経由・個人名・フリーメールのアドレスは、目視確認して「送信OK」にした時点で送信停止を解除する
   if (review === "approved") {
     await a.db
       .from(TABLES.companies)
       .update({ send_blocked: false, send_blocked_reason: null })
       .in("id", ids)
-      .eq("send_blocked_reason", CHATGPT_BLOCK_REASON);
+      .in("send_blocked_reason", REVIEW_BLOCK_REASONS);
   }
   return NextResponse.json({ ok: true, count: ids.length });
 }

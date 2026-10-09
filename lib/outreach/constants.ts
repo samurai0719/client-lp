@@ -116,3 +116,9 @@ export const TEST_BATCH_SIZE = 100;
 
 /** ChatGPT 経由で登録したアドレスの送信停止理由（送信OKにすると解除される） */
 export const CHATGPT_BLOCK_REASON = "ChatGPT経由のアドレス（掲載ページを確認して送信OKにしてください）";
+
+/** 個人名・フリーメールのアドレスの送信停止理由（送信OKにすると解除される） */
+export const PERSONAL_BLOCK_REASON = "個人名・フリーメールのアドレス（掲載ページを確認して送信OKにしてください）";
+
+/** 目視確認して「送信OK」にしたら解除する送信停止理由 */
+export const REVIEW_BLOCK_REASONS = [CHATGPT_BLOCK_REASON, PERSONAL_BLOCK_REASON];

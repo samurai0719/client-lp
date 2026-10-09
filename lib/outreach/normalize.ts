@@ -121,3 +121,24 @@ export function escapeLike(s: string): string {
 export function pgQuote(s: string): string {
   return `"${s.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
 }
+
+/**
+ * 文章から電話番号を探す（固定電話・携帯・フリーダイヤル）。
+ * 「FAX」の直後にある番号は除く。見つかった順に、表示用の形と重複判定キーを返す。
+ */
+export function extractPhones(text: string): { display: string; key: string }[] {
+  const t = toHalfWidth(text).replace(/[‐－―−ー]/g, "-").replace(/[（]/g, "(").replace(/[）]/g, ")");
+  const out: { display: string; key: string }[] = [];
+  const re = /(?<![\d-])(0\d{1,4})[-()\s]{0,2}(\d{1,4})[-()\s]{0,2}(\d{3,4})(?![\d-])/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(t))) {
+    const before = t.slice(Math.max(0, m.index - 8), m.index);
+    if (/fax|ファックス|ファクス/i.test(before)) continue;
+    const key = phoneKey(m[0]);
+    if (!key || out.some((o) => o.key === key)) continue;
+    // 区切りが書かれていない番号は、市外局番の桁数が分からないので数字のまま表示する
+    const display = /[-()\s]/.test(m[0]) ? `${m[1]}-${m[2]}-${m[3]}` : key;
+    out.push({ display, key });
+  }
+  return out;
+}

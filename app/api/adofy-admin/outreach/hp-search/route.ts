@@ -3,8 +3,8 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { authed, bad, str, UUID } from "@/lib/outreach/api";
 import { CHATGPT_BLOCK_REASON, PREFECTURE_NAMES, TABLES } from "@/lib/outreach/constants";
 import { verifyEmailOnPage } from "@/lib/outreach/crawler";
-import { looksLikePersonalAddress } from "@/lib/outreach/emailPolicy";
-import { domainKey, isSharedHost, normalizeEmail, normalizeUrl } from "@/lib/outreach/normalize";
+import { phonePatch } from "@/lib/outreach/enrich";
+import { domainKey, extractPhones, normalizeEmail, normalizeUrl } from "@/lib/outreach/normalize";
 import { addSuppression, isSuppressed } from "@/lib/outreach/suppress";
 
 export const runtime = "nodejs";
@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 /**
  * ChatGPT（手動）でHPを探すための書き出し・取り込み。
  *   GET  … HPが分からない会社を最大30社返す（まだ ChatGPT で調べていない会社だけ）
- *   POST … ChatGPT の回答「番号,公式HP,メール,掲載ページ」を貼り付けて登録。
+ *   POST … ChatGPT の回答「番号,公式HP,メール,掲載ページ,電話番号」を貼り付けて登録。
  *          HP … 自動処理でHPを開き、社名か電話番号がHP上にあるときだけ採用する（enrich.ts）
  *          メール … 掲載ページを開いて本当に書かれているか・送信お断りの表示がないかを確認してから登録。
  *                   公式HP以外に載っていたアドレスもあるため、目視確認して「送信OK」にするまで送らない
@@ -61,14 +61,14 @@ export async function POST(req: Request) {
   const text = str(a.body.text, 30000);
   if (ids.length === 0) return bad("先に「会社を表示」で対象の会社を表示してください");
 
-  const { data } = await a.db.from(TABLES.companies).select("id,corporate_number,company_name").in("id", ids);
-  const byKey = new Map<string, { id: string; name: string }>();
-  for (const r of (data ?? []) as { id: string; corporate_number: string | null; company_name: string }[]) {
-    byKey.set(r.corporate_number || r.id.slice(0, 8), { id: r.id, name: r.company_name });
+  const { data } = await a.db.from(TABLES.companies).select("id,corporate_number,company_name,phone").in("id", ids);
+  const byKey = new Map<string, { id: string; name: string; phone: string | null }>();
+  for (const r of (data ?? []) as { id: string; corporate_number: string | null; company_name: string; phone: string | null }[]) {
+    byKey.set(r.corporate_number || r.id.slice(0, 8), { id: r.id, name: r.company_name, phone: r.phone });
   }
 
   // 1行1社：「番号,公式HP,メールアドレス,メールが載っているページ」。表形式・空白区切りなどの揺れも吸収する
-  const answers = new Map<string, { hp: string | null; email: string | null; page: string | null }>();
+  const answers = new Map<string, { hp: string | null; email: string | null; page: string | null; phone: string | null }>();
   for (const line of text.split(/\r?\n/)) {
     const key = [...byKey.keys()].find((k) => line.includes(k));
     if (!key) continue;
@@ -81,15 +81,21 @@ export async function POST(req: Request) {
     const hpRaw = before[0] ?? null;
     const pageRaw = after[0] ?? (before.length > 1 ? before[1] : null) ?? (email ? hpRaw : null);
     const hp = normalizeUrl(hpRaw ?? "");
+    // 電話番号：番号（法人番号）・URL・メールを取り除いた残りから探す
+    let rest = line.split(key).join(" ");
+    for (const u of urls) rest = rest.split(u).join(" ");
+    if (email) rest = rest.toLowerCase().split(email).join(" ");
+    const phone = extractPhones(rest)[0]?.display ?? null;
     answers.set(key, {
       hp: hp && domainKey(hp) ? `${new URL(hp).origin}/` : null,
       email,
       page: normalizeUrl(pageRaw ?? ""),
+      phone,
     });
   }
 
   // メールアドレスは、掲載ページを実際に開いて確かめてから登録する（同時に数件ずつ）
-  type Outcome = { hp: boolean; email: "added" | "rejected" | "none"; reason?: string; name: string };
+  type Outcome = { hp: boolean; phone: boolean; email: "added" | "rejected" | "none"; reason?: string; name: string };
   const outcomes: Outcome[] = [];
   const entries = [...byKey.entries()];
   const now = new Date().toISOString();
@@ -99,7 +105,16 @@ export async function POST(req: Request) {
       entries.slice(i, i + CONCURRENCY).map(async ([key, co]) => {
         const ans = answers.get(key);
         const patch: Record<string, unknown> = { updated_at: now };
-        const out: Outcome = { hp: false, email: "none", name: co.name };
+        const out: Outcome = { hp: false, phone: false, email: "none", name: co.name };
+
+        // 電話番号（のちの電話営業用）。既に登録済みの会社・他社と同じ番号は入れない
+        if (ans?.phone && !co.phone) {
+          const pp = await phonePatch(a.db, ans.phone, co.id);
+          if (pp.phone) {
+            Object.assign(patch, pp);
+            out.phone = true;
+          }
+        }
 
         if (ans?.hp) {
           Object.assign(patch, { website_url: ans.hp, website_source: "chatgpt", crawl_status: "pending", crawl_error: null, last_checked_at: null });
@@ -127,6 +142,7 @@ export async function POST(req: Request) {
         }
 
         if (!out.hp && out.email !== "added") Object.assign(patch, { website_source: "chatgpt_none" });
+        // 電話番号だけが分かった会社は「メールなし」のまま、電話番号を残す
         else if (!out.hp && out.email === "added") Object.assign(patch, { crawl_status: "checked" });
         else if (out.email !== "added") Object.assign(patch, { email_status: "unchecked" });
 
@@ -144,6 +160,7 @@ export async function POST(req: Request) {
     ok: true,
     hpRegistered: outcomes.filter((o) => o.hp).length,
     emailAdded: outcomes.filter((o) => o.email === "added").length,
+    phoneAdded: outcomes.filter((o) => o.phone).length,
     rejected: outcomes.filter((o) => o.email === "rejected").map((o) => `${o.name}：${o.reason}`),
     notFound: outcomes.filter((o) => !o.hp && o.email === "none").length,
   });
@@ -156,9 +173,6 @@ async function checkEmail(
   page: string | null
 ): Promise<{ ok: true; finalUrl: string } | { ok: false; reason: string; refusal?: string }> {
   if (!page) return { ok: false, reason: "掲載ページのURLがありません" };
-  const domain = email.split("@")[1];
-  // 会社ドメインのアドレスで、部署・窓口らしくないもの（yamada@ 等）は個人アドレスとみなして使わない
-  if (!isSharedHost(domain) && looksLikePersonalAddress(email)) return { ok: false, reason: `個人アドレスの可能性（${email}）` };
   if (await isSuppressed(db, email)) return { ok: false, reason: `配信停止リストに登録済み（${email}）` };
   const v = await verifyEmailOnPage(email, page);
   if (!v.ok) return { ok: false, reason: v.reason };

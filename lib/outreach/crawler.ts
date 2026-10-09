@@ -1,7 +1,7 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
-import { detectRefusal, judgeEmail } from "./emailPolicy";
-import { hostOf, nameKey, phoneKey } from "./normalize";
+import { detectRefusal, judgeEmail, type EmailKind } from "./emailPolicy";
+import { extractPhones, hostOf, nameKey, phoneKey } from "./normalize";
 
 /**
  * 営業先企業の公式HPを確認し、公開されている法人向けメールアドレスを探す。
@@ -34,6 +34,9 @@ export type CrawlResult = {
   siteTitle: string | null;
   email: string | null;
   emailSourceUrl: string | null;
+  emailKind: EmailKind | null;
+  /** HPに載っていた代表電話番号（TELと書かれた番号・tel:リンクを優先） */
+  phone: string | null;
   /** 見つかったが対象外にしたアドレスの件数（個人アドレス・別ドメインなど） */
   rejectedCount: number;
   contactFormUrl: string | null;
@@ -296,6 +299,8 @@ async function crawlOnce(websiteUrl: string, expect?: ExpectedCompany): Promise<
     siteTitle: null,
     email: null,
     emailSourceUrl: null,
+    emailKind: null,
+    phone: null,
     rejectedCount: 0,
     contactFormUrl: null,
     companyProfileUrl: null,
@@ -352,7 +357,7 @@ async function crawlOnce(websiteUrl: string, expect?: ExpectedCompany): Promise<
       }
     }
 
-    let best: { email: string; priority: number; source: string } | null = null;
+    let best: { email: string; priority: number; source: string; kind: EmailKind } | null = null;
     const rejected = new Set<string>();
     if (expect) {
       // 法人格・空白・記号を除いた社名、または電話番号（数字のみ）がどこかのページにあれば本人とみなす
@@ -380,12 +385,25 @@ async function crawlOnce(websiteUrl: string, expect?: ExpectedCompany): Promise<
           if (v.email) rejected.add(v.email);
           continue;
         }
-        if (!best || v.priority < best.priority) best = { email: v.email, priority: v.priority, source: page.url };
+        if (!best || v.priority < best.priority) best = { email: v.email, priority: v.priority, source: page.url, kind: v.kind };
       }
     }
+    // 電話番号：tel: リンク →「TEL」「電話」の直後 → ページ内の最初の番号 の順
+    for (const page of pages) {
+      const tel = page.html.match(/href=["']tel:([^"']+)["']/i)?.[1];
+      const labeled = htmlToText(page.html).match(/(?:TEL|Tel|tel|電話番号|電話|代表)[\s:：.]*([0-9０-９(（][0-9０-９\-‐－()（）\s]{8,16})/)?.[1];
+      const found = extractPhones(tel ?? labeled ?? "")[0] ?? null;
+      if (found) {
+        result.phone = found.display;
+        break;
+      }
+    }
+    if (!result.phone) result.phone = extractPhones(htmlToText(pages[0].html))[0]?.display ?? null;
+
     if (best) {
       result.email = best.email;
       result.emailSourceUrl = best.source;
+      result.emailKind = best.kind;
       rejected.delete(best.email);
     }
     result.rejectedCount = rejected.size;

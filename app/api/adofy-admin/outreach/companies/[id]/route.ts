@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { authed, bad, str, UUID } from "@/lib/outreach/api";
-import { CHATGPT_BLOCK_REASON, TABLES } from "@/lib/outreach/constants";
+import { REVIEW_BLOCK_REASONS, TABLES } from "@/lib/outreach/constants";
 import type { CompanyRow } from "@/lib/outreach/companies";
 import { enrichCompany } from "@/lib/outreach/enrich";
 import { markReplied, markUnsubscribed } from "@/lib/outreach/events";
@@ -54,8 +54,8 @@ export async function PATCH(req: Request, { params }: Params) {
     if (!["approved", "excluded", "pending"].includes(String(b.review))) return bad("値が不正です");
     patch.review_status = b.review;
     patch.reviewed_at = b.review === "pending" ? null : now;
-    // ChatGPT 経由のアドレスは、目視確認して「送信OK」にした時点で送信停止を解除する
-    if (b.review === "approved" && company.send_blocked_reason === CHATGPT_BLOCK_REASON) {
+    // ChatGPT 経由・個人名・フリーメールのアドレスは、目視確認して「送信OK」にした時点で送信停止を解除する
+    if (b.review === "approved" && REVIEW_BLOCK_REASONS.includes(company.send_blocked_reason ?? "")) {
       patch.send_blocked = false;
       patch.send_blocked_reason = null;
     }
