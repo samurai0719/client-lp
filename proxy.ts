@@ -52,6 +52,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.rewrite(new URL("/saiyo-rescue", request.url));
   }
 
+  // ── ドラテク 企業向けLP（doratech.adofy-site.com） ─────────────────────
+  // / = 企業向けLP（物理ルート /driver/company）。下層ページは next.config.ts の rewrite で処理する
+  if (hostname === "doratech.adofy-site.com" && pathname === "/") {
+    return NextResponse.rewrite(new URL("/driver/company", request.url));
+  }
+
   // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）
   if (isAuthBypassEnabled()) {
     if (pathname === "/admin/login") {

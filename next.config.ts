@@ -49,6 +49,17 @@ const adofyLpHosts = ["lp.adofy-site.com"];
 // ─────────────────────────────────────────────────────────────────────────────
 const saiyoHosts = ["saiyo.adofy-site.com"];
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ドラテク 企業向けLP（adofy ドメイン）
+//   doratech.adofy-site.com
+//     /                → /driver/company           （LP。proxy.ts で書き換え）
+//     /register など   → /driver/company/register  （求人登録・認証・規約）
+//     /admin           → /adofy-admin/doratech     （管理画面。adofy管理者のみ）
+//   driver.taxidriver-beginner.com/company でも同じLPが開ける。
+// ─────────────────────────────────────────────────────────────────────────────
+const doratechHosts = ["doratech.adofy-site.com"];
+const doratechSubpages = ["register", "verify", "terms", "refund-policy", "privacy"];
+
 // コーポレートサイトのサブページ（public: 公開URL / internal: appルート）
 const adofyPaths = [
   { public: "profile", internal: "adofy-corp/profile" },
@@ -187,6 +198,12 @@ const nextConfig: NextConfig = {
     ]);
 
     return [
+      // ドラテク 営業メール管理: /admin/outreach/* → /adofy-admin/outreach/*
+      // /admin は高長建設の管理画面（提携業者もログインする）なので、物理ルートは adofy 管理画面側に置き、
+      // adofy 管理者だけが開けるようにしている。redirects は proxy.ts より先に評価されるため、
+      // 高長建設のログイン画面へ飛ばされることはない。
+      { source: "/admin/outreach", destination: "/adofy-admin/outreach", statusCode: 307 as const },
+      { source: "/admin/outreach/:path*", destination: "/adofy-admin/outreach/:path*", statusCode: 307 as const },
       // URL正規化: wwwなし → wwwあり（https化はVercelが自動処理）
       {
         source: "/:path*",
@@ -214,6 +231,13 @@ const nextConfig: NextConfig = {
         { source: "/saiyo-rescue", has: [{ type: "host" as const, value: host }], destination: "/", statusCode: 301 as const },
         { source: "/saiyo-rescue/thanks", has: [{ type: "host" as const, value: host }], destination: "/thanks", statusCode: 301 as const },
       ]),
+      // ドラテク 企業向け（doratech.adofy-site.com）
+      ...doratechHosts.flatMap((host) => [
+        { source: "/admin", has: [{ type: "host" as const, value: host }], destination: "/adofy-admin/doratech", statusCode: 307 as const },
+        { source: "/admin/:id", has: [{ type: "host" as const, value: host }], destination: "/adofy-admin/doratech/:id", statusCode: 307 as const },
+        // 内部パスへの直アクセスは公開URLへ寄せる
+        { source: "/driver/company", has: [{ type: "host" as const, value: host }], destination: "/", statusCode: 301 as const },
+      ]),
       // adofy-site.com/saiyo-rescue で開かれた場合も専用ドメインへ
       ...adofyHosts.map((host) => ({
         source: "/saiyo-rescue",
@@ -221,6 +245,15 @@ const nextConfig: NextConfig = {
         destination: "https://saiyo.adofy-site.com/",
         statusCode: 301 as const,
       })),
+      // ドラテク: 内部ルートへの直アクセスは公開URLへ寄せる（重複URLを作らない）。
+      // リダイレクトは rewrite より先に評価されるため、
+      // /company → /driver/company の rewrite とループしない。
+      {
+        source: "/driver/company",
+        has: [{ type: "host" as const, value: "driver.taxidriver-beginner.com" }],
+        destination: "/company",
+        statusCode: 301,
+      },
 ];
   },
   async rewrites() {
@@ -263,10 +296,22 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "www.golfprayer-joutatu.com" }],
           destination: "/rizap-golf",
         },
+        // ── driver.taxidriver-beginner.com（ドラテク） ─────────────────
+        //   /        = 求職者向けLP        → /driver
+        //   /company = 企業向け（採用担当者向け）LP → /driver/company
+        //
+        // ルート直下の /company は adofy コーポレートサイトが既に使っているため、
+        // 企業向けLPの物理ルートは /driver/company に置き、このホストのときだけ
+        // 公開URLを /company に合わせている（takanaga / adofy と同じやり方）。
         {
           source: "/",
           has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
           destination: "/driver",
+        },
+        {
+          source: "/company",
+          has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
+          destination: "/driver/company",
         },
 
         // ── saiyo.adofy-site.com（採用レスキュー） ─────────────────────
@@ -276,6 +321,16 @@ const nextConfig: NextConfig = {
           has: [{ type: "host" as const, value: host }],
           destination: "/saiyo-rescue/thanks",
         })),
+
+        // ── doratech.adofy-site.com（ドラテク 企業向け） ────────────────
+        // ルート(/)は proxy.ts で処理する
+        ...doratechHosts.flatMap((host) =>
+          doratechSubpages.map((page) => ({
+            source: `/${page}`,
+            has: [{ type: "host" as const, value: host }],
+            destination: `/driver/company/${page}`,
+          }))
+        ),
 
         // ── takanagakensetu.com ────────────────────────────────────────
         // 「/ → コーポレートHP」「/takanaga → 外構LP」の2つの書き換えは
