@@ -80,6 +80,11 @@ export function replyToAddress(s: OutreachSettings): string | null {
   return process.env.OUTREACH_REPLY_TO?.trim() || s.sender_email || null;
 }
 
+/** 営業メールのリンク先（企業向けLP）の既定値。例: https://doratech.adofy-site.com/ */
+export function defaultLandingUrl(): string {
+  return process.env.OUTREACH_LANDING_URL?.trim() || SERVICE.url;
+}
+
 /** メール内のリンク（クリック計測・配信停止）に使う公開URL */
 export function publicBaseUrl(): string {
   return (process.env.OUTREACH_PUBLIC_BASE_URL?.trim() || SERVICE.siteUrl).replace(/\/$/, "");

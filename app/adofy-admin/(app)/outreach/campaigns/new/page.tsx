@@ -1,6 +1,7 @@
 import CampaignEditor from "@/components/outreach-admin/CampaignEditor";
-import { SERVICE } from "@/config/driver-company";
 import { aiConfigured } from "@/lib/outreach/ai";
+
+import { defaultLandingUrl } from "@/lib/outreach/settings";
 
 export const metadata = { title: "営業メールの作成｜ドラテク営業" };
 
@@ -11,7 +12,7 @@ export default function NewCampaignPage() {
       <p className="mb-4 text-sm text-slate-600">
         保存すると下書きになります。送信は、次の画面で「テスト100件送信」→ 結果確認 →「残りを送信」の順に行います。
       </p>
-      <CampaignEditor defaultLanding={SERVICE.url} aiEnabled={aiConfigured()} />
+      <CampaignEditor defaultLanding={defaultLandingUrl()} aiEnabled={aiConfigured()} />
     </div>
   );
 }

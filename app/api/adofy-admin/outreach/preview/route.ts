@@ -4,8 +4,7 @@ import { TABLES } from "@/lib/outreach/constants";
 import type { CompanyRow } from "@/lib/outreach/companies";
 import { normalizeUrl } from "@/lib/outreach/normalize";
 import { renderEmail } from "@/lib/outreach/render";
-import { getSettings, sendReadiness } from "@/lib/outreach/settings";
-import { SERVICE } from "@/config/driver-company";
+import { defaultLandingUrl, getSettings, sendReadiness } from "@/lib/outreach/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +17,7 @@ export async function POST(req: Request) {
   if ("error" in a) return a.error;
   const b = a.body;
   const settings = await getSettings(a.db);
-  const landing = normalizeUrl(str(b.landing_page_url, 500)) ?? SERVICE.url;
+  const landing = normalizeUrl(str(b.landing_page_url, 500)) ?? defaultLandingUrl();
   const campaign = { subject: str(b.subject, 200), body: typeof b.body === "string" ? b.body : "" };
 
   let companies: CompanyRow[] = [];

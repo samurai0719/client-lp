@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { SERVICE } from "@/config/driver-company";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
 import { TABLES } from "@/lib/outreach/constants";
 import { findSendByToken, markClicked } from "@/lib/outreach/events";
 import { withUtm } from "@/lib/outreach/render";
+
+import { defaultLandingUrl } from "@/lib/outreach/settings";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(_req: Request, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
-  let dest: string = SERVICE.url;
+  let dest: string = defaultLandingUrl();
 
   if (isSupabaseAdminConfigured()) {
     try {
@@ -27,7 +28,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ token: 
           .select("landing_page_url")
           .eq("id", send.campaign_id)
           .maybeSingle();
-        dest = withUtm((campaign as { landing_page_url: string } | null)?.landing_page_url ?? SERVICE.url, send.company_id, send.campaign_id);
+        dest = withUtm((campaign as { landing_page_url: string } | null)?.landing_page_url ?? defaultLandingUrl(), send.company_id, send.campaign_id);
         await markClicked(db, send);
       }
     } catch (err) {
