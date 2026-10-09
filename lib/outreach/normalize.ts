@@ -135,10 +135,20 @@ export function extractPhones(text: string): { display: string; key: string }[] 
     const before = t.slice(Math.max(0, m.index - 8), m.index);
     if (/fax|ファックス|ファクス/i.test(before)) continue;
     const key = phoneKey(m[0]);
-    if (!key || out.some((o) => o.key === key)) continue;
+    if (!key || out.some((o) => o.key === key) || isDummyPhone(key)) continue;
     // 区切りが書かれていない番号は、市外局番の桁数が分からないので数字のまま表示する
     const display = /[-()\s]/.test(m[0]) ? `${m[1]}-${m[2]}-${m[3]}` : key;
     out.push({ display, key });
   }
   return out;
+}
+
+/** フォームの入力例などに使われる架空の番号（0123456789・000-0000-0000・03-1234-5678 など） */
+export function isDummyPhone(key: string): boolean {
+  return (
+    /^0?123456789/.test(key) || // 0123456789
+    /^0(\d)\1+$/.test(key) || /^0+$/.test(key) || // 0000000000・0111111111
+    /^0\d{0,4}0{4,}$/.test(key) || // 03-0000-0000
+    /12345678$/.test(key) // 03-1234-5678・090-1234-5678
+  );
 }
