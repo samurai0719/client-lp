@@ -21,9 +21,9 @@ export default async function HpSearchPage() {
     <div className="max-w-4xl">
       <h1 className="mb-1 text-xl font-bold text-slate-900">HP探し（ChatGPT・手動）</h1>
       <p className="mb-4 text-sm leading-relaxed text-slate-600">
-        HPが分からない会社を30社ずつ表示します。指示文ごとコピーしてChatGPTに貼り付け、返ってきた答えをここに貼り付けてください。
+        HPが分からない会社を10社ずつ（変更可）表示します。指示文ごとコピーしてChatGPTに貼り付け、返ってきた答えをここに貼り付けてください。
         メールアドレスは<b>掲載ページを開いて実際に書かれているかを確認</b>してから登録し、目視確認で「送信OK」にするまで送りません。
-        公式HPは<b>HP上に社名か電話番号があるときだけ</b>採用し、その後HPに公開されている窓口メールアドレスも自動で探します。
+        公式HPは<b>HP上に社名か電話番号があるときだけ</b>採用し、その後、システムが公式HPのサイト内を最大40ページ巡回して、公開されているメールアドレスと電話番号を自動で探します。
       </p>
       <div className="mb-4 grid grid-cols-2 gap-2 text-center text-xs sm:grid-cols-5">
         {[

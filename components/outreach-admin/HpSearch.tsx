@@ -9,22 +9,34 @@ type Row = { id: string; key: string; name: string; address: string };
 
 function buildPrompt(rows: Row[]): string {
   return [
-    "以下の運送会社について、Web検索で1社ずつ調べてください。",
+    "あなたは企業調査の担当者です。以下の運送会社について、1社ずつ正確に調べてください。",
+    "件数よりも正確さを最優先し、確認できなかった項目は必ず「なし」にしてください。",
     "",
-    "調べること：",
-    "1. 公式ホームページのURL",
-    "2. 会社の問い合わせ用・採用用のメールアドレス（info@ / recruit@ など会社の窓口を優先。無ければ担当者名やGmail等のアドレスでも可）",
-    "3. そのメールアドレスが実際に書かれているページのURL",
-    "4. 会社の代表電話番号（FAX番号は不可）",
+    "【1社ごとの手順】",
+    "1. 「会社名＋所在地（市区町村）」でWeb検索する",
+    "2. 公式ホームページを実際に開き、サイト内に『会社名』と『所在地（市区町村・番地）』が書かれていることを確認する",
+    "   ・同じ名前の別の会社（別の県・市の会社）のサイトは不可",
+    "   ・会社名と所在地が確認できなければ、公式HPは「なし」",
+    "3. 公式サイトはトップページだけでなく、サイト内の全ページを確認する",
+    "   （会社概要・会社案内・アクセス・お問い合わせ・採用情報・求人・プライバシーポリシー・ページ下部のフッターなど）",
+    "4. メールアドレスは、ページ上に文字として実際に書かれているものだけを答える",
+    "   ・問い合わせフォームしかない場合は「なし」",
+    "   ・会社の窓口（info@ / recruit@ など）を優先。無ければ担当者名やGmail等でも可",
+    "5. 公式サイトにメールが無い場合だけ、その会社自身が掲載している求人票（ハローワーク・求人サイトの会社掲載ページ）に書かれたアドレスも可",
+    "6. 電話番号は代表番号（FAX番号は不可）",
     "",
-    "ルール：",
-    "・会社名と所在地が一致する会社だけを答える（同名の別会社に注意）",
-    "・メールアドレスは、公式サイト、またはその会社自身が掲載している求人票・会社紹介ページなど、実際にページに書かれているものだけ",
-    "・メールアドレスを推測して作らない（実際にページに書かれているものだけ）",
-    "・「営業メールお断り」等の記載があるページのアドレスは除外",
-    "・公式HPがSNS・求人サイト・地図サイトしかない場合、公式HP欄は「なし」",
-    "・見つからない、または自信がない項目は「なし」と書く",
-    "・出力は「番号,公式HP,メールアドレス,メールが書かれているページURL,電話番号」の形式で1行に1社。説明や前置きは不要",
+    "【使ってはいけないサイト（公式HP・メールの根拠にしない）】",
+    "・企業データベースやまとめサイト（Baseconnect、iタウンページ、全国法人リスト、Mapion、NAVITIME、各種ランキング・比較サイト）",
+    "・地図サイトや口コミサイト、SNS（Facebook・Instagram・X）",
+    "・「営業メールお断り」等の記載があるページ",
+    "",
+    "【禁止事項】",
+    "・URLやメールアドレスを推測・記憶で作らない（実際に開いて確認したものだけ）",
+    "・確認していないのに「ある」と答えない",
+    "",
+    "【出力】",
+    "「番号,公式HP,メールアドレス,メールが書かれているページURL,電話番号」の形式で1行に1社。",
+    "全社分を必ず出力する。説明や前置きは不要。分からない項目は「なし」。",
     "",
     "番号,会社名,所在地",
     ...rows.map((r) => `${r.key},${r.name},${r.address}`),
@@ -34,6 +46,8 @@ function buildPrompt(rows: Row[]): string {
 export default function HpSearch() {
   const router = useRouter();
   const [pref, setPref] = useState("");
+  // ChatGPT は一度に多く調べさせるほど雑になるため、既定は10社
+  const [size, setSize] = useState(10);
   const [rows, setRows] = useState<Row[]>([]);
   const [remaining, setRemaining] = useState<number | null>(null);
   const [answer, setAnswer] = useState("");
@@ -46,7 +60,7 @@ export default function HpSearch() {
     setBusy(true);
     setMsg(null);
     setAnswer("");
-    const res = await fetch(`/api/adofy-admin/outreach/hp-search?limit=30${pref ? `&prefecture=${encodeURIComponent(pref)}` : ""}`);
+    const res = await fetch(`/api/adofy-admin/outreach/hp-search?limit=${size}${pref ? `&prefecture=${encodeURIComponent(pref)}` : ""}`);
     const j = (await res.json().catch(() => ({}))) as { rows?: Row[]; remaining?: number; error?: string };
     setBusy(false);
     if (!res.ok) return setMsg({ ok: false, text: j.error ?? "読み込めませんでした" });
@@ -81,7 +95,7 @@ export default function HpSearch() {
     setRejected(j.rejected ?? []);
     setMsg({
       ok: true,
-      text: `メールアドレス ${j.emailAdded}件を登録（掲載ページで確認済み）・公式HP ${j.hpRegistered}件・電話番号 ${j.phoneAdded}件を登録・見つからず ${j.notFound}社。登録したアドレスは「確認待ち」で掲載ページを見て「送信OK」にしてください。`,
+      text: `メールアドレス ${j.emailAdded}件を登録（掲載ページで確認済み）・公式HP ${j.hpRegistered}件・電話番号 ${j.phoneAdded}件を登録・見つからず ${j.notFound}社。登録したアドレスは「確認待ち」で掲載ページを見て「送信OK」にしてください。公式HPは、システムがサイト内を最大40ページ巡回して、ChatGPTが見落としたアドレスも探します。`,
     });
     setRows([]);
     setAnswer("");
@@ -100,8 +114,13 @@ export default function HpSearch() {
               <option key={p} value={p}>{p}</option>
             ))}
           </select>
+          <select value={size} onChange={(e) => setSize(Number(e.target.value))} className="rounded-lg border border-slate-300 px-3 py-2 text-base sm:text-sm">
+            {[5, 10, 20, 30].map((n) => (
+              <option key={n} value={n}>{n}社ずつ</option>
+            ))}
+          </select>
           <button type="button" onClick={load} disabled={busy} className="rounded-lg bg-[#0a1f4e] px-4 py-2 text-sm font-bold text-white disabled:opacity-40">
-            30社を表示
+            会社を表示
           </button>
           {remaining !== null && <span className="self-center text-xs text-slate-500">未調査 残り {remaining.toLocaleString()}社</span>}
         </div>
@@ -116,7 +135,10 @@ export default function HpSearch() {
                 <Copy className="h-4 w-4" /> {copied ? "コピーしました" : "指示文をコピー"}
               </button>
             </div>
-            <p className="mt-1 text-xs text-slate-500">ChatGPT で「検索」がオンになっていることを確認してから送信してください。</p>
+            <p className="mt-1 text-xs leading-relaxed text-slate-500">
+              ChatGPT で「<b>検索</b>」をオンにし、モデルは「<b>Thinking（じっくり考える）</b>」系を選ぶと精度が上がります。
+              一度に調べる社数は10社以下がおすすめです（多いほど確認が雑になります）。
+            </p>
             <pre className="mt-2 max-h-56 overflow-auto whitespace-pre-wrap rounded-lg bg-slate-50 p-3 text-xs text-slate-700">{buildPrompt(rows)}</pre>
           </section>
 

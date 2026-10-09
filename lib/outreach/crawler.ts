@@ -7,7 +7,7 @@ import { extractPhones, hostOf, nameKey, phoneKey } from "./normalize";
  * 営業先企業の公式HPを確認し、公開されている法人向けメールアドレスを探す。
  *
  * ・robots.txt で禁止されているパスは読まない
- * ・同じサイト内の「会社概要」「お問い合わせ」「採用」系のページだけを最大数ページ読む
+ * ・同じサイト内を最大40ページまで巡回する（「会社概要」「お問い合わせ」「採用」系のページを優先）
  * ・ページ上に実際に書かれているアドレスだけを拾い、推測でアドレスを作らない
  * ・担当者個人のアドレスは拾わない（判定は emailPolicy.ts）
  * ・HPに「営業メールお断り」等の表示があれば送信不可として返す
@@ -19,7 +19,19 @@ export const CRAWLER_UA =
 
 const FETCH_TIMEOUT_MS = 8000;
 const MAX_BYTES = 1_500_000;
-const MAX_EXTRA_PAGES = 5;
+/** 1サイトで読む最大ページ数・リンクをたどる深さ・時間の上限・ページ間の間隔 */
+const MAX_PAGES = 40;
+const MAX_DEPTH = 3;
+const SITE_TIME_BUDGET_MS = 20_000;
+const PAGE_INTERVAL_MS = 250;
+
+/** 同じページを二度読まないための正規形（末尾のスラッシュ・index.html の違いを無視） */
+function canonical(url: string): string {
+  const u = new URL(url);
+  u.hash = "";
+  u.pathname = u.pathname.replace(/\/index\.(html?|php)$/i, "/").replace(/\/$/, "") || "/";
+  return u.toString();
+}
 const MAX_REDIRECTS = 5;
 
 const PAGE_KEYWORDS =
@@ -323,38 +335,55 @@ async function crawlOnce(websiteUrl: string, expect?: ExpectedCompany): Promise<
     const siteHost = hostOf(home.url);
     const homeRobots = new URL(home.url).origin === start.origin ? robots : await loadRobots(new URL(home.url).origin);
 
-    // 読むページ：トップ＋会社概要・お問い合わせ・採用系のリンク（同じサイト内のみ）
-    const links = extractLinks(home.body, home.url);
-    const extra: string[] = [];
-    for (const l of links) {
-      if (extra.length >= MAX_EXTRA_PAGES) break;
-      const u = new URL(l.href);
-      if (hostOf(u.toString()) !== siteHost) continue;
-      if (!/^https?:$/.test(u.protocol)) continue;
-      if (/\.(pdf|jpe?g|png|gif|zip|docx?|xlsx?)$/i.test(u.pathname)) continue;
-      if (!PAGE_KEYWORDS.test(l.href) && !PAGE_KEYWORDS.test(l.text)) continue;
-      u.hash = "";
-      const key = u.toString();
-      if (key === home.url || extra.includes(key)) continue;
-      if (!robotsAllows(homeRobots, u)) continue;
-      extra.push(key);
+    // サイト内を巡回する（同じサイト内のみ・最大 MAX_PAGES ページ）。
+    // 会社概要・お問い合わせ・採用などのページを優先し、残りはリンクをたどって順に読む。
+    // important … トップ・会社概要・お問い合わせ・採用などのページ（個人名・フリーメールはここに載っているものだけ使う）
+    const pages: { url: string; html: string; important: boolean }[] = [{ url: home.url, html: home.body, important: true }];
+    const seen = new Set<string>([canonical(home.url)]);
+    const queue: { url: string; score: number; depth: number; important: boolean }[] = [];
+    const deadline = Date.now() + SITE_TIME_BUDGET_MS;
 
-      if (!result.contactFormUrl && (CONTACT_KEYWORDS.test(l.href) || CONTACT_KEYWORDS.test(l.text))) {
-        result.contactFormUrl = key;
-      }
-      if (!result.companyProfileUrl && (PROFILE_KEYWORDS.test(l.href) || PROFILE_KEYWORDS.test(l.text))) {
-        result.companyProfileUrl = key;
-      }
-    }
+    const enqueueLinks = (html: string, base: string, depth: number) => {
+      for (const l of extractLinks(html, base)) {
+        let u: URL;
+        try {
+          u = new URL(l.href);
+        } catch {
+          continue;
+        }
+        if (!/^https?:$/.test(u.protocol) || hostOf(u.toString()) !== siteHost) continue;
+        if (/\.(pdf|jpe?g|png|gif|webp|svg|zip|docx?|xlsx?|pptx?|mp4|mp3|css|js)$/i.test(u.pathname)) continue;
+        u.hash = "";
+        const key = canonical(u.toString());
+        if (seen.has(key) || !robotsAllows(homeRobots, u)) continue;
+        seen.add(key);
+        const important = PAGE_KEYWORDS.test(l.href) || PAGE_KEYWORDS.test(l.text);
+        queue.push({ url: u.toString(), score: important ? 0 : depth, depth, important });
 
-    const pages: { url: string; html: string }[] = [{ url: home.url, html: home.body }];
-    for (const url of extra) {
+        if (!result.contactFormUrl && (CONTACT_KEYWORDS.test(l.href) || CONTACT_KEYWORDS.test(l.text))) {
+          result.contactFormUrl = u.toString();
+        }
+        if (!result.companyProfileUrl && (PROFILE_KEYWORDS.test(l.href) || PROFILE_KEYWORDS.test(l.text))) {
+          result.companyProfileUrl = u.toString();
+        }
+      }
+      queue.sort((a, b) => a.score - b.score);
+    };
+
+    enqueueLinks(home.body, home.url, 1);
+    while (queue.length > 0 && pages.length < MAX_PAGES && Date.now() < deadline) {
+      const next = queue.shift()!;
       try {
-        const p = await safeFetch(url);
-        if (p.status < 400 && /html|text\/plain/i.test(p.contentType || "text/html")) pages.push({ url: p.url, html: p.body });
+        const p = await safeFetch(next.url);
+        if (p.status < 400 && /html|text\/plain/i.test(p.contentType || "text/html") && hostOf(p.url) === siteHost) {
+          pages.push({ url: p.url, html: p.body, important: next.important });
+          if (next.depth < MAX_DEPTH) enqueueLinks(p.body, p.url, next.depth + 1);
+        }
       } catch {
         /* 個別ページの失敗は無視して続ける */
       }
+      // 相手のサーバーに負荷をかけないよう、少し間を空ける
+      await new Promise((r) => setTimeout(r, PAGE_INTERVAL_MS));
     }
 
     let best: { email: string; priority: number; source: string; kind: EmailKind } | null = null;
@@ -383,6 +412,12 @@ async function crawlOnce(websiteUrl: string, expect?: ExpectedCompany): Promise<
         const v = judgeEmail(raw, home.url);
         if (!v.ok) {
           if (v.email) rejected.add(v.email);
+          continue;
+        }
+        // 個人名・フリーメールは、会社の連絡先として載っているページ（トップ・会社概要・問い合わせ・採用）のものだけ。
+        // ブログや個別サービスのページにある個人のアドレス（例：社員の趣味の教室）を拾わないため
+        if (v.kind !== "role" && !page.important) {
+          rejected.add(v.email);
           continue;
         }
         if (!best || v.priority < best.priority) best = { email: v.email, priority: v.priority, source: page.url, kind: v.kind };
