@@ -11,7 +11,7 @@ import { aiConfigured } from "@/lib/outreach/ai";
 import { ADMIN_BASE, SEND_STATUS_LABEL, TABLES, TEST_BATCH_SIZE } from "@/lib/outreach/constants";
 import { formatJst, pct } from "@/lib/outreach/format";
 import type { CampaignRow, SendRow } from "@/lib/outreach/queue";
-import { getSettings, sendReadiness } from "@/lib/outreach/settings";
+import { getSettings, replyToAddress, sendReadiness } from "@/lib/outreach/settings";
 import { sentMailFor } from "@/lib/outreach/sentMail";
 import SentMail from "@/components/outreach-admin/SentMail";
 
@@ -140,6 +140,7 @@ export default async function CampaignDetail({
             initial={{ id: c.id, name: c.name, subject: c.subject, body: c.body, landing_page_url: c.landing_page_url, prefectures: c.target?.prefectures ?? [] }}
             defaultLanding={c.landing_page_url}
             aiEnabled={aiConfigured()}
+            testRecipient={replyToAddress(settings)}
           />
         </div>
       ) : (

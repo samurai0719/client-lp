@@ -21,7 +21,18 @@ type Preview = { company: string; email: string | null; subject: string; text: s
  * 営業メールの作成・編集（下書きのみ）。
  * AIは件名・本文の下書きを作るだけ。結果はこの画面に入り、プレビューで確認してから保存する。
  */
-export default function CampaignEditor({ initial, defaultLanding, aiEnabled }: { initial?: Initial; defaultLanding: string; aiEnabled: boolean }) {
+export default function CampaignEditor({
+  initial,
+  defaultLanding,
+  aiEnabled,
+  testRecipient,
+}: {
+  initial?: Initial;
+  defaultLanding: string;
+  aiEnabled: boolean;
+  /** 自分宛てテストメールの既定の宛先（返信先アドレス） */
+  testRecipient?: string | null;
+}) {
   const router = useRouter();
   const [name, setName] = useState(initial?.name ?? `ドラテク案内 ${new Date().toLocaleDateString("ja-JP")}`);
   const [subject, setSubject] = useState(initial?.subject ?? DEFAULT_SUBJECT);
@@ -35,6 +46,22 @@ export default function CampaignEditor({ initial, defaultLanding, aiEnabled }: {
   const [ai, setAi] = useState({ companyName: "", prefecture: "", websiteUrl: "", jobType: "大型・中型トラックドライバー", tone: "丁寧・簡潔" });
   const [aiBusy, setAiBusy] = useState(false);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const [testTo, setTestTo] = useState(testRecipient ?? "");
+  const [testMsg, setTestMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [testBusy, setTestBusy] = useState(false);
+
+  async function sendTest() {
+    setTestBusy(true);
+    setTestMsg(null);
+    const res = await fetch("/api/adofy-admin/outreach/test-mail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ to: testTo, subject, body, landing_page_url: landing }),
+    });
+    setTestBusy(false);
+    const j = (await res.json().catch(() => ({}))) as { error?: string };
+    setTestMsg(res.ok ? { ok: true, text: `${testTo} に送信しました。受信箱（迷惑メールフォルダも）を確認してください。` } : { ok: false, text: j.error ?? "送信に失敗しました" });
+  }
 
   function insert(token: string) {
     const el = bodyRef.current;
@@ -177,6 +204,22 @@ export default function CampaignEditor({ initial, defaultLanding, aiEnabled }: {
       </section>
 
       <aside className="space-y-3">
+        <section className="rounded-xl border border-slate-200 bg-white p-3">
+          <p className="text-sm font-bold text-slate-900">自分にテスト送信</p>
+          <p className="mt-1 text-xs text-slate-500">
+            今の件名・本文を、架空の会社「株式会社テスト運送」として1通だけ送ります。届き方や迷惑メール判定を確認できます（送信履歴には残りません）。
+          </p>
+          <input value={testTo} onChange={(e) => setTestTo(e.target.value)} placeholder="返信先・管理者のアドレス" className={input} />
+          <button
+            type="button"
+            disabled={testBusy || !testTo}
+            onClick={sendTest}
+            className="mt-2 w-full rounded-lg border border-slate-300 py-2.5 text-sm font-bold text-slate-800 disabled:opacity-40"
+          >
+            {testBusy ? "送信中…" : "テストメールを送る"}
+          </button>
+          {testMsg && <p className={`mt-2 text-xs font-bold ${testMsg.ok ? "text-emerald-700" : "text-rose-600"}`}>{testMsg.text}</p>}
+        </section>
         <section className="rounded-xl border border-violet-200 bg-violet-50/50 p-3">
           <p className="flex items-center gap-1.5 text-sm font-bold text-violet-900">
             <Sparkles className="h-4 w-4" /> AIで文章を作成
