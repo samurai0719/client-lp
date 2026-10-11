@@ -344,13 +344,13 @@ export default function FreeDesignChat() {
         {!hydrated ? null : !started ? (
           <div className="fd-panel fd-panel--start">
             <button type="button" className="fd-btn fd-btn--primary fd-btn--xl" onClick={start}>
-              ホームページを無料で作る
+              無料作成をはじめる
             </button>
             <p className="fd-micro">質問は全部で10問・選ぶだけでOKです</p>
           </div>
         ) : (
           <>
-            <User>ホームページを無料で作る</User>
+            <User>無料作成をはじめる</User>
 
             {resumed && (
               <div className="fd-resume">
