@@ -431,7 +431,10 @@ function Welcome() {
   return (
     <div className="fd-welcome">
       <div className="fd-welcome__text">
-        <p className="fd-welcome__eyebrow">どんな業種でもOK</p>
+        <p className="fd-welcome__badges">
+          <span className="fd-welcome__eyebrow">どんな業種でもOK</span>
+          <span className="fd-welcome__eyebrow fd-welcome__eyebrow--alt">個人事業主の方でもOK！</span>
+        </p>
         <p className="fd-welcome__title">
           質問に答えるだけで
           <br />

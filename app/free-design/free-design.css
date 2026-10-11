@@ -828,3 +828,7 @@
 }
 /* フッターがあるので、チャット下の余白は少し控えめにする */
 .fd-page .fd-thread { padding-bottom: 40svh; }
+
+.fd-welcome__badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.fd-welcome__badges .fd-welcome__eyebrow { margin: 0; }
+.fd-welcome__eyebrow--alt { background: #fff; color: #b45309; box-shadow: inset 0 0 0 1.5px #f59e0b; }
