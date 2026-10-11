@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
-  BadgeQuestionMark, BedDouble, Baby, Boxes, Briefcase, Building2, Camera, Car, Check, CircleOff, Clock,
+  BadgeQuestionMark, BedDouble, Crown, Baby, Boxes, Briefcase, Building2, Camera, Car, Check, CircleOff, Clock,
   Dumbbell, Ellipsis, Factory, Gem, Globe, GraduationCap, Hammer, Hand, HandHeart, HeartHandshake, House,
   ImageOff, Images, Landmark, Laptop, Lightbulb, Link, Mail, MessageSquareQuote, Package, PawPrint, PenTool,
   Plane, Printer, Scale, Scissors, ShieldCheck, ShoppingCart, Smile, Sparkles, SprayCan, Sprout, Stamp,
@@ -334,6 +334,7 @@ export default function FreeDesignChat() {
 
       <div className="fd-thread" aria-live="polite">
         <Welcome />
+        <Achievements />
         <Bot name>adofyの集客・求人できるHP制作サービスです。</Bot>
         <Bot>
           {"あなたの会社にぴったりのホームページを無料で作ってみませんか？\n\nこれからいくつか質問をさせていただきます。\n\nご回答をもとに、あなたの会社専用のホームページを作成します。\n\nまずはお気軽にお試しください！"}
@@ -423,6 +424,32 @@ function Bot({ children, name }: { children: ReactNode; name?: boolean }) {
         {name && <span className="fd-name">adofy デザイン担当</span>}
         <div className="fd-bubble fd-bubble--bot">{children}</div>
       </div>
+    </div>
+  );
+}
+
+/** 実績（adofy の公開済みの数値。/contact の診断画像と同じ内容） */
+const ACHIEVEMENTS = [
+  { label: "集客支援実績", value: "100", unit: "社以上" },
+  { label: "累計集客数", value: "2,000", unit: "人以上" },
+] as const;
+
+function Achievements() {
+  return (
+    <div className="fd-achv">
+      <ul className="fd-achv__list">
+        {ACHIEVEMENTS.map((a) => (
+          <li key={a.label} className="fd-achv__item">
+            <Crown className="fd-achv__crown" aria-hidden="true" fill="currentColor" strokeWidth={1.5} />
+            <span className="fd-achv__label">{a.label}</span>
+            <span className="fd-achv__value">
+              <b>{a.value}</b>
+              {a.unit}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="fd-achv__note">※adofyの支援実績です。成果を保証するものではありません。</p>
     </div>
   );
 }
