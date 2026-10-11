@@ -772,3 +772,20 @@
 
 /* 最後の質問でも画面上部まで自動スクロールできるよう、下に余白を確保する */
 .fd-page .fd-thread { padding-bottom: 45svh; }
+
+/* 完了画面：迷惑メールの案内 */
+.fd-mailnote {
+  margin-top: 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  text-align: left;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: #44403c;
+}
+.fd-mailnote p { margin: 0 0 6px; }
+.fd-mailnote p:last-child { margin-bottom: 0; }
+.fd-mailnote__title { font-weight: 800; color: #854d0e; }
+.fd-mailnote b { color: var(--fd-ink); }
