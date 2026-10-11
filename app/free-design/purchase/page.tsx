@@ -5,6 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
 import { LogoMark } from "@/components/adofy/ui";
 import PurchaseForm from "./PurchaseForm";
+import FreeDesignFooter from "@/components/adofy/free-design/FreeDesignFooter";
 
 export const dynamic = "force-dynamic";
 
@@ -59,6 +60,7 @@ export default async function PurchasePage({ searchParams }: { searchParams: Pro
           <PurchaseForm token={token} company={company} already={already} />
         )}
       </main>
+      <FreeDesignFooter />
     </div>
   );
 }

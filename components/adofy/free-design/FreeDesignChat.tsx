@@ -1217,7 +1217,7 @@ function ContactInput({ answers, update, submissionId, startedAt, onCompleted }:
       <div className="fd-privacy">
         <p className="fd-privacy__title">個人情報の利用目的</p>
         <p>{PURPOSE_OF_USE}</p>
-        <a href={PRIVACY_POLICY_HREF} target="_blank" rel="noopener noreferrer">プライバシーポリシーを見る</a>
+        <a href={PRIVACY_POLICY_HREF}>プライバシーポリシーを見る（ページ下部）</a>
       </div>
       <label className={`fd-agree ${err("agreed") ? "is-error" : ""}`}>
         <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />

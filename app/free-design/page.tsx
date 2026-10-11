@@ -5,6 +5,7 @@ import "./free-design.css";
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import LpInsightTracker, { ADOFY_LP_PROJECT_ID } from "@/components/analytics/LpInsightTracker";
 import FreeDesignChat from "@/components/adofy/free-design/FreeDesignChat";
+import FreeDesignFooter from "@/components/adofy/free-design/FreeDesignFooter";
 import { SITE } from "@/components/adofy/config";
 
 const TITLE = "ホームページを無料で作る｜集客・求人できるHP制作 adofy";
@@ -43,6 +44,7 @@ export default function FreeDesignPage() {
       <main className="fd-main">
         <FreeDesignChat />
       </main>
+      <FreeDesignFooter />
     </div>
   );
 }

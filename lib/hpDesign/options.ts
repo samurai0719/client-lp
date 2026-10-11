@@ -230,7 +230,8 @@ export function colorText(id: string, other?: string | null): string {
   return id === "other" && other ? `その他（${other}）` : labelOf(COLORS, id);
 }
 
-export const PRIVACY_POLICY_HREF = "/adofy#privacy";
+/** このページ下部のフッター（components/adofy/free-design/FreeDesignFooter.tsx）を指す */
+export const PRIVACY_POLICY_HREF = "#privacy";
 
 /** チャットの同意欄とメールで同じ文言を使う */
 export const PURPOSE_OF_USE =
