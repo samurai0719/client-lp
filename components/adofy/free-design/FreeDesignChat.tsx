@@ -463,12 +463,12 @@ function Welcome() {
           <span className="fd-welcome__eyebrow fd-welcome__eyebrow--alt">個人事業主の方でもOK！</span>
         </p>
         <p className="fd-welcome__title">
-          質問に答えるだけで
+          ホームページを
           <br />
           <span>
-            ホームページを
+            ワクワクしながら
             <br />
-            無料で作る
+            無料で作ろう！
           </span>
         </p>
         <ul className="fd-welcome__chips">
