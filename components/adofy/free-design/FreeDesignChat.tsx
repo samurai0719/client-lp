@@ -118,7 +118,7 @@ const QUESTIONS: Record<Step, string> = {
   contents: "ホームページにはどのような情報を載せたいですか？\n（いくつでも選べます）",
   website: "現在、ホームページはありますか？",
   reference: "参考にしたいホームページはありますか？",
-  assets: "ホームページに使用したい写真やロゴはありますか？",
+  assets: "ホームページに使用したい写真やロゴはありますか？\n\n写真やロゴがなければ、仮のものをこちらで制作しますのでご安心ください。",
   requests: "ホームページについて、ほかに希望することはありますか？",
   contact:
     "ご回答ありがとうございます！\n\nいただいた内容をもとに、あなたの会社専用のホームページを無料で作成します。\n\n完成したホームページをお届けするメールアドレスを教えてください。",
@@ -1054,7 +1054,7 @@ function AssetsInput({ answers, update, commit, submissionId }: InputProps) {
       {showUpload && (
         <RevealSub>
           <p className="fd-sub__q">よろしければ、写真やロゴをアップロードしてください。（任意）</p>
-          <p className="fd-micro">JPEG・PNG・WebP・HEIC／1枚10MBまで・最大{MAX_UPLOAD_FILES}枚。後からメールで送っていただくこともできます。</p>
+          <p className="fd-micro">JPEG・PNG・WebP・HEIC／1枚10MBまで・最大{MAX_UPLOAD_FILES}枚。後からメールで送っていただくこともできます。足りない写真やロゴは、仮のものをこちらで制作します。</p>
           <label className={`fd-drop ${busy ? "is-busy" : ""}`}>
             <input
               ref={inputRef}
