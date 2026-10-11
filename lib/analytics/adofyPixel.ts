@@ -6,6 +6,9 @@
 //   （fbq('track') だと init 済みの全Pixelへ一斉送信されてしまう）
 // ・PageView は components/analytics/AdofyMetaPixel.tsx が発火する。
 // ・Lead は「APIレスポンスが成功した後」に1回だけ送る。ボタンクリック時には送らない。
+// ・Purchase も同様に、無料作成の申し込みが完了した後だけ送る（広告の最適化イベント）。
+//   以前はイベントマネージャのコード不要イベント（ボタン文字「ホームページを無料で作る」→Purchase）で
+//   計測していたが、開始ボタンと送信ボタンが同じ文字のため、開始しただけで購入が付いていた。
 
 export const ADOFY_PIXEL_ID = "3711341419004077";
 
@@ -40,5 +43,34 @@ export function fireAdofyLead(source: string): void {
 
   if (isDev) {
     console.info(`[AdofyPixel:dev] Lead送信 source=${source} pixel=${ADOFY_PIXEL_ID}`);
+  }
+}
+
+/**
+ * adofyのPixelへ Purchase イベントを送る（無料作成の申し込み完了時）。
+ * 呼び出し側で「送信成功時に1回だけ」呼ぶこと。eventId は重複排除用。
+ */
+export function fireAdofyPurchase(source: string, eventId?: string): void {
+  if (typeof window === "undefined") return;
+
+  if (typeof window.fbq !== "function") {
+    if (isDev) {
+      console.info(
+        `[AdofyPixel:dev] fbqが未読み込みのため送信スキップ（本番では送信されます） source=${source} pixel=${ADOFY_PIXEL_ID}`
+      );
+    }
+    return;
+  }
+
+  window.fbq(
+    "trackSingle",
+    ADOFY_PIXEL_ID,
+    "Purchase",
+    { value: 0, currency: "JPY" },
+    eventId ? { eventID: eventId } : undefined
+  );
+
+  if (isDev) {
+    console.info(`[AdofyPixel:dev] Purchase送信 source=${source} pixel=${ADOFY_PIXEL_ID}`);
   }
 }

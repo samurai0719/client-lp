@@ -12,7 +12,7 @@ import {
 import DesignSample from "./DesignSample";
 import { captureAttribution } from "../contact/formState";
 import { createClient } from "@/lib/supabase/client";
-import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
+import { fireAdofyLead, fireAdofyPurchase } from "@/lib/analytics/adofyPixel";
 import { fireLpInsightLead } from "@/components/analytics/lpInsightLead";
 import {
   ALLOWED_UPLOAD_TYPES, ASSET_CHOICES, ASSET_CHOICES_WITH_UPLOAD, COLORS, CONTENTS, INDUSTRIES,
@@ -1203,6 +1203,7 @@ function ContactInput({ answers, update, submissionId, startedAt, onCompleted }:
       }
       if (!j.duplicate) {
         fireAdofyLead("free_design_chat");
+        fireAdofyPurchase("free_design_chat", submissionId);
         fireLpInsightLead("lead", 1);
       }
       onCompleted();
