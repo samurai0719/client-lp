@@ -8,11 +8,12 @@
    すべてのCTA（ヘッダー / ハンバーガー / 各セクション / 料金プラン /
    最終CTA / スマホ追従）が この2つの値を参照している。
 
-     現在        : 無料相談フォーム（別ページ）へ遷移
+     現在        : 無料デザインのチャット申し込み（/free-design）へ遷移
+                   （旧：無料相談フォーム /contact。戻す場合は CTA_HREF = "/contact"）
      LINEの場合  : CTA_HREF = "https://lin.ee/xxxx"  CTA_EXTERNAL = true
      外部フォーム: CTA_HREF = "https://..."          CTA_EXTERNAL = true
    ═══════════════════════════════════════════════════════════════════════════ */
-export const CTA_HREF = "/contact";
+export const CTA_HREF = "/free-design";
 export const CTA_EXTERNAL = false;
 
 /**
@@ -24,7 +25,7 @@ export function ctaHrefForPlan(planId: string): string {
   return `${CTA_HREF}?plan=${encodeURIComponent(planId)}`;
 }
 
-export const CTA_LABEL = "無料で相談してみる";
+export const CTA_LABEL = "ホームページを無料で作る";
 
 export const SITE = {
   name: "adofy",
@@ -44,7 +45,7 @@ export const NAV = [
   { href: "#faq", label: "よくある質問" },
 ] as const;
 
-export const CTA_NOTES = ["相談無料", "無理な営業なし", "オンライン相談対応"] as const;
+export const CTA_NOTES = ["デザイン案の作成・確認まで無料", "選ぶだけで約2分", "無理な営業なし"] as const;
 
 /**
  * 最終CTAの直前に出す一文（申し込みを後押しする案内）。

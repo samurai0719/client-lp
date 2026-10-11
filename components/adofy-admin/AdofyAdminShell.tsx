@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LayoutDashboard, LifeBuoy, LogOut, Mail, MessageSquare, Truck } from "lucide-react";
+import { LayoutDashboard, LifeBuoy, LogOut, Mail, MessageSquare, Palette, Truck } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
 
@@ -47,6 +47,13 @@ export default function AdofyAdminShell({ children }: { children: React.ReactNod
             >
               <MessageSquare className="h-4 w-4" />
               無料相談
+            </Link>
+            <Link
+              href="/adofy-admin/hp-design"
+              className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-2 text-sm font-bold text-yellow-700 hover:bg-yellow-50"
+            >
+              <Palette className="h-4 w-4" />
+              無料デザイン
             </Link>
             <Link
               href="/adofy-admin/saiyo-rescue"
