@@ -36,6 +36,10 @@ export interface Field {
   unit?: string;
   /** true なら DB の独立カラムへ保存する */
   column?: boolean;
+  /** true なら「さらに詳しく入力する（任意）」を開いたときだけ表示する */
+  advanced?: boolean;
+  /** フォームの初期値（よくある回答を選択済みにして入力の手間を減らす） */
+  defaultValue?: string | string[];
 }
 
 export interface Step {
@@ -122,100 +126,94 @@ export const PREFECTURES = [
 
 /* ── STEP定義 ────────────────────────────────────────────────────────── */
 
+export const SMOKING_POLICIES = [
+  "屋内禁煙",
+  "屋内禁煙（屋外に喫煙場所あり）",
+  "喫煙室あり（屋内原則禁煙）",
+  "敷地内禁煙",
+  "対策なし（喫煙可）",
+] as const;
+
+/**
+ * 入力は2ステップ。required の項目と、advanced でない任意項目だけを最初に見せ、
+ * advanced: true の項目は「さらに詳しく入力する（任意）」を開いたときだけ表示する。
+ * 企業テーブルへ入れる項目は必ず STEPS[0] に置くこと（toCompanyRow が参照する）。
+ */
 export const STEPS: Step[] = [
   {
     no: 1,
-    title: "企業情報",
-    description: "求人を掲載する会社の情報です。応募通知はここで登録したメールアドレスへ届きます。",
+    title: "会社情報",
+    description: "応募があったとき、ここに入力したメールアドレスへ応募者の情報が届きます。",
     fields: [
       { key: "companyName", label: "会社名", type: "text", required: true, column: true, max: 200, placeholder: "例）株式会社ドラテク運輸" },
-      { key: "companyNameKana", label: "会社名ふりがな", type: "text", required: true, column: true, max: 200, placeholder: "例）かぶしきがいしゃどらてくうんゆ" },
-      { key: "corporateNumber", label: "法人番号", type: "text", max: 13, column: true, help: "13桁。個人事業主の場合は空欄で構いません。" },
-      { key: "representativeName", label: "代表者名", type: "text", required: true, column: true, max: 100 },
-      { key: "postalCode", label: "本社郵便番号", type: "postal", required: true, column: true, placeholder: "例）5000000" },
-      { key: "addressPrefecture", label: "本社所在地（都道府県）", type: "select", required: true, column: true, options: PREFECTURES },
-      { key: "address", label: "本社所在地（市区町村以下）", type: "text", required: true, column: true, max: 200 },
-      { key: "websiteUrl", label: "会社ホームページURL", type: "url", column: true, max: 500 },
-      { key: "contactName", label: "採用担当者名", type: "text", required: true, column: true, max: 100 },
-      { key: "notificationEmail", label: "応募通知先メールアドレス", type: "email", required: true, column: true, max: 200, help: "求人登録の確認メールと、応募者情報の自動送信先になります。" },
-      { key: "notificationEmailConfirm", label: "メールアドレス（確認入力）", type: "email", required: true, max: 200 },
-      { key: "phone", label: "会社電話番号", type: "tel", required: true, column: true, help: "ドラテクから営業電話はいたしません。求人情報の記載内容としてお預かりします。" },
-      { key: "businessDescription", label: "事業内容", type: "textarea", required: true, column: true, max: 1000, placeholder: "例）一般貨物自動車運送事業／食品のルート配送" },
-      { key: "employeeCount", label: "従業員数", type: "select", column: true, options: EMPLOYEE_COUNTS },
-      { key: "vehicleCount", label: "保有車両数", type: "text", column: true, max: 100, placeholder: "例）4t車10台／10t車5台" },
+      { key: "contactName", label: "担当者名", type: "text", required: true, column: true, max: 100, placeholder: "例）山田 太郎" },
+      { key: "phone", label: "電話番号", type: "tel", required: true, column: true, placeholder: "例）0582001234", help: "ドラテクから営業電話はいたしません。" },
+      { key: "notificationEmail", label: "メールアドレス", type: "email", required: true, column: true, max: 200, placeholder: "例）saiyo@example.co.jp" },
+      { key: "addressPrefecture", label: "会社所在地（都道府県）", type: "select", required: true, column: true, options: PREFECTURES },
+      { key: "address", label: "会社所在地（市区町村・番地）", type: "text", required: true, column: true, max: 200, placeholder: "例）岐阜市〇〇町1-2-3" },
+      { key: "websiteUrl", label: "会社HP", type: "url", column: true, max: 500, placeholder: "例）https://example.co.jp" },
+      { key: "companyNameKana", label: "会社名ふりがな", type: "text", column: true, max: 200, advanced: true },
+      { key: "representativeName", label: "代表者名", type: "text", column: true, max: 100, advanced: true },
+      { key: "corporateNumber", label: "法人番号", type: "text", max: 13, column: true, advanced: true },
+      { key: "postalCode", label: "郵便番号", type: "postal", column: true, advanced: true },
+      { key: "businessDescription", label: "事業内容", type: "textarea", column: true, max: 1000, advanced: true, placeholder: "例）一般貨物自動車運送事業／食品のルート配送" },
+      { key: "employeeCount", label: "従業員数", type: "select", column: true, options: EMPLOYEE_COUNTS, advanced: true },
+      { key: "vehicleCount", label: "保有車両数", type: "text", column: true, max: 100, advanced: true, placeholder: "例）4t車10台／10t車5台" },
     ],
   },
   {
     no: 2,
-    title: "求人基本情報",
-    description: "求職者に表示される求人の基本情報です。",
+    title: "求人情報",
+    description: "求職者に表示される内容です。わかる範囲でご入力ください。",
     fields: [
-      { key: "jobTitle", label: "求人タイトル", type: "text", required: true, column: true, max: 100, placeholder: "例）【中型ドライバー】食品ルート配送／年間休日115日" },
       { key: "jobTypes", label: "募集職種", type: "multiselect", required: true, column: true, options: JOB_TYPES },
-      { key: "jobDescription", label: "仕事内容", type: "textarea", required: true, column: true, max: 3000 },
-      { key: "hiringCount", label: "募集人数", type: "text", required: true, column: true, max: 50, placeholder: "例）2名" },
-      { key: "employmentType", label: "雇用形態", type: "select", required: true, column: true, options: EMPLOYMENT_TYPES },
-      { key: "contractPeriod", label: "契約期間", type: "text", max: 200, placeholder: "例）期間の定めなし" },
-      { key: "contractRenewal", label: "契約更新の有無と基準", type: "textarea", max: 500 },
-      { key: "trialPeriod", label: "試用期間", type: "text", max: 200, placeholder: "例）3か月" },
-      { key: "trialConditions", label: "試用期間中の条件", type: "textarea", max: 500, help: "試用期間中に労働条件が変わる場合は必ずご記入ください。" },
-      { key: "workPostalCode", label: "勤務地郵便番号", type: "postal", required: true, column: true },
       { key: "workPrefecture", label: "勤務地（都道府県）", type: "select", required: true, column: true, options: PREFECTURES },
-      { key: "workAddress", label: "勤務地住所（市区町村以下）", type: "text", required: true, column: true, max: 200 },
-      { key: "relocation", label: "転勤の有無", type: "select", required: true, column: true, options: RELOCATION },
-      { key: "changeScope", label: "就業場所・業務の変更の範囲", type: "textarea", required: true, max: 500, help: "労働条件明示のルールで必要な項目です。変更の可能性がない場合は「変更なし」とご記入ください。" },
-    ],
-  },
-  {
-    no: 3,
-    title: "勤務条件",
-    description: "労働条件は求職者が応募を判断する最重要項目です。実際の条件を正確にご記入ください。",
-    fields: [
-      { key: "workingHours", label: "就業時間", type: "text", required: true, column: true, max: 200, placeholder: "例）8:00〜17:00" },
-      { key: "breakTime", label: "休憩時間", type: "text", max: 100, placeholder: "例）60分" },
-      { key: "overtime", label: "残業の有無", type: "select", required: true, options: OVERTIME },
-      { key: "avgOvertimeHours", label: "月平均残業時間", type: "text", max: 50, placeholder: "例）20時間" },
-      { key: "holidays", label: "休日", type: "text", required: true, column: true, max: 200, placeholder: "例）日曜・祝日＋土曜隔週" },
-      { key: "leave", label: "休暇", type: "textarea", max: 500, placeholder: "例）年次有給休暇、夏季休暇、年末年始" },
-      { key: "annualHolidays", label: "年間休日数", type: "text", max: 50, placeholder: "例）115日" },
-      { key: "salaryType", label: "給与形態", type: "select", required: true, column: true, options: SALARY_TYPES },
-      { key: "salaryMin", label: "給与下限", type: "number", required: true, column: true, unit: "円" },
-      { key: "salaryMax", label: "給与上限", type: "number", required: true, column: true, unit: "円" },
-      { key: "fixedOvertime", label: "固定残業代の有無", type: "select", required: true, options: YES_NO },
-      { key: "fixedOvertimeAmount", label: "固定残業代の金額", type: "text", max: 100, help: "固定残業代が「あり」の場合は必ずご記入ください。" },
-      { key: "fixedOvertimeHours", label: "固定残業代の対象時間", type: "text", max: 100, placeholder: "例）月20時間分" },
-      { key: "excessPayment", label: "超過分の追加支給", type: "select", options: EXCESS_PAYMENT },
-      { key: "raise", label: "昇給", type: "text", max: 200, placeholder: "例）年1回" },
-      { key: "bonus", label: "賞与", type: "text", max: 200, placeholder: "例）年2回" },
-      { key: "allowances", label: "各種手当", type: "textarea", max: 500, placeholder: "例）無事故手当、家族手当" },
-      { key: "commuteAllowance", label: "交通費", type: "text", max: 200, placeholder: "例）規定支給（上限月2万円）" },
-      { key: "insurance", label: "社会保険", type: "multiselect", options: INSURANCE },
-      { key: "benefits", label: "福利厚生", type: "textarea", max: 500 },
-      { key: "smokingPolicy", label: "受動喫煙防止措置", type: "text", required: true, max: 200, placeholder: "例）屋内禁煙（屋外に喫煙所あり）", help: "求人票への記載が法令で義務付けられている項目です。" },
-    ],
-  },
-  {
-    no: 4,
-    title: "ドライバー求人詳細",
-    description: "免許や業務内容は、求人メールの配信条件にも使われます。",
-    fields: [
+      { key: "workAddress", label: "勤務地（市区町村など）", type: "text", required: true, column: true, max: 200, placeholder: "例）岐阜市（〇〇営業所）" },
+      { key: "salaryType", label: "給与の種類", type: "select", required: true, column: true, options: SALARY_TYPES, defaultValue: "月給" },
+      { key: "salaryMin", label: "給与（下限）", type: "number", required: true, column: true, unit: "円", placeholder: "例）280000" },
+      { key: "salaryMax", label: "給与（上限）", type: "number", column: true, unit: "円", placeholder: "例）400000", help: "金額が一律の場合は空欄で構いません。" },
+      { key: "workingHours", label: "勤務時間", type: "text", required: true, column: true, max: 200, placeholder: "例）8:00〜17:00（休憩60分）" },
+      { key: "holidays", label: "休日", type: "text", required: true, column: true, max: 200, placeholder: "例）土日祝（年間休日115日）" },
       { key: "requiredLicenses", label: "必要な免許", type: "multiselect", required: true, column: true, options: LICENSES },
-      { key: "preferredLicenses", label: "歓迎する免許", type: "multiselect", column: true, options: LICENSES },
-      { key: "requiredExperience", label: "必要な経験", type: "text", max: 200, placeholder: "例）中型車での配送経験1年以上" },
-      { key: "inexperiencedOk", label: "未経験応募の可否", type: "select", required: true, column: true, options: INEXPERIENCED },
-      { key: "vehicles", label: "使用する車両", type: "text", max: 200, placeholder: "例）4t平ボディ" },
-      { key: "deliveryArea", label: "配送エリア", type: "text", max: 200, placeholder: "例）岐阜県内および愛知県西部" },
-      { key: "cargo", label: "配送する荷物", type: "text", max: 200, placeholder: "例）常温食品（1個あたり10kg程度）" },
-      { key: "dailyDistance", label: "1日の走行距離", type: "text", max: 100, placeholder: "例）150km前後" },
-      { key: "distanceType", label: "長距離・中距離・地場", type: "select", column: true, options: DISTANCE_TYPES },
-      { key: "loadingWork", label: "手積み・手降ろしの有無", type: "select", options: LOADING_WORK },
-      { key: "vehicleEquipment", label: "車両設備", type: "text", max: 200, placeholder: "例）AT車、バックモニター、ドラレコ" },
-      { key: "training", label: "研修制度", type: "textarea", max: 500 },
-      { key: "licenseSupport", label: "資格取得支援", type: "textarea", max: 500 },
-      { key: "selectionMethod", label: "選考方法", type: "text", max: 200, placeholder: "例）書類選考→面接1回" },
-      { key: "imageUrl", label: "求人画像URL", type: "url", max: 500, help: "車両や職場の写真URL。お持ちでなければ空欄で構いません（画像アップロードは今後対応予定）。" },
-      { key: "listingEndDate", label: "掲載終了日", type: "date", column: true, help: "募集終了時はこの日に自動で配信を停止します。未定の場合は空欄で構いません。" },
-      { key: "notes", label: "その他の特記事項", type: "textarea", max: 1000 },
+      { key: "hiringCount", label: "募集人数", type: "text", required: true, column: true, max: 50, placeholder: "例）2名" },
+      { key: "jobDescription", label: "仕事内容", type: "textarea", required: true, column: true, max: 3000, placeholder: "例）4t車で県内のスーパーへ食品をルート配送します。1日10件ほど。手積みなし。" },
+      { key: "bonus", label: "賞与", type: "select", required: true, options: YES_NO },
+      { key: "insurance", label: "社会保険", type: "multiselect", options: INSURANCE, defaultValue: [...INSURANCE] },
+
+      // ── ここから下は「さらに詳しく入力する（任意）」 ──
+      { key: "jobTitle", label: "求人タイトル", type: "text", column: true, max: 100, advanced: true, placeholder: "例）【中型ドライバー】食品ルート配送／年間休日115日", help: "空欄の場合は募集職種と勤務地から自動で作成します。" },
+      { key: "inexperiencedOk", label: "未経験応募の可否", type: "select", column: true, options: INEXPERIENCED, advanced: true },
+      { key: "preferredLicenses", label: "歓迎する免許", type: "multiselect", column: true, options: LICENSES, advanced: true },
+      { key: "requiredExperience", label: "必要な経験", type: "text", max: 200, advanced: true, placeholder: "例）中型車での配送経験1年以上" },
+      { key: "vehicles", label: "使用する車両", type: "text", max: 200, advanced: true, placeholder: "例）4t平ボディ" },
+      { key: "deliveryArea", label: "配送エリア", type: "text", max: 200, advanced: true, placeholder: "例）岐阜県内および愛知県西部" },
+      { key: "cargo", label: "配送する荷物", type: "text", max: 200, advanced: true, placeholder: "例）常温食品（1個あたり10kg程度）" },
+      { key: "distanceType", label: "長距離・中距離・地場", type: "select", column: true, options: DISTANCE_TYPES, advanced: true },
+      { key: "loadingWork", label: "手積み・手降ろしの有無", type: "select", options: LOADING_WORK, advanced: true },
+      { key: "workPostalCode", label: "勤務地郵便番号", type: "postal", column: true, advanced: true },
+      { key: "relocation", label: "転勤の有無", type: "select", column: true, options: RELOCATION, advanced: true },
+      { key: "changeScope", label: "就業場所・業務の変更の範囲", type: "textarea", max: 500, advanced: true, placeholder: "例）変更なし" },
+      { key: "contractPeriod", label: "契約期間", type: "text", max: 200, advanced: true, placeholder: "例）期間の定めなし" },
+      { key: "contractRenewal", label: "契約更新の有無と基準", type: "textarea", max: 500, advanced: true },
+      { key: "trialPeriod", label: "試用期間", type: "text", max: 200, advanced: true, placeholder: "例）3か月（条件変更なし）" },
+      { key: "trialConditions", label: "試用期間中の条件", type: "textarea", max: 500, advanced: true },
+      { key: "overtime", label: "残業の有無", type: "select", options: OVERTIME, advanced: true },
+      { key: "avgOvertimeHours", label: "月平均残業時間", type: "text", max: 50, advanced: true, placeholder: "例）20時間" },
+      { key: "fixedOvertime", label: "固定残業代の有無", type: "select", options: YES_NO, advanced: true },
+      { key: "fixedOvertimeAmount", label: "固定残業代の金額・時間", type: "text", max: 100, advanced: true, placeholder: "例）月4万円（20時間分）", help: "固定残業代が「あり」の場合は必ずご記入ください。" },
+      { key: "excessPayment", label: "超過分の追加支給", type: "select", options: EXCESS_PAYMENT, advanced: true },
+      { key: "raise", label: "昇給", type: "text", max: 200, advanced: true, placeholder: "例）年1回" },
+      { key: "bonusDetail", label: "賞与の詳細", type: "text", max: 200, advanced: true, placeholder: "例）年2回（昨年実績 計2か月分）" },
+      { key: "employmentType", label: "雇用形態", type: "select", column: true, options: EMPLOYMENT_TYPES, advanced: true },
+      { key: "smokingPolicy", label: "受動喫煙対策", type: "select", options: SMOKING_POLICIES, advanced: true },
+      { key: "allowances", label: "各種手当", type: "textarea", max: 500, advanced: true, placeholder: "例）無事故手当、家族手当" },
+      { key: "commuteAllowance", label: "交通費", type: "text", max: 200, advanced: true, placeholder: "例）規定支給（上限月2万円）" },
+      { key: "benefits", label: "福利厚生", type: "textarea", max: 500, advanced: true },
+      { key: "training", label: "研修制度", type: "textarea", max: 500, advanced: true },
+      { key: "licenseSupport", label: "資格取得支援", type: "textarea", max: 500, advanced: true },
+      { key: "selectionMethod", label: "選考方法", type: "text", max: 200, advanced: true, placeholder: "例）書類選考→面接1回" },
+      { key: "listingEndDate", label: "掲載終了日", type: "date", column: true, advanced: true, help: "この日に自動で掲載を終了します。未定なら空欄で構いません。" },
+      { key: "notes", label: "その他の特記事項", type: "textarea", max: 1000, advanced: true },
     ],
   },
 ];
@@ -415,17 +413,11 @@ export function validateRegistration(body: RegistrationInput): ValidationResult 
     values[field.key] = value;
   }
 
-  // メールアドレスの確認入力の一致
-  if (
-    !errors.notificationEmail &&
-    !errors.notificationEmailConfirm &&
-    values.notificationEmail !== values.notificationEmailConfirm
-  ) {
-    errors.notificationEmailConfirm = "メールアドレスが一致しません。";
-  }
-
-  // 給与の下限・上限の整合
+  // 給与の下限・上限の整合。上限が空なら一律（下限と同額）として扱う
   const min = values.salaryMin as number | null;
+  if (typeof min === "number" && (values.salaryMax === null || values.salaryMax === undefined)) {
+    values.salaryMax = min;
+  }
   const max = values.salaryMax as number | null;
   if (typeof min === "number" && typeof max === "number" && min > max) {
     errors.salaryMax = "給与上限は下限以上の金額をご入力ください。";
@@ -434,6 +426,12 @@ export function validateRegistration(body: RegistrationInput): ValidationResult 
   // 固定残業代「あり」なら金額は必須（労働条件の明示に必要）
   if (values.fixedOvertime === "あり" && isEmpty(values.fixedOvertimeAmount)) {
     errors.fixedOvertimeAmount = "固定残業代の金額をご入力ください。";
+  }
+
+  // 求人タイトルが空なら「【募集職種】勤務地のドライバー求人」を自動で付ける
+  if (!errors.jobTypes && !errors.workPrefecture && isEmpty(values.jobTitle)) {
+    const types = (values.jobTypes as string[] | undefined) ?? [];
+    values.jobTitle = `【${types[0] ?? "ドライバー"}】${values.workPrefecture ?? ""}のドライバー求人`.slice(0, 100);
   }
 
   // 掲載終了日は未来日のみ

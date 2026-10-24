@@ -33,34 +33,28 @@ export default function Page() {
   return (
     <CompanyShell>
       <PageViewTracker event="company_register_view" />
-      <main className="bg-[#f5f8fc] py-10 sm:py-14">
+      <main className="bg-[#f5f8fc] py-6 sm:py-12">
         <div className="mx-auto w-full max-w-3xl px-5 sm:px-6">
-          <header className="mb-7 text-center">
-            <p className="mb-2 text-xs font-bold tracking-[0.2em] text-[#0d2b52]/45">
-              COMPANY &amp; JOB REGISTRATION
+          <header className="mb-6 text-center">
+            <p className="mb-2 inline-block rounded-full bg-[#ffc400] px-3 py-1 text-xs font-black text-[#0a1f4e]">
+              かんたん2ステップ・約3分
             </p>
-            <h1 className="text-2xl font-bold leading-relaxed text-[#0d2b52] sm:text-3xl">
-              求人情報を無料で登録する
+            <h1 className="text-2xl font-black leading-snug text-[#0a1f4e] sm:text-3xl">
+              無料で求人を掲載する
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-[#0d2b52]/75">
-              会社情報と求人情報をご入力ください。ご登録いただいた求人は{SERVICE.name}へ掲載し、
-              登録条件に一致する登録ドライバーへ自動でメール配信します。
-            </p>
-            <ul className="mt-5 flex flex-wrap justify-center gap-2">
-              {["企業登録0円", "求人掲載0円", "メール配信0円", "応募受信0円", "営業電話なし"].map(
-                (t) => (
-                  <li
-                    key={t}
-                    className="rounded-full border border-[#0d2b52]/15 bg-white px-3 py-1.5 text-[12px] font-bold text-[#0d2b52]"
-                  >
-                    {t}
-                  </li>
-                )
-              )}
+            <ul className="mt-4 flex flex-wrap justify-center gap-2">
+              {["登録0円", "掲載0円", "月額0円", "応募・面接0円", "登録後の営業電話なし"].map((t) => (
+                <li
+                  key={t}
+                  className="rounded-full border border-[#0d2b52]/15 bg-white px-3 py-1.5 text-[12px] font-bold text-[#0d2b52]"
+                >
+                  {t}
+                </li>
+              ))}
             </ul>
-            <p className="mt-4 text-[13px] leading-relaxed text-[#0d2b52]/60">
-              料金は採用1名につき{PRICING.successFee}
-              {PRICING.taxNote}の成果報酬のみです。{PRICING.condition}
+            <p className="mt-3 text-[13px] leading-relaxed text-[#0d2b52]/60">
+              料金は、ドライバーが入社した時だけ1名{PRICING.successFee}
+              {PRICING.taxNote}です。
             </p>
           </header>
 

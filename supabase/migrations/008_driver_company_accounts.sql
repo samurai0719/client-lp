@@ -3,6 +3,7 @@
 --   driver_companies      企業アカウント
 --   driver_job_postings   求人情報
 -- Supabase SQL Editor で実行してください
+-- 2026-10-09 フォーム簡略化に合わせ、任意入力になった項目の not null を外した（未適用のうちに修正）
 --
 -- 007（driver_company_inquiries）は問い合わせ型フォームのテーブルで、
 -- 今回の企業登録・求人登録とは別物。007は適用済みなら残して構わない。
@@ -13,10 +14,10 @@ create table if not exists driver_companies (
   id uuid primary key default gen_random_uuid(),
 
   company_name text not null,
-  company_name_kana text not null,
+  company_name_kana text,
   corporate_number text,
-  representative_name text not null,
-  postal_code text not null,
+  representative_name text,
+  postal_code text,
   address_prefecture text not null,
   address text not null,
   website_url text,
@@ -24,7 +25,7 @@ create table if not exists driver_companies (
   -- 応募通知先。求人登録の確認メールと応募者情報の送信先
   notification_email text not null,
   phone text not null,
-  business_description text not null,
+  business_description text,
   employee_count text,
   vehicle_count text,
 
@@ -66,11 +67,11 @@ create table if not exists driver_job_postings (
   job_types text[] not null default '{}',
   job_description text not null,
   hiring_count text not null,
-  employment_type text not null,
-  work_postal_code text not null,
+  employment_type text,
+  work_postal_code text,
   work_prefecture text not null,
   work_address text not null,
-  relocation text not null,
+  relocation text,
 
   -- 勤務条件（配信条件・一覧表示に使うもの）
   working_hours text not null,
@@ -82,7 +83,7 @@ create table if not exists driver_job_postings (
   -- ドライバー求人詳細（配信条件に使うもの）
   required_licenses text[] not null default '{}',
   preferred_licenses text[] not null default '{}',
-  inexperienced_ok text not null,
+  inexperienced_ok text,
   distance_type text,
 
   -- 上記以外の入力項目
