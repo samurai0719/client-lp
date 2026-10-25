@@ -1,0 +1,360 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   ドライバー採用サービス LP（/driver/scout）の演出・背景の見せ方。
+   文字の大きさ・フォント・太さ・改行、ボタンの形・大きさ・角丸は scout.css / doratech-company.css のまま。
+   ここでは「現れ方」「時間差」「背景・装飾の動き」「背景色・区切り線・余白」だけを足す。
+
+   スクロールの演出は ScrollMotion.tsx が .ds-lp に ds-motion を付けたときだけ効く
+   （「動きを減らす」設定・JSが動かない環境では、最初からすべて表示）。
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.ds-lp {
+  --mo-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* よくある質問を滑らかに開くため（対応ブラウザのみ。非対応ではすぐ開く） */
+  interpolate-size: allow-keywords;
+}
+
+/* ── スクロールで現れる：少し下から、ふわっと。同じ並びは0.09秒ずつずらす ── */
+.ds-lp.ds-motion :is(
+    .dt-head,
+    .ds-intro__body,
+    .ds-steps3 > li,
+    .ds-intro__note,
+    .ds-pgrid > li,
+    .ds-goal,
+    .ds-reason,
+    .ds-scard,
+    .ds-visible2__side,
+    .ds-ctabox,
+    .ds-retention__top,
+    .ds-split__who,
+    .ds-icongrid > li,
+    .ds-split__box,
+    .ds-small,
+    .ds-flownote,
+    .ds-flow3 > li,
+    .ds-cmp,
+    .ds-cmp__notes,
+    .ds-feeline > li,
+    .ds-ptable,
+    .ds-tbd,
+    .ds-rtable__row,
+    .ds-faq__item,
+    .ds-final__title,
+    .ds-final__body,
+    .ds-final .ds-cta
+  ) {
+  transition:
+    opacity 0.7s ease,
+    transform 0.85s var(--mo-ease);
+  transition-delay: var(--mo-d, 0s);
+}
+
+.ds-lp.ds-motion :is(
+    .dt-head,
+    .ds-intro__body,
+    .ds-steps3 > li,
+    .ds-intro__note,
+    .ds-pgrid > li,
+    .ds-goal,
+    .ds-reason,
+    .ds-scard,
+    .ds-visible2__side,
+    .ds-ctabox,
+    .ds-retention__top,
+    .ds-split__who,
+    .ds-icongrid > li,
+    .ds-split__box,
+    .ds-small,
+    .ds-flownote,
+    .ds-flow3 > li,
+    .ds-cmp,
+    .ds-cmp__notes,
+    .ds-feeline > li,
+    .ds-ptable,
+    .ds-tbd,
+    .ds-rtable__row,
+    .ds-faq__item,
+    .ds-final__title,
+    .ds-final__body,
+    .ds-final .ds-cta
+  ):not(.is-in) {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+/* 見出しは「小見出し → 見出し → リード」の順に時間差で（文字は分割しない） */
+.ds-lp.ds-motion .dt-head > * {
+  transition:
+    opacity 0.7s ease,
+    transform 0.85s var(--mo-ease),
+    clip-path 0.9s var(--mo-ease);
+}
+
+.ds-lp.ds-motion .dt-head > :nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.ds-lp.ds-motion .dt-head > :nth-child(3) {
+  transition-delay: 0.22s;
+}
+
+.ds-lp.ds-motion .dt-head:not(.is-in) {
+  opacity: 1;
+  transform: none;
+}
+
+.ds-lp.ds-motion .dt-head:not(.is-in) > * {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+/* 見出しの本文は、下から幕が上がるように現れる（大きさ・改行はそのまま） */
+.ds-lp.ds-motion .dt-head:not(.is-in) .dt-head__title {
+  clip-path: inset(0 0 100% 0);
+}
+
+.ds-lp.ds-motion .dt-head .dt-head__title {
+  clip-path: inset(0 0 -10% 0);
+}
+
+/* イラスト・画面例は、少し小さい状態から */
+.ds-lp.ds-motion :is(.ds-steps3 > li, .ds-pgrid > li):not(.is-in) :is(.ds-steps3__art, .ds-pgrid__art) {
+  transform: scale(0.92);
+}
+
+.ds-lp.ds-motion :is(.ds-steps3__art, .ds-pgrid__art) {
+  transition: transform 0.9s var(--mo-ease);
+  transition-delay: calc(var(--mo-d, 0s) + 0.1s);
+}
+
+/* サービスの3段階：カードのあとに、間の矢印が現れる */
+.ds-lp.ds-motion .ds-steps3 li + li::before {
+  transition: opacity 0.4s ease;
+  transition-delay: calc(var(--mo-d, 0s) + 0.2s);
+}
+
+.ds-lp.ds-motion .ds-steps3 li:not(.is-in)::before {
+  opacity: 0;
+}
+
+/* 料金比較：表が現れたあと、ドラテクの列に色が乗る */
+.ds-lp.ds-motion .ds-cmp :is(td.is-ours, th.is-ours) {
+  transition:
+    background-color 0.6s ease 0.55s,
+    border-color 0.6s ease 0.55s,
+    color 0.6s ease 0.55s;
+}
+
+.ds-lp.ds-motion .ds-cmp:not(.is-in) td.is-ours {
+  border-color: var(--dt-line);
+  background: #fff;
+}
+
+.ds-lp.ds-motion .ds-cmp:not(.is-in) th.is-ours {
+  background: #e6e9ee;
+  color: var(--dt-mute);
+}
+
+/* スマホは動きを小さく・短く */
+@media (max-width: 767px) {
+  .ds-lp.ds-motion :is(
+      .ds-intro__body,
+      .ds-steps3 > li,
+      .ds-pgrid > li,
+      .ds-reason,
+      .ds-scard,
+      .ds-icongrid > li,
+      .ds-flow3 > li,
+      .ds-feeline > li,
+      .ds-faq__item,
+      .ds-ctabox,
+      .ds-cmp
+    ):not(.is-in) {
+    transform: translateY(10px);
+  }
+  .ds-lp.ds-motion .dt-head:not(.is-in) > * {
+    transform: translateY(10px);
+  }
+}
+
+/* ── FV：読み込み時に画像 → 料金 → CTA の順に現れる（ローディング画面は無し） ── */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-lp .ds-hero__img {
+    animation: mo-fade-in 0.9s ease both;
+  }
+  .ds-lp .ds-hero__price {
+    animation: mo-rise 0.8s var(--mo-ease) both 0.25s;
+  }
+  .ds-lp .ds-hero__cta {
+    animation: mo-rise 0.8s var(--mo-ease) both 0.4s;
+  }
+}
+
+@keyframes mo-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes mo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ── ボタン：形・大きさは変えず、触れたとき・押したときの反応だけ ── */
+.ds-lp .dt-btn {
+  transition:
+    transform 0.25s var(--mo-ease),
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* 一定間隔で光る演出は止める（常に点滅する動きは使わない） */
+.ds-lp .dt-btn--lg::after {
+  display: none;
+}
+
+.ds-lp .dt-btn .dt-btn__arrow {
+  transition: transform 0.35s var(--mo-ease);
+}
+
+@media (hover: hover) {
+  .ds-lp .dt-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-2px);
+    box-shadow:
+      0 7px 0 #b98000,
+      0 16px 30px rgba(240, 165, 0, 0.36);
+  }
+  .ds-lp .dt-btn:hover .dt-btn__arrow {
+    transform: translateX(4px);
+  }
+}
+
+/* 押したとき：沈み込む（スマホでも分かるよう、少し暗くする） */
+.ds-lp .dt-btn:active {
+  filter: brightness(0.96);
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #b98000;
+  transition-duration: 0.08s;
+}
+
+/* ── よくある質問：滑らかに開き、＋が回って－になる ── */
+.ds-lp .ds-faq__item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 0.45s var(--mo-ease),
+    content-visibility 0.45s allow-discrete;
+}
+
+.ds-lp .ds-faq__item[open]::details-content {
+  block-size: auto;
+}
+
+.ds-lp .ds-faq__item summary::after {
+  transition: transform 0.35s var(--mo-ease);
+}
+
+.ds-lp .ds-faq__item[open] summary::after {
+  transform: rotate(180deg);
+}
+
+/* ── 背景・区切り線・余白 ─────────────────────────────── */
+/* セクションの間に細い区切り線 */
+.ds-lp main > section + section {
+  border-top: 1px solid rgba(20, 61, 46, 0.08);
+}
+
+@media (min-width: 900px) {
+  .ds-lp main > .dt-section {
+    padding-top: 88px;
+    padding-bottom: 88px;
+  }
+}
+
+/* 背景の縁取り文字（装飾。本文の後ろで、PCだけゆっくり左右に動く） */
+.ds-lp :is(.ds-problems2, .ds-flow2, .ds-final) {
+  position: relative;
+  overflow: hidden;
+}
+
+.ds-lp :is(.ds-problems2, .ds-flow2, .ds-final) > .dt-container {
+  position: relative;
+  z-index: 1;
+}
+
+.ds-lp :is(.ds-problems2, .ds-flow2, .ds-final)::before {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  z-index: 0;
+  color: transparent;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 64px;
+  font-style: italic;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  -webkit-text-stroke: 1px rgba(21, 81, 58, 0.12);
+}
+
+.ds-lp .ds-problems2::before {
+  content: "DRIVER RECRUIT  DRIVER RECRUIT  DRIVER RECRUIT";
+}
+
+.ds-lp .ds-flow2::before {
+  content: "FLOW  FLOW  FLOW  FLOW  FLOW  FLOW";
+}
+
+.ds-lp .ds-final::before {
+  content: "DRATECH  DRATECH  DRATECH  DRATECH";
+  top: auto;
+  bottom: 18px;
+  -webkit-text-stroke-color: rgba(184, 134, 43, 0.16);
+}
+
+@media (min-width: 900px) {
+  .ds-lp :is(.ds-problems2, .ds-flow2, .ds-final)::before {
+    font-size: 140px;
+  }
+}
+
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .ds-lp :is(.ds-problems2, .ds-flow2, .ds-final)::before {
+    animation: mo-drift 60s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes mo-drift {
+  to {
+    transform: translateX(-30%);
+  }
+}
+
+/* 最後のCTAの背景に、ゆっくり動く淡い光 */
+.ds-lp .ds-final::after {
+  content: "";
+  position: absolute;
+  inset: -30% -10% auto auto;
+  width: 60%;
+  aspect-ratio: 1;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184, 134, 43, 0.14), transparent 65%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-lp .ds-final::after {
+    animation: mo-float 18s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes mo-float {
+  to {
+    transform: translate(-12%, 18%);
+  }
+}

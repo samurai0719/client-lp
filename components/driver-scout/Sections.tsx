@@ -31,6 +31,7 @@ import {
   ACHIEVEMENTS,
   ACHIEVEMENTS_NOTE,
   ACHIEVEMENT_ROWS,
+  COMPARE,
   CTA_REASONS,
   FAQS,
   FINAL_CTA,
@@ -40,7 +41,6 @@ import {
   HERO_PRICES,
   HIDDEN_FIELDS,
   INTRO,
-  PRICE_EXAMPLE,
   PRICE_ROWS,
   PRICE_TBD,
   PROBLEMS,
@@ -423,6 +423,72 @@ export function Flow() {
   );
 }
 
+/* ═══════════════════════ 採用費用の比較 ═══════════════════════ */
+
+type CompareCell = { big?: string; pre?: string; text?: string; tax?: string };
+
+function CompareValue({ c }: { c: CompareCell }) {
+  return (
+    <>
+      {c.pre && <span className="ds-cmp__pre">{c.pre}</span>}
+      {c.big && <b className="ds-cmp__big">{c.big}</b>}
+      {c.text && <span className="ds-cmp__text">{c.text}</span>}
+      {c.tax && <span className="ds-cmp__tax">※{c.tax}</span>}
+    </>
+  );
+}
+
+export function Compare() {
+  return (
+    <section className="dt-section ds-compare" id="compare" aria-labelledby="ds-compare-title">
+      <div className="dt-container dt-container--narrow">
+        <SectionHead eyebrow="採用費用の比較" id="ds-compare-title" title={COMPARE.title} lead={COMPARE.lead} />
+
+        <table className="ds-cmp">
+          <caption className="dt-visually-hidden">中途採用1人あたりの平均採用コスト（調査値）と、ドラテクの料金例</caption>
+          <thead>
+            <tr>
+              <td className="ds-cmp__corner" aria-hidden="true" />
+              <th scope="col">{COMPARE.cols[0]}</th>
+              <th scope="col" className="is-ours">
+                {COMPARE.cols[1]}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {COMPARE.rows.map((r) => (
+              <tr key={r.label}>
+                <th scope="row">{r.label}</th>
+                <td>
+                  <CompareValue c={r.survey} />
+                </td>
+                <td className="is-ours">
+                  <CompareValue c={r.ours} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="ds-cmp__notes">
+          <p>{COMPARE.note}</p>
+          <p className="ds-cmp__caution">{COMPARE.caution}</p>
+          <p className="ds-cmp__source">
+            出典：
+            <a href={COMPARE.source.url} target="_blank" rel="noopener noreferrer">
+              {COMPARE.source.title}
+            </a>
+            <br />
+            {COMPARE.source.detail}
+          </p>
+        </div>
+
+        <CtaBlock location="compare" reason={COMPARE.ctaTitle} />
+      </div>
+    </section>
+  );
+}
+
 /* ═══════════════════════ 7. 料金 ═══════════════════════ */
 
 /** 費用がかかるタイミング（見る→登録→契約→採用決定）。採用決定のところだけ費用が出る */
@@ -455,18 +521,6 @@ export function Pricing() {
             );
           })}
         </ol>
-
-        <div className="ds-calc">
-          <p className="ds-calc__title">計算例</p>
-          <div className="ds-calc__bar" aria-hidden="true">
-            <span className="ds-calc__all">想定年収 {PRICE_EXAMPLE.salary}</span>
-            <span className="ds-calc__part">{PRICE_EXAMPLE.fee}</span>
-          </div>
-          <p className="ds-calc__result">
-            {PRICE_EXAMPLE.salary} × {PRICE_EXAMPLE.rate} ＝ <b>{PRICE_EXAMPLE.fee}</b>
-          </p>
-          <p className="ds-calc__note">採用が決まらなければ、0円です。</p>
-        </div>
 
         <dl className="ds-ptable">
           {PRICE_ROWS.map((r) => (
