@@ -1,36 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_JP } from "next/font/google";
-import "../company/doratech-company.css";
-import "./scout.css";
 
-import PageViewTracker from "@/components/driver-company/PageViewTracker";
-import { SectionHead } from "@/components/driver-company/lp/ui";
-import ApplyForm from "@/components/driver-scout/ApplyForm";
-import { Faq, Flow, Footer, Hero, Mechanism, Pricing, Problems, Visible } from "@/components/driver-scout/Sections";
-import { Header, StickyCta } from "@/components/driver-scout/ui";
+import { Faq, Flow, Hero, Mechanism, Pricing, Problems, Visible } from "@/components/driver-scout/Sections";
+import ScoutShell from "@/components/driver-scout/Shell";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { buildJsonLd, DESCRIPTION, OG_IMAGE, SITE_URL, TITLE } from "@/components/driver-scout/seo";
-import { WaitingCountProvider } from "@/components/driver-scout/waiting";
 import { getWaitingDriverCount } from "@/lib/driverCandidates/count";
 
 /**
  * ドライバー採用サービス（候補者プロフィール検索）企業向けLP。
- * 物理ルート … /driver/scout（公開ドメインは未設定）
+ * 物理ルート … /driver/scout（公開URL https://scout.adofy-site.com/ ）
  *
  * 対象は運送会社の経営者・採用担当者のみ。求職者向けの導線は置かない。
- * CTAはすべて「無料で求職者情報を見てみる」で、ページ下部の利用申込みフォーム（#apply）へ進む。
+ * CTAはすべて「無料で求職者情報を見てみる」で、匿名プロフィール一覧（/profiles）へ進む。
+ * 一覧で連絡先の開示を求めたときに、無料登録（/register）へ進む。
  * デザインはドラテク企業向けLP（/driver/company）の dt- スタイルを共有し、
- * このページ固有の部品だけ ./scout.css（ds- プレフィックス）に置いている。
+ * このサービス固有の部品だけ ./scout.css（ds- プレフィックス）に置いている。
  * 文言は components/driver-scout/content.ts。
  */
-
-const gothic = Noto_Sans_JP({
-  weight: ["400", "500", "700", "900"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--dt-font",
-  fallback: ["Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", "sans-serif"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -61,12 +47,9 @@ export const revalidate = 60;
 export default async function DriverScoutPage() {
   const waiting = await getWaitingDriverCount();
   return (
-    <WaitingCountProvider count={waiting}>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd()) }} />
-    <div className={`dt-lp ds-lp ${gothic.variable}`}>
-      <PageViewTracker event="company_lp_view" />
-      <Header />
-      <main>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd()) }} />
+      <ScoutShell waiting={waiting} event="company_lp_view" home sticky>
         <Hero />
         <Problems />
         <Mechanism />
@@ -74,21 +57,7 @@ export default async function DriverScoutPage() {
         <Pricing />
         <Flow />
         <Faq />
-        <section className="dt-section ds-apply" id="apply" aria-labelledby="ds-apply-title">
-          <div className="dt-container dt-container--narrow">
-            <SectionHead
-              eyebrow="APPLY"
-              id="ds-apply-title"
-              title="企業登録・利用申込みフォーム"
-              lead="企業確認とご契約のあと、個人を特定できない匿名プロフィールを無料で閲覧できます。"
-            />
-            <ApplyForm />
-          </div>
-        </section>
-      </main>
-      <Footer />
-      <StickyCta />
-    </div>
-    </WaitingCountProvider>
+      </ScoutShell>
+    </>
   );
 }

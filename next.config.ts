@@ -61,9 +61,12 @@ const doratechHosts = ["doratech.adofy-site.com"];
 
 // ドライバー採用サービス 候補者プロフィール検索（scout.adofy-site.com）
 //   /            → /driver/scout              （LP。proxy.ts で書き換え）
+//   /profiles    → /driver/scout/profiles     （匿名プロフィール一覧）
+//   /register    → /driver/scout/register     （無料登録）
 //   /robots.txt  → /driver/scout/robots.txt
 //   /sitemap.xml → /driver/scout/sitemap.xml
-const scoutHosts = ["scout.adofy-site.com"];
+// scout.localhost はローカル確認用（http://scout.localhost:3123/ で本番と同じURLの形で開ける）
+const scoutHosts = ["scout.adofy-site.com", "scout.localhost"];
 const doratechSubpages = ["register", "verify", "terms", "refund-policy", "privacy"];
 
 // コーポレートサイトのサブページ（public: 公開URL / internal: appルート）
@@ -238,12 +241,11 @@ const nextConfig: NextConfig = {
         { source: "/saiyo-rescue/thanks", has: [{ type: "host" as const, value: host }], destination: "/thanks", statusCode: 301 as const },
       ]),
       // 候補者プロフィール検索LP：内部パスへの直アクセスは公開URLへ寄せる（重複URLを作らない）
-      ...scoutHosts.map((host) => ({
-        source: "/driver/scout",
-        has: [{ type: "host" as const, value: host }],
-        destination: "/",
-        statusCode: 301 as const,
-      })),
+      ...scoutHosts.flatMap((host) => [
+        { source: "/driver/scout", has: [{ type: "host" as const, value: host }], destination: "/", statusCode: 301 as const },
+        { source: "/driver/scout/profiles", has: [{ type: "host" as const, value: host }], destination: "/profiles", statusCode: 301 as const },
+        { source: "/driver/scout/register", has: [{ type: "host" as const, value: host }], destination: "/register", statusCode: 301 as const },
+      ]),
       // ドラテク 企業向け（doratech.adofy-site.com）
       ...doratechHosts.flatMap((host) => [
         { source: "/admin", has: [{ type: "host" as const, value: host }], destination: "/adofy-admin/doratech", statusCode: 307 as const },
@@ -339,6 +341,8 @@ const nextConfig: NextConfig = {
         ...scoutHosts.flatMap((host) => [
           { source: "/robots.txt", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/robots.txt" },
           { source: "/sitemap.xml", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/sitemap.xml" },
+          { source: "/profiles", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/profiles" },
+          { source: "/register", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/register" },
         ]),
 
         // ── doratech.adofy-site.com（ドラテク 企業向け） ────────────────

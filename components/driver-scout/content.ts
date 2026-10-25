@@ -3,7 +3,8 @@
  *
  * ── 表現の決まり（変更しないこと） ──────────────────────────────────
  * ・対象は企業のみ。求職者に登録を促すCTA・説明は置かない
- * ・CTA文言は CTA_LABEL（「無料で求職者情報を見てみる」）だけを使う
+ * ・LPのCTA文言は CTA_LABEL（「無料で求職者情報を見てみる」）だけを使う。押すと匿名プロフィール一覧へ進む
+ * ・匿名プロフィール一覧で連絡先の開示を求めるときだけ、無料登録（DISCLOSE_LABEL）へ進める
  * ・未確認の実績・登録者数・採用率・導入社数・口コミ・返金保証・採用保証は書かない
  * ・「完全無料」とは書かない。「初期費用・月額費用0円、採用決定時に成功報酬」と書く
  * ・料金発生時点は「採用決定時」。「入社時」に書き換えない
@@ -16,10 +17,25 @@
 export const SERVICE_NAME = "ドラテク";
 export const SERVICE_KIND = "ドライバー採用サービス";
 
+/**
+ * 公開URL（scout.adofy-site.com）でのパス。物理ルートは /driver/scout 配下で、
+ * next.config.ts / proxy.ts でこのパスに振り分けている。
+ */
+export const SCOUT_PATHS = {
+  lp: "/",
+  profiles: "/profiles",
+  register: "/register",
+} as const;
+
 export const CTA_LABEL = "無料で求職者情報を見てみる";
-export const CTA_HREF = "#apply";
+export const CTA_HREF = SCOUT_PATHS.profiles;
 /** CTAの下に添える補足（無料の範囲を正しく伝える） */
-export const CTA_NOTE = "企業確認後、匿名プロフィールの閲覧は無料｜初期費用・月額費用0円";
+export const CTA_NOTE = "匿名プロフィールは登録なしで閲覧できます｜初期費用・月額費用0円";
+
+/** 匿名プロフィールから無料登録へ進むボタン */
+export const DISCLOSE_LABEL = "無料登録して連絡先の開示を依頼する";
+/** 無料登録フォームへ候補者番号を渡すURL */
+export const registerHref = (no?: string) => (no ? `${SCOUT_PATHS.register}?candidate=${no}` : SCOUT_PATHS.register);
 
 export const PRICE_SUMMARY = "初期費用0円・月額0円・採用決定時のみ想定年収の10％";
 
@@ -66,12 +82,12 @@ export const PRICES = [
 export const PRICE_NOTE = "成功報酬の算定方法・課金条件・返金条件などの詳細は、ご契約前に明示します。";
 
 export const FLOW = [
-  { title: "お申し込み", body: "このページのフォームから、会社情報と採用したい条件をお送りください。" },
-  { title: "採用条件のヒアリング", body: "採用したい職種・免許・人数・時期などをお伺いします。" },
+  { title: "匿名プロフィールを見る", body: "登録なしで、ドライバー希望者の匿名プロフィール（年代・免許・経験・希望勤務地など）を閲覧できます。" },
+  { title: "無料登録", body: "連絡を取りたい候補者がいたら、会社情報と採用したい条件を入力して無料登録します。" },
   { title: "サービス説明・料金条件の確認", body: "仕組みと、成功報酬の算定方法・課金条件・返金条件をご説明します。" },
   { title: "企業確認・契約", body: "企業情報を確認のうえ、ご契約の手続きを行います。" },
-  { title: "アカウント発行", body: "企業専用のアカウントを発行します。" },
-  { title: "候補者プロフィールの閲覧開始", body: "匿名プロフィールの検索・閲覧を始められます。" },
+  { title: "候補者へ連絡希望", body: "候補者本人が、貴社の情報と求人内容を確認します。" },
+  { title: "同意後に連絡先を開示", body: "候補者本人が同意した場合にだけ、氏名・電話番号などの連絡先が表示されます。" },
 ] as const;
 
 export const FAQS: { q: string; a: string[] }[] = [
@@ -86,7 +102,7 @@ export const FAQS: { q: string; a: string[] }[] = [
     q: "どのような免許・経験の人が登録していますか？",
     a: [
       "登録されている方の免許・経験・希望勤務地は、地域や時期によって変わります。",
-      "貴社の採用条件に近い方がいるかどうかは、**サービス説明の際にご案内します。**",
+      "現在登録されている方は、**匿名プロフィール一覧から登録なしでご確認いただけます。**",
     ],
   },
   {

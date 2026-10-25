@@ -8,6 +8,7 @@
  * エラーメッセージには入力値も内部情報も載せない。
  */
 import { PREFECTURES } from "./driverCompanyInquiry";
+import { CANDIDATE_NO_PATTERN } from "@/lib/driverCandidates/candidateNo";
 
 export { PREFECTURES };
 
@@ -55,6 +56,8 @@ export type ScoutApplyInput = {
   hiringCount?: string;
   hiringTiming?: string;
   privacyAgreed?: boolean;
+  /** 匿名プロフィールから来たときの候補者番号（任意） */
+  candidateNo?: string;
   /** ハニーポット。人間には見えない項目なので、値が入っていればボット */
   websiteUrl?: string;
   /** フォーム表示からの経過ミリ秒。極端に短い送信は自動化とみなす */
@@ -75,6 +78,8 @@ export type ScoutApplyValues = {
   licenses: string[];
   hiringCount: string;
   hiringTiming: string;
+  /** 連絡先の開示を依頼された候補者番号。一覧から来ていなければ null */
+  candidateNo: string | null;
 };
 
 /** 項目キー → エラーメッセージ */
@@ -163,6 +168,7 @@ export function validateScoutApply(
       licenses,
       hiringCount: hiringCount!,
       hiringTiming: hiringTiming!,
+      candidateNo: typeof body.candidateNo === "string" && CANDIDATE_NO_PATTERN.test(body.candidateNo) ? body.candidateNo : null,
     },
   };
 }

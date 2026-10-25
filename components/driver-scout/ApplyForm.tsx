@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, UserRound } from "lucide-react";
 import { PATHS } from "@/config/driver-company";
 import { loadUtm } from "@/lib/utm/storage";
 import {
@@ -15,7 +15,8 @@ import {
   type ScoutApplyErrors,
 } from "@/lib/types/driverScoutApply";
 import { trackCompany } from "../driver-company/track";
-import { CTA_LABEL } from "./content";
+import { CANDIDATE_NO_PATTERN } from "@/lib/driverCandidates/candidateNo";
+import { SCOUT_PATHS } from "./content";
 import { WaitingLine } from "./waiting";
 
 type Status = "idle" | "sending" | "done" | "failed";
@@ -65,9 +66,15 @@ export default function ApplyForm() {
   const mountedAt = useRef<number | null>(null);
   const started = useRef(false);
   const boxRef = useRef<HTMLDivElement>(null);
+  /** 匿名プロフィールから来たときの候補者番号（/register?candidate=XXXXXX） */
+  const [candidate, setCandidate] = useState<string | null>(null);
 
   useEffect(() => {
     mountedAt.current = Date.now();
+    const no = new URLSearchParams(window.location.search).get("candidate")?.toUpperCase() ?? "";
+    // URLの値を表示に使うため、決まった形（英数字6文字）のときだけ受け取る
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- URLはマウント後にしか読めない
+    if (CANDIDATE_NO_PATTERN.test(no)) setCandidate(no);
   }, []);
 
   const set = <K extends keyof Values>(key: K, value: Values[K]) => {
@@ -117,6 +124,7 @@ export default function ApplyForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...v,
+          candidateNo: candidate ?? undefined,
           websiteUrl: honeypot,
           elapsedMs: mountedAt.current === null ? undefined : Date.now() - mountedAt.current,
           utm: {
@@ -153,12 +161,21 @@ export default function ApplyForm() {
     return (
       <div ref={boxRef} className="ds-form ds-form--done" role="status">
         <CheckCircle2 className="ds-form__doneicon" aria-hidden="true" />
-        <h3>お申し込みを受け付けました</h3>
+        <h3>無料登録を受け付けました</h3>
         <p>
-          ご入力いただいた内容を確認のうえ、採用条件のヒアリングのため担当者よりご連絡します。
+          {candidate && (
+            <>
+              候補者 No.{candidate} への連絡先の開示依頼もあわせて受け付けました。
+              <br />
+            </>
+          )}
+          ご入力いただいた内容を確認のうえ、担当者よりご連絡します。
           <br />
-          企業確認・ご契約・アカウント発行のあと、匿名プロフィールの閲覧を始められます。
+          サービス説明・企業確認・ご契約のあと、候補者本人へ貴社の情報と求人内容をお伝えし、同意が得られた場合に連絡先を開示します。
         </p>
+        <a href={SCOUT_PATHS.profiles} className="ds-form__back">
+          匿名プロフィール一覧に戻る
+        </a>
       </div>
     );
   }
@@ -178,6 +195,14 @@ export default function ApplyForm() {
   return (
     <div ref={boxRef}>
       <form className="ds-form" onSubmit={submit} noValidate>
+        {candidate && (
+          <p className="ds-form__candidate">
+            <UserRound aria-hidden="true" />
+            <span>
+              <b>候補者 No.{candidate}</b> への連絡先の開示を依頼します
+            </span>
+          </p>
+        )}
         {errorCount > 0 && (
           <p className="ds-form__alert" role="alert">
             <AlertCircle aria-hidden="true" />
@@ -282,11 +307,11 @@ export default function ApplyForm() {
                 送信しています…
               </span>
             ) : (
-              <span className="dt-btn__label">{CTA_LABEL}</span>
+              <span className="dt-btn__label">{candidate ? "無料登録して開示を依頼する" : "無料登録する"}</span>
             )}
           </span>
         </button>
-        <p className="ds-form__foot">送信しただけで費用は発生しません。初期費用・月額費用0円、採用決定時のみ成功報酬（想定年収の10％）です。</p>
+        <p className="ds-form__foot">登録は無料です。登録しただけで費用は発生しません。初期費用・月額費用0円、採用決定時のみ成功報酬（想定年収の10％）です。</p>
       </form>
     </div>
   );

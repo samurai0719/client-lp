@@ -20,6 +20,10 @@ const DORATECH_PIXEL_ID = "1419823599748987";
 export type CompanyEvent =
   | "company_lp_view"
   | "company_cta_click"
+  /** 候補者の匿名プロフィール一覧（ドライバー採用サービス）の表示 */
+  | "company_profiles_view"
+  /** 匿名プロフィールで「連絡先の開示を依頼する」を押した */
+  | "company_disclose_click"
   /** 求人登録フォームの表示 */
   | "company_register_view"
   /** 最初の項目に入力した時点で1回 */

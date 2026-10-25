@@ -69,7 +69,8 @@ export async function proxy(request: NextRequest) {
   }
 
   // ── ドライバー採用サービス 候補者プロフィール検索（scout.adofy-site.com） ─────
-  if (hostname === "scout.adofy-site.com" && pathname === "/") {
+  // scout.localhost はローカル確認用（next.config.ts の scoutHosts と合わせる）
+  if ((hostname === "scout.adofy-site.com" || hostname === "scout.localhost") && pathname === "/") {
     return NextResponse.rewrite(new URL("/driver/scout", request.url));
   }
 

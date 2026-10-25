@@ -91,9 +91,14 @@ http://localhost:3000/gaikou
 
 ## ドライバー採用サービス（候補者プロフィール検索）企業向けLP
 
-- ローカルURL: `http://localhost:3000/driver/scout`（公開ドメイン未設定・noindex）
+- 公開URL: `https://scout.adofy-site.com/`（物理ルート `/driver/scout`。振り分けは `next.config.ts` の `scoutHosts` と `proxy.ts`）
+- ローカルURL: `http://scout.localhost:3000/`（本番と同じURLの形で開ける。`/driver/scout` 直打ちだとページ間リンクが切れる）
 - 対象: 愛知県の運送会社の経営者・採用担当者のみ（求職者向けの導線は置かない）
-- CTA: すべて「無料で求職者情報を見てみる」→ ページ内の利用申込みフォーム（`#apply`）
+- ページ:
+  - `/` LP。CTAはすべて「無料で求職者情報を見てみる」→ `/profiles`
+  - `/profiles` 匿名プロフィール一覧（`driver_candidates` の `status = 'waiting'`。氏名・連絡先は取得もしない）。登録なしで閲覧できる
+  - `/register` 無料登録フォーム（noindex）。一覧の「無料登録して連絡先の開示を依頼する」から `?candidate=候補者番号` 付きで来る
+- 候補者番号: `driver_candidates.id` の先頭6文字（大文字）。申込みの `message` と通知メールに載る
 - 文言: `components/driver-scout/content.ts`（表現ルールは同ファイル冒頭のコメント）
 - 見た目: ドラテク企業向けLPの `app/driver/company/doratech-company.css`（dt-）を共有し、固有部品は `app/driver/scout/scout.css`（ds-）
 - FV写真: `public/images/driver/company/hero-pc.webp` / `hero-sp.webp`（AI生成の仮画像。差し替えはこの2ファイルを置き換える）
@@ -106,13 +111,14 @@ http://localhost:3000/gaikou
 | 設定 | 内容 | 状態 |
 |---|---|---|
 | Supabase `driver_company_inquiries` | 申込みの保存先（migration 007） | 適用済み |
-| `supabase/migrations/014_driver_scout_apply.sql` | 市区町村・免許・採用希望時期・申込み種別の列を追加 | **要適用**（未適用の間は、これらの項目を `message` 列にまとめて保存する） |
+| `supabase/migrations/014_driver_scout_apply.sql` | 市区町村・免許・採用希望時期・申込み種別の列を追加 | 適用済み（2026-10-25） |
+| `supabase/migrations/015_driver_candidates.sql` | 求職者テーブル `driver_candidates` | 適用済み（2026-10-25）。テスト用の候補者1件（`full_name = '【テスト】仮登録'`, `utm_source = 'test'`）が入っている。**本番公開前に削除するか `status` を `withdrawn` にする** |
 | `RESEND_API_KEY` | 運営への通知メール | 本番 Vercel で設定。ローカルは空のため通知は送られない |
 | `DORATECH_NOTIFICATION_EMAIL`（なければ `NOTIFICATION_EMAIL` → `ADMIN_NOTIFICATION_EMAIL`） | 通知先メールアドレス | 環境変数で設定 |
 
 ### 未実装（LPに書いている仕組みのうち、まだシステムが無いもの）
 
 - 企業アカウントの発行・ログイン
-- 匿名プロフィールの検索・閲覧画面
-- 企業からの「連絡希望」と、候補者本人の同意による連絡先開示
+- 匿名プロフィールの絞り込み検索（一覧表示のみ実装）
+- 候補者本人へ開示依頼を届け、同意を受けて企業に連絡先を見せる仕組み（今は運営に通知メールが届くだけ）
 - 採用決定の記録と成功報酬の請求

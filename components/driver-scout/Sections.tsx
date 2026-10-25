@@ -247,7 +247,7 @@ export function Pricing() {
             </div>
           ))}
         </dl>
-        <p className="ds-price__free">匿名プロフィールの閲覧は無料です（企業確認後）。</p>
+        <p className="ds-price__free">匿名プロフィールは、登録なしで無料で閲覧できます。</p>
         <p className="dt-note">{PRICE_NOTE}</p>
         <ScoutCta location="pricing" />
       </div>
