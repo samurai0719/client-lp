@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 
-import { Achievements } from "@/components/driver-scout/Achievements";
-import { Faq, Flow, Hero, Mechanism, Pricing, Problems, Visible } from "@/components/driver-scout/Sections";
+import { AboutResults, Faq, FinalCta, Flow, Hero, Intro, Pricing, Problems, Reasons, Retention, Visible } from "@/components/driver-scout/Sections";
 import ScoutShell from "@/components/driver-scout/Shell";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { buildJsonLd, DESCRIPTION, OG_IMAGE, SITE_URL, TITLE } from "@/components/driver-scout/seo";
@@ -33,7 +32,7 @@ export const metadata: Metadata = {
     siteName: SERVICE_NAME,
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ ...OG_IMAGE, alt: "運送会社が求職者を選ぶ時代。初期費用0円・月額0円・採用決定時のみ想定年収の10％" }],
+    images: [{ ...OG_IMAGE, alt: "仕事を断らない採用へ。人が残り続けるドライバー採用。運営者の実績：採用支援実績100社以上・累計応募者数2,000人以上" }],
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: [OG_IMAGE.url] },
   formatDetection: { telephone: false },
@@ -54,13 +53,16 @@ export default async function DriverScoutPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd()) }} />
       <ScoutShell waiting={waiting} event="company_lp_view" home sticky>
         <Hero />
-        <Achievements />
+        <Intro />
         <Problems />
-        <Mechanism />
+        <Reasons />
         <Visible />
-        <Pricing />
+        <Retention />
         <Flow />
+        <Pricing />
+        <AboutResults />
         <Faq />
+        <FinalCta />
       </ScoutShell>
     </>
   );

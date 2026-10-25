@@ -1,86 +1,128 @@
 import Link from "next/link";
-import { BadgeCheck, EyeOff, Handshake, Lock, MapPin, MessageSquareShare, PhoneCall, Search, UserCheck } from "lucide-react";
-import type { ComponentType } from "react";
-import { OPERATOR, PATHS, SHOW_NOTICE_NUMBER } from "@/config/driver-company";
-import type { IllustrationProps } from "../driver-company/lp/illustrations/kit";
 import {
-  OwnerQuestion,
-  ProblemLargeLicense,
-  ProblemMediaCost,
-  ProblemNoApply,
-  ProblemNoHR,
-} from "../driver-company/lp/illustrations/scenes";
+  ArrowRight,
+  Check,
+  CircleCheck,
+  ClipboardCheck,
+  Eye,
+  Lock,
+  MessageCircle,
+  PhoneCall,
+  PhoneOff,
+  Repeat,
+  Search,
+  Truck,
+  UserCheck,
+  UserRound,
+  Users,
+  Weight,
+  type LucideIcon,
+} from "lucide-react";
+import type { ReactNode } from "react";
+import { OPERATOR, PATHS, SHOW_NOTICE_NUMBER } from "@/config/driver-company";
+import { OwnerQuestion } from "../driver-company/lp/illustrations/scenes";
 import { Rich, SectionHead } from "../driver-company/lp/ui";
 import {
+  ACHIEVEMENTS,
+  ACHIEVEMENTS_NOTE,
+  ACHIEVEMENT_ROWS,
+  CTA_REASONS,
   FAQS,
+  FINAL_CTA,
   FLOW,
+  FLOW_NOTE,
+  FREE_TABLE,
   HERO_PRICES,
   HIDDEN_FIELDS,
-  MECHANISM,
-  PRICES,
-  PRICE_FIXED,
+  INTRO,
+  PRICE_EXAMPLE,
+  PRICE_ROWS,
   PRICE_TBD,
   PROBLEMS,
+  PROBLEMS_GOAL,
+  REASONS,
+  RETENTION,
   SAMPLE_PROFILE,
   SERVICE_KIND,
   SERVICE_NAME,
-  VISIBLE_FIELDS,
 } from "./content";
 import { ScoutCta } from "./ui";
 
+/**
+ * 企業向けLPの各セクション。順番は page.tsx で並べる：
+ * FV → 1 何のサービスか → 2 悩み → 3 使う理由 → 4 見られる情報（CTA） → 5 入社前に話すこと
+ * → 6 流れ → 7 料金（CTA） → 8 実績の説明 → 9 よくある質問 → 10 最後のCTA
+ * 文言はすべて ./content.ts。
+ */
+
+/** 押す理由をボタンの直前に添えたCTA */
+function CtaBlock({ location, reason }: { location: string; reason: ReactNode }) {
+  return (
+    <div className="ds-ctabox">
+      <p className="ds-ctabox__reason">{reason}</p>
+      <ScoutCta location={location} />
+    </div>
+  );
+}
+
+/** 候補者カード（表示例）。highlight の項目だけ強調して「どこを見るか」を示す */
+function SampleCard({ highlight = [], compact = false }: { highlight?: readonly string[]; compact?: boolean }) {
+  const rows = SAMPLE_PROFILE.filter(([k]) => k !== "更新日");
+  return (
+    <div className={`ds-scard${compact ? " is-compact" : ""}`}>
+      <div className="ds-scard__head">
+        <span className="ds-scard__avatar" aria-hidden="true">
+          <UserRound />
+        </span>
+        <p className="ds-scard__no">候補者 No.＊＊＊＊</p>
+        <span className="ds-scard__tag">表示例</span>
+      </div>
+      <dl className="ds-scard__rows">
+        {rows.map(([k, v]) => (
+          <div key={k} className={highlight.includes(k) ? "is-hl" : undefined}>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="ds-scard__lock">
+        <Lock aria-hidden="true" />
+        氏名・連絡先は本人の同意後に表示
+      </p>
+    </div>
+  );
+}
+
 /* ═══════════════════════ 1. ファーストビュー ═══════════════════════ */
 
-/** FVの匿名プロフィールカードに出す項目（SAMPLE_PROFILE から抜粋。架空の表示イメージ） */
-const HERO_CARD_KEYS = ["年齢", "希望勤務地", "免許・資格", "運転経験", "希望年収帯"] as const;
-
 /**
- * ファーストビュー。文字・料金・CTAはすべてHTMLで組み、画像は文字の入っていない写真だけを使う
- * （public/images/driver/scout/fv-photo.webp。差し替えは写真だけを置き換える）。
- * スマホは「対象 → 見出し → 写真 → 料金 → CTA → カード」の順に縦へ並べ、要素同士を重ねない。
- * PCは左に文字・料金・CTA、右に写真とカードを置く。
+ * ファーストビュー。見出し・写真・運営者の実績は画像に焼き込み済みで、
+ * スマホ用（941×1672）とPC用（1672×941）を <picture> で出し分ける。
+ * 差し替えは public/images/driver/scout/fv-sp.webp / fv-pc.webp を置き換える。
+ * 画像の文字は検索エンジンや読み上げに伝わらないため、同じ内容を見えない h1 に持たせる。
+ * 料金とCTAは画像の直下にHTMLで置く。
  */
 export function Hero() {
   return (
     <section className="ds-hero" id="top" aria-labelledby="ds-hero-title">
-      <div className="ds-hero__inner">
-        <div className="ds-hero__copy">
-          <p className="ds-hero__target">
-            <MapPin aria-hidden="true" />
-            <span>
-              <b>愛知県の運送会社さま向け</b>
-              <span className="ds-hero__kind">{SERVICE_KIND}</span>
-            </span>
-          </p>
-          <h1 className="ds-hero__title" id="ds-hero-title">
-            <span>運送会社が</span>
-            <span>
-              <em>求職者を選ぶ</em>時代。
-            </span>
-          </h1>
-          <p className="ds-hero__lead">
-            <span>応募を待つだけの採用から、</span>
-            <br />
-            <span>条件に合うドライバーへ</span>
-            <span>企業からアプローチ。</span>
-          </p>
-        </div>
+      <h1 className="dt-visually-hidden" id="ds-hero-title">
+        仕事を断らない採用へ。人が残り続けるドライバー採用。愛知県の運送会社さま向け{SERVICE_KIND}。
+      </h1>
+      <picture>
+        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1672} />
+        <img
+          className="ds-hero__img"
+          src="/images/driver/scout/fv-pc.webp"
+          width={1672}
+          height={941}
+          alt={`運営者の実績：${ACHIEVEMENTS.map((a) => `${a.label}${a.value.toLocaleString("ja-JP")}${a.unit}`).join("、")}（${ACHIEVEMENTS_NOTE}）`}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
 
-        <div className="ds-hero__visual">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="ds-hero__photo"
-            src="/images/driver/scout/fv-photo.webp"
-            width={836}
-            height={664}
-            alt="倉庫前に停めた大型トラックと、腕を組んで立つドライバー"
-            fetchPriority="high"
-            loading="eager"
-            decoding="async"
-          />
-          {/* PCでは写真の右上に重ねる（スマホではCTAの下に別に出す） */}
-          <HeroCard className="ds-hero__card ds-hero__card--pc" compact />
-        </div>
-
+      <div className="ds-hero__below">
         <dl className="ds-hero__price" aria-label="料金">
           {HERO_PRICES.map((p) => (
             <div key={p.label} className={p.pre ? "is-fee" : undefined}>
@@ -93,273 +135,248 @@ export function Hero() {
             </div>
           ))}
         </dl>
-
         <div className="ds-hero__cta">
           <ScoutCta location="hero" />
         </div>
-
-        <HeroCard className="ds-hero__card ds-hero__card--sp" />
       </div>
     </section>
   );
 }
 
-/** FVの匿名プロフィールカード（架空の表示イメージ）。PCとスマホで置き場所が違うため2回描画し、CSSで片方だけ出す */
-function HeroCard({ className, compact = false }: { className: string; compact?: boolean }) {
-  // PCでは写真を隠しすぎないよう、年齢・免許・経験の3項目だけにする
-  const keys: readonly string[] = compact ? ["年齢", "免許・資格", "運転経験"] : HERO_CARD_KEYS;
-  const rows = SAMPLE_PROFILE.filter(([k]) => keys.includes(k));
+/* ═══════════════════════ 1. 何のサービスか ═══════════════════════ */
+
+const INTRO_ICONS: LucideIcon[] = [Eye, UserCheck, PhoneCall];
+
+export function Intro() {
   return (
-    <figure className={className}>
-      <div className="ds-hero__cardhead">
-        <span className="ds-hero__avatar" aria-hidden="true">
-          <UserCheck />
-        </span>
-        <p>候補者 No.＊＊＊＊</p>
-        <span className="ds-hero__sample">表示イメージ</span>
+    <section className="dt-section ds-intro" aria-labelledby="ds-intro-title">
+      <div className="dt-container dt-container--narrow">
+        <SectionHead eyebrow="ドラテクとは" id="ds-intro-title" title={INTRO.title} />
+        <div className="ds-intro__body">
+          {INTRO.body.map((t) => (
+            <p key={t}>{t}</p>
+          ))}
+        </div>
+        <ol className="ds-steps3" aria-label="利用の概要">
+          {INTRO.steps.map((st, i) => {
+            const Icon = INTRO_ICONS[i];
+            return (
+              <li key={st.title}>
+                <span className="ds-steps3__no">{["①", "②", "③"][i]}</span>
+                <span className="ds-steps3__icon" aria-hidden="true">
+                  <Icon />
+                </span>
+                <b>{st.title}</b>
+                <span className="ds-steps3__sub">{st.body}</span>
+              </li>
+            );
+          })}
+        </ol>
+        <p className="ds-intro__note">{INTRO.note}</p>
       </div>
-      <dl>
-        {rows.map(([k, v]) => (
-          <div key={k}>
-            <dt>{compact ? k.replace("・資格", "") : k}</dt>
-            <dd>{v}</dd>
-          </div>
-        ))}
-      </dl>
-      <figcaption className="ds-hero__lock">
-        <Lock aria-hidden="true" />
-        連絡先は本人の同意後に開示
-      </figcaption>
-    </figure>
+    </section>
   );
 }
 
-/* ═══════════════════════ 2. 採用課題 ═══════════════════════ */
+/* ═══════════════════════ 2. 経営者の悩み ═══════════════════════ */
 
-const PROBLEM_ARTS: Record<(typeof PROBLEMS)[number]["art"], ComponentType<IllustrationProps>> = {
-  noApply: ProblemNoApply,
-  license: ProblemLargeLicense,
-  cost: ProblemMediaCost,
-  noHR: ProblemNoHR,
+const PROBLEM_ICONS: Record<(typeof PROBLEMS)[number]["icon"], LucideIcon> = {
+  phoneOff: PhoneOff,
+  truck: Truck,
+  repeat: Repeat,
+  load: Weight,
+  wheel: Users,
 };
 
 export function Problems() {
   return (
-    <section className="dt-section ds-problems" aria-labelledby="ds-problems-title">
-      <div className="dt-container">
-        <SectionHead
-          eyebrow="PROBLEM"
-          id="ds-problems-title"
-          title={
-            <>
-              運送会社の
-              <br className="dt-sp-only" />
-              ドライバー採用、
-              <br />
-              こんな課題は
-              <br className="dt-sp-only" />
-              ありませんか？
-            </>
-          }
-          lead="名古屋・尾張・三河など、愛知県内でトラックドライバーを採用したい運送会社さまの、よくある悩みです。"
-        />
-        <ul className="dt-pcards">
-          {PROBLEMS.map((p, i) => {
-            const Art = PROBLEM_ARTS[p.art];
+    <section className="dt-section ds-problems2" aria-labelledby="ds-problems-title">
+      <div className="dt-container dt-container--narrow">
+        <SectionHead eyebrow="こんなお悩み" id="ds-problems-title" title="人が足りないことで、こんな悩みはありませんか？" />
+        <ul className="ds-plist">
+          {PROBLEMS.map((p) => {
+            const Icon = PROBLEM_ICONS[p.icon];
             return (
-              <li key={p.title} className="dt-pcard">
-                <div className="dt-pcard__artbox">
-                  <Art className="dt-pcard__art" />
-                </div>
-                <div className="dt-pcard__body">
-                  <span className="dt-pcard__no">課題 {String(i + 1).padStart(2, "0")}</span>
-                  <p className="dt-pcard__text">
-                    <strong>{p.title}</strong>
-                  </p>
-                  <p className="ds-pcard__sub">{p.body}</p>
-                </div>
+              <li key={p.text}>
+                <span className="ds-plist__icon" aria-hidden="true">
+                  <Icon />
+                </span>
+                {p.text}
               </li>
             );
           })}
         </ul>
-        <p className="ds-turn">
-          求人を出して<strong>応募を待つだけ</strong>ではなく、
-          <br />
-          条件に合う人へ<strong>企業から声をかける</strong>方法があります。
+        <p className="ds-goal">
+          <ArrowRight aria-hidden="true" />
+          {PROBLEMS_GOAL}
         </p>
       </div>
     </section>
   );
 }
 
-/* ═══════════════════════ 3. 仕組み ═══════════════════════ */
+/* ═══════════════════════ 3. 使う理由 ═══════════════════════ */
 
-const MECH_ICONS = [Search, MessageSquareShare, UserCheck, Lock, PhoneCall, Handshake];
-
-export function Mechanism() {
+export function Reasons() {
   return (
-    <section className="dt-section ds-mech" aria-labelledby="ds-mech-title">
-      <div className="dt-container dt-container--narrow">
-        <SectionHead
-          eyebrow="HOW IT WORKS"
-          id="ds-mech-title"
-          title={
-            <>
-              サービスの仕組み
-            </>
-          }
-          lead="連絡先は、候補者本人が企業と求人内容を確認して同意した場合にだけ開示されます。"
-        />
-        <ol className="ds-mech__list">
-          {MECHANISM.map((m, i) => {
-            const Icon = MECH_ICONS[i];
-            return (
-              <li key={m.title} className={`ds-mech__item${i === 3 ? " is-consent" : ""}${i === 5 ? " is-fee" : ""}`}>
-                <span className="ds-mech__icon" aria-hidden="true">
-                  <Icon strokeWidth={2.2} />
-                </span>
-                <div>
-                  <p className="ds-mech__no">STEP {i + 1}</p>
-                  <h3 className="ds-mech__title">{m.title}</h3>
-                  <p className="ds-mech__body">{m.body}</p>
+    <section className="dt-section ds-reasons" aria-labelledby="ds-reasons-title">
+      <div className="dt-container">
+        <SectionHead eyebrow="ドラテクを使う理由" id="ds-reasons-title" title="応募を待つだけでなく、会いたい人に声をかけられます。" />
+        <div className="ds-reasons__list">
+          {REASONS.map((r, i) => (
+            <article key={r.title} className={`ds-reason${i % 2 ? " is-rev" : ""}`}>
+              <div className="ds-reason__text">
+                <p className="ds-reason__no">理由 {["①", "②"][i]}</p>
+                <h3>{r.title}</h3>
+                <p>{r.body}</p>
+                <p className="ds-reason__ex">{r.example}</p>
+              </div>
+              <figure className="ds-reason__screen">
+                <SampleCard highlight={r.highlight} compact />
+                <figcaption>画面の表示例（架空）。色の付いた項目が、ここで確認する情報です。</figcaption>
+              </figure>
+            </article>
+          ))}
+
+          <article className="ds-reason ds-reason--table">
+            <div className="ds-reason__text">
+              <p className="ds-reason__no">理由 ③</p>
+              <h3>まずは無料で、どんな人がいるか見られる</h3>
+              <p>候補者の情報は、登録なしで見られます。登録や契約が必要になるのは、相手の連絡先を知りたくなってからです。</p>
+            </div>
+            <div className="ds-free" role="table" aria-label="無料でできることと、必要な手続き">
+              <div className="ds-free__row ds-free__row--head" role="row">
+                <span role="columnheader">できること</span>
+                <span role="columnheader">必要なこと</span>
+              </div>
+              {FREE_TABLE.map((row, i) => (
+                <div key={row.what} className={`ds-free__row${i === 0 ? " is-free" : ""}`} role="row">
+                  <span role="cell">{row.what}</span>
+                  <span role="cell">
+                    <b>{row.need}</b>
+                  </span>
                 </div>
-              </li>
-            );
-          })}
-        </ol>
-        <ScoutCta location="mechanism" />
+              ))}
+            </div>
+          </article>
+        </div>
       </div>
     </section>
   );
 }
 
-/* ═══════════════════════ 4. 閲覧できる情報 ═══════════════════════ */
+/* ═══════════════════════ 4. 見られる情報 ═══════════════════════ */
 
 export function Visible() {
   return (
-    <section className="dt-section ds-visible" aria-labelledby="ds-visible-title">
-      <div className="dt-container">
-        <SectionHead eyebrow="PROFILE" id="ds-visible-title" title="企業が閲覧できる情報" />
-        <div className="ds-visible__grid">
-          <figure className="ds-profile">
-            <figcaption className="ds-profile__cap">匿名プロフィールの表示イメージ</figcaption>
-            <div className="ds-profile__card">
-              <div className="ds-profile__head">
-                <span className="ds-profile__avatar" aria-hidden="true">
-                  <EyeOff />
-                </span>
-                <div>
-                  <p className="ds-profile__name">候補者 No.＊＊＊＊</p>
-                  <p className="ds-profile__hidden">氏名・連絡先は非表示</p>
-                </div>
-              </div>
-              <dl className="ds-profile__rows">
-                {SAMPLE_PROFILE.map(([k, v]) => (
-                  <div key={k}>
-                    <dt>{k}</dt>
-                    <dd>{v}</dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="ds-profile__lock">
+    <section className="dt-section ds-visible2" id="profile" aria-labelledby="ds-visible-title">
+      <div className="dt-container dt-container--narrow">
+        <SectionHead eyebrow="見られる情報" id="ds-visible-title" title="まずは、こんな情報を確認できます。" />
+        <div className="ds-visible2__grid">
+          <SampleCard />
+          <div className="ds-visible2__side">
+            <p className="ds-visible2__lead">
+              一覧ページでは、候補者ごとにこのカードが表示されます。<b>表示例は架空の内容です。</b>
+            </p>
+            <div className="ds-hidebox">
+              <p className="ds-hidebox__title">
                 <Lock aria-hidden="true" />
-                連絡先は、本人の同意後に表示されます
+                氏名や連絡先は、本人の同意後に表示されます。
               </p>
-            </div>
-            <p className="ds-profile__note">※表示イメージです。実在の求職者の情報ではありません。</p>
-          </figure>
-
-          <div className="ds-visible__lists">
-            <div className="ds-visible__box">
-              <h3>
-                <BadgeCheck aria-hidden="true" />
-                閲覧できる情報
-              </h3>
-              <ul className="ds-chips">
-                {VISIBLE_FIELDS.map((f) => (
-                  <li key={f}>{f}</li>
-                ))}
-              </ul>
-            </div>
-            <div className="ds-visible__box is-hidden">
-              <h3>
-                <EyeOff aria-hidden="true" />
-                匿名プロフィールでは表示しない情報
-              </h3>
-              <ul className="ds-chips">
+              <ul>
                 {HIDDEN_FIELDS.map((f) => (
                   <li key={f}>{f}</li>
                 ))}
               </ul>
-              <p>
-                匿名プロフィールでは、<strong>個人を特定できる情報は表示しません。</strong>
-                連絡先は、候補者本人が企業と求人内容を確認し、開示に同意した場合にだけ表示されます。
-              </p>
             </div>
           </div>
         </div>
+        <CtaBlock location="profile" reason={CTA_REASONS.profile} />
       </div>
     </section>
   );
 }
 
-/* ═══════════════════════ 5. 料金 ═══════════════════════ */
+/* ═══════════════════════ 5. 人が残る採用 ═══════════════════════ */
 
-export function Pricing() {
+export function Retention() {
   return (
-    <section className="dt-section ds-pricing" id="pricing" aria-labelledby="ds-pricing-title">
+    <section className="dt-section ds-retention" aria-labelledby="ds-retention-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="PRICE" id="ds-pricing-title" title="料金" />
-        <dl className="ds-price">
-          {PRICES.map((p) => (
-            <div key={p.label} className={"note" in p ? "is-fee" : undefined}>
-              <dt>{p.label}</dt>
-              <dd>
-                {"note" in p && <span className="ds-price__when">{p.note}</span>}
-                <b>{p.value}</b>
-              </dd>
-            </div>
+        <SectionHead eyebrow="人が残る採用のために" id="ds-retention-title" title={RETENTION.title} />
+        <div className="ds-intro__body">
+          {RETENTION.body.map((t) => (
+            <p key={t}>{t}</p>
           ))}
-        </dl>
-        <div className="ds-price__terms">
-          <div>
-            <h3>決まっていること</h3>
-            <ul className="is-fixed">
-              {PRICE_FIXED.map((t) => (
+        </div>
+        <div className="ds-split">
+          <div className="ds-split__box">
+            <p className="ds-split__who">
+              <Search aria-hidden="true" />
+              ドラテクで、会う前に分かること
+            </p>
+            <ul className="ds-tags">
+              {RETENTION.fromUs.map((t) => (
                 <li key={t}>{t}</li>
               ))}
             </ul>
           </div>
-          <div>
-            <h3>ご契約前に明示すること</h3>
-            <ul className="is-tbd">
-              {PRICE_TBD.map((t) => (
-                <li key={t}>{t}</li>
+          <div className="ds-split__box is-company">
+            <p className="ds-split__who">
+              <ClipboardCheck aria-hidden="true" />
+              面接で、会社が確認すること
+            </p>
+            <ul className="ds-checklist">
+              {RETENTION.checklist.map((t) => (
+                <li key={t}>
+                  <Check aria-hidden="true" strokeWidth={3} />
+                  {t}
+                </li>
               ))}
             </ul>
           </div>
         </div>
-        <ScoutCta location="pricing" />
+        <p className="ds-goal">
+          <MessageCircle aria-hidden="true" />
+          {RETENTION.close}
+        </p>
+        <p className="ds-small">{RETENTION.note}</p>
       </div>
     </section>
   );
 }
 
-/* ═══════════════════════ 6. 利用開始までの流れ ═══════════════════════ */
+/* ═══════════════════════ 6. 利用の流れ ═══════════════════════ */
 
 export function Flow() {
   return (
-    <section className="dt-section ds-flow" aria-labelledby="ds-flow-title">
+    <section className="dt-section ds-flow2" id="flow" aria-labelledby="ds-flow-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="FLOW" id="ds-flow-title" title="利用開始までの流れ" />
-        <ol className="ds-flow__list">
+        <SectionHead eyebrow="利用の流れ" id="ds-flow-title" title="見るところから、採用までの流れ。" />
+        <p className="ds-flownote">
+          <CircleCheck aria-hidden="true" />
+          {FLOW_NOTE}
+        </p>
+        <ol className="ds-flow2__list">
           {FLOW.map((f, i) => (
-            <li key={f.title}>
-              <span className="ds-flow__no">{i + 1}</span>
-              <div>
+            <li key={f.title} className={i === 0 ? "is-free" : undefined}>
+              <div className="ds-flow2__head">
+                <span className="ds-flow2__no">{i + 1}</span>
                 <h3>{f.title}</h3>
-                <p>{f.body}</p>
+                {i === 0 && <span className="ds-flow2__badge">登録なし</span>}
+                {i === 1 && <span className="ds-flow2__badge">無料登録</span>}
+                {i === 2 && <span className="ds-flow2__badge is-key">ここで契約</span>}
               </div>
+              <dl className="ds-flow2__lanes">
+                <div>
+                  <dt>会社がすること</dt>
+                  <dd>{f.company}</dd>
+                </div>
+                <div className="is-us">
+                  <dt>ドラテクが行うこと</dt>
+                  <dd>{f.us}</dd>
+                </div>
+              </dl>
             </li>
           ))}
         </ol>
@@ -368,14 +385,80 @@ export function Flow() {
   );
 }
 
-/* ═══════════════════════ 7. よくある質問 ═══════════════════════ */
+/* ═══════════════════════ 7. 料金 ═══════════════════════ */
+
+export function Pricing() {
+  return (
+    <section className="dt-section ds-pricing2" id="pricing" aria-labelledby="ds-pricing-title">
+      <div className="dt-container dt-container--narrow">
+        <SectionHead eyebrow="料金" id="ds-pricing-title" title="見るのは無料。費用がかかる条件も、先に確認できます。" />
+        <dl className="ds-ptable">
+          {PRICE_ROWS.map((r) => (
+            <div key={r.label} className={r.fixed ? undefined : "is-tbd"}>
+              <dt>{r.label}</dt>
+              <dd>{r.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="ds-calc">
+          <p className="ds-calc__title">計算例</p>
+          <p className="ds-calc__expr">
+            想定年収 <b>{PRICE_EXAMPLE.salary}</b> の人を採用した場合
+          </p>
+          <p className="ds-calc__result">
+            {PRICE_EXAMPLE.salary} × {PRICE_EXAMPLE.rate} ＝ <b>{PRICE_EXAMPLE.fee}</b>
+          </p>
+          <p className="ds-calc__note">採用が決まらなければ、0円です。</p>
+        </div>
+
+        <div className="ds-tbd">
+          <p className="ds-tbd__title">ご契約前に明示する項目（現在、条件を確定中です）</p>
+          <ul>
+            {PRICE_TBD.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </div>
+
+        <CtaBlock location="pricing" reason={CTA_REASONS.pricing} />
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════ 8. 実績の説明 ═══════════════════════ */
+
+export function AboutResults() {
+  return (
+    <section className="dt-section ds-results" aria-labelledby="ds-results-title">
+      <div className="dt-container dt-container--narrow">
+        <SectionHead eyebrow="実績について" id="ds-results-title" title="ページ上部の実績は、運営者のこれまでの採用支援の実績です。" />
+        <div className="ds-rtable">
+          {ACHIEVEMENT_ROWS.map((r) => (
+            <div key={r.label} className="ds-rtable__row">
+              <p className="ds-rtable__label">{r.label}</p>
+              <p>{r.means}</p>
+              <p className="ds-rtable__not">※{r.not}</p>
+            </div>
+          ))}
+        </div>
+        <p className="ds-small">
+          ドラテクは新しく始めたサービスのため、現在の登録者数は一覧ページの表示がすべてです。導入事例・お客様の声は、確認できたものから掲載します。
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════ 9. よくある質問 ═══════════════════════ */
 
 export function Faq() {
   return (
     <section className="dt-section dt-faq" aria-labelledby="ds-faq-title">
       <div className="dt-container dt-container--narrow">
         <OwnerQuestion className="dt-faq__art" />
-        <SectionHead eyebrow="Q&A" id="ds-faq-title" title="よくある質問" />
+        <SectionHead id="ds-faq-title" title="よくある質問" />
         <div className="dt-faq__list">
           {FAQS.map((f) => (
             <article key={f.q} className="dt-faq__item">
@@ -396,7 +479,22 @@ export function Faq() {
             </article>
           ))}
         </div>
-        <ScoutCta location="faq" />
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════ 10. 最後のCTA ═══════════════════════ */
+
+export function FinalCta() {
+  return (
+    <section className="dt-section ds-final" aria-labelledby="ds-final-title">
+      <div className="dt-container dt-container--narrow">
+        <h2 className="ds-final__title" id="ds-final-title">
+          {FINAL_CTA.title}
+        </h2>
+        <p className="ds-final__body">{FINAL_CTA.body}</p>
+        <ScoutCta location="final" />
       </div>
     </section>
   );
