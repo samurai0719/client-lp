@@ -6,6 +6,7 @@
  * ・LPのCTA文言は CTA_LABEL（「無料で求職者情報を見てみる」）だけを使う。押すと匿名プロフィール一覧へ進む
  * ・匿名プロフィール一覧で連絡先の開示を求めるときだけ、無料登録（DISCLOSE_LABEL）へ進める
  * ・未確認の実績・登録者数・採用率・導入社数・口コミ・返金保証・採用保証は書かない
+ *   （運営者の実績は ACHIEVEMENTS の、本人から提供を受けた数字だけを使う）
  * ・「完全無料」とは書かない。「初期費用・月額費用0円、採用決定時に成功報酬」と書く
  * ・料金発生時点は「採用決定時」。「入社時」に書き換えない
  * ・法的区分・許可を断定しない。「転職エージェント」「職業紹介」とも書かない
@@ -36,6 +37,16 @@ export const CTA_NOTE = "匿名プロフィールは登録なしで閲覧でき�
 export const DISCLOSE_LABEL = "無料登録して連絡先の開示を依頼する";
 /** 無料登録フォームへ候補者番号を渡すURL */
 export const registerHref = (no?: string) => (no ? `${SCOUT_PATHS.register}?candidate=${no}` : SCOUT_PATHS.register);
+
+/**
+ * 運営者の実績（運営者本人から提供を受けた数字。adofy の無料作成ページと同じ）。
+ * ドライバー採用サービス単体の実績ではないため、「運営者の実績」と明記して出す。
+ */
+export const ACHIEVEMENTS = [
+  { label: "集客支援実績", value: "100", unit: "社以上" },
+  { label: "累計集客数", value: "2,000", unit: "人以上" },
+] as const;
+export const ACHIEVEMENTS_NOTE = "運営者がこれまでに行ってきたWeb集客支援の実績です。";
 
 export const PRICE_SUMMARY = "初期費用0円・月額0円・採用決定時のみ想定年収の10％";
 

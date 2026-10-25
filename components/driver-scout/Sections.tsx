@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BadgeCheck, EyeOff, Handshake, Lock, MessageSquareShare, PhoneCall, Search, UserCheck } from "lucide-react";
+import { BadgeCheck, Crown, EyeOff, Handshake, Lock, MessageSquareShare, PhoneCall, Search, UserCheck } from "lucide-react";
 import type { ComponentType } from "react";
 import { OPERATOR, PATHS, SHOW_NOTICE_NUMBER } from "@/config/driver-company";
 import type { IllustrationProps } from "../driver-company/lp/illustrations/kit";
@@ -12,6 +12,8 @@ import {
 } from "../driver-company/lp/illustrations/scenes";
 import { Rich, SectionHead } from "../driver-company/lp/ui";
 import {
+  ACHIEVEMENTS,
+  ACHIEVEMENTS_NOTE,
   FAQS,
   FLOW,
   HIDDEN_FIELDS,
@@ -55,6 +57,33 @@ export function Hero() {
       </picture>
       <div className="ds-hero__cta">
         <ScoutCta location="hero" />
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════ 運営者の実績 ═══════════════════════ */
+
+export function Achievements() {
+  return (
+    <section className="ds-achv" aria-labelledby="ds-achv-title">
+      <div className="dt-container">
+        <h2 className="ds-achv__title" id="ds-achv-title">
+          運営者の実績
+        </h2>
+        <ul className="ds-achv__list">
+          {ACHIEVEMENTS.map((a) => (
+            <li key={a.label} className="ds-achv__item">
+              <Crown className="ds-achv__crown" aria-hidden="true" fill="currentColor" strokeWidth={1.5} />
+              <span className="ds-achv__label">{a.label}</span>
+              <span className="ds-achv__value">
+                <b>{a.value}</b>
+                {a.unit}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className="ds-achv__note">※{ACHIEVEMENTS_NOTE}</p>
       </div>
     </section>
   );

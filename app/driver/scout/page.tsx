@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 
-import { Faq, Flow, Hero, Mechanism, Pricing, Problems, Visible } from "@/components/driver-scout/Sections";
+import { Achievements, Faq, Flow, Hero, Mechanism, Pricing, Problems, Visible } from "@/components/driver-scout/Sections";
 import ScoutShell from "@/components/driver-scout/Shell";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { buildJsonLd, DESCRIPTION, OG_IMAGE, SITE_URL, TITLE } from "@/components/driver-scout/seo";
@@ -51,6 +51,7 @@ export default async function DriverScoutPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd()) }} />
       <ScoutShell waiting={waiting} event="company_lp_view" home sticky>
         <Hero />
+        <Achievements />
         <Problems />
         <Mechanism />
         <Visible />

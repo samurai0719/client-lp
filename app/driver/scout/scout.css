@@ -143,6 +143,85 @@
   }
 }
 
+/* ── 運営者の実績（FV直下） ─────────────────────────────── */
+.ds-achv {
+  padding: 28px 0 32px;
+  border-top: 1px solid #efe9d8;
+  background: #fdfbf4;
+  text-align: center;
+}
+
+.ds-achv__title {
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.ds-achv__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 560px;
+  margin: 14px auto 0;
+}
+
+.ds-achv__item {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 14px 8px 12px;
+  border: 1px solid #ecd9a0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(176, 132, 20, 0.12);
+}
+
+.ds-achv__crown {
+  width: 26px;
+  height: 26px;
+  color: #e0a800;
+}
+
+.ds-achv__label {
+  color: var(--dt-mute);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ds-achv__value {
+  white-space: nowrap;
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.ds-achv__value b {
+  margin-right: 2px;
+  color: #c2410c;
+  font-size: 34px;
+  letter-spacing: -0.01em;
+}
+
+.ds-achv__note {
+  margin-top: 10px;
+  color: var(--dt-mute);
+  font-size: 12px;
+}
+
+@media (max-width: 359px) {
+  .ds-achv__value b {
+    font-size: 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .ds-achv__value b {
+    font-size: 42px;
+  }
+}
+
 /* 幅の狭い端末（iPhone SE 初代など）でCTAの文言が折り返さないようにする */
 @media (max-width: 359px) {
   .ds-lp .dt-btn--lg {
