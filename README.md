@@ -86,3 +86,33 @@ http://localhost:3000/gaikou
 - ローカルURL: `http://localhost:3000/hotaru`（提案段階のため noindex・未デプロイ）
 - 店舗情報・確認状況: `config/hotaru.ts`
 - 詳細・公開前の確認リスト: [`app/hotaru/README.md`](app/hotaru/README.md)
+
+---
+
+## ドライバー採用サービス（候補者プロフィール検索）企業向けLP
+
+- ローカルURL: `http://localhost:3000/driver/scout`（公開ドメイン未設定・noindex）
+- 対象: 愛知県の運送会社の経営者・採用担当者のみ（求職者向けの導線は置かない）
+- CTA: すべて「無料で求職者情報を見てみる」→ ページ内の利用申込みフォーム（`#apply`）
+- 文言: `components/driver-scout/content.ts`（表現ルールは同ファイル冒頭のコメント）
+- 見た目: ドラテク企業向けLPの `app/driver/company/doratech-company.css`（dt-）を共有し、固有部品は `app/driver/scout/scout.css`（ds-）
+- FV写真: `public/images/driver/company/hero-pc.webp` / `hero-sp.webp`（AI生成の仮画像。差し替えはこの2ファイルを置き換える）
+
+### フォームの送信先と、必要な設定
+
+送信先は `/api/driver-scout-apply`（`app/api/driver-scout-apply/route.ts`）。
+保存と通知のどちらにも失敗した場合は送信失敗を表示し、送れたように見せかけない。
+
+| 設定 | 内容 | 状態 |
+|---|---|---|
+| Supabase `driver_company_inquiries` | 申込みの保存先（migration 007） | 適用済み |
+| `supabase/migrations/014_driver_scout_apply.sql` | 市区町村・免許・採用希望時期・申込み種別の列を追加 | **要適用**（未適用の間は、これらの項目を `message` 列にまとめて保存する） |
+| `RESEND_API_KEY` | 運営への通知メール | 本番 Vercel で設定。ローカルは空のため通知は送られない |
+| `DORATECH_NOTIFICATION_EMAIL`（なければ `NOTIFICATION_EMAIL` → `ADMIN_NOTIFICATION_EMAIL`） | 通知先メールアドレス | 環境変数で設定 |
+
+### 未実装（LPに書いている仕組みのうち、まだシステムが無いもの）
+
+- 企業アカウントの発行・ログイン
+- 匿名プロフィールの検索・閲覧画面
+- 企業からの「連絡希望」と、候補者本人の同意による連絡先開示
+- 採用決定の記録と成功報酬の請求

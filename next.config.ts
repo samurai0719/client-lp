@@ -58,6 +58,12 @@ const saiyoHosts = ["saiyo.adofy-site.com"];
 //   driver.taxidriver-beginner.com/company でも同じLPが開ける。
 // ─────────────────────────────────────────────────────────────────────────────
 const doratechHosts = ["doratech.adofy-site.com"];
+
+// ドライバー採用サービス 候補者プロフィール検索（scout.adofy-site.com）
+//   /            → /driver/scout              （LP。proxy.ts で書き換え）
+//   /robots.txt  → /driver/scout/robots.txt
+//   /sitemap.xml → /driver/scout/sitemap.xml
+const scoutHosts = ["scout.adofy-site.com"];
 const doratechSubpages = ["register", "verify", "terms", "refund-policy", "privacy"];
 
 // コーポレートサイトのサブページ（public: 公開URL / internal: appルート）
@@ -231,6 +237,13 @@ const nextConfig: NextConfig = {
         { source: "/saiyo-rescue", has: [{ type: "host" as const, value: host }], destination: "/", statusCode: 301 as const },
         { source: "/saiyo-rescue/thanks", has: [{ type: "host" as const, value: host }], destination: "/thanks", statusCode: 301 as const },
       ]),
+      // 候補者プロフィール検索LP：内部パスへの直アクセスは公開URLへ寄せる（重複URLを作らない）
+      ...scoutHosts.map((host) => ({
+        source: "/driver/scout",
+        has: [{ type: "host" as const, value: host }],
+        destination: "/",
+        statusCode: 301 as const,
+      })),
       // ドラテク 企業向け（doratech.adofy-site.com）
       ...doratechHosts.flatMap((host) => [
         { source: "/admin", has: [{ type: "host" as const, value: host }], destination: "/adofy-admin/doratech", statusCode: 307 as const },
@@ -321,6 +334,12 @@ const nextConfig: NextConfig = {
           has: [{ type: "host" as const, value: host }],
           destination: "/saiyo-rescue/thanks",
         })),
+
+        // ── scout.adofy-site.com（候補者プロフィール検索LP） ─────────────
+        ...scoutHosts.flatMap((host) => [
+          { source: "/robots.txt", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/robots.txt" },
+          { source: "/sitemap.xml", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/sitemap.xml" },
+        ]),
 
         // ── doratech.adofy-site.com（ドラテク 企業向け） ────────────────
         // ルート(/)は proxy.ts で処理する

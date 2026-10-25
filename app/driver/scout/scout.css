@@ -1,0 +1,888 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   ドライバー採用サービス（候補者プロフィール検索）LP（/driver/scout）専用スタイル
+   共通部品（見出し・ボタン・カード・FAQ・ヘッダー・フッター・固定CTA）は
+   app/driver/company/doratech-company.css の dt- クラスを使い、ここには ds- の部品だけを置く。
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.ds-lp {
+  --ds-ok: #12805c;
+}
+
+/* ── CTA ──────────────────────────────────────────────── */
+.ds-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.ds-cta__note {
+  text-wrap: balance;
+  color: var(--dt-mute);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ヘッダーのCTAは文言が長いため、スマホでは固定CTAに任せて隠す */
+.ds-header-cta {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .ds-header-cta {
+    display: block;
+  }
+}
+
+/* ── 待機中のドライバー数（CTAの上・赤字） ──────────────── */
+.ds-waiting {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #e5484d;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.ds-waiting b {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* 濃紺の背景の上では明るめの赤にして読みやすくする */
+.ds-hero .ds-waiting,
+.dt-ctablock--invert .ds-waiting {
+  color: #ff5a5f;
+}
+
+.ds-waiting__dot {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.ds-waiting__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: currentColor;
+  animation: ds-ping 1.6s ease-out infinite;
+}
+
+@keyframes ds-ping {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.ds-form__waiting {
+  display: flex;
+  justify-content: center;
+  margin-bottom: -10px;
+}
+
+.ds-form__waiting:empty {
+  display: none;
+}
+
+.dt-sticky__chip.ds-sticky-waiting {
+  background: #e5484d;
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-waiting__dot::after {
+    animation: none;
+  }
+}
+
+/* ── ファーストビュー（画像） ─────────────────────────────
+   コピー・料金は画像に焼き込み済み。スマホ用（2:3）とPC用（3:2）を <picture> で出し分け、
+   CTAボタンだけHTMLで画像の直下に置く。 */
+.ds-hero {
+  background: #06143a;
+}
+
+.ds-hero__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 1536px;
+  margin: 0 auto;
+}
+
+.ds-hero__cta {
+  padding: 4px 16px 32px;
+}
+
+.ds-hero .ds-cta {
+  margin-top: 16px;
+}
+
+.ds-hero .ds-cta__note {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@media (min-width: 768px) {
+  .ds-hero__cta {
+    padding: 0 32px 48px;
+  }
+  .ds-hero .ds-cta {
+    margin-top: 8px;
+  }
+}
+
+/* 幅の狭い端末（iPhone SE 初代など）でCTAの文言が折り返さないようにする */
+@media (max-width: 359px) {
+  .ds-lp .dt-btn--lg {
+    padding-left: 18px;
+    padding-right: 40px;
+    font-size: 16.5px;
+  }
+  .ds-lp .dt-btn--lg .dt-btn__arrow {
+    right: 14px;
+  }
+}
+
+/* ── 課題 ─────────────────────────────────────────────── */
+.ds-problems {
+  background: var(--dt-paper);
+}
+
+.ds-pcard__sub {
+  color: var(--dt-mute);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ds-turn {
+  margin-top: 36px;
+  color: var(--dt-navy);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.ds-turn strong {
+  color: var(--dt-blue);
+  font-weight: 900;
+}
+
+@media (min-width: 768px) {
+  .ds-turn {
+    font-size: 24px;
+  }
+}
+
+/* ── 仕組み ───────────────────────────────────────────── */
+.ds-mech__list {
+  display: grid;
+  gap: 26px;
+}
+
+.ds-mech__item {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--dt-line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--dt-shadow);
+}
+
+.ds-mech__item + .ds-mech__item::before {
+  content: "";
+  position: absolute;
+  top: -21px;
+  left: 38px;
+  border-style: solid;
+  border-width: 12px 10px 0 10px;
+  border-color: var(--dt-blue) transparent transparent transparent;
+}
+
+.ds-mech__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--dt-blue-soft);
+  color: var(--dt-blue);
+}
+
+.ds-mech__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.ds-mech__no {
+  color: var(--dt-blue);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.ds-mech__title {
+  color: var(--dt-navy);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.ds-mech__body {
+  margin-top: 4px;
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* 同意して初めて連絡先が開示される段階を強調 */
+.ds-mech__item.is-consent {
+  border: 2px solid var(--ds-ok);
+  background: #effaf5;
+}
+
+.ds-mech__item.is-consent .ds-mech__icon {
+  background: var(--ds-ok);
+  color: #fff;
+}
+
+.ds-mech__item.is-fee {
+  border: 2px solid var(--dt-yellow);
+  background: var(--dt-yellow-soft);
+}
+
+.ds-mech__item.is-fee .ds-mech__icon {
+  background: var(--dt-yellow);
+  color: var(--dt-navy);
+}
+
+/* ── 閲覧できる情報 ───────────────────────────────────── */
+.ds-visible {
+  background: var(--dt-paper);
+}
+
+.ds-visible__grid {
+  display: grid;
+  gap: 24px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.ds-profile__cap {
+  margin-bottom: 8px;
+  color: var(--dt-navy);
+  font-size: 14px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.ds-profile__card {
+  overflow: hidden;
+  border: 1px solid var(--dt-line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(10, 31, 78, 0.12);
+}
+
+.ds-profile__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--dt-navy);
+  color: #fff;
+}
+
+.ds-profile__avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.ds-profile__avatar svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ds-profile__name {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.ds-profile__hidden {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+}
+
+.ds-profile__rows > div {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--dt-line);
+  font-size: 14.5px;
+}
+
+.ds-profile__rows dt {
+  color: var(--dt-mute);
+  font-weight: 700;
+}
+
+.ds-profile__rows dd {
+  color: var(--dt-navy);
+  font-weight: 900;
+}
+
+.ds-profile__lock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 16px;
+  background: #effaf5;
+  color: var(--ds-ok);
+  font-size: 13.5px;
+  font-weight: 900;
+}
+
+.ds-profile__lock svg {
+  width: 16px;
+  height: 16px;
+}
+
+.ds-profile__note {
+  margin-top: 8px;
+  color: var(--dt-mute);
+  font-size: 12px;
+  text-align: center;
+}
+
+.ds-visible__lists {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.ds-visible__box {
+  padding: 18px 16px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--dt-shadow);
+}
+
+.ds-visible__box h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  color: var(--dt-navy);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.ds-visible__box h3 svg {
+  width: 20px;
+  height: 20px;
+  color: var(--dt-blue);
+}
+
+.ds-visible__box.is-hidden h3 svg {
+  color: var(--dt-red);
+}
+
+.ds-visible__box p {
+  margin-top: 12px;
+  font-size: 14.5px;
+  line-height: 1.75;
+}
+
+.ds-visible__box p strong {
+  color: var(--dt-navy);
+  font-weight: 900;
+}
+
+.ds-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ds-chips li {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--dt-blue-soft);
+  color: var(--dt-blue);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.ds-visible__box.is-hidden .ds-chips li {
+  background: #fdecec;
+  color: #b42318;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+@media (min-width: 768px) {
+  .ds-visible__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+/* ── 料金 ─────────────────────────────────────────────── */
+.ds-price {
+  overflow: hidden;
+  border: 3px solid var(--dt-navy);
+  border-radius: 20px;
+  background: #fff;
+}
+
+.ds-price > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-top: 1px solid var(--dt-line);
+}
+
+.ds-price > div:first-child {
+  border-top: 0;
+}
+
+.ds-price dt {
+  color: var(--dt-navy);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.ds-price dd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.ds-price b {
+  color: var(--dt-blue);
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.ds-price > div.is-fee {
+  background: var(--dt-yellow-soft);
+}
+
+.ds-price > div.is-fee b {
+  color: var(--dt-navy);
+  font-size: 26px;
+}
+
+.ds-price__when {
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: var(--dt-navy);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.ds-price__free {
+  margin-top: 16px;
+  color: var(--dt-navy);
+  font-size: 16px;
+  font-weight: 900;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .ds-price b {
+    font-size: 44px;
+  }
+  .ds-price > div.is-fee b {
+    font-size: 34px;
+  }
+}
+
+/* ── 利用開始までの流れ ───────────────────────────────── */
+.ds-flow {
+  background: var(--dt-paper);
+}
+
+.ds-flow__list {
+  position: relative;
+  display: grid;
+  gap: 12px;
+}
+
+.ds-flow__list li {
+  display: flex;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(10, 31, 78, 0.06);
+}
+
+.ds-flow__no {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--dt-navy);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.ds-flow__list li:last-child .ds-flow__no {
+  background: var(--dt-yellow);
+  color: var(--dt-navy);
+}
+
+.ds-flow__list h3 {
+  color: var(--dt-navy);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+.ds-flow__list p {
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* ── 申込みフォーム ───────────────────────────────────── */
+.ds-apply {
+  background: linear-gradient(180deg, var(--dt-blue-soft) 0%, #fff 100%);
+}
+
+.ds-form {
+  display: grid;
+  gap: 22px;
+  padding: 20px 16px 24px;
+  border: 1px solid var(--dt-line);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(10, 31, 78, 0.1);
+}
+
+.ds-form__group {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ds-form__group legend {
+  margin-bottom: 14px;
+  padding-left: 10px;
+  border-left: 5px solid var(--dt-blue);
+  color: var(--dt-navy);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.ds-form__row {
+  display: grid;
+  gap: 16px;
+}
+
+.ds-form__field {
+  min-width: 0;
+}
+
+.ds-form__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ds-req {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--dt-red);
+  color: #fff;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ds-input {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 1.5px solid #c9d3e3;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--dt-navy);
+  font-family: inherit;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ds-input::placeholder {
+  color: #9aa6bb;
+}
+
+.ds-input:focus {
+  border-color: var(--dt-blue);
+  box-shadow: 0 0 0 3px rgba(22, 89, 224, 0.15);
+}
+
+.ds-input[aria-invalid="true"] {
+  border-color: var(--dt-red);
+  background: #fff8f8;
+}
+
+select.ds-input {
+  appearance: none;
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230a1f4e' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right 14px center;
+  background-repeat: no-repeat;
+}
+
+.ds-chipset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  outline: none;
+}
+
+.ds-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 2px solid #c9d3e3;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--dt-navy);
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.ds-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ds-chip:has(input:focus-visible) {
+  outline: 3px solid var(--dt-blue-hi);
+  outline-offset: 2px;
+}
+
+.ds-chip.is-on {
+  border-color: var(--dt-blue);
+  background: var(--dt-blue);
+  color: #fff;
+}
+
+.ds-chip.is-on::before {
+  content: "✓";
+  margin-right: 4px;
+}
+
+.ds-form__err {
+  margin-top: 6px;
+  color: var(--dt-red);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.ds-form__alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(229, 72, 77, 0.35);
+  border-radius: 12px;
+  background: #fff4f4;
+  color: #b42318;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ds-form__alert svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
+
+.ds-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 2px solid #c9d3e3;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.ds-check input {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  accent-color: var(--dt-blue);
+}
+
+.ds-check span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 6px;
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.ds-check a {
+  color: var(--dt-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ds-check.is-on {
+  border-color: var(--dt-blue);
+  background: var(--dt-blue-soft);
+}
+
+.ds-check.is-err {
+  border-color: var(--dt-red);
+}
+
+.ds-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.ds-form__submit {
+  justify-self: center;
+  border: 0;
+}
+
+/* 送信ボタンには矢印が無いため左右の余白を均等にし、スマホでも1行に収める */
+.ds-form__submit.dt-btn--lg {
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .ds-form__submit.dt-btn--lg {
+    font-size: 21px;
+  }
+}
+
+.ds-form__submit:disabled {
+  cursor: progress;
+  filter: grayscale(0.3);
+  opacity: 0.8;
+}
+
+.ds-form__sending {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds-spin {
+  width: 20px;
+  height: 20px;
+  animation: ds-spin 0.9s linear infinite;
+}
+
+@keyframes ds-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ds-form__foot {
+  color: var(--dt-mute);
+  font-size: 12.5px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.ds-form--done {
+  justify-items: center;
+  text-align: center;
+}
+
+.ds-form__doneicon {
+  width: 56px;
+  height: 56px;
+  color: var(--ds-ok);
+}
+
+.ds-form--done h3 {
+  color: var(--dt-navy);
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.ds-form--done p {
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+@media (min-width: 768px) {
+  .ds-form {
+    padding: 32px 36px 32px;
+  }
+  .ds-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ── フッター ─────────────────────────────────────────── */
+.ds-footer__brand {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-spin {
+    animation-duration: 2.4s;
+  }
+}

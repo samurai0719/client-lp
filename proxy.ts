@@ -68,6 +68,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 307);
   }
 
+  // ── ドライバー採用サービス 候補者プロフィール検索（scout.adofy-site.com） ─────
+  if (hostname === "scout.adofy-site.com" && pathname === "/") {
+    return NextResponse.rewrite(new URL("/driver/scout", request.url));
+  }
+
   // 認証バイパス（ローカル開発 / Vercel Preview のみ有効、Production は絶対スキップしない）
   if (isAuthBypassEnabled()) {
     if (pathname === "/admin/login") {
