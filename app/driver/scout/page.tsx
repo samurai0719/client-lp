@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
-import { Achievements, Faq, Flow, Hero, Mechanism, Pricing, Problems, Visible } from "@/components/driver-scout/Sections";
+import { Achievements } from "@/components/driver-scout/Achievements";
+import { Faq, Flow, Hero, Mechanism, Pricing, Problems, Visible } from "@/components/driver-scout/Sections";
 import ScoutShell from "@/components/driver-scout/Shell";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { buildJsonLd, DESCRIPTION, OG_IMAGE, SITE_URL, TITLE } from "@/components/driver-scout/seo";

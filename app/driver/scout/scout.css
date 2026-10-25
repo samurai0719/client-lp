@@ -210,6 +210,72 @@
   font-size: 12px;
 }
 
+/* アニメーション（JSが動いて「動きを減らす」設定でないときだけ is-anim が付く） */
+.ds-achv.is-anim .ds-achv__item {
+  opacity: 0;
+  transform: translateY(18px) scale(0.96);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1.2);
+}
+
+.ds-achv.is-anim.is-shown .ds-achv__item {
+  opacity: 1;
+  transform: none;
+}
+
+.ds-achv.is-shown .ds-achv__crown {
+  animation: ds-crown 0.7s 0.35s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+
+/* 王冠にときどき光が走る */
+.ds-achv__item {
+  position: relative;
+  overflow: hidden;
+}
+
+.ds-achv.is-shown .ds-achv__item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 236, 170, 0.55) 50%, transparent 60%);
+  transform: translateX(-120%);
+  animation: ds-shine 3.6s 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.ds-achv__value b {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes ds-crown {
+  0% {
+    transform: translateY(-10px) scale(0.4) rotate(-14deg);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes ds-shine {
+  0%,
+  60% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-achv .ds-achv__crown,
+  .ds-achv .ds-achv__item::after {
+    animation: none !important;
+  }
+}
+
 @media (max-width: 359px) {
   .ds-achv__value b {
     font-size: 28px;

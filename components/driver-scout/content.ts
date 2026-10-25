@@ -39,14 +39,14 @@ export const DISCLOSE_LABEL = "無料登録して連絡先の開示を依頼す�
 export const registerHref = (no?: string) => (no ? `${SCOUT_PATHS.register}?candidate=${no}` : SCOUT_PATHS.register);
 
 /**
- * 運営者の実績（運営者本人から提供を受けた数字。adofy の無料作成ページと同じ）。
+ * 運営者の実績（運営者本人から提供を受けた数字。2,000人は求人への応募者数と確認済み）。
  * ドライバー採用サービス単体の実績ではないため、「運営者の実績」と明記して出す。
  */
 export const ACHIEVEMENTS = [
-  { label: "集客支援実績", value: "100", unit: "社以上" },
-  { label: "累計集客数", value: "2,000", unit: "人以上" },
+  { label: "採用支援実績", value: 100, unit: "社以上" },
+  { label: "累計応募者数", value: 2000, unit: "人以上" },
 ] as const;
-export const ACHIEVEMENTS_NOTE = "運営者がこれまでに行ってきたWeb集客支援の実績です。";
+export const ACHIEVEMENTS_NOTE = "運営者がこれまでに行ってきた採用支援の実績です。";
 
 export const PRICE_SUMMARY = "初期費用0円・月額0円・採用決定時のみ想定年収の10％";
 
