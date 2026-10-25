@@ -1,24 +1,29 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Check,
+  Building2,
   CircleCheck,
   ClipboardCheck,
+  Clock,
   Eye,
+  FileSignature,
+  GraduationCap,
+  Handshake,
+  HeartHandshake,
+  JapaneseYen,
   Lock,
   MessageCircle,
+  Package,
   PhoneCall,
-  PhoneOff,
-  Repeat,
+  Route,
   Search,
-  Truck,
+  Unlock,
   UserCheck,
   UserRound,
-  Users,
-  Weight,
   type LucideIcon,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
+import type { IllustrationProps } from "../driver-company/lp/illustrations/kit";
 import { OPERATOR, PATHS, SHOW_NOTICE_NUMBER } from "@/config/driver-company";
 import { OwnerQuestion } from "../driver-company/lp/illustrations/scenes";
 import { Rich, SectionHead } from "../driver-company/lp/ui";
@@ -46,6 +51,17 @@ import {
   SERVICE_KIND,
   SERVICE_NAME,
 } from "./content";
+import {
+  ProblemNoDriver,
+  ProblemOverload,
+  ProblemOwnerDrives,
+  ProblemRepeat,
+  ProblemTurnDown,
+  SceneChoose,
+  SceneContact,
+  SceneInterview,
+  SceneLook,
+} from "./illustrations";
 import { ScoutCta } from "./ui";
 
 /**
@@ -145,12 +161,12 @@ export function Hero() {
 
 /* ═══════════════════════ 1. 何のサービスか ═══════════════════════ */
 
-const INTRO_ICONS: LucideIcon[] = [Eye, UserCheck, PhoneCall];
+const INTRO_SCENES = [SceneLook, SceneChoose, SceneContact];
 
 export function Intro() {
   return (
     <section className="dt-section ds-intro" aria-labelledby="ds-intro-title">
-      <div className="dt-container dt-container--narrow">
+      <div className="dt-container">
         <SectionHead eyebrow="ドラテクとは" id="ds-intro-title" title={INTRO.title} />
         <div className="ds-intro__body">
           {INTRO.body.map((t) => (
@@ -159,15 +175,15 @@ export function Intro() {
         </div>
         <ol className="ds-steps3" aria-label="利用の概要">
           {INTRO.steps.map((st, i) => {
-            const Icon = INTRO_ICONS[i];
+            const Scene = INTRO_SCENES[i];
             return (
               <li key={st.title}>
-                <span className="ds-steps3__no">{["①", "②", "③"][i]}</span>
-                <span className="ds-steps3__icon" aria-hidden="true">
-                  <Icon />
-                </span>
-                <b>{st.title}</b>
-                <span className="ds-steps3__sub">{st.body}</span>
+                <Scene className="ds-steps3__art" />
+                <p className="ds-steps3__title">
+                  <span className="ds-steps3__no">{i + 1}</span>
+                  {st.title}
+                </p>
+                <p className="ds-steps3__sub">{st.body}</p>
               </li>
             );
           })}
@@ -180,28 +196,26 @@ export function Intro() {
 
 /* ═══════════════════════ 2. 経営者の悩み ═══════════════════════ */
 
-const PROBLEM_ICONS: Record<(typeof PROBLEMS)[number]["icon"], LucideIcon> = {
-  phoneOff: PhoneOff,
-  truck: Truck,
-  repeat: Repeat,
-  load: Weight,
-  wheel: Users,
+const PROBLEM_ARTS: Record<(typeof PROBLEMS)[number]["icon"], ComponentType<IllustrationProps>> = {
+  phoneOff: ProblemTurnDown,
+  truck: ProblemNoDriver,
+  repeat: ProblemRepeat,
+  load: ProblemOverload,
+  wheel: ProblemOwnerDrives,
 };
 
 export function Problems() {
   return (
     <section className="dt-section ds-problems2" aria-labelledby="ds-problems-title">
-      <div className="dt-container dt-container--narrow">
+      <div className="dt-container">
         <SectionHead eyebrow="こんなお悩み" id="ds-problems-title" title="人が足りないことで、こんな悩みはありませんか？" />
-        <ul className="ds-plist">
+        <ul className="ds-pgrid">
           {PROBLEMS.map((p) => {
-            const Icon = PROBLEM_ICONS[p.icon];
+            const Art = PROBLEM_ARTS[p.icon];
             return (
               <li key={p.text}>
-                <span className="ds-plist__icon" aria-hidden="true">
-                  <Icon />
-                </span>
-                {p.text}
+                <Art className="ds-pgrid__art" />
+                <p>{p.text}</p>
               </li>
             );
           })}
@@ -299,43 +313,59 @@ export function Visible() {
 
 /* ═══════════════════════ 5. 人が残る採用 ═══════════════════════ */
 
+const CHECK_ICONS: Record<(typeof RETENTION.checklist)[number]["icon"], LucideIcon> = {
+  clock: Clock,
+  route: Route,
+  box: Package,
+  yen: JapaneseYen,
+  study: GraduationCap,
+  heart: HeartHandshake,
+};
+
 export function Retention() {
   return (
     <section className="dt-section ds-retention" aria-labelledby="ds-retention-title">
       <div className="dt-container dt-container--narrow">
         <SectionHead eyebrow="人が残る採用のために" id="ds-retention-title" title={RETENTION.title} />
-        <div className="ds-intro__body">
-          {RETENTION.body.map((t) => (
-            <p key={t}>{t}</p>
-          ))}
-        </div>
-        <div className="ds-split">
-          <div className="ds-split__box">
-            <p className="ds-split__who">
-              <Search aria-hidden="true" />
-              ドラテクで、会う前に分かること
-            </p>
-            <ul className="ds-tags">
-              {RETENTION.fromUs.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="ds-split__box is-company">
-            <p className="ds-split__who">
-              <ClipboardCheck aria-hidden="true" />
-              面接で、会社が確認すること
-            </p>
-            <ul className="ds-checklist">
-              {RETENTION.checklist.map((t) => (
-                <li key={t}>
-                  <Check aria-hidden="true" strokeWidth={3} />
-                  {t}
-                </li>
-              ))}
-            </ul>
+        <div className="ds-retention__top">
+          <SceneInterview className="ds-retention__art" />
+          <div className="ds-intro__body">
+            {RETENTION.body.map((t) => (
+              <p key={t}>{t}</p>
+            ))}
           </div>
         </div>
+
+        <p className="ds-split__who">
+          <ClipboardCheck aria-hidden="true" />
+          面接で、会社が確認すること
+        </p>
+        <ul className="ds-icongrid">
+          {RETENTION.checklist.map((c) => {
+            const Icon = CHECK_ICONS[c.icon];
+            return (
+              <li key={c.text}>
+                <span aria-hidden="true">
+                  <Icon />
+                </span>
+                {c.text}
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="ds-split__box">
+          <p className="ds-split__who">
+            <Search aria-hidden="true" />
+            ドラテクで、会う前に分かること
+          </p>
+          <ul className="ds-tags">
+            {RETENTION.fromUs.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </div>
+
         <p className="ds-goal">
           <MessageCircle aria-hidden="true" />
           {RETENTION.close}
@@ -348,37 +378,45 @@ export function Retention() {
 
 /* ═══════════════════════ 6. 利用の流れ ═══════════════════════ */
 
+const FLOW_ICONS: LucideIcon[] = [Eye, Building2, FileSignature, UserCheck, Unlock, PhoneCall];
+
 export function Flow() {
   return (
     <section className="dt-section ds-flow2" id="flow" aria-labelledby="ds-flow-title">
-      <div className="dt-container dt-container--narrow">
+      <div className="dt-container">
         <SectionHead eyebrow="利用の流れ" id="ds-flow-title" title="見るところから、採用までの流れ。" />
         <p className="ds-flownote">
           <CircleCheck aria-hidden="true" />
           {FLOW_NOTE}
         </p>
-        <ol className="ds-flow2__list">
-          {FLOW.map((f, i) => (
-            <li key={f.title} className={i === 0 ? "is-free" : undefined}>
-              <div className="ds-flow2__head">
-                <span className="ds-flow2__no">{i + 1}</span>
-                <h3>{f.title}</h3>
-                {i === 0 && <span className="ds-flow2__badge">登録なし</span>}
-                {i === 1 && <span className="ds-flow2__badge">無料登録</span>}
-                {i === 2 && <span className="ds-flow2__badge is-key">ここで契約</span>}
-              </div>
-              <dl className="ds-flow2__lanes">
-                <div>
-                  <dt>会社がすること</dt>
-                  <dd>{f.company}</dd>
+        <ol className="ds-flow3">
+          {FLOW.map((f, i) => {
+            const Icon = FLOW_ICONS[i];
+            return (
+              <li key={f.title} className={i === 2 ? "is-key" : i === 5 ? "is-fee" : undefined}>
+                <span className="ds-flow3__icon" aria-hidden="true">
+                  <Icon />
+                </span>
+                <div className="ds-flow3__main">
+                  <p className="ds-flow3__title">
+                    <span>{i + 1}</span>
+                    {f.title}
+                    {f.tag && <em>{f.tag}</em>}
+                  </p>
+                  <dl className="ds-flow3__lanes">
+                    <div>
+                      <dt>会社</dt>
+                      <dd>{f.company}</dd>
+                    </div>
+                    <div className="is-us">
+                      <dt>ドラテク</dt>
+                      <dd>{f.us}</dd>
+                    </div>
+                  </dl>
                 </div>
-                <div className="is-us">
-                  <dt>ドラテクが行うこと</dt>
-                  <dd>{f.us}</dd>
-                </div>
-              </dl>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ol>
       </div>
     </section>
@@ -387,11 +425,49 @@ export function Flow() {
 
 /* ═══════════════════════ 7. 料金 ═══════════════════════ */
 
+/** 費用がかかるタイミング（見る→登録→契約→採用決定）。採用決定のところだけ費用が出る */
+const FEE_STEPS = [
+  { label: "見る", fee: "0円", icon: Eye },
+  { label: "登録", fee: "0円", icon: Building2 },
+  { label: "契約", fee: "0円", icon: FileSignature },
+  { label: "採用決定", fee: "10％", icon: Handshake },
+] as const;
+
 export function Pricing() {
   return (
     <section className="dt-section ds-pricing2" id="pricing" aria-labelledby="ds-pricing-title">
       <div className="dt-container dt-container--narrow">
         <SectionHead eyebrow="料金" id="ds-pricing-title" title="見るのは無料。費用がかかる条件も、先に確認できます。" />
+
+        <ol className="ds-feeline" aria-label="費用がかかるタイミング">
+          {FEE_STEPS.map((f, i) => {
+            const Icon = f.icon;
+            const paid = i === FEE_STEPS.length - 1;
+            return (
+              <li key={f.label} className={paid ? "is-paid" : undefined}>
+                <span className="ds-feeline__icon" aria-hidden="true">
+                  <Icon />
+                </span>
+                <span className="ds-feeline__label">{f.label}</span>
+                <b className="ds-feeline__fee">{f.fee}</b>
+                {paid && <span className="ds-feeline__sub">想定年収の</span>}
+              </li>
+            );
+          })}
+        </ol>
+
+        <div className="ds-calc">
+          <p className="ds-calc__title">計算例</p>
+          <div className="ds-calc__bar" aria-hidden="true">
+            <span className="ds-calc__all">想定年収 {PRICE_EXAMPLE.salary}</span>
+            <span className="ds-calc__part">{PRICE_EXAMPLE.fee}</span>
+          </div>
+          <p className="ds-calc__result">
+            {PRICE_EXAMPLE.salary} × {PRICE_EXAMPLE.rate} ＝ <b>{PRICE_EXAMPLE.fee}</b>
+          </p>
+          <p className="ds-calc__note">採用が決まらなければ、0円です。</p>
+        </div>
+
         <dl className="ds-ptable">
           {PRICE_ROWS.map((r) => (
             <div key={r.label} className={r.fixed ? undefined : "is-tbd"}>
@@ -401,19 +477,8 @@ export function Pricing() {
           ))}
         </dl>
 
-        <div className="ds-calc">
-          <p className="ds-calc__title">計算例</p>
-          <p className="ds-calc__expr">
-            想定年収 <b>{PRICE_EXAMPLE.salary}</b> の人を採用した場合
-          </p>
-          <p className="ds-calc__result">
-            {PRICE_EXAMPLE.salary} × {PRICE_EXAMPLE.rate} ＝ <b>{PRICE_EXAMPLE.fee}</b>
-          </p>
-          <p className="ds-calc__note">採用が決まらなければ、0円です。</p>
-        </div>
-
         <div className="ds-tbd">
-          <p className="ds-tbd__title">ご契約前に明示する項目（現在、条件を確定中です）</p>
+          <p className="ds-tbd__title">このほか、ご契約前に明示する項目</p>
           <ul>
             {PRICE_TBD.map((t) => (
               <li key={t}>{t}</li>
@@ -459,24 +524,23 @@ export function Faq() {
       <div className="dt-container dt-container--narrow">
         <OwnerQuestion className="dt-faq__art" />
         <SectionHead id="ds-faq-title" title="よくある質問" />
-        <div className="dt-faq__list">
-          {FAQS.map((f) => (
-            <article key={f.q} className="dt-faq__item">
-              <h3 className="dt-faq__q">
-                <span aria-hidden="true">Q</span>
+        <div className="ds-faq">
+          {FAQS.map((f, i) => (
+            <details key={f.q} className="ds-faq__item" open={i < 2}>
+              <summary>
+                <span className="ds-faq__q" aria-hidden="true">
+                  Q
+                </span>
                 {f.q}
-              </h3>
-              <div className="dt-faq__a">
-                <span aria-hidden="true">A</span>
-                <div className="dt-faq__body">
-                  {f.a.map((p) => (
-                    <p key={p}>
-                      <Rich text={p} />
-                    </p>
-                  ))}
-                </div>
+              </summary>
+              <div className="ds-faq__a">
+                {f.a.map((p) => (
+                  <p key={p}>
+                    <Rich text={p} />
+                  </p>
+                ))}
               </div>
-            </article>
+            </details>
           ))}
         </div>
       </div>

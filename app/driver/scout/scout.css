@@ -381,73 +381,6 @@
   margin-top: 4px;
 }
 
-.ds-steps3 {
-  display: grid;
-  gap: 10px;
-  margin-top: 28px;
-  counter-reset: s;
-}
-
-.ds-steps3 li {
-  position: relative;
-  display: grid;
-  grid-template-columns: 52px 1fr;
-  grid-template-rows: auto auto;
-  column-gap: 14px;
-  align-items: center;
-  padding: 14px 16px;
-  border: 1px solid #e3e9e4;
-  border-radius: 16px;
-  background: var(--ds-green-soft);
-}
-
-.ds-steps3 li + li::before {
-  content: "";
-  position: absolute;
-  top: -11px;
-  left: 40px;
-  width: 2px;
-  height: 12px;
-  background: #b9cfc1;
-}
-
-.ds-steps3__no {
-  display: none;
-}
-
-.ds-steps3__icon {
-  display: grid;
-  grid-row: 1 / 3;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: var(--dt-navy);
-  color: #fff;
-}
-
-.ds-steps3__icon svg {
-  width: 26px;
-  height: 26px;
-}
-
-.ds-steps3 b {
-  color: var(--dt-navy);
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.ds-steps3 b::before {
-  content: counter(s, decimal) ". ";
-  counter-increment: s;
-  color: var(--ds-gold);
-}
-
-.ds-steps3__sub {
-  color: var(--dt-text);
-  font-size: 16px;
-}
-
 .ds-intro__note {
   margin-top: 14px;
   color: var(--dt-mute);
@@ -455,67 +388,9 @@
   line-height: 1.7;
 }
 
-@media (min-width: 768px) {
-  .ds-steps3 {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .ds-steps3 li {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    row-gap: 8px;
-    padding: 22px 16px;
-    text-align: center;
-  }
-  .ds-steps3 li + li::before {
-    top: 50%;
-    left: -15px;
-    width: 14px;
-    height: 2px;
-  }
-  .ds-steps3__icon {
-    grid-row: auto;
-  }
-}
-
 /* ── 2. 経営者の悩み ───────────────────────────────────── */
 .ds-problems2 {
   background: var(--dt-paper);
-}
-
-.ds-plist {
-  display: grid;
-  gap: 10px;
-}
-
-.ds-plist li {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 4px 14px rgba(20, 61, 46, 0.06);
-  color: var(--dt-text);
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.6;
-}
-
-.ds-plist__icon {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: #fdeee9;
-  color: #c2410c;
-}
-
-.ds-plist__icon svg {
-  width: 22px;
-  height: 22px;
 }
 
 /* ── 3. 使う理由 ───────────────────────────────────────── */
@@ -902,105 +777,6 @@
   width: 20px;
   height: 20px;
   margin-top: 4px;
-}
-
-.ds-flow2__list {
-  display: grid;
-  gap: 14px;
-}
-
-.ds-flow2__list > li {
-  position: relative;
-  padding: 16px;
-  border: 1px solid var(--dt-line);
-  border-radius: 16px;
-  background: #fff;
-}
-
-.ds-flow2__list > li + li::before {
-  content: "";
-  position: absolute;
-  top: -15px;
-  left: 31px;
-  width: 2px;
-  height: 14px;
-  background: #b9cfc1;
-}
-
-.ds-flow2__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-}
-
-.ds-flow2__no {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--dt-navy);
-  color: #fff;
-  font-weight: 900;
-}
-
-.ds-flow2__head h3 {
-  flex: 1 1 200px;
-  color: var(--dt-navy);
-  font-size: 17px;
-  font-weight: 900;
-  line-height: 1.5;
-}
-
-.ds-flow2__badge {
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: #effaf5;
-  color: var(--ds-ok);
-  font-size: 12.5px;
-  font-weight: 900;
-}
-
-.ds-flow2__badge.is-key {
-  background: var(--ds-gold-soft);
-  color: #8a5d12;
-}
-
-.ds-flow2__lanes {
-  display: grid;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.ds-flow2__lanes > div {
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: #f7f9fb;
-}
-
-.ds-flow2__lanes > div.is-us {
-  background: var(--ds-green-soft);
-}
-
-.ds-flow2__lanes dt {
-  color: var(--dt-mute);
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.ds-flow2__lanes dd {
-  margin-top: 2px;
-  color: var(--dt-text);
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-@media (min-width: 768px) {
-  .ds-flow2__lanes {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 /* ── 7. 料金 ───────────────────────────────────────────── */
@@ -1771,4 +1547,533 @@ select.ds-input {
   .ds-ctabox .dt-btn--lg .dt-btn__arrow {
     right: 10px;
   }
+}
+
+/* ── イラストの配色：kit の青系を、このLPの深緑系に置き換える ─────────── */
+.ds-lp svg [fill="#1659e0"] { fill: #1f6b4f; }
+.ds-lp svg [stroke="#1659e0"] { stroke: #1f6b4f; }
+.ds-lp svg [fill="#dce8ff"] { fill: #d6eadd; }
+.ds-lp svg [stroke="#dce8ff"] { stroke: #d6eadd; }
+.ds-lp svg [fill="#eef4ff"] { fill: #f1f6ef; }
+.ds-lp svg [fill="#c9d8f5"] { fill: #bcd6c5; }
+.ds-lp svg [fill="#0a1f4e"] { fill: #143d2e; }
+.ds-lp svg [stroke="#0a1f4e"] { stroke: #143d2e; }
+
+/* ── 1. 概要の3段階（イラスト付き） ─────────────────────── */
+.ds-steps3 {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.ds-steps3 li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  align-items: center;
+  padding: 10px 14px 10px 8px;
+  border: 1px solid #e3e9e4;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(20, 61, 46, 0.06);
+}
+
+.ds-steps3 li + li::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  border: 7px solid transparent;
+  border-top-color: var(--ds-gold);
+  transform: translateX(-50%);
+}
+
+.ds-steps3__art {
+  grid-row: 1 / 3;
+  width: 100%;
+  height: auto;
+}
+
+.ds-steps3__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: end;
+  color: var(--dt-navy);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.ds-steps3__no {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--ds-gold);
+  color: #fff;
+  font-size: 14px;
+}
+
+.ds-steps3__sub {
+  align-self: start;
+  margin-top: 4px;
+  color: var(--dt-mute);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .ds-steps3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .ds-steps3 li {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding: 12px 18px 22px;
+    text-align: center;
+  }
+  .ds-steps3 li + li::before {
+    top: 45%;
+    left: -19px;
+    border-top-color: transparent;
+    border-left-color: var(--ds-gold);
+    transform: none;
+  }
+  .ds-steps3__art {
+    grid-row: auto;
+    max-width: 240px;
+  }
+}
+
+/* ── 2. 悩み（イラスト付きのカード） ─────────────────────── */
+.ds-pgrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ds-pgrid li {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 10px 12px 14px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(20, 61, 46, 0.06);
+}
+
+.ds-pgrid li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.ds-pgrid li:last-child:nth-child(odd) .ds-pgrid__art {
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.ds-pgrid__art {
+  width: 100%;
+  height: auto;
+}
+
+.ds-pgrid p {
+  color: var(--dt-text);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+@media (min-width: 900px) {
+  .ds-pgrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .ds-pgrid li:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+  .ds-pgrid p {
+    font-size: 16px;
+  }
+}
+
+/* ── 5. 入社前に話すこと ───────────────────────────────── */
+.ds-retention__top {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.ds-retention__art {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .ds-retention__top {
+    grid-template-columns: 300px 1fr;
+    gap: 28px;
+  }
+}
+
+.ds-icongrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.ds-icongrid li {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px 10px;
+  border-radius: 16px;
+  background: var(--ds-gold-soft);
+  color: var(--dt-navy);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.ds-icongrid li > span {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ds-gold);
+}
+
+.ds-icongrid svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (min-width: 768px) {
+  .ds-icongrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ── 6. 流れ（アイコン付きの縦タイムライン） ─────────────── */
+.ds-flow3 {
+  position: relative;
+  display: grid;
+  gap: 12px;
+}
+
+.ds-flow3::before {
+  content: "";
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 23px;
+  width: 3px;
+  border-radius: 2px;
+  background: #cfe0d5;
+}
+
+.ds-flow3 li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.ds-flow3__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--dt-navy);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--dt-paper);
+}
+
+.ds-flow3__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ds-flow3 li.is-key .ds-flow3__icon {
+  background: var(--ds-gold);
+}
+
+.ds-flow3 li.is-fee .ds-flow3__icon {
+  background: #c2410c;
+}
+
+.ds-flow3__main {
+  padding: 12px 14px;
+  border: 1px solid var(--dt-line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.ds-flow3__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  color: var(--dt-navy);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.ds-flow3__title > span {
+  color: var(--ds-gold);
+}
+
+.ds-flow3__title em {
+  padding: 1px 10px;
+  border-radius: 999px;
+  background: #effaf5;
+  color: var(--ds-ok);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ds-flow3 li.is-key .ds-flow3__title em {
+  background: var(--ds-gold-soft);
+  color: #8a5d12;
+}
+
+.ds-flow3 li.is-fee .ds-flow3__title em {
+  background: #fdeee9;
+  color: #c2410c;
+}
+
+.ds-flow3__lanes {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.ds-flow3__lanes > div {
+  display: grid;
+  grid-template-columns: 4.6em 1fr;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.ds-flow3__lanes dt {
+  padding: 1px 0;
+  border-radius: 6px;
+  background: #f1f3f6;
+  color: var(--dt-mute);
+  font-size: 13px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.ds-flow3__lanes .is-us dt {
+  background: var(--ds-green-soft);
+  color: #1f6b4f;
+}
+
+@media (min-width: 900px) {
+  .ds-flow3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px 20px;
+  }
+  .ds-flow3::before {
+    display: none;
+  }
+  .ds-flow3 li {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .ds-flow3__main {
+    width: 100%;
+    margin-top: -30px;
+    padding-top: 36px;
+  }
+  .ds-flow3__icon {
+    z-index: 1;
+  }
+}
+
+/* ── 7. 料金：費用がかかるタイミング ─────────────────────── */
+.ds-feeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 18px;
+}
+
+.ds-feeline::before {
+  content: "";
+  position: absolute;
+  top: 26px;
+  left: 12%;
+  right: 12%;
+  height: 3px;
+  background: linear-gradient(90deg, #cfe0d5 70%, #f3b9a3 70%);
+}
+
+.ds-feeline li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.ds-feeline__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 3px solid #cfe0d5;
+  border-radius: 50%;
+  background: #fff;
+  color: #1f6b4f;
+}
+
+.ds-feeline__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.ds-feeline li.is-paid .ds-feeline__icon {
+  border-color: #c2410c;
+  background: #c2410c;
+  color: #fff;
+}
+
+.ds-feeline__label {
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ds-feeline__fee {
+  color: #1f6b4f;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.ds-feeline li.is-paid .ds-feeline__fee {
+  order: 3;
+  color: #c2410c;
+}
+
+.ds-feeline__sub {
+  order: 2;
+  margin-bottom: -4px;
+  color: #c2410c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+/* 計算例の帯（年収のうち10％の部分だけ色を付ける） */
+.ds-calc__bar {
+  display: flex;
+  overflow: hidden;
+  height: 40px;
+  margin: 12px auto 4px;
+  max-width: 420px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #ece4d0;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.ds-calc__all {
+  display: grid;
+  flex: 9;
+  place-items: center;
+  color: var(--dt-mute);
+}
+
+.ds-calc__part {
+  display: grid;
+  flex: 1.6;
+  place-items: center;
+  background: #c2410c;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* ── 9. よくある質問（開閉式） ─────────────────────────── */
+.ds-faq {
+  display: grid;
+  gap: 10px;
+}
+
+.ds-faq__item {
+  border: 1px solid var(--dt-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.ds-faq__item summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 44px 14px 14px;
+  color: var(--dt-navy);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.5;
+  cursor: pointer;
+  list-style: none;
+}
+
+.ds-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.ds-faq__item summary::after {
+  content: "+";
+  position: absolute;
+  right: 16px;
+  color: var(--ds-gold);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.ds-faq__item[open] summary::after {
+  content: "−";
+}
+
+.ds-faq__q {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--dt-navy);
+  color: #fff;
+  font-size: 14px;
+}
+
+.ds-faq__a {
+  display: grid;
+  gap: 8px;
+  padding: 0 16px 16px 52px;
+  font-size: 16px;
+  line-height: 1.85;
 }
