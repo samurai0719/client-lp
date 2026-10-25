@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     siteName: SERVICE_NAME,
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ ...OG_IMAGE, alt: "応募を待つだけの採用から、条件に合うドライバーへ企業からアプローチ。初期費用0円・月額0円・採用決定時のみ想定年収の10％" }],
+    images: [{ ...OG_IMAGE, alt: "運送会社が求職者を選ぶ時代。初期費用0円・月額0円・採用決定時のみ想定年収の10％" }],
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: [OG_IMAGE.url] },
   formatDetection: { telephone: false },

@@ -53,7 +53,6 @@
 }
 
 /* 濃紺の背景の上では明るめの赤にして読みやすくする */
-.ds-hero .ds-waiting,
 .dt-ctablock--invert .ds-waiting {
   color: #ff5a5f;
 }
@@ -108,17 +107,18 @@
 }
 
 /* ── ファーストビュー（画像） ─────────────────────────────
-   コピー・料金は画像に焼き込み済み。スマホ用（2:3）とPC用（3:2）を <picture> で出し分け、
+   コピー・料金は画像に焼き込み済み。スマホ用（9:16）とPC用（16:9）を <picture> で出し分け、
    CTAボタンだけHTMLで画像の直下に置く。 */
 .ds-hero {
-  background: #06143a;
+  /* 画像の地色（生成り）に合わせ、画像の外側とCTA部分を同じ色でつなぐ */
+  background: #fdfbf4;
 }
 
 .ds-hero__img {
   display: block;
   width: 100%;
   height: auto;
-  max-width: 1536px;
+  max-width: 1672px;
   margin: 0 auto;
 }
 
@@ -131,7 +131,7 @@
 }
 
 .ds-hero .ds-cta__note {
-  color: rgba(255, 255, 255, 0.75);
+  color: #5b6472;
 }
 
 @media (min-width: 768px) {

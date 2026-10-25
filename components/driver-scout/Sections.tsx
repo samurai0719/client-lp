@@ -31,22 +31,22 @@ import { ScoutCta } from "./ui";
 /**
  * FVは画像（コピー・料金・UIカードを焼き込み済み）。スマホ用とPC用を出し分ける。
  * 画像内の文字は読み上げられないため、同じ内容を見出し（視覚的には非表示）として持たせる。
- * 差し替えは public/images/driver/scout/fv-pc.webp（1536×1024）と fv-sp.webp（1024×1536）。
+ * 差し替えは public/images/driver/scout/fv-pc.webp（1672×941）と fv-sp.webp（941×1672）。
  */
 export function Hero() {
   return (
     <section className="ds-hero" id="top" aria-labelledby="ds-hero-title">
       <h1 className="dt-visually-hidden" id="ds-hero-title">
-        愛知県の運送会社さま向け{SERVICE_KIND}。応募を待つだけの採用から、条件に合うドライバーへ企業からアプローチ。
+        愛知県の運送会社さま向け{SERVICE_KIND}。運送会社が求職者を選ぶ時代。
         初期費用0円・月額0円・採用決定時のみ想定年収の10％。
       </h1>
       <picture>
-        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={1024} height={1536} />
+        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1672} />
         <img
           className="ds-hero__img"
           src="/images/driver/scout/fv-pc.webp"
-          width={1536}
-          height={1024}
+          width={1672}
+          height={941}
           alt=""
           fetchPriority="high"
           loading="eager"
