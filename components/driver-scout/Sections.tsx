@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BadgeCheck, EyeOff, Handshake, Lock, MessageSquareShare, PhoneCall, Search, UserCheck } from "lucide-react";
+import { BadgeCheck, EyeOff, Handshake, Lock, MapPin, MessageSquareShare, PhoneCall, Search, UserCheck } from "lucide-react";
 import type { ComponentType } from "react";
 import { OPERATOR, PATHS, SHOW_NOTICE_NUMBER } from "@/config/driver-company";
 import type { IllustrationProps } from "../driver-company/lp/illustrations/kit";
@@ -14,10 +14,12 @@ import { Rich, SectionHead } from "../driver-company/lp/ui";
 import {
   FAQS,
   FLOW,
+  HERO_PRICES,
   HIDDEN_FIELDS,
   MECHANISM,
   PRICES,
-  PRICE_NOTE,
+  PRICE_FIXED,
+  PRICE_TBD,
   PROBLEMS,
   SAMPLE_PROFILE,
   SERVICE_KIND,
@@ -28,35 +30,107 @@ import { ScoutCta } from "./ui";
 
 /* ═══════════════════════ 1. ファーストビュー ═══════════════════════ */
 
+/** FVの匿名プロフィールカードに出す項目（SAMPLE_PROFILE から抜粋。架空の表示イメージ） */
+const HERO_CARD_KEYS = ["年齢", "希望勤務地", "免許・資格", "運転経験", "希望年収帯"] as const;
+
 /**
- * FVは画像（コピー・料金・UIカードを焼き込み済み）。スマホ用とPC用を出し分ける。
- * 画像内の文字は読み上げられないため、同じ内容を見出し（視覚的には非表示）として持たせる。
- * 差し替えは public/images/driver/scout/fv-pc.webp（1672×941）と fv-sp.webp（941×1672）。
+ * ファーストビュー。文字・料金・CTAはすべてHTMLで組み、画像は文字の入っていない写真だけを使う
+ * （public/images/driver/scout/fv-photo.webp。差し替えは写真だけを置き換える）。
+ * スマホは「対象 → 見出し → 写真 → 料金 → CTA → カード」の順に縦へ並べ、要素同士を重ねない。
+ * PCは左に文字・料金・CTA、右に写真とカードを置く。
  */
 export function Hero() {
   return (
     <section className="ds-hero" id="top" aria-labelledby="ds-hero-title">
-      <h1 className="dt-visually-hidden" id="ds-hero-title">
-        愛知県の運送会社さま向け{SERVICE_KIND}。運送会社が求職者を選ぶ時代。
-        初期費用0円・月額0円・採用決定時のみ想定年収の10％。
-      </h1>
-      <picture>
-        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1672} />
-        <img
-          className="ds-hero__img"
-          src="/images/driver/scout/fv-pc.webp"
-          width={1672}
-          height={941}
-          alt=""
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
-      <div className="ds-hero__cta">
-        <ScoutCta location="hero" />
+      <div className="ds-hero__inner">
+        <div className="ds-hero__copy">
+          <p className="ds-hero__target">
+            <MapPin aria-hidden="true" />
+            <span>
+              <b>愛知県の運送会社さま向け</b>
+              <span className="ds-hero__kind">{SERVICE_KIND}</span>
+            </span>
+          </p>
+          <h1 className="ds-hero__title" id="ds-hero-title">
+            <span>運送会社が</span>
+            <span>
+              <em>求職者を選ぶ</em>時代。
+            </span>
+          </h1>
+          <p className="ds-hero__lead">
+            <span>応募を待つだけの採用から、</span>
+            <br />
+            <span>条件に合うドライバーへ</span>
+            <span>企業からアプローチ。</span>
+          </p>
+        </div>
+
+        <div className="ds-hero__visual">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="ds-hero__photo"
+            src="/images/driver/scout/fv-photo.webp"
+            width={836}
+            height={664}
+            alt="倉庫前に停めた大型トラックと、腕を組んで立つドライバー"
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+          />
+          {/* PCでは写真の右上に重ねる（スマホではCTAの下に別に出す） */}
+          <HeroCard className="ds-hero__card ds-hero__card--pc" compact />
+        </div>
+
+        <dl className="ds-hero__price" aria-label="料金">
+          {HERO_PRICES.map((p) => (
+            <div key={p.label} className={p.pre ? "is-fee" : undefined}>
+              <dt>{p.label}</dt>
+              <dd>
+                {p.pre && <small>{p.pre}</small>}
+                <b>{p.num}</b>
+                {p.unit}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="ds-hero__cta">
+          <ScoutCta location="hero" />
+        </div>
+
+        <HeroCard className="ds-hero__card ds-hero__card--sp" />
       </div>
     </section>
+  );
+}
+
+/** FVの匿名プロフィールカード（架空の表示イメージ）。PCとスマホで置き場所が違うため2回描画し、CSSで片方だけ出す */
+function HeroCard({ className, compact = false }: { className: string; compact?: boolean }) {
+  // PCでは写真を隠しすぎないよう、年齢・免許・経験の3項目だけにする
+  const keys: readonly string[] = compact ? ["年齢", "免許・資格", "運転経験"] : HERO_CARD_KEYS;
+  const rows = SAMPLE_PROFILE.filter(([k]) => keys.includes(k));
+  return (
+    <figure className={className}>
+      <div className="ds-hero__cardhead">
+        <span className="ds-hero__avatar" aria-hidden="true">
+          <UserCheck />
+        </span>
+        <p>候補者 No.＊＊＊＊</p>
+        <span className="ds-hero__sample">表示イメージ</span>
+      </div>
+      <dl>
+        {rows.map(([k, v]) => (
+          <div key={k}>
+            <dt>{compact ? k.replace("・資格", "") : k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+      <figcaption className="ds-hero__lock">
+        <Lock aria-hidden="true" />
+        連絡先は本人の同意後に開示
+      </figcaption>
+    </figure>
   );
 }
 
@@ -247,8 +321,24 @@ export function Pricing() {
             </div>
           ))}
         </dl>
-        <p className="ds-price__free">匿名プロフィールは、登録なしで無料で閲覧できます。</p>
-        <p className="dt-note">{PRICE_NOTE}</p>
+        <div className="ds-price__terms">
+          <div>
+            <h3>決まっていること</h3>
+            <ul className="is-fixed">
+              {PRICE_FIXED.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3>ご契約前に明示すること</h3>
+            <ul className="is-tbd">
+              {PRICE_TBD.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
         <ScoutCta location="pricing" />
       </div>
     </section>

@@ -101,7 +101,7 @@ http://localhost:3000/gaikou
 - 候補者番号: `driver_candidates.id` の先頭6文字（大文字）。申込みの `message` と通知メールに載る
 - 文言: `components/driver-scout/content.ts`（表現ルールは同ファイル冒頭のコメント）
 - 見た目: ドラテク企業向けLPの `app/driver/company/doratech-company.css`（dt-）を共有し、固有部品は `app/driver/scout/scout.css`（ds-）
-- FV写真: `public/images/driver/company/hero-pc.webp` / `hero-sp.webp`（AI生成の仮画像。差し替えはこの2ファイルを置き換える）
+- FV: 文字・料金・CTAはHTML。写真は文字なしの `public/images/driver/scout/fv-photo.webp` だけ（`fv-pc.webp` / `fv-sp.webp` は文字入りの旧FVで、今はOG画像の元としてのみ残す）
 
 ### フォームの送信先と、必要な設定
 
@@ -112,7 +112,7 @@ http://localhost:3000/gaikou
 |---|---|---|
 | Supabase `driver_company_inquiries` | 申込みの保存先（migration 007） | 適用済み |
 | `supabase/migrations/014_driver_scout_apply.sql` | 市区町村・免許・採用希望時期・申込み種別の列を追加 | 適用済み（2026-10-25） |
-| `supabase/migrations/015_driver_candidates.sql` | 求職者テーブル `driver_candidates` | 適用済み（2026-10-25）。テスト用の候補者1件（`full_name = '【テスト】仮登録'`, `utm_source = 'test'`）が入っている。**本番公開前に削除するか `status` を `withdrawn` にする** |
+| `supabase/migrations/015_driver_candidates.sql` | 求職者テーブル `driver_candidates` | 適用済み（2026-10-25）。テスト用の候補者1件（`full_name = '【テスト】仮登録'`, `utm_source = 'test'`）は 2026-10-25 に `status = 'withdrawn'` にして非公開化済み。0件のあいだは一覧に「表示イメージ（架空）」のサンプルを出し、待機人数は出さない |
 | `RESEND_API_KEY` | 運営への通知メール | 本番 Vercel で設定。ローカルは空のため通知は送られない |
 | `DORATECH_NOTIFICATION_EMAIL`（なければ `NOTIFICATION_EMAIL` → `ADMIN_NOTIFICATION_EMAIL`） | 通知先メールアドレス | 環境変数で設定 |
 

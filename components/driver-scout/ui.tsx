@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { SERVICE } from "@/config/driver-company";
 import { trackCompany } from "../driver-company/track";
-import { CTA_HREF, CTA_LABEL, CTA_NOTE, DISCLOSE_LABEL, registerHref, SCOUT_PATHS, SERVICE_KIND, SERVICE_NAME } from "./content";
+import { CTA_HREF, CTA_LABEL, CTA_POINTS, DISCLOSE_LABEL, registerHref, SCOUT_PATHS, SERVICE_KIND, SERVICE_NAME } from "./content";
 import { useWaitingCount, WaitingLine } from "./waiting";
 
 /**
@@ -25,7 +25,16 @@ export function ScoutCta({ location, size = "lg", note = true }: { location: str
         </span>
         {size === "lg" && <ArrowRight className="dt-btn__arrow" aria-hidden="true" strokeWidth={2.8} />}
       </a>
-      {size === "lg" && note && <p className="ds-cta__note">{CTA_NOTE}</p>}
+      {size === "lg" && note && (
+        <ul className="ds-cta__points" aria-label="閲覧の条件">
+          {CTA_POINTS.map((t) => (
+            <li key={t}>
+              <Check aria-hidden="true" strokeWidth={3} />
+              {t}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

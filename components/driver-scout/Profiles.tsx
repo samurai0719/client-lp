@@ -1,6 +1,6 @@
 import { Lock, UserRound } from "lucide-react";
 import type { AnonymousProfile } from "@/lib/driverCandidates/profiles";
-import { HIDDEN_FIELDS } from "./content";
+import { HIDDEN_FIELDS, SAMPLE_PROFILE, SCOUT_PATHS } from "./content";
 import { DiscloseButton } from "./ui";
 
 /**
@@ -60,6 +60,53 @@ export function ProfileCard({ p }: { p: AnonymousProfile }) {
           連絡先は、候補者本人が貴社と求人内容を確認し、同意した場合にだけ開示されます。
         </p>
         <DiscloseButton no={p.no} />
+      </div>
+    </article>
+  );
+}
+
+/**
+ * 公開中のプロフィールが0件のときに出す、架空の表示イメージ。
+ * 実在の登録者と誤認されないよう「表示イメージ（架空）」と明記し、番号も伏せ、開示依頼ボタンは置かない。
+ */
+export function SampleProfileCard() {
+  return (
+    <article className="ds-pcard is-sample" aria-labelledby="ds-pc-sample">
+      <header className="ds-pcard__head">
+        <span className="ds-pcard__avatar" aria-hidden="true">
+          <UserRound />
+        </span>
+        <div>
+          <h2 className="ds-pcard__no" id="ds-pc-sample">
+            候補者 No.＊＊＊＊
+          </h2>
+          <p className="ds-pcard__sample">表示イメージ（架空の例です）</p>
+        </div>
+      </header>
+      <dl className="ds-pcard__rows">
+        {SAMPLE_PROFILE.filter(([k]) => k !== "更新日").map(([k, v]) => (
+          <div key={k}>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+      <div className="ds-disclose">
+        <dl className="ds-disclose__masked" aria-label="非公開の情報">
+          {HIDDEN_FIELDS.map((f) => (
+            <div key={f}>
+              <dt>{f}</dt>
+              <dd aria-hidden="true">●●●●●●</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="ds-disclose__lock">
+          <Lock aria-hidden="true" />
+          実際のプロフィールでは、連絡先は候補者本人が同意した場合にだけ開示されます。
+        </p>
+        <a href={SCOUT_PATHS.register} className="ds-form__back">
+          先に無料登録（企業登録）をする
+        </a>
       </div>
     </article>
   );

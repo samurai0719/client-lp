@@ -17,12 +17,30 @@
   margin-top: 28px;
 }
 
-.ds-cta__note {
-  text-wrap: balance;
-  color: var(--dt-mute);
+/* ボタン直下の要点（閲覧は無料・登録不要／料金／連絡先の開示条件） */
+.ds-cta__points {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 12px;
+  max-width: 460px;
+}
+
+.ds-cta__points li {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--dt-text);
   font-size: 12.5px;
   font-weight: 700;
-  text-align: center;
+  white-space: nowrap;
+}
+
+.ds-cta__points svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: var(--ds-ok);
 }
 
 /* ヘッダーのCTAは文言が長いため、スマホでは固定CTAに任せて隠す */
@@ -106,40 +124,368 @@
   }
 }
 
-/* ── ファーストビュー（画像） ─────────────────────────────
-   コピー・料金は画像に焼き込み済み。スマホ用（9:16）とPC用（16:9）を <picture> で出し分け、
-   CTAボタンだけHTMLで画像の直下に置く。 */
+/* ── ファーストビュー ─────────────────────────────────────
+   文字・料金・CTAはHTML、画像は文字なしの写真（fv-photo.webp）だけ。
+   スマホは縦一列（対象→見出し→写真→料金→CTA→カード）で、要素を重ねない。
+   PCは左に文字・料金・CTA、右に写真。カードは写真の左下に重ねる（文字には重ねない）。 */
 .ds-hero {
-  /* 画像の地色（生成り）に合わせ、画像の外側とCTA部分を同じ色でつなぐ */
-  background: #fdfbf4;
+  --ds-hero-ink: #12302a;
+  --ds-hero-accent: #e8542e;
+  padding: 14px 0 32px;
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgba(255, 214, 150, 0.35), transparent 60%),
+    #fdfbf4;
 }
 
-.ds-hero__img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 1672px;
+.ds-hero__inner {
+  display: grid;
+  grid-template-areas:
+    "copy"
+    "visual"
+    "price"
+    "cta"
+    "card";
+  gap: 12px;
+  width: min(100% - 32px, 1160px);
   margin: 0 auto;
 }
 
+.ds-hero__copy {
+  grid-area: copy;
+}
+
+.ds-hero__target {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 8px;
+  border: 1px solid #e7dcc2;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ds-hero-ink);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.ds-hero__target svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--ds-hero-accent);
+}
+
+.ds-hero__target b {
+  font-weight: 900;
+}
+
+.ds-hero__kind {
+  display: none;
+  margin-left: 6px;
+  white-space: nowrap;
+  padding-left: 8px;
+  border-left: 1px solid #d9cfb6;
+  color: var(--dt-mute);
+  font-weight: 700;
+}
+
+.ds-hero__title {
+  margin-top: 12px;
+  color: var(--ds-hero-ink);
+  font-size: clamp(30px, 9.3vw, 40px);
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: 0.01em;
+}
+
+/* 「運送会社が」「求職者を選ぶ時代。」の2行で必ず改行し、行の途中では折り返さない */
+.ds-hero__title > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.ds-hero__title em {
+  color: var(--ds-hero-accent);
+  font-style: normal;
+}
+
+.ds-hero__lead {
+  margin-top: 10px;
+  color: var(--dt-text);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.ds-hero__visual {
+  position: relative;
+  grid-area: visual;
+}
+
+.ds-hero__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: 50% 40%;
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(18, 48, 42, 0.16);
+}
+
+/* 料金（初期費用0円・月額0円・採用決定時のみ想定年収の10％） */
+.ds-hero__price {
+  display: grid;
+  grid-area: price;
+  grid-template-columns: 1fr 1fr 1.45fr;
+  border: 1px solid #e3d9c0;
+  border-radius: 16px;
+  background: #fff;
+  text-align: center;
+}
+
+.ds-hero__price > div {
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding: 10px 4px;
+}
+
+.ds-hero__price > div + div {
+  border-left: 1px solid #ece4d0;
+}
+
+.ds-hero__price dt {
+  color: var(--ds-hero-ink);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.ds-hero__price dd {
+  color: var(--ds-hero-ink);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.ds-hero__price b {
+  margin-right: 1px;
+  color: var(--ds-hero-accent);
+  font-size: 34px;
+  letter-spacing: -0.02em;
+}
+
+.ds-hero__price small {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--ds-hero-ink);
+  font-size: 11.5px;
+}
+
 .ds-hero__cta {
-  padding: 4px 16px 32px;
+  grid-area: cta;
 }
 
 .ds-hero .ds-cta {
-  margin-top: 16px;
+  margin-top: 0;
 }
 
-.ds-hero .ds-cta__note {
-  color: #5b6472;
+/* 匿名プロフィールカード（架空の表示イメージ）。スマホはCTAの下、PCは写真の右上 */
+.ds-hero__card--pc {
+  display: none;
 }
 
-@media (min-width: 768px) {
-  .ds-hero__cta {
-    padding: 0 32px 48px;
+.ds-hero__card--sp {
+  grid-area: card;
+}
+
+.ds-hero__card {
+  overflow: hidden;
+  border: 1px solid #e3e8ef;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 12px 30px rgba(18, 48, 42, 0.14);
+}
+
+.ds-hero__cardhead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.ds-hero__cardhead p {
+  white-space: nowrap;
+  color: var(--ds-hero-ink);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ds-hero__avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e8efe9;
+  color: #3d6b55;
+}
+
+.ds-hero__avatar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ds-hero__sample {
+  margin-left: auto;
+  white-space: nowrap;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f1f3f6;
+  color: var(--dt-mute);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ds-hero__card dl > div {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 8px;
+  padding: 6px 14px;
+  font-size: 13.5px;
+}
+
+.ds-hero__card dt {
+  color: var(--dt-mute);
+  font-weight: 700;
+}
+
+.ds-hero__card dd {
+  color: var(--ds-hero-ink);
+  font-weight: 900;
+}
+
+.ds-hero__lock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 10px 10px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: #effaf5;
+  color: var(--ds-ok);
+  font-size: 12.5px;
+  font-weight: 900;
+}
+
+.ds-hero__lock svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* リードは「応募を待つだけの採用から、／条件に合うドライバーへ／企業からアプローチ。」の切れ目でだけ折り返す */
+.ds-hero__lead > span {
+  display: inline-block;
+}
+
+@media (min-width: 480px) {
+  .ds-hero__kind {
+    display: inline;
   }
-  .ds-hero .ds-cta {
-    margin-top: 8px;
+}
+
+/* 画面に余白がある幅では、カードを写真の外へ少しはみ出させて人物から離す */
+@media (min-width: 1260px) {
+  .ds-hero__card--pc {
+    right: -28px;
+  }
+}
+
+/* タブレットは縦一列のまま、横に広がりすぎないよう幅を絞る */
+@media (min-width: 640px) and (max-width: 1099px) {
+  .ds-hero__inner {
+    width: min(100% - 48px, 600px);
+  }
+}
+
+@media (min-width: 1100px) {
+  .ds-hero {
+    padding: 48px 0 56px;
+  }
+  .ds-hero__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "copy visual"
+      "price visual"
+      "cta visual";
+    gap: 22px 48px;
+    align-items: start;
+  }
+  .ds-hero__copy {
+    padding-top: 12px;
+  }
+  .ds-hero__target {
+    font-size: 15px;
+  }
+  .ds-hero__lead {
+    font-size: 17px;
+  }
+  .ds-hero__photo {
+    aspect-ratio: 836 / 664;
+    border-radius: 24px;
+  }
+  .ds-hero__price b {
+    font-size: 44px;
+  }
+  .ds-hero__price dt {
+    font-size: 13px;
+  }
+  .ds-hero__cta .ds-cta {
+    align-items: flex-start;
+  }
+  .ds-hero__cta .ds-cta__points {
+    justify-content: flex-start;
+  }
+  .ds-hero__title {
+    font-size: clamp(44px, 4.3vw, 58px);
+  }
+  .ds-hero__kind {
+    display: inline;
+  }
+  /* カードは写真の右下（荷台の後ろ側）に重ねる。人物と左の文字には重ねない */
+  .ds-hero__card--sp {
+    display: none;
+  }
+  .ds-hero__card--pc {
+    display: block;
+    position: absolute;
+    right: -8px;
+    bottom: -32px;
+    width: 232px;
+    overflow: visible;
+  }
+  .ds-hero__card--pc dl > div {
+    grid-template-columns: 54px 1fr;
+    gap: 6px;
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+  .ds-hero__card--pc dd {
+    white-space: nowrap;
+  }
+  /* 「表示イメージ」はカードの上辺に札として出す（幅を取らないため） */
+  .ds-hero__card--pc .ds-hero__sample {
+    position: absolute;
+    top: -11px;
+    right: 12px;
+    border: 1px solid #e3e8ef;
+    background: #fff;
+  }
+  .ds-hero__card--pc .ds-hero__cardhead p {
+    font-size: 14px;
   }
 }
 
@@ -288,7 +634,74 @@
   }
 }
 
+/* 料金：決まっていること／契約前に明示すること */
+.ds-price__terms {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0 12px;
+}
+
+.ds-price__terms > div {
+  padding: 14px 16px;
+  border: 1px solid var(--dt-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.ds-price__terms h3 {
+  margin-bottom: 8px;
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ds-price__terms li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.ds-price__terms li + li {
+  margin-top: 4px;
+}
+
+.ds-price__terms li::before {
+  position: absolute;
+  top: 0.15em;
+  left: 0;
+  font-weight: 900;
+}
+
+.ds-price__terms .is-fixed li::before {
+  content: "✓";
+  color: var(--ds-ok);
+}
+
+.ds-price__terms .is-tbd li::before {
+  content: "・";
+  color: var(--dt-mute);
+}
+
+@media (min-width: 768px) {
+  .ds-price__terms {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+
 /* 幅の狭い端末（iPhone SE 初代など）でCTAの文言が折り返さないようにする */
+/* iPhone SE（375px）などでも「無料で求職者情報を見てみる」を1行に収める */
+@media (max-width: 389px) {
+  .ds-lp .dt-btn--lg {
+    padding-left: 20px;
+    padding-right: 44px;
+    font-size: 19px;
+  }
+  .ds-lp .dt-btn--lg .dt-btn__arrow {
+    right: 16px;
+  }
+}
+
 @media (max-width: 359px) {
   .ds-lp .dt-btn--lg {
     padding-left: 18px;
@@ -649,14 +1062,6 @@
   color: #fff;
   font-size: 12px;
   font-weight: 900;
-}
-
-.ds-price__free {
-  margin-top: 16px;
-  color: var(--dt-navy);
-  font-size: 16px;
-  font-weight: 900;
-  text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -1143,6 +1548,29 @@ select.ds-input {
   height: 7px;
   border-radius: 50%;
   background: #ff5a5f;
+}
+
+.ds-pcard__sample {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ds-profiles__grid--sample {
+  margin-top: 20px;
+}
+
+.ds-pcard.is-sample {
+  border-style: dashed;
+}
+
+.ds-pcard.is-sample .ds-form__back {
+  justify-self: center;
 }
 
 .ds-pcard__rows > div {

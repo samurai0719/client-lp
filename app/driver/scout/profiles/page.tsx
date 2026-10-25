@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SectionHead } from "@/components/driver-company/lp/ui";
-import { ProfileCard } from "@/components/driver-scout/Profiles";
+import { ProfileCard, SampleProfileCard } from "@/components/driver-scout/Profiles";
 import ScoutShell from "@/components/driver-scout/Shell";
 import { SCOUT_PATHS, SERVICE_NAME } from "@/components/driver-scout/content";
 import { OG_IMAGE, SITE_URL } from "@/components/driver-scout/seo";
@@ -61,7 +61,16 @@ export default async function ScoutProfilesPage() {
               ただいまプロフィールを表示できません。時間をおいて、もう一度お試しください。
             </p>
           ) : profiles.length === 0 ? (
-            <p className="ds-profiles__empty">現在、公開中のプロフィールはありません。新しい登録があり次第、ここに表示されます。</p>
+            <>
+              <p className="ds-profiles__empty">
+                現在、公開中のプロフィールはありません。新しい登録があり次第、ここに表示されます。
+                <br />
+                下は、プロフィールがどのように表示されるかの架空の例です。
+              </p>
+              <div className="ds-profiles__grid ds-profiles__grid--sample">
+                <SampleProfileCard />
+              </div>
+            </>
           ) : (
             <div className="ds-profiles__grid">
               {profiles.map((p) => (
