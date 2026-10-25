@@ -37,6 +37,8 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: [OG_IMAGE.url] },
   formatDetection: { telephone: false },
+  // Google Search Console の所有権確認（URLプレフィックス https://scout.adofy-site.com/ ）
+  verification: { google: "V3FtsnpfZEnsEv-8u0R4iWlXinrsIozyFVCM2oTOXpg" },
 };
 
 export const viewport: Viewport = { themeColor: "#0a1f4e" };
