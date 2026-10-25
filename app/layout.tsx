@@ -27,6 +27,8 @@ export default function RootLayout({
     <html
       lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      // ドライバー採用サービスLPは、表示前のスクリプトで <html> に演出用のクラスを足すため
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         {/* Meta Pixel — PageView only */}

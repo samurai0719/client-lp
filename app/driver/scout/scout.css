@@ -820,48 +820,6 @@
   font-weight: 700;
 }
 
-.ds-calc {
-  margin-top: 18px;
-  padding: 18px 16px;
-  border-radius: 16px;
-  background: var(--ds-gold-soft);
-  text-align: center;
-}
-
-.ds-calc__title {
-  display: inline-block;
-  padding: 2px 12px;
-  border-radius: 999px;
-  background: var(--ds-gold);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.ds-calc__expr {
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.ds-calc__result {
-  margin-top: 4px;
-  color: var(--dt-navy);
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.ds-calc__result b {
-  color: #c2410c;
-  font-size: 30px;
-}
-
-.ds-calc__note {
-  margin-top: 6px;
-  color: var(--dt-mute);
-  font-size: 14px;
-}
-
 .ds-tbd {
   margin-top: 14px;
   padding: 16px;
@@ -1985,36 +1943,6 @@ select.ds-input {
   font-weight: 900;
 }
 
-/* 計算例の帯（年収のうち10％の部分だけ色を付ける） */
-.ds-calc__bar {
-  display: flex;
-  overflow: hidden;
-  height: 40px;
-  margin: 12px auto 4px;
-  max-width: 420px;
-  border-radius: 10px;
-  background: #fff;
-  border: 1px solid #ece4d0;
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.ds-calc__all {
-  display: grid;
-  flex: 9;
-  place-items: center;
-  color: var(--dt-mute);
-}
-
-.ds-calc__part {
-  display: grid;
-  flex: 1.6;
-  place-items: center;
-  background: #c2410c;
-  color: #fff;
-  white-space: nowrap;
-}
-
 /* ── 9. よくある質問（開閉式） ─────────────────────────── */
 .ds-faq {
   display: grid;
@@ -2076,4 +2004,203 @@ select.ds-input {
   padding: 0 16px 16px 52px;
   font-size: 16px;
   line-height: 1.85;
+}
+
+/* ── 採用費用の比較 ───────────────────────────────────── */
+.ds-compare {
+  background: var(--dt-paper);
+}
+
+.ds-cmp {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.ds-cmp th,
+.ds-cmp td {
+  padding: 14px 12px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.ds-cmp thead th {
+  padding: 12px 8px;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.ds-cmp thead th:not(.is-ours) {
+  border-radius: 14px 0 0 0;
+  background: #e6e9ee;
+  color: var(--dt-mute);
+}
+
+.ds-cmp thead th.is-ours {
+  border-radius: 0 14px 0 0;
+  background: var(--dt-navy);
+  color: #fff;
+}
+
+.ds-cmp tbody th {
+  background: #fff;
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 900;
+  text-align: left;
+}
+
+.ds-cmp tbody td {
+  border-top: 1px solid var(--dt-line);
+  background: #fff;
+  color: var(--dt-mute);
+}
+
+.ds-cmp tbody td.is-ours {
+  border-left: 3px solid var(--dt-navy);
+  border-right: 3px solid var(--dt-navy);
+  background: #f3faf5;
+  color: var(--dt-navy);
+}
+
+.ds-cmp tbody tr:last-child td.is-ours {
+  border-bottom: 3px solid var(--dt-navy);
+  border-radius: 0 0 14px 0;
+}
+
+.ds-cmp tbody tr:last-child td:not(.is-ours) {
+  border-radius: 0 0 0 14px;
+}
+
+.ds-cmp__pre {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.ds-cmp__big {
+  display: block;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+td:not(.is-ours) > .ds-cmp__big {
+  color: #4b5568;
+}
+
+td.is-ours > .ds-cmp__big {
+  color: #c2410c;
+}
+
+.ds-cmp__text {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.ds-cmp__tax {
+  display: block;
+  margin-top: 4px;
+  color: var(--dt-mute);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.ds-cmp__corner {
+  background: transparent;
+}
+
+/* スマホ：項目名を行の上に全幅で置き、2つの値を横に並べる（横スクロールさせない） */
+@media (max-width: 599px) {
+  .ds-cmp thead tr,
+  .ds-cmp tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .ds-cmp__corner {
+    display: none;
+  }
+  .ds-cmp tbody th {
+    grid-column: 1 / -1;
+    padding: 10px 12px 6px;
+    border-top: 1px solid var(--dt-line);
+    background: #f7f9fb;
+    text-align: center;
+  }
+  .ds-cmp tbody td {
+    border-top: 0;
+    padding: 12px 8px 14px;
+  }
+  .ds-cmp tbody td:not(.is-ours) {
+    border-left: 1px solid var(--dt-line);
+  }
+  .ds-cmp tbody th {
+    border-left: 1px solid var(--dt-line);
+    border-right: 3px solid var(--dt-navy);
+  }
+  .ds-cmp__big {
+    font-size: 26px;
+  }
+  .ds-cmp tbody tr:last-child td:not(.is-ours) {
+    border-bottom: 1px solid var(--dt-line);
+  }
+}
+
+@media (min-width: 600px) {
+  .ds-cmp tbody th {
+    width: 26%;
+    border-top: 1px solid var(--dt-line);
+    border-left: 1px solid var(--dt-line);
+  }
+  .ds-cmp tbody tr:first-child th,
+  .ds-cmp tbody tr:first-child td {
+    border-top: 0;
+  }
+  .ds-cmp thead th:not(.is-ours) {
+    border-radius: 14px 0 0 0;
+  }
+  .ds-cmp tbody tr:last-child th {
+    border-bottom: 1px solid var(--dt-line);
+    border-radius: 0 0 0 14px;
+  }
+  .ds-cmp tbody tr:last-child td:not(.is-ours) {
+    border-bottom: 1px solid var(--dt-line);
+    border-radius: 0;
+  }
+  .ds-cmp__big {
+    font-size: 34px;
+  }
+}
+
+.ds-cmp__notes {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.ds-cmp__caution {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff6dc;
+  color: #6b4a0c;
+  font-weight: 700;
+}
+
+.ds-cmp__source {
+  color: var(--dt-mute);
+  font-size: 14px;
+}
+
+.ds-cmp__source a {
+  color: var(--dt-navy);
+  font-weight: 700;
+  text-decoration: underline;
 }
