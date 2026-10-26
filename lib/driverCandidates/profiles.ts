@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
 import { candidateNo } from "./candidateNo";
+import { showTestCandidates } from "@/lib/driverScout/requestsDb";
 
 /**
  * 企業に見せる匿名プロフィール（driver_candidates.status = 'waiting' の人）。
@@ -41,12 +42,15 @@ type Row = {
 export async function listAnonymousProfiles(): Promise<AnonymousProfile[] | null> {
   if (!isSupabaseAdminConfigured()) return null;
   try {
-    const { data, error } = await createAdminClient()
-      .from("driver_candidates")
-      .select(PUBLIC_COLUMNS)
-      .eq("status", "waiting")
-      .order("updated_at", { ascending: false })
-      .limit(200);
+    const run = (excludeTest: boolean) => {
+      let q = createAdminClient().from("driver_candidates").select(PUBLIC_COLUMNS);
+      // ローカルの動作確認（showTestCandidates）では、テスト用の一時停止中の求職者も一覧に出す
+      q = excludeTest ? q.eq("status", "waiting").eq("is_test", false) : showTestCandidates() ? q.or("status.eq.waiting,and(is_test.eq.true,status.eq.paused)") : q.eq("status", "waiting");
+      return q.order("updated_at", { ascending: false }).limit(200);
+    };
+    // テスト用の求職者（is_test）は本番に出さない。is_test 列が未作成（migration 016 未適用）なら条件なしで取り直す
+    let { data, error } = await run(!showTestCandidates());
+    if (error && (error.code === "42703" || error.code === "PGRST204")) ({ data, error } = await run(false));
     if (error) {
       console.error("[driver-candidates] list failed:", error.code, error.message);
       return null;

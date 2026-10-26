@@ -15,7 +15,7 @@ import { getWaitingDriverCount } from "@/lib/driverCandidates/count";
  *
  * 対象は運送会社の経営者・採用担当者のみ。求職者向けの導線は置かない。
  * CTAはすべて「無料で求職者情報を見てみる」で、匿名プロフィール一覧（/profiles）へ進む。
- * 一覧で連絡先の開示を求めたときに、無料登録（/register）へ進む。
+ * 一覧で「この方と面接を希望する」を押すと、ライトボックスで面接希望の依頼（会社情報の登録）へ進む。
  * デザインはドラテク企業向けLP（/driver/company）の dt- スタイルを共有し、
  * このサービス固有の部品だけ ./scout.css（ds- プレフィックス）に置いている。
  * 文言は components/driver-scout/content.ts。

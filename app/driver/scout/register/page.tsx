@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { SectionHead } from "@/components/driver-company/lp/ui";
 import ApplyForm from "@/components/driver-scout/ApplyForm";
+import InterviewRequestForm from "@/components/driver-scout/InterviewRequestForm";
+import { CANDIDATE_NO_PATTERN } from "@/lib/driverCandidates/candidateNo";
 import ScoutShell from "@/components/driver-scout/Shell";
 import { SCOUT_PATHS, SERVICE_NAME } from "@/components/driver-scout/content";
 import { SITE_URL } from "@/components/driver-scout/seo";
@@ -9,7 +11,8 @@ import { getWaitingDriverCount } from "@/lib/driverCandidates/count";
 /**
  * 無料登録（企業登録・利用申込み）フォーム（公開URL https://scout.adofy-site.com/register ）。
  * 匿名プロフィールの「この方と面接を希望する」から来る（通常はライトボックスで開き、JSが動かない環境ではこのページ）。
- * ?candidate=XXXXXX が付いていれば、どの候補者の開示を求めているかを一緒に送る。
+ * ?candidate=XXXXXX が付いていれば、その求職者への面接希望の依頼フォーム（InterviewRequestForm）を出す。
+ * 付いていなければ、会社の無料登録フォーム（ApplyForm）を出す。
  */
 
 export const metadata: Metadata = {
@@ -21,9 +24,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-export const revalidate = 60;
-
-export default async function ScoutRegisterPage() {
+export default async function ScoutRegisterPage({ searchParams }: { searchParams: Promise<{ candidate?: string }> }) {
+  const { candidate } = await searchParams;
+  const no = typeof candidate === "string" ? candidate.toUpperCase() : "";
+  const isRequest = CANDIDATE_NO_PATTERN.test(no);
   const waiting = await getWaitingDriverCount();
   return (
     <ScoutShell waiting={waiting} event="company_register_view">
@@ -32,10 +36,14 @@ export default async function ScoutRegisterPage() {
           <SectionHead
             eyebrow="FREE REGISTER"
             id="ds-apply-title"
-            title="無料登録（企業登録）"
-            lead="会社情報と採用したい条件をご入力ください。登録は無料です。費用が発生するのは採用決定時の成功報酬（想定年収の10％）だけです。"
+            title={isRequest ? "この方と面接を希望する" : "無料登録（企業登録）"}
+            lead={
+              isRequest
+                ? "ドラテクが求職者に連絡し、面接の希望と御社が確認したい内容を聞いたうえで、面接の日程を調整します。登録は無料です。"
+                : "会社情報と採用したい条件をご入力ください。登録は無料です。費用が発生するのは採用決定時の成功報酬（想定年収の10％）だけです。"
+            }
           />
-          <ApplyForm />
+          {isRequest ? <InterviewRequestForm candidateNo={no} /> : <ApplyForm />}
         </div>
       </section>
     </ScoutShell>

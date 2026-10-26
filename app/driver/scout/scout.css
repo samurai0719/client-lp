@@ -23,7 +23,7 @@
   margin-top: 28px;
 }
 
-/* ボタン直下の要点（閲覧は無料・登録不要／料金／連絡先の開示条件） */
+/* ボタン直下の要点（閲覧は無料・登録不要／料金／連絡と調整はドラテク） */
 .ds-cta__points {
   display: flex;
   flex-wrap: wrap;
@@ -2579,4 +2579,219 @@ td.is-ours > .ds-cmp__big {
   display: inline-block;
   margin-left: 6px;
   vertical-align: 2px;
+}
+
+/* 面接希望フォーム：前回の会社情報を使うときの表示 */
+.ds-form__saved {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--dt-line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.ds-form__saved > svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  color: var(--dt-navy);
+}
+
+.ds-form__saved p {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.ds-form__saved b {
+  color: var(--dt-navy);
+  font-size: 16px;
+}
+
+.ds-form__saved small {
+  color: var(--dt-mute);
+  font-size: 13px;
+}
+
+.ds-form__edit {
+  flex: none;
+  padding: 6px 12px;
+  border: 1px solid var(--dt-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--dt-navy);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ds-textarea--short {
+  min-height: 72px;
+}
+
+.ds-form__donenote {
+  color: var(--dt-mute);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* 匿名プロフィールのボタン直前の一文（誰が連絡するか） */
+.ds-disclose__note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ds-disclose__note svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--ds-gold);
+}
+
+/* ── 面接希望の受付状況（企業向け /requests/<token>） ─────────── */
+.ds-reqstatus {
+  min-height: 70vh;
+  background: var(--dt-paper);
+}
+
+.ds-reqcard {
+  display: grid;
+  gap: 10px;
+  padding: 20px 18px;
+  border: 2px solid var(--dt-navy);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.ds-reqcard.is-stopped {
+  border-color: #c9d2de;
+}
+
+.ds-reqcard.is-confirmed {
+  border-color: var(--ds-ok);
+}
+
+.ds-reqcard__who {
+  color: var(--dt-mute);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ds-reqcard__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dt-navy);
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.ds-reqcard__status svg {
+  width: 22px;
+  height: 22px;
+  color: var(--ds-gold);
+}
+
+.ds-reqcard__msg {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.ds-reqsteps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.ds-reqsteps li {
+  padding: 8px 2px;
+  border-top: 4px solid #e3e8ef;
+  color: var(--dt-mute);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.ds-reqsteps li.is-done {
+  border-top-color: #9cc5ae;
+}
+
+.ds-reqsteps li.is-now {
+  border-top-color: var(--ds-gold);
+  color: var(--dt-navy);
+  font-weight: 900;
+}
+
+.ds-reqinterview {
+  display: grid;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #effaf5;
+  font-size: 16px;
+}
+
+.ds-reqinterview p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds-reqinterview svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--ds-ok);
+}
+
+.ds-reqblock {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid var(--dt-line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.ds-reqblock h2 {
+  margin-bottom: 10px;
+  color: var(--dt-navy);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.ds-reqblock p,
+.ds-reqblock dd {
+  font-size: 16px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.ds-reqblock dl > div {
+  padding: 10px 0;
+  border-top: 1px solid var(--dt-line);
+}
+
+.ds-reqblock dl > div:first-child {
+  border-top: 0;
+}
+
+.ds-reqblock dt {
+  color: var(--dt-mute);
+  font-size: 13px;
+  font-weight: 700;
 }

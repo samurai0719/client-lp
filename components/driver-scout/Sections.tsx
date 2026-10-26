@@ -240,7 +240,7 @@ export function Reasons() {
   return (
     <section className="dt-section ds-reasons" aria-labelledby="ds-reasons-title">
       <div className="dt-container">
-        <SectionHead eyebrow="ドラテクを使う理由" id="ds-reasons-title" title="応募を待つだけでなく、会いたい人に声をかけられます。" />
+        <SectionHead eyebrow="ドラテクを使う理由" id="ds-reasons-title" title="応募を待つだけでなく、会いたい人を選べます。" />
         <div className="ds-reasons__list">
           {REASONS.map((r, i) => (
             <article key={r.title} className={`ds-reason${i % 2 ? " is-rev" : ""}`}>
@@ -261,7 +261,7 @@ export function Reasons() {
             <div className="ds-reason__text">
               <p className="ds-reason__no">理由 ③</p>
               <h3>まずは無料で、どんな人がいるか見られる</h3>
-              <p>候補者の情報は、登録なしで見られます。登録や契約が必要になるのは、相手の連絡先を知りたくなってからです。</p>
+              <p>候補者の情報は、登録なしで見られます。会社情報の登録が必要になるのは、面接を希望するときです。</p>
             </div>
             <div className="ds-free" role="table" aria-label="無料でできることと、必要な手続き">
               <div className="ds-free__row ds-free__row--head" role="row">
@@ -460,7 +460,7 @@ export function Retention() {
 
 /* ═══════════════════════ 6. 利用の流れ ═══════════════════════ */
 
-const FLOW_ICONS: LucideIcon[] = [Eye, UserCheck, PhoneCall, CalendarCheck, Handshake];
+const FLOW_ICONS: LucideIcon[] = [Eye, UserCheck, Building2, FileSignature, PhoneCall, CalendarCheck, Handshake];
 
 export function Flow() {
   return (
@@ -475,7 +475,7 @@ export function Flow() {
           {FLOW.map((f, i) => {
             const Icon = FLOW_ICONS[i];
             return (
-              <li key={f.title} className={i === 2 ? "is-key" : i === FLOW.length - 1 ? "is-fee" : undefined}>
+              <li key={f.title} className={f.tag === "ここで契約" ? "is-key" : f.tag === "採用決定で費用" ? "is-fee" : undefined}>
                 <span className="ds-flow3__icon" aria-hidden="true">
                   <Icon />
                 </span>

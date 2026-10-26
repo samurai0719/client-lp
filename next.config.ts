@@ -63,6 +63,7 @@ const doratechHosts = ["doratech.adofy-site.com"];
 //   /            → /driver/scout              （LP。proxy.ts で書き換え）
 //   /profiles    → /driver/scout/profiles     （匿名プロフィール一覧）
 //   /register    → /driver/scout/register     （無料登録）
+//   /requests/:token → /driver/scout/requests/:token（企業向けの面接希望の受付状況）
 //   /robots.txt  → /driver/scout/robots.txt
 //   /sitemap.xml → /driver/scout/sitemap.xml
 // scout.localhost はローカル確認用（http://scout.localhost:3123/ で本番と同じURLの形で開ける）
@@ -343,6 +344,7 @@ const nextConfig: NextConfig = {
           { source: "/sitemap.xml", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/sitemap.xml" },
           { source: "/profiles", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/profiles" },
           { source: "/register", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/register" },
+          { source: "/requests/:token", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/requests/:token" },
         ]),
 
         // ── doratech.adofy-site.com（ドラテク 企業向け） ────────────────

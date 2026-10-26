@@ -2,14 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import ApplyForm from "./ApplyForm";
+import InterviewRequestForm from "./InterviewRequestForm";
 import { OPEN_INTERVIEW_EVENT } from "./events";
 
 
 /**
  * 面接希望のライトボックス（匿名プロフィール一覧に1つだけ置く）。
  * 各カードのボタンが候補者番号つきのイベントを出し、ここで企業登録フォームを開く。
- * フォームは /register と同じ ApplyForm（候補者番号・求職者に聞いてほしいこと を一緒に送る）。
+ * フォームは InterviewRequestForm（会社情報・仕事内容・確認したいこと・面接できる日時を送る）。
  * ネイティブの <dialog> を使うので、Esc キー・フォーカスの閉じ込めはブラウザが行う。
  */
 export default function InterviewModal() {
@@ -56,9 +56,9 @@ export default function InterviewModal() {
       </div>
       <div className="ds-modal__body">
         <p className="ds-modal__lead">
-          会社情報をご登録ください（無料）。担当者からサービス内容と料金をご説明し、ご契約のあと、ドラテクが求職者に連絡して面接の日程を調整します。
+          ドラテクが求職者に連絡し、面接の希望と御社が確認したい内容を聞いたうえで、面接の日程を調整します。はじめての企業さまは、ご契約の前に担当者がサービス内容と料金をご説明します。
         </p>
-        {candidate && <ApplyForm key={formKey} candidateNo={candidate} />}
+        {candidate && <InterviewRequestForm key={formKey} candidateNo={candidate} />}
       </div>
     </dialog>
   );

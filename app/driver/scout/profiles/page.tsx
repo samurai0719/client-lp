@@ -16,7 +16,7 @@ import { listAnonymousProfiles } from "@/lib/driverCandidates/profiles";
 
 const TITLE = `ドライバー求職者の匿名プロフィール一覧｜愛知の運送会社向け｜${SERVICE_NAME}`;
 const DESCRIPTION =
-  "愛知県で働きたいトラックドライバー希望者の匿名プロフィール一覧。年齢（年代）・免許・運転経験・希望勤務地・希望年収を登録なしで確認できます。連絡先は本人の同意後に開示。";
+  "愛知県で働きたいトラックドライバー希望者の匿名プロフィール一覧。年齢（年代）・免許・運転経験・希望勤務地・希望年収を登録なしで確認でき、会いたい人を選ぶと、ドラテクが連絡と面接の日程調整を行います。";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

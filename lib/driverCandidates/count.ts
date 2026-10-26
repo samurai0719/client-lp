@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
+import { showTestCandidates } from "@/lib/driverScout/requestsDb";
 
 /**
  * 企業からの連絡を待っている求職者（driver_candidates.status = 'waiting'）の人数。
@@ -15,10 +16,14 @@ export async function getWaitingDriverCount(): Promise<number | null> {
 
   if (!isSupabaseAdminConfigured()) return null;
   try {
-    const { count, error } = await createAdminClient()
-      .from("driver_candidates")
-      .select("id", { count: "exact", head: true })
-      .eq("status", "waiting");
+    const run = (excludeTest: boolean) => {
+      const q = createAdminClient().from("driver_candidates").select("id", { count: "exact", head: true }).eq("status", "waiting");
+      return excludeTest ? q.eq("is_test", false) : q;
+    };
+    // テスト用の求職者（is_test）は数えない。is_test 列が未作成（migration 016 未適用）の間は条件なしで数える
+    let { count, error } = await run(!showTestCandidates());
+    // 件数だけの問い合わせ（head）はエラー内容が返らないため、失敗したら is_test の条件なしで数え直す
+    if (error) ({ count, error } = await run(false));
     if (error) {
       console.error("[driver-candidates] count failed:", error.code, error.message);
       return null;
