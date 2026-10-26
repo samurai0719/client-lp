@@ -11,6 +11,7 @@ import {
   SCOUT_HIRING_TIMINGS,
   SCOUT_JOB_TYPES,
   SCOUT_LICENSES,
+  QUESTIONS_MAX,
   validateScoutApply,
   type ScoutApplyErrors,
 } from "@/lib/types/driverScoutApply";
@@ -32,6 +33,7 @@ type Values = {
   licenses: string[];
   hiringCount: string;
   hiringTiming: string;
+  questions: string;
   privacyAgreed: boolean;
 };
 
@@ -46,6 +48,7 @@ const INITIAL: Values = {
   licenses: [],
   hiringCount: "",
   hiringTiming: "",
+  questions: "",
   privacyAgreed: false,
 };
 
@@ -57,7 +60,7 @@ const INPUT = "ds-input";
  * 送信先は /api/driver-scout-apply。保存・通知のどちらにも失敗した場合は失敗表示にし、
  * 送れたように見せかけない。
  */
-export default function ApplyForm() {
+export default function ApplyForm({ candidateNo }: { candidateNo?: string } = {}) {
   const [v, setV] = useState<Values>(INITIAL);
   const [errors, setErrors] = useState<ScoutApplyErrors>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -71,11 +74,11 @@ export default function ApplyForm() {
 
   useEffect(() => {
     mountedAt.current = Date.now();
-    const no = new URLSearchParams(window.location.search).get("candidate")?.toUpperCase() ?? "";
+    const no = (candidateNo ?? new URLSearchParams(window.location.search).get("candidate") ?? "").toUpperCase();
     // URLの値を表示に使うため、決まった形（英数字6文字）のときだけ受け取る
     // eslint-disable-next-line react-hooks/set-state-in-effect -- URLはマウント後にしか読めない
     if (CANDIDATE_NO_PATTERN.test(no)) setCandidate(no);
-  }, []);
+  }, [candidateNo]);
 
   const set = <K extends keyof Values>(key: K, value: Values[K]) => {
     if (!started.current) {
@@ -165,13 +168,13 @@ export default function ApplyForm() {
         <p>
           {candidate && (
             <>
-              候補者 No.{candidate} への連絡先の開示依頼もあわせて受け付けました。
+              候補者 No.{candidate} との面接のご希望もあわせて受け付けました。
               <br />
             </>
           )}
           ご入力いただいた内容を確認のうえ、担当者よりご連絡します。
           <br />
-          サービス説明・企業確認・ご契約のあと、候補者本人へ貴社の情報と求人内容をお伝えし、同意が得られた場合に連絡先を開示します。
+          サービス説明・企業確認・ご契約のあと、ドラテクが求職者に貴社の情報と仕事内容をお伝えし、面接のご希望とご指定の確認事項をお聞きしたうえで、日程を調整します。
         </p>
         <a href={SCOUT_PATHS.profiles} className="ds-form__back">
           匿名プロフィール一覧に戻る
@@ -199,7 +202,7 @@ export default function ApplyForm() {
           <p className="ds-form__candidate">
             <UserRound aria-hidden="true" />
             <span>
-              <b>候補者 No.{candidate}</b> への連絡先の開示を依頼します
+              <b>候補者 No.{candidate}</b> との面接を希望します
             </span>
           </p>
         )}
@@ -269,6 +272,22 @@ export default function ApplyForm() {
           </div>
         </fieldset>
 
+        <div className="ds-form__field">
+          <label className="ds-form__label" htmlFor="ds-f-questions">
+            求職者に聞いてほしいこと<em className="ds-opt">任意</em>
+          </label>
+          <textarea
+            id="ds-f-questions"
+            className={`${INPUT} ds-textarea`}
+            rows={4}
+            maxLength={QUESTIONS_MAX}
+            value={v.questions}
+            onChange={(e) => set("questions", e.target.value)}
+            placeholder="例）夜間の運転はできるか、手積み・手降ろしの経験はあるか、いつから働けるか など"
+          />
+          <p className="ds-form__help">ご契約後、ドラテクが求職者に連絡するときに確認し、回答をお伝えします。</p>
+        </div>
+
         <div className="ds-form__consent">
           <label className={`ds-check${v.privacyAgreed ? " is-on" : ""}${errors.privacyAgreed ? " is-err" : ""}`}>
             <input id="ds-f-privacyAgreed" type="checkbox" checked={v.privacyAgreed} onChange={(e) => set("privacyAgreed", e.target.checked)} {...aria("privacyAgreed")} />
@@ -307,7 +326,7 @@ export default function ApplyForm() {
                 送信しています…
               </span>
             ) : (
-              <span className="dt-btn__label">{candidate ? "無料登録して開示を依頼する" : "無料登録する"}</span>
+              <span className="dt-btn__label">{candidate ? "無料登録して面接を希望する" : "無料登録する"}</span>
             )}
           </span>
         </button>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SectionHead } from "@/components/driver-company/lp/ui";
+import InterviewModal from "@/components/driver-scout/InterviewModal";
 import { ProfileCard, SampleProfileCard } from "@/components/driver-scout/Profiles";
 import ScoutShell from "@/components/driver-scout/Shell";
 import { SCOUT_PATHS, SERVICE_NAME } from "@/components/driver-scout/content";
@@ -10,7 +11,7 @@ import { listAnonymousProfiles } from "@/lib/driverCandidates/profiles";
 /**
  * 求職者の匿名プロフィール一覧（公開URL https://scout.adofy-site.com/profiles ）。
  * LPの「無料で求職者情報を見てみる」から来る。登録なしで閲覧でき、
- * 連絡先の開示を依頼するときだけ無料登録（/register）へ進む。
+ * 「この方と面接を希望する」を押すと、ライトボックスで無料登録（企業登録）フォームが開く。
  */
 
 const TITLE = `ドライバー求職者の匿名プロフィール一覧｜愛知の運送会社向け｜${SERVICE_NAME}`;
@@ -50,7 +51,7 @@ export default async function ScoutProfilesPage() {
             eyebrow="PROFILES"
             id="ds-profiles-title"
             title="ドライバー求職者の匿名プロフィール"
-            lead="個人を特定できる情報は表示していません。連絡を取りたい方がいれば、無料登録のうえ連絡先の開示を依頼できます。"
+            lead="個人を特定できる情報は表示していません。会いたい方がいれば「この方と面接を希望する」から無料登録できます。ご契約後、ドラテクが求職者に連絡し、面接の日程を調整します。"
           />
           <div className="ds-profiles__count">
             <WaitingLine />
@@ -80,6 +81,7 @@ export default async function ScoutProfilesPage() {
           )}
         </div>
       </section>
+      <InterviewModal />
     </ScoutShell>
   );
 }

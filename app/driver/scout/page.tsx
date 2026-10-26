@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 
-import { AboutResults, Compare, Faq, FinalCta, Flow, Hero, Intro, Pricing, Problems, Reasons, Retention, Visible } from "@/components/driver-scout/Sections";
+import { AboutResults, Compare, Delegate, Faq, FinalCta, Flow, Hero, Intro, Pricing, Problems, Reasons, Retention, Visible } from "@/components/driver-scout/Sections";
 import ScoutShell from "@/components/driver-scout/Shell";
 import ScrollMotion from "@/components/driver-scout/ScrollMotion";
 // 演出の CSS は共通スタイル（Shell が読み込む）のあとに読む
@@ -60,6 +60,7 @@ export default async function DriverScoutPage() {
         <Problems />
         <Reasons />
         <Visible />
+        <Delegate />
         <Retention />
         <Flow />
         <Compare />

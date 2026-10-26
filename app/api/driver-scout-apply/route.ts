@@ -119,7 +119,8 @@ export async function POST(req: Request) {
 function extrasText(v: ScoutApplyValues): string {
   return [
     "【候補者プロフィール検索 利用申込み】",
-    ...(v.candidateNo ? [`開示を依頼された候補者：No.${v.candidateNo}`] : []),
+    ...(v.candidateNo ? [`面接を希望する候補者：No.${v.candidateNo}`] : []),
+    ...(v.questions ? [`求職者に聞いてほしいこと：\n${v.questions}`] : []),
     `所在地（市区町村）：${v.city}`,
     `求める免許：${v.licenses.join("、")}`,
     `採用希望時期：${v.hiringTiming}`,
@@ -178,7 +179,7 @@ async function notify(v: ScoutApplyValues, tracking: Record<string, string | nul
   const text = [
     "【ドライバー採用サービス】候補者プロフィール検索の利用申込みが届きました。",
     dbFailed ? "\n※ データベースへの保存に失敗しています。このメールの内容を控えてください。\n" : "",
-    ...(v.candidateNo ? [`★ 連絡先の開示を依頼された候補者：No.${v.candidateNo}（driver_candidates.id の先頭6文字）`, ""] : []),
+    ...(v.candidateNo ? [`★ 面接を希望する候補者：No.${v.candidateNo}（driver_candidates.id の先頭6文字）`, ""] : []),
     `会社名：${v.companyName}`,
     `担当者名：${v.contactName}`,
     `電話番号：${v.phone}`,
@@ -188,10 +189,11 @@ async function notify(v: ScoutApplyValues, tracking: Record<string, string | nul
     `求める免許：${v.licenses.join("、")}`,
     `採用予定人数：${v.hiringCount}`,
     `採用希望時期：${v.hiringTiming}`,
+    `求職者に聞いてほしいこと：${v.questions ? `\n${v.questions}` : "（記入なし）"}`,
     "",
     `流入元：${tracking.utm_source ?? tracking.referrer ?? "直接アクセス"}`,
     "",
     "次の対応：採用条件のヒアリング → サービス説明・料金条件の確認 → 企業確認・契約 → アカウント発行",
   ].join("\n");
-  return sendMail({ to, subject: `【無料登録】${v.companyName} 様（候補者プロフィール検索${v.candidateNo ? `・No.${v.candidateNo} 開示依頼` : ""}）`, text, replyTo: v.email });
+  return sendMail({ to, subject: `【無料登録】${v.companyName} 様（候補者プロフィール検索${v.candidateNo ? `・No.${v.candidateNo} 面接希望` : ""}）`, text, replyTo: v.email });
 }

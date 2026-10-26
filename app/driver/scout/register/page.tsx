@@ -8,14 +8,14 @@ import { getWaitingDriverCount } from "@/lib/driverCandidates/count";
 
 /**
  * 無料登録（企業登録・利用申込み）フォーム（公開URL https://scout.adofy-site.com/register ）。
- * 匿名プロフィールの「無料登録して連絡先の開示を依頼する」から来る。
+ * 匿名プロフィールの「この方と面接を希望する」から来る（通常はライトボックスで開き、JSが動かない環境ではこのページ）。
  * ?candidate=XXXXXX が付いていれば、どの候補者の開示を求めているかを一緒に送る。
  */
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: `無料登録（企業登録）｜${SERVICE_NAME} ドライバー採用サービス`,
-  description: "匿名プロフィールの候補者へ連絡先の開示を依頼するための、運送会社さま向けの無料登録フォームです。",
+  description: "匿名プロフィールの候補者との面接を希望するための、運送会社さま向けの無料登録フォームです。",
   alternates: { canonical: SCOUT_PATHS.register },
   // フォームだけのページなので検索結果には出さない（リンクはたどってよい）
   robots: { index: false, follow: true },

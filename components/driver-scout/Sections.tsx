@@ -2,6 +2,9 @@ import Link from "next/link";
 import {
   ArrowRight,
   Building2,
+  CalendarCheck,
+  Check,
+  Headset,
   CircleCheck,
   ClipboardCheck,
   Clock,
@@ -17,7 +20,6 @@ import {
   PhoneCall,
   Route,
   Search,
-  Unlock,
   UserCheck,
   UserRound,
   type LucideIcon,
@@ -34,6 +36,7 @@ import {
   AD_VIDEOS,
   COMPARE,
   CTA_REASONS,
+  DELEGATE,
   FAQS,
   FINAL_CTA,
   FLOW,
@@ -313,6 +316,83 @@ export function Visible() {
   );
 }
 
+/* ═══════════════════════ 連絡と面接の日程調整（お任せ） ═══════════════════════ */
+
+export function Delegate() {
+  return (
+    <section className="dt-section ds-delegate" id="delegate" aria-labelledby="ds-delegate-title">
+      <div className="dt-container dt-container--narrow">
+        <SectionHead eyebrow="連絡と日程調整" id="ds-delegate-title" title={DELEGATE.title} />
+        <div className="ds-intro__body">
+          {DELEGATE.body.map((t) => (
+            <p key={t}>{t}</p>
+          ))}
+        </div>
+
+        {/* 企業 → ドラテク → 求職者 の役割の図 */}
+        <ol className="ds-relay" aria-label="連絡の流れ">
+          <li>
+            <span className="ds-relay__icon" aria-hidden="true">
+              <Building2 />
+            </span>
+            <b>企業さま</b>
+            <span>会いたい人と確認したい内容を伝える</span>
+          </li>
+          <li className="is-us">
+            <span className="ds-relay__icon" aria-hidden="true">
+              <Headset />
+            </span>
+            <b>ドラテク</b>
+            <span>連絡・確認事項の聞き取り・日程調整</span>
+          </li>
+          <li>
+            <span className="ds-relay__icon" aria-hidden="true">
+              <UserRound />
+            </span>
+            <b>求職者</b>
+            <span>会社と仕事内容を聞き、面接するか決める</span>
+          </li>
+        </ol>
+
+        <div className="ds-roles">
+          <div className="ds-split__box is-company">
+            <p className="ds-split__who">
+              <Building2 aria-hidden="true" />
+              企業さまがすること
+            </p>
+            <ul className="ds-checklist">
+              {DELEGATE.company.map((t) => (
+                <li key={t}>
+                  <Check aria-hidden="true" strokeWidth={3} />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="ds-split__box">
+            <p className="ds-split__who">
+              <Headset aria-hidden="true" />
+              ドラテクがすること
+            </p>
+            <ul className="ds-checklist">
+              {DELEGATE.us.map((t) => (
+                <li key={t}>
+                  <Check aria-hidden="true" strokeWidth={3} />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <p className="ds-goal">
+          <ArrowRight aria-hidden="true" />
+          {DELEGATE.note}
+        </p>
+      </div>
+    </section>
+  );
+}
+
 /* ═══════════════════════ 5. 人が残る採用 ═══════════════════════ */
 
 const CHECK_ICONS: Record<(typeof RETENTION.checklist)[number]["icon"], LucideIcon> = {
@@ -380,7 +460,7 @@ export function Retention() {
 
 /* ═══════════════════════ 6. 利用の流れ ═══════════════════════ */
 
-const FLOW_ICONS: LucideIcon[] = [Eye, Building2, FileSignature, UserCheck, Unlock, PhoneCall];
+const FLOW_ICONS: LucideIcon[] = [Eye, UserCheck, PhoneCall, CalendarCheck, Handshake];
 
 export function Flow() {
   return (
@@ -395,7 +475,7 @@ export function Flow() {
           {FLOW.map((f, i) => {
             const Icon = FLOW_ICONS[i];
             return (
-              <li key={f.title} className={i === 2 ? "is-key" : i === 5 ? "is-fee" : undefined}>
+              <li key={f.title} className={i === 2 ? "is-key" : i === FLOW.length - 1 ? "is-fee" : undefined}>
                 <span className="ds-flow3__icon" aria-hidden="true">
                   <Icon />
                 </span>

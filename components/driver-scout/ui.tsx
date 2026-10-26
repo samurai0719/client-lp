@@ -5,6 +5,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { SERVICE } from "@/config/driver-company";
 import { trackCompany } from "../driver-company/track";
 import { CTA_AFTER, CTA_HREF, CTA_LABEL, CTA_POINTS, DISCLOSE_LABEL, registerHref, SCOUT_PATHS, SERVICE_KIND, SERVICE_NAME } from "./content";
+import { OPEN_INTERVIEW_EVENT } from "./events";
 import { useWaitingCount, WaitingLine } from "./waiting";
 
 /**
@@ -107,23 +108,24 @@ export function StickyCta() {
   );
 }
 
-/** 匿名プロフィールから無料登録へ進むボタン。候補者番号を登録フォームへ渡す */
+/**
+ * 匿名プロフィールの「この方と面接を希望する」ボタン。
+ * 押すと面接希望のライトボックス（InterviewModal）が開く。JSが動かない環境では、リンク先の /register へ進む。
+ */
 export function DiscloseButton({ no }: { no: string }) {
   return (
     <a
       href={registerHref(no)}
+      role="button"
       className="dt-btn dt-btn--lg ds-disclose__btn"
-      onClick={() => trackCompany("company_disclose_click", { candidate: no })}
+      onClick={(e) => {
+        e.preventDefault();
+        trackCompany("company_disclose_click", { candidate: no });
+        window.dispatchEvent(new CustomEvent(OPEN_INTERVIEW_EVENT, { detail: no }));
+      }}
     >
       <span className="dt-btn__body">
-        {/* 折り返すときは「無料登録して／連絡先の開示を依頼する」の切れ目で折り返す */}
-        <span className="dt-btn__label" aria-label={DISCLOSE_LABEL}>
-          {DISCLOSE_LABEL.split("して").map((part, i, all) => (
-            <span key={part} className="ds-nowrap">
-              {i < all.length - 1 ? `${part}して` : part}
-            </span>
-          ))}
-        </span>
+        <span className="dt-btn__label">{DISCLOSE_LABEL}</span>
       </span>
       <ArrowRight className="dt-btn__arrow" aria-hidden="true" strokeWidth={2.8} />
     </a>

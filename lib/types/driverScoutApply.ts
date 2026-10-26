@@ -13,6 +13,9 @@ import { CANDIDATE_NO_PATTERN } from "@/lib/driverCandidates/candidateNo";
 export { PREFECTURES };
 
 /** 申込み種別。driver_company_inquiries の他フォーム（求人掲載）と区別する */
+/** 「求職者に聞いてほしいこと」の最大文字数 */
+export const QUESTIONS_MAX = 1000;
+
 export const SCOUT_INQUIRY_TYPE = "profile_search";
 
 export const SCOUT_JOB_TYPES = [
@@ -58,6 +61,8 @@ export type ScoutApplyInput = {
   privacyAgreed?: boolean;
   /** 匿名プロフィールから来たときの候補者番号（任意） */
   candidateNo?: string;
+  /** 求職者に聞いてほしいこと（任意） */
+  questions?: string;
   /** ハニーポット。人間には見えない項目なので、値が入っていればボット */
   websiteUrl?: string;
   /** フォーム表示からの経過ミリ秒。極端に短い送信は自動化とみなす */
@@ -80,6 +85,8 @@ export type ScoutApplyValues = {
   hiringTiming: string;
   /** 連絡先の開示を依頼された候補者番号。一覧から来ていなければ null */
   candidateNo: string | null;
+  /** 求職者に聞いてほしいこと（任意。未入力なら null） */
+  questions: string | null;
 };
 
 /** 項目キー → エラーメッセージ */
@@ -88,6 +95,13 @@ export type ScoutApplyErrors = Partial<Record<keyof ScoutApplyValues | "privacyA
 function str(v: unknown, max: number): string | null {
   if (typeof v !== "string") return null;
   const cleaned = v.replace(/[\u0000-\u001F\u007F]/g, "").trim();
+  return cleaned ? cleaned.slice(0, max) : null;
+}
+
+/** 複数行の自由記入。改行は残し、それ以外の制御文字を取り除く */
+function strMultiline(v: unknown, max: number): string | null {
+  if (typeof v !== "string") return null;
+  const cleaned = v.replace(/\r\n?/g, "\n").replace(/[\u0000-\u0009\u000B-\u001F\u007F]/g, "").trim();
   return cleaned ? cleaned.slice(0, max) : null;
 }
 
@@ -169,6 +183,7 @@ export function validateScoutApply(
       hiringCount: hiringCount!,
       hiringTiming: hiringTiming!,
       candidateNo: typeof body.candidateNo === "string" && CANDIDATE_NO_PATTERN.test(body.candidateNo) ? body.candidateNo : null,
+      questions: strMultiline(body.questions, QUESTIONS_MAX),
     },
   };
 }

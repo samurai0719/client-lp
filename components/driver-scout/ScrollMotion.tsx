@@ -21,6 +21,8 @@ const TARGETS = [
   ".ds-scard",
   ".ds-visible2__side",
   ".ds-ctabox",
+  ".ds-relay > li",
+  ".ds-roles > div",
   ".ds-retention__top",
   ".ds-split__who",
   ".ds-icongrid > li",
