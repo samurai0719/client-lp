@@ -31,6 +31,7 @@ import {
   ACHIEVEMENTS,
   ACHIEVEMENTS_NOTE,
   ACHIEVEMENT_ROWS,
+  AD_VIDEOS,
   COMPARE,
   CTA_REASONS,
   FAQS,
@@ -62,6 +63,7 @@ import {
   SceneInterview,
   SceneLook,
 } from "./illustrations";
+import AdVideo from "./AdVideo";
 import { ScoutCta } from "./ui";
 
 /**
@@ -561,6 +563,25 @@ export function AboutResults() {
               <p className="ds-rtable__not">※{r.not}</p>
             </div>
           ))}
+        </div>
+        <div className="ds-ads">
+          <h3 className="ds-ads__title">{AD_VIDEOS.title}</h3>
+          <p className="ds-ads__lead">{AD_VIDEOS.lead}</p>
+          <ul className="ds-ads__list" aria-label="ドライバー求人の動画広告の例">
+            {AD_VIDEOS.items.map((v) => (
+              <li key={v.id} className="ds-ads__item">
+                <AdVideo src={`/videos/saiyo-rescue/${v.id}.mp4`} poster={`/images/saiyo-rescue/ad-${v.id}.webp`} label={`${v.media}の動画広告`} />
+                <div className="ds-ads__meta">
+                  <p className="ds-ads__media">{v.media}</p>
+                  <p className="ds-ads__count">
+                    応募実績 <b>{v.count.toLocaleString("ja-JP")}</b>人
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p className="ds-ads__hint">← 横にスクロールして他の動画を見る →</p>
+          <p className="ds-ads__note">{AD_VIDEOS.note}</p>
         </div>
         <p className="ds-small">
           ドラテクは新しく始めたサービスのため、現在の登録者数は一覧ページの表示がすべてです。導入事例・お客様の声は、確認できたものから掲載します。

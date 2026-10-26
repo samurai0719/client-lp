@@ -2204,3 +2204,139 @@ td.is-ours > .ds-cmp__big {
   font-weight: 700;
   text-decoration: underline;
 }
+
+/* ── 動画広告の例（ドライバー求人。採用レスキューLPと同じ見せ方） ─────── */
+.ds-ads {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid #ece4d0;
+}
+
+.ds-ads__title {
+  color: var(--dt-navy);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.ds-ads__lead {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* スマホ：横スクロール（スナップ）。PC：3本を横に並べる */
+.ds-ads__list {
+  display: flex;
+  gap: 12px;
+  margin: 20px -16px 0;
+  padding: 4px 16px 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.ds-ads__item {
+  flex: 0 0 auto;
+  width: min(58vw, 220px);
+  scroll-snap-align: start;
+}
+
+.ds-advideo {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--dt-navy);
+  box-shadow: 0 12px 28px rgba(20, 61, 46, 0.18);
+}
+
+.ds-advideo__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.ds-advideo__sound {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(20, 61, 46, 0.72);
+  color: #fff;
+  cursor: pointer;
+}
+
+.ds-advideo__sound svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ds-ads__meta {
+  padding: 10px 2px 0;
+  text-align: center;
+}
+
+.ds-ads__media {
+  color: var(--dt-navy);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.ds-ads__count {
+  margin-top: 2px;
+  color: var(--dt-mute);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ds-ads__count b {
+  color: #c2410c;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.ds-ads__hint {
+  color: var(--dt-mute);
+  font-size: 13px;
+  text-align: center;
+}
+
+.ds-ads__note {
+  margin-top: 10px;
+  color: var(--dt-mute);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+@media (min-width: 768px) {
+  .ds-ads__title {
+    font-size: 24px;
+  }
+  .ds-ads__list {
+    justify-content: center;
+    gap: 20px;
+    margin: 28px 0 0;
+    padding: 4px 0 8px;
+    overflow: visible;
+  }
+  .ds-ads__item {
+    width: 200px;
+  }
+  .ds-ads__hint {
+    display: none;
+  }
+}
