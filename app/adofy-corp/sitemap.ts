@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CORP_PAGES, CORP_SITE } from "@/components/adofy-corp/seo";
+import { ARTICLES } from "@/components/adofy-corp/articles/content";
 
 /*
   adofy-site.com のサイトマップ。
@@ -9,10 +10,17 @@ import { CORP_PAGES, CORP_SITE } from "@/components/adofy-corp/seo";
 */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  return Object.values(CORP_PAGES).map((p) => ({
+  const pages: MetadataRoute.Sitemap = Object.values(CORP_PAGES).map((p) => ({
     url: `${CORP_SITE.url}${p.path}`,
     lastModified: now,
     changeFrequency: p.path === "/" ? "weekly" : "monthly",
     priority: p.priority,
   }));
+  const articles: MetadataRoute.Sitemap = ARTICLES.map((a) => ({
+    url: `${CORP_SITE.url}/articles/${a.slug}`,
+    lastModified: new Date(a.date),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+  return [...pages, ...articles];
 }

@@ -37,6 +37,20 @@ export const CORP_PAGES: Record<string, PageSeo> = {
       "adofy代表のプロフィール。広告運用型アフィリエイト事業を中心に、Meta広告の運用、LP改善、クリエイティブ制作を実践。看護師・薬剤師・ドライバー・施工管理・介護・ゴルフなど複数ジャンルで数字を追ってきた経歴をご紹介します。",
     priority: 0.8,
   },
+  business: {
+    path: "/business",
+    title: "事業内容・会社概要",
+    description:
+      "adofyの事業内容と会社概要。Web広告運用、LP・ホームページ制作、広告クリエイティブ制作、採用支援「採用レスキュー」、ドライバー採用サービス「ドラテク」の運営を行っています。",
+    priority: 0.8,
+  },
+  articles: {
+    path: "/articles",
+    title: "ドライバー採用のお役立ち記事",
+    description:
+      "運送会社の経営者・採用担当者に向けた、ドライバー採用の記事一覧。求人の書き方、面接で確認すること、2024年問題と採用、会社から声をかける採用の進め方を解説します。",
+    priority: 0.7,
+  },
   "works/leverages": {
     path: "/works/leverages",
     title: "レバレジーズ｜広告運用・LP制作の実績",

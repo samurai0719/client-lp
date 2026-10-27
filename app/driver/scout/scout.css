@@ -137,14 +137,14 @@
   --ds-hero-ink: #12302a;
   --ds-hero-accent: #e8542e;
   /* 画像の下端の地色（淡い水色）に合わせ、画像の外側とCTA部分を同じ色でつなぐ */
-  background: #eef9fd;
+  background: #f3fafe;
 }
 
 .ds-hero__img {
   display: block;
   width: 100%;
   height: auto;
-  max-width: 1672px;
+  max-width: 1586px;
   margin: 0 auto;
 }
 
@@ -2806,4 +2806,63 @@ td.is-ours > .ds-cmp__big {
   background: linear-gradient(transparent 62%, #ffe27a 62%);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
+}
+
+/* ── 運営会社（実績セクションの最後） ───────────────────── */
+.ds-operator {
+  margin-top: 32px;
+  padding: 20px 18px;
+  border: 1px solid #ece4d0;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.ds-operator__title {
+  color: var(--dt-navy);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.ds-operator dl > div {
+  display: grid;
+  grid-template-columns: 5.5em 1fr;
+  gap: 8px;
+  padding: 10px 0;
+  border-top: 1px solid var(--dt-line);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.ds-operator dl > div:first-child {
+  margin-top: 8px;
+}
+
+.ds-operator dt {
+  color: var(--dt-mute);
+  font-weight: 700;
+}
+
+.ds-operator dd {
+  color: var(--dt-text);
+  font-weight: 700;
+}
+
+.ds-operator__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.ds-operator__links a {
+  color: var(--dt-navy);
+  text-decoration: underline;
+}
+
+.ds-lp .dt-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
 }

@@ -27,6 +27,7 @@ import {
 import { Fragment, type ComponentType, type ReactNode } from "react";
 import type { IllustrationProps } from "../driver-company/lp/illustrations/kit";
 import { OPERATOR, PATHS, SHOW_NOTICE_NUMBER } from "@/config/driver-company";
+import { COMPANY } from "@/components/adofy-corp/business";
 import { OwnerQuestion } from "../driver-company/lp/illustrations/scenes";
 import { Breakable, Rich, SectionHead } from "../driver-company/lp/ui";
 import {
@@ -132,7 +133,7 @@ function Heading({ text }: { text: string }) {
 
 /**
  * ファーストビュー。見出し・写真・運営者の実績は画像に焼き込み済みで、
- * スマホ用（941×1672）とPC用（1672×941）を <picture> で出し分ける。
+ * スマホ用（941×1515）とPC用（1586×877）を <picture> で出し分ける。
  * 差し替えは public/images/driver/scout/fv-sp.webp / fv-pc.webp を置き換える。
  * 画像の文字は検索エンジンや読み上げに伝わらないため、同じ内容を見えない h1 に持たせる。
  * 料金とCTAは画像の直下にHTMLで置く。
@@ -144,12 +145,12 @@ export function Hero() {
         人が残り続けるドライバー採用。仕事を断らない採用へ。愛知県の運送会社さま向け{SERVICE_KIND}。
       </h1>
       <picture>
-        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1672} />
+        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1515} />
         <img
           className="ds-hero__img"
           src="/images/driver/scout/fv-pc.webp"
-          width={1672}
-          height={941}
+          width={1586}
+          height={877}
           alt={`運営者の実績：${ACHIEVEMENTS.map((a) => `${a.label}${a.value.toLocaleString("ja-JP")}${a.unit}`).join("、")}（${ACHIEVEMENTS_NOTE}）`}
           fetchPriority="high"
           loading="eager"
@@ -674,6 +675,39 @@ export function AboutResults() {
           <p className="ds-ads__hint">← 横にスクロールして他の動画を見る →</p>
           <p className="ds-ads__note">{AD_VIDEOS.note}</p>
         </div>
+
+        <div className="ds-operator" id="operator">
+          <h3 className="ds-operator__title">運営会社</h3>
+          <dl>
+            <div>
+              <dt>運営</dt>
+              <dd>{COMPANY.name}</dd>
+            </div>
+            <div>
+              <dt>代表</dt>
+              <dd>{COMPANY.representative}</dd>
+            </div>
+            <div>
+              <dt>拠点</dt>
+              <dd>{COMPANY.area}</dd>
+            </div>
+            <div>
+              <dt>事業内容</dt>
+              <dd>Web広告運用、LP・ホームページ制作、採用支援、ドライバー採用サービス「ドラテク」の運営</dd>
+            </div>
+          </dl>
+          <p className="ds-operator__links">
+            <a href={COMPANY.businessUrl} target="_blank" rel="noopener noreferrer">
+              事業内容・会社概要
+            </a>
+            <a href={COMPANY.profileUrl} target="_blank" rel="noopener noreferrer">
+              代表プロフィール
+            </a>
+            <a href={COMPANY.articlesUrl} target="_blank" rel="noopener noreferrer">
+              ドライバー採用の記事
+            </a>
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -734,7 +768,7 @@ export function FinalCta() {
 /** 事業者情報は config/driver-company.ts に値が入っている項目だけ表示する（未確定の情報は出さない） */
 export function Footer() {
   const rows: [string, string][] = [
-    ["事業者名", OPERATOR.name],
+    ["運営会社", OPERATOR.name || COMPANY.name],
     ["所在地", OPERATOR.address],
     ["電話番号", OPERATOR.phone],
     ["メールアドレス", OPERATOR.email],
@@ -759,6 +793,9 @@ export function Footer() {
         )}
         <nav className="dt-footer__nav" aria-label="ポリシー">
           <Link href={PATHS.privacy}>個人情報保護方針</Link>
+          <a href={COMPANY.businessUrl} target="_blank" rel="noopener noreferrer">
+            運営会社（adofy）
+          </a>
         </nav>
         <p className="dt-footer__copy">© 2026 {SERVICE_NAME} All Rights Reserved.</p>
       </div>

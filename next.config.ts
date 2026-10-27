@@ -28,6 +28,8 @@ const takanagaHpPaths = [
 //     /            → /adofy-corp
 //     /profile     → /adofy-corp/profile
 //     /works/xxx   → /adofy-corp/works/xxx
+//     /business    → /adofy-corp/business（事業内容・会社概要）
+//     /articles/xx → /adofy-corp/articles/xx（ドライバー採用の記事）
 //     /contact     → そのまま（無料相談フォーム）
 //
 //   lp.adofy-site.com         = 建設業特化の集客LP（広告の着地先）
@@ -74,6 +76,8 @@ const doratechSubpages = ["register", "verify", "terms", "refund-policy", "priva
 const adofyPaths = [
   { public: "profile", internal: "adofy-corp/profile" },
   { public: "works", internal: "adofy-corp/works" },
+  { public: "business", internal: "adofy-corp/business" },
+  { public: "articles", internal: "adofy-corp/articles" },
 ];
 
 const nextConfig: NextConfig = {

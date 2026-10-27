@@ -286,6 +286,14 @@ export default function HomeContent() {
             Works
             <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
           </a>
+          <a href="/business" className="group relative py-1 transition hover:text-accent-blue">
+            Business
+            <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
+          </a>
+          <a href="/articles" className="group relative py-1 transition hover:text-accent-blue">
+            Articles
+            <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
+          </a>
           <a href="/profile" className="group relative py-1 transition hover:text-accent-blue">
             Profile
             <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
@@ -932,6 +940,14 @@ export default function HomeContent() {
             <div>
               <p className="text-xs font-black uppercase tracking-widest text-accent-blue/60">Company</p>
               <nav className="mt-4 flex flex-col items-center gap-3 text-sm font-medium md:items-start">
+                <a href="/business" className="group relative transition hover:text-accent-blue">
+                  事業内容・会社概要
+                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
+                </a>
+                <a href="/articles" className="group relative transition hover:text-accent-blue">
+                  ドライバー採用の記事
+                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
+                </a>
                 <a href="/profile" className="group relative transition hover:text-accent-blue">
                   代表紹介
                   <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
