@@ -187,11 +187,6 @@ export function Intro() {
     <section className="dt-section ds-intro" aria-labelledby="ds-intro-title">
       <div className="dt-container">
         <SectionHead eyebrow="ドラテクとは" id="ds-intro-title" title={<Heading text={INTRO.title} />} />
-        <div className="ds-intro__body">
-          {INTRO.body.map((t) => (
-            <p key={t}>{t}</p>
-          ))}
-        </div>
         <ol className="ds-steps3" aria-label="利用の概要">
           {INTRO.steps.map((st, i) => {
             const Scene = INTRO_SCENES[i];
@@ -207,7 +202,6 @@ export function Intro() {
             );
           })}
         </ol>
-        <p className="ds-intro__note">{INTRO.note}</p>
       </div>
     </section>
   );
@@ -267,12 +261,13 @@ export function Reasons() {
                 <h3>
                   <Breakable text={r.title} />
                 </h3>
-                <p>{r.body}</p>
+                <p>
+                  <Rich text={r.body} />
+                </p>
                 <p className="ds-reason__ex">{r.example}</p>
               </div>
               <figure className="ds-reason__screen">
                 <SampleCard highlight={r.highlight} compact />
-                <figcaption>画面の表示例（架空）。色の付いた項目が、ここで確認する情報です。</figcaption>
               </figure>
             </article>
           ))}
@@ -283,7 +278,9 @@ export function Reasons() {
               <h3>
                 <Breakable text="まずは|無料で、|どんな|人が|いるか|見られる" />
               </h3>
-              <p>候補者の情報は、登録なしで見られます。会社情報の登録が必要になるのは、面接を希望するときです。</p>
+              <p>
+                <Rich text="**登録なしで**見られます。登録が必要なのは、面接を希望するときだけです。" />
+              </p>
             </div>
             <div className="ds-free" role="table" aria-label="無料でできることと、必要な手続き">
               <div className="ds-free__row ds-free__row--head" role="row">
@@ -316,9 +313,6 @@ export function Visible() {
         <div className="ds-visible2__grid">
           <SampleCard />
           <div className="ds-visible2__side">
-            <p className="ds-visible2__lead">
-              一覧ページでは、候補者ごとにこのカードが表示されます。<b>表示例は架空の内容です。</b>
-            </p>
             <div className="ds-hidebox">
               <p className="ds-hidebox__title">
                 <Lock aria-hidden="true" />
@@ -345,11 +339,6 @@ export function Delegate() {
     <section className="dt-section ds-delegate" id="delegate" aria-labelledby="ds-delegate-title">
       <div className="dt-container dt-container--narrow">
         <SectionHead eyebrow="連絡と日程調整" id="ds-delegate-title" title={<Breakable text={DELEGATE.title} />} />
-        <div className="ds-intro__body">
-          {DELEGATE.body.map((t) => (
-            <p key={t}>{t}</p>
-          ))}
-        </div>
 
         {/* 企業 → ドラテク → 求職者 の役割の図 */}
         <ol className="ds-relay" aria-label="連絡の流れ">
@@ -386,7 +375,7 @@ export function Delegate() {
               {DELEGATE.company.map((t) => (
                 <li key={t}>
                   <Check aria-hidden="true" strokeWidth={3} />
-                  {t}
+                  <Rich text={t} />
                 </li>
               ))}
             </ul>
@@ -400,7 +389,7 @@ export function Delegate() {
               {DELEGATE.us.map((t) => (
                 <li key={t}>
                   <Check aria-hidden="true" strokeWidth={3} />
-                  {t}
+                  <Rich text={t} />
                 </li>
               ))}
             </ul>
@@ -408,7 +397,7 @@ export function Delegate() {
         </div>
         <p className="ds-goal">
           <ArrowRight aria-hidden="true" />
-          {DELEGATE.note}
+          <span>{DELEGATE.note}</span>
         </p>
       </div>
     </section>
@@ -433,11 +422,6 @@ export function Retention() {
         <SectionHead eyebrow="人が残る採用のために" id="ds-retention-title" title={<Breakable text={RETENTION.title} />} />
         <div className="ds-retention__top">
           <SceneInterview className="ds-retention__art" />
-          <div className="ds-intro__body">
-            {RETENTION.body.map((t) => (
-              <p key={t}>{t}</p>
-            ))}
-          </div>
         </div>
 
         <p className="ds-split__who">
@@ -472,9 +456,10 @@ export function Retention() {
 
         <p className="ds-goal">
           <MessageCircle aria-hidden="true" />
-          {RETENTION.close}
+          <span>
+            <Rich text={RETENTION.close} />
+          </span>
         </p>
-        <p className="ds-small">{RETENTION.note}</p>
       </div>
     </section>
   );
@@ -546,7 +531,7 @@ export function Compare() {
   return (
     <section className="dt-section ds-compare" id="compare" aria-labelledby="ds-compare-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="採用費用の比較" id="ds-compare-title" title={<Breakable text={COMPARE.title} />} lead={COMPARE.lead} />
+        <SectionHead eyebrow="採用費用の比較" id="ds-compare-title" title={<Breakable text={COMPARE.title} />} lead={<Rich text={COMPARE.lead} />} />
 
         <table className="ds-cmp">
           <caption className="dt-visually-hidden">中途採用1人あたりの平均採用コスト（調査値）と、ドラテクの料金例</caption>
@@ -670,7 +655,9 @@ export function AboutResults() {
           <h3 className="ds-ads__title">
             <Breakable text={AD_VIDEOS.title} />
           </h3>
-          <p className="ds-ads__lead">{AD_VIDEOS.lead}</p>
+          <p className="ds-ads__lead">
+            <Rich text={AD_VIDEOS.lead} />
+          </p>
           <ul className="ds-ads__list" aria-label="ドライバー求人の動画広告の例">
             {AD_VIDEOS.items.map((v) => (
               <li key={v.id} className="ds-ads__item">
@@ -687,9 +674,6 @@ export function AboutResults() {
           <p className="ds-ads__hint">← 横にスクロールして他の動画を見る →</p>
           <p className="ds-ads__note">{AD_VIDEOS.note}</p>
         </div>
-        <p className="ds-small">
-          ドラテクは新しく始めたサービスのため、現在の登録者数は一覧ページの表示がすべてです。導入事例・お客様の声は、確認できたものから掲載します。
-        </p>
       </div>
     </section>
   );
@@ -736,7 +720,9 @@ export function FinalCta() {
         <h2 className="ds-final__title" id="ds-final-title">
           <Breakable text={FINAL_CTA.title} />
         </h2>
-        <p className="ds-final__body">{FINAL_CTA.body}</p>
+        <p className="ds-final__body">
+          <Rich text={FINAL_CTA.body} />
+        </p>
         <ScoutCta location="final" />
       </div>
     </section>

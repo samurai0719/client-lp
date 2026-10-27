@@ -2799,9 +2799,9 @@ td.is-ours > .ds-cmp__big {
   overflow-wrap: anywhere;
 }
 
-/* 悩み：読んでほしい部分に黄色の下線（マーカー） */
-.ds-pgrid p strong,
-.ds-problems2 .ds-goal strong {
+/* 読んでほしい部分に黄色の下線（マーカー） */
+/* 本文の「**」で囲んだ部分（<strong>）すべてに同じマーカー線を引く */
+.ds-lp main :is(p, li, dd, span) strong {
   font-weight: 900;
   background: linear-gradient(transparent 62%, #ffe27a 62%);
   -webkit-box-decoration-break: clone;

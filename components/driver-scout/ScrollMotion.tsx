@@ -14,7 +14,6 @@ const TARGETS = [
   ".dt-head",
   ".ds-intro__body",
   ".ds-steps3 > li",
-  ".ds-intro__note",
   ".ds-pgrid > li",
   ".ds-goal",
   ".ds-reason",

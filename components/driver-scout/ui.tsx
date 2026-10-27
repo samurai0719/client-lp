@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { SERVICE } from "@/config/driver-company";
 import { trackCompany } from "../driver-company/track";
-import { CTA_AFTER, CTA_HREF, CTA_LABEL, CTA_POINTS, DISCLOSE_LABEL, registerHref, SCOUT_PATHS, SERVICE_KIND, SERVICE_NAME } from "./content";
+import { CTA_HREF, CTA_LABEL, CTA_POINTS, DISCLOSE_LABEL, registerHref, SCOUT_PATHS, SERVICE_KIND, SERVICE_NAME } from "./content";
 import { OPEN_INTERVIEW_EVENT } from "./events";
 import { useWaitingCount, WaitingLine } from "./waiting";
 
@@ -36,7 +36,6 @@ export function ScoutCta({ location, size = "lg", note = true }: { location: str
           ))}
         </ul>
       )}
-      {size === "lg" && note && <p className="ds-cta__after">{CTA_AFTER}</p>}
     </div>
   );
 }
