@@ -441,7 +441,7 @@ export default function HomeContent() {
               </Link>
             </div>
             <ul className="ah-columns" data-stagger>
-              {ARTICLES.map((a, i) => (
+              {ARTICLES.filter((a) => a.audience === "company").slice(0, 4).map((a, i) => (
                 <li key={a.slug} className={i === 0 ? "is-feature" : undefined}>
                   <Link href={`/articles/${a.slug}`} className="ah-column">
                     <div className="ah-column__img">

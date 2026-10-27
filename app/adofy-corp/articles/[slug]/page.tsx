@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     metadataBase: new URL(CORP_SITE.url),
     title: a.title,
     description: a.description,
+    keywords: a.keywords,
     alternates: { canonical: path },
     openGraph: { images: [a.image], type: "article", locale: CORP_SITE.locale, siteName: CORP_SITE.name, title: a.title, description: a.description, url: `${CORP_SITE.url}${path}`, publishedTime: a.date },
     robots: { index: true, follow: true },
@@ -32,7 +33,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const a = findArticle(slug);
   if (!a) notFound();
-  const others = ARTICLES.filter((x) => x.slug !== a.slug);
+  const others = ARTICLES.filter((x) => x.slug !== a.slug && x.audience === a.audience).slice(0, 4);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -55,7 +56,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               ← 記事一覧へ
             </Link>
             <p className="mt-8 text-sm font-bold text-accent-blue">
-              {a.category}
+              {a.audience === "company" ? "運送会社の方へ" : "ドライバーの方へ"}・{a.category}
               <span className="ml-3 font-normal text-ink-soft">{a.date.replaceAll("-", ".")}</span>
             </p>
             <h1 className="mt-3 text-2xl font-black leading-snug tracking-tight text-ink md:text-4xl">{a.title}</h1>
@@ -155,19 +156,30 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               </div>
             )}
 
-            <aside className="mt-12 rounded-3xl border border-border-soft bg-white p-6 shadow-soft">
-              <p className="text-sm font-black text-accent-blue">adofy が運営するサービス</p>
-              <p className="mt-2 text-lg font-black text-ink">ドライバー採用サービス「ドラテク」</p>
-              <p className="mt-2 text-base leading-7 text-ink-soft">
-                愛知県の運送会社様向け。求職者の情報を見て面接したい人を選ぶと、求職者への連絡と面接の日程調整をドラテクが行います。
-              </p>
-              <a href="https://scout.adofy-site.com/" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex rounded-full bg-accent-blue px-6 py-3 font-black text-white">
-                ドラテクを見る
-              </a>
-            </aside>
+            {a.audience === "company" ? (
+              <aside className="mt-12 rounded-3xl border border-border-soft bg-white p-6 shadow-soft">
+                <p className="text-sm font-black text-accent-blue">adofy が運営するサービス</p>
+                <p className="mt-2 text-lg font-black text-ink">ドライバー採用サービス「ドラテク」</p>
+                <p className="mt-2 text-base leading-7 text-ink-soft">
+                  愛知県の運送会社様向け。求職者の情報を見て面接したい人を選ぶと、求職者への連絡と面接の日程調整をドラテクが行います。
+                </p>
+                <a href="https://scout.adofy-site.com/" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex rounded-full bg-accent-blue px-6 py-3 font-black text-white">
+                  ドラテクを見る
+                </a>
+              </aside>
+            ) : (
+              <aside className="mt-12 rounded-3xl border border-border-soft bg-white p-6 shadow-soft">
+                <p className="text-sm font-black text-accent-blue">ドライバーの仕事探しに</p>
+                <p className="mt-2 text-lg font-black text-ink">ドライバー転職支援「ドラテク」</p>
+                <p className="mt-2 text-base leading-7 text-ink-soft">トラックドライバーを目指す方・転職を考えている方の仕事探しを支援しています。</p>
+                <a href="https://driver.taxidriver-beginner.com/" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex rounded-full bg-accent-blue px-6 py-3 font-black text-white">
+                  ドラテクで仕事を探す
+                </a>
+              </aside>
+            )}
 
             <div className="mt-12">
-              <p className="font-black text-ink">ほかの記事</p>
+              <p className="font-black text-ink">あわせて読みたい</p>
               <ul className="mt-3 space-y-3">
                 {others.map((o) => (
                   <li key={o.slug}>

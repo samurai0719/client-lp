@@ -676,38 +676,6 @@ export function AboutResults() {
           <p className="ds-ads__note">{AD_VIDEOS.note}</p>
         </div>
 
-        <div className="ds-operator" id="operator">
-          <h3 className="ds-operator__title">運営会社</h3>
-          <dl>
-            <div>
-              <dt>運営</dt>
-              <dd>{COMPANY.name}</dd>
-            </div>
-            <div>
-              <dt>代表</dt>
-              <dd>{COMPANY.representative}</dd>
-            </div>
-            <div>
-              <dt>拠点</dt>
-              <dd>{COMPANY.area}</dd>
-            </div>
-            <div>
-              <dt>事業内容</dt>
-              <dd>Web広告運用、LP・ホームページ制作、採用支援、ドライバー採用サービス「ドラテク」の運営</dd>
-            </div>
-          </dl>
-          <p className="ds-operator__links">
-            <a href={COMPANY.businessUrl} target="_blank" rel="noopener noreferrer">
-              事業内容・会社概要
-            </a>
-            <a href={COMPANY.profileUrl} target="_blank" rel="noopener noreferrer">
-              代表プロフィール
-            </a>
-            <a href={COMPANY.articlesUrl} target="_blank" rel="noopener noreferrer">
-              ドライバー採用の記事
-            </a>
-          </p>
-        </div>
       </div>
     </section>
   );
