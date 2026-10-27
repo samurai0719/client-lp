@@ -1612,27 +1612,19 @@ select.ds-input {
 /* ── 2. 悩み（イラスト付きのカード） ─────────────────────── */
 .ds-pgrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
+/* スマホ：1枚ずつ横長のカード（左にイラスト、右に文） */
 .ds-pgrid li {
   display: grid;
-  align-content: start;
-  gap: 6px;
-  padding: 10px 12px 14px;
+  grid-template-columns: 42% 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px 12px 10px;
   border-radius: 16px;
   background: #fff;
   box-shadow: 0 4px 14px rgba(20, 61, 46, 0.06);
-}
-
-.ds-pgrid li:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-}
-
-.ds-pgrid li:last-child:nth-child(odd) .ds-pgrid__art {
-  max-width: 220px;
-  margin: 0 auto;
 }
 
 .ds-pgrid__art {
@@ -1642,17 +1634,21 @@ select.ds-input {
 
 .ds-pgrid p {
   color: var(--dt-text);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 @media (min-width: 900px) {
   .ds-pgrid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
-  .ds-pgrid li:last-child:nth-child(odd) {
-    grid-column: auto;
+  .ds-pgrid li {
+    grid-template-columns: 1fr;
+    align-items: start;
+    align-content: start;
+    gap: 6px;
+    padding: 10px 12px 14px;
   }
   .ds-pgrid p {
     font-size: 16px;
@@ -2801,4 +2797,13 @@ td.is-ours > .ds-cmp__big {
 .ds-lp :is(h1, h2, h3, .dt-head__title, .ds-ctabox__reason, .ds-flow3__title, .ds-modal__title, .ds-final__title, .ds-disclose__note) {
   word-break: keep-all;
   overflow-wrap: anywhere;
+}
+
+/* 悩み：読んでほしい部分に黄色の下線（マーカー） */
+.ds-pgrid p strong,
+.ds-problems2 .ds-goal strong {
+  font-weight: 900;
+  background: linear-gradient(transparent 62%, #ffe27a 62%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }

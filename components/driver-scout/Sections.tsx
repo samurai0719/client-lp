@@ -234,14 +234,18 @@ export function Problems() {
             return (
               <li key={p.text}>
                 <Art className="ds-pgrid__art" />
-                <p>{p.text}</p>
+                <p>
+                  <Rich text={p.text} />
+                </p>
               </li>
             );
           })}
         </ul>
         <p className="ds-goal">
           <ArrowRight aria-hidden="true" />
-          {PROBLEMS_GOAL}
+          <span>
+            <Rich text={PROBLEMS_GOAL} />
+          </span>
         </p>
       </div>
     </section>
