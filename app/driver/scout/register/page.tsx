@@ -7,6 +7,7 @@ import ScoutShell from "@/components/driver-scout/Shell";
 import { SCOUT_PATHS, SERVICE_NAME } from "@/components/driver-scout/content";
 import { SITE_URL } from "@/components/driver-scout/seo";
 import { getWaitingDriverCount } from "@/lib/driverCandidates/count";
+import "../scout-saiyo.css";
 
 /**
  * 無料登録（企業登録・利用申込み）フォーム（公開URL https://scout.adofy-site.com/register ）。

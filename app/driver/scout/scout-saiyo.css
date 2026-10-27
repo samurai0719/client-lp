@@ -1,0 +1,155 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   ドラテクLPの見た目を、採用レスキューLP（saiyo.adofy-site.com）に合わせる仕上げ。
+   内容（文言・順番・機能）は変えず、余白・見出し・カード・配色だけをそろえる。
+     ・コンテナ 1120px（狭い所 820px）、左右 16px／PC 32px
+     ・セクションの上下 64px／PC 104px
+     ・見出し 28px／PC 40px・行間 1.4・中央、上に青の小見出し（13px・字間0.18em）
+     ・カードは白・1px #dbe3ef の枠・角丸16px・やわらかい影
+     ・本文の強調は黄色のマーカー
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.ds-lp {
+  --sr-line: #dbe3ef;
+  --sr-shadow: 0 10px 30px rgba(11, 22, 48, 0.08);
+  --sr-paper: #f5f8fc;
+}
+
+.ds-lp .dt-container--narrow {
+  max-width: 820px;
+}
+
+@media (min-width: 768px) {
+  .ds-lp .dt-container {
+    padding: 0 32px;
+  }
+}
+
+/* 見出し */
+.ds-lp .dt-head {
+  margin-bottom: 36px;
+}
+
+.ds-lp .dt-head__eyebrow {
+  margin-bottom: 10px;
+  color: #1659e0;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+}
+
+.ds-lp .dt-head__title {
+  font-size: 28px;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+}
+
+.ds-lp .dt-head__lead {
+  margin-top: 18px;
+  font-size: 16px;
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .ds-lp .dt-head {
+    margin-bottom: 56px;
+  }
+  .ds-lp .dt-head__title {
+    font-size: 40px;
+  }
+  .ds-lp .dt-head__lead {
+    font-size: 17px;
+    text-align: center;
+  }
+}
+
+/* セクションの地色：白と淡い青を交互に（採用レスキューと同じ #f5f8fc） */
+.ds-lp :is(.ds-problems2, .ds-visible2, .ds-delegate, .ds-flow2, .ds-compare, .dt-faq) {
+  background: var(--sr-paper);
+}
+
+.ds-lp :is(.ds-intro, .ds-reasons, .ds-retention, .ds-pricing2, .ds-results, .ds-final) {
+  background: #fff;
+}
+
+/* カードの形をそろえる */
+.ds-lp :is(.ds-steps3 li, .ds-pgrid li, .ds-split__box, .ds-relay li, .ds-flow3__main, .ds-free, .ds-scard, .ds-ptable, .ds-tbd, .ds-rtable__row, .ds-operator, .ds-faq__item, .ds-icongrid li) {
+  border: 1px solid var(--sr-line);
+  border-radius: 16px;
+  box-shadow: var(--sr-shadow);
+}
+
+.ds-lp :is(.ds-split__box, .ds-icongrid li) {
+  background: #fff;
+}
+
+.ds-lp .ds-relay li.is-us {
+  border-color: #1659e0;
+  background: #eef4ff;
+}
+
+/* 結論の一文（.ds-goal）は採用レスキューの「まとめ」と同じく、白のカードに中央寄せ */
+.ds-lp .ds-goal {
+  justify-content: center;
+  padding: 22px 20px;
+  border: 1px solid var(--sr-line);
+  border-left: 0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--sr-shadow);
+  color: #0a1f4e;
+  text-align: center;
+}
+
+.ds-lp .ds-goal > svg {
+  display: none;
+}
+
+/* CTAの枠：採用レスキューと同じ淡い青の角丸ボックス */
+.ds-lp .ds-ctabox {
+  border: 0;
+  border-radius: 24px;
+  background: #eef4ff;
+}
+
+.ds-lp .ds-ctabox__reason {
+  color: #0a1f4e;
+}
+
+/* マーカーは採用レスキューと同じ黄色 */
+.ds-lp main :is(p, li, dd, span) strong {
+  background: linear-gradient(transparent 62%, rgba(242, 176, 30, 0.45) 62%);
+}
+
+/* 料金比較：ドラテクの列は青で強調 */
+.ds-lp .ds-cmp thead th.is-ours {
+  background: #0a1f4e;
+}
+
+.ds-lp .ds-cmp tbody td.is-ours {
+  border-left-color: #0a1f4e;
+  border-right-color: #0a1f4e;
+  background: #eef4ff;
+}
+
+.ds-lp .ds-cmp tbody tr:last-child td.is-ours {
+  border-bottom-color: #0a1f4e;
+}
+
+.ds-lp .ds-cmp td.is-ours > .ds-cmp__big {
+  color: #1659e0;
+}
+
+@media (max-width: 599px) {
+  .ds-lp .ds-cmp tbody th {
+    border-right-color: #0a1f4e;
+  }
+}
+
+/* 最後のCTA：採用レスキューと同じ淡い青の帯 */
+.ds-lp .ds-final {
+  background: linear-gradient(180deg, #fff 0%, #eef4ff 100%);
+}
+
+/* 背景の縁取り文字は青系に */
+.ds-lp :is(.ds-problems2, .ds-flow2, .ds-final)::before {
+  -webkit-text-stroke-color: rgba(22, 89, 224, 0.1);
+}

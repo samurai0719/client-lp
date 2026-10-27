@@ -7,5 +7,10 @@ import { CorpStructuredData } from "@/components/adofy-corp/StructuredData";
 export const metadata = corpMetadata("home");
 
 export default function AdofyCorpHomePage() {
-  return <HomeContent />;
+  return (
+    <>
+      <CorpStructuredData />
+      <HomeContent />
+    </>
+  );
 }

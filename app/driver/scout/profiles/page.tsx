@@ -7,6 +7,7 @@ import { SCOUT_PATHS, SERVICE_NAME } from "@/components/driver-scout/content";
 import { OG_IMAGE, SITE_URL } from "@/components/driver-scout/seo";
 import { WaitingLine } from "@/components/driver-scout/waiting";
 import { listAnonymousProfiles } from "@/lib/driverCandidates/profiles";
+import "../scout-saiyo.css";
 
 /**
  * 求職者の匿名プロフィール一覧（公開URL https://scout.adofy-site.com/profiles ）。

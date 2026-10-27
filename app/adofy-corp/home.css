@@ -1,0 +1,1293 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   adofy コーポレートサイト トップページ（HomeContent.tsx）専用。クラスは ah- で始める。
+   動きは GSAP（.ah.is-motion のとき）と CSS。「動きを減らす」設定では .is-static で止める。
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.ah {
+  --ah-ink: #0f172a;
+  --ah-soft: #475569;
+  --ah-blue: #2563eb;
+  --ah-blue-d: #1e3a8a;
+  --ah-amber: #f59e0b;
+  --ah-bg: #f8fafc;
+  --ah-line: rgba(15, 23, 42, 0.1);
+  --ah-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow-x: clip;
+  background: #fff;
+  color: var(--ah-ink);
+  font-feature-settings: "palt";
+}
+
+.ah-wrap {
+  width: min(100% - 40px, 1180px);
+  margin-inline: auto;
+}
+
+.ah-sec {
+  position: relative;
+  padding: 96px 0;
+}
+
+@media (min-width: 900px) {
+  .ah-sec {
+    padding: 140px 0;
+  }
+}
+
+.ah-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ah-blue);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.ah-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  background: currentColor;
+}
+
+.ah-eyebrow.is-light {
+  color: #bfdbfe;
+}
+
+.ah-h2 {
+  margin-top: 16px;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  font-size: clamp(30px, 6.4vw, 56px);
+  font-weight: 900;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+}
+
+.ah-h2.is-light {
+  color: #fff;
+}
+
+.ah-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.ah-line > span {
+  display: inline-block;
+}
+
+/* ── カーソルの光（PCのみ） ── */
+.ah-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 420px;
+  height: 420px;
+  margin: -210px 0 0 -210px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.1), transparent 65%);
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+@media (hover: none) {
+  .ah-cursor {
+    display: none;
+  }
+}
+
+/* ── ヘッダー ── */
+.ah-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  transition:
+    padding 0.4s var(--ah-ease),
+    background-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.ah-header.is-scrolled {
+  padding-block: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+@media (min-width: 900px) {
+  .ah-header {
+    padding: 22px 40px;
+  }
+  .ah-header.is-scrolled {
+    padding-block: 12px;
+  }
+}
+
+.ah-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ah-ink);
+  text-decoration: none;
+}
+
+.ah-logo__mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--ah-blue), var(--ah-blue-d));
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.ah-logo__text {
+  display: grid;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.ah-logo__text small {
+  color: var(--ah-soft);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.ah-nav {
+  display: none;
+  align-items: center;
+  gap: 28px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ah-nav a {
+  position: relative;
+  color: var(--ah-ink);
+  text-decoration: none;
+}
+
+.ah-nav a:not(.ah-nav__cta)::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -4px;
+  height: 2px;
+  background: var(--ah-blue);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s var(--ah-ease);
+}
+
+.ah-nav a:not(.ah-nav__cta):hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.ah-nav__cta {
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--ah-ink);
+  color: #fff !important;
+  transition: background-color 0.3s ease;
+}
+
+.ah-nav__cta:hover {
+  background: var(--ah-blue);
+}
+
+@media (min-width: 1024px) {
+  .ah-nav {
+    display: flex;
+  }
+}
+
+.ah-menu-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ah-ink);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+@media (min-width: 1024px) {
+  .ah-menu-btn {
+    display: none;
+  }
+}
+
+.ah-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s;
+}
+
+.ah-drawer.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ah-drawer nav {
+  display: grid;
+  gap: 22px;
+  text-align: center;
+}
+
+.ah-drawer a {
+  color: var(--ah-ink);
+  font-size: 26px;
+  font-weight: 900;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s var(--ah-ease);
+}
+
+.ah-drawer.is-open a {
+  opacity: 1;
+  transform: none;
+}
+
+.ah-drawer__cta {
+  margin-top: 8px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--ah-blue);
+  color: #fff !important;
+  font-size: 18px !important;
+}
+
+@media (min-width: 1024px) {
+  .ah-drawer {
+    display: none;
+  }
+}
+
+/* ── ボタン ── */
+.ah-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 0 30px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    transform 0.35s var(--ah-ease),
+    color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.ah-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.4s var(--ah-ease);
+}
+
+.ah-btn:hover svg {
+  transform: translateX(4px);
+}
+
+.ah-btn:active {
+  transform: scale(0.97);
+}
+
+.ah-btn--primary {
+  background: var(--ah-ink);
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.2);
+}
+
+.ah-btn--primary::before,
+.ah-btn--light::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(120deg, var(--ah-blue), #38bdf8);
+  transform: translateY(101%);
+  transition: transform 0.5s var(--ah-ease);
+}
+
+.ah-btn--primary:hover::before,
+.ah-btn--light:hover::before {
+  transform: none;
+}
+
+.ah-btn--ghost {
+  border: 1.5px solid var(--ah-ink);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ah-ink);
+  backdrop-filter: blur(6px);
+}
+
+.ah-btn--ghost:hover {
+  background: var(--ah-ink);
+  color: #fff;
+}
+
+.ah-btn--light {
+  margin-top: 32px;
+  background: #fff;
+  color: var(--ah-ink);
+}
+
+.ah-btn--light:hover {
+  color: #fff;
+}
+
+/* ── FV ── */
+.ah-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-height: 100svh;
+  padding: 120px 0 40px;
+  overflow: hidden;
+}
+
+.ah-hero__photo {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+}
+
+.ah-hero__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 50%;
+}
+
+.ah-hero__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.55) 45%, rgba(255, 255, 255, 0.96) 72%);
+}
+
+@media (min-width: 900px) {
+  .ah-hero {
+    align-items: center;
+    padding: 120px 0 80px;
+  }
+  .ah-hero__shade {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.86) 34%, rgba(255, 255, 255, 0) 62%);
+  }
+}
+
+/* ゆっくり動く色のにじみ */
+.ah-hero__blob {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.ah-hero__blob--1 {
+  top: 12%;
+  left: -10%;
+  width: 46vw;
+  height: 46vw;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.45), transparent 70%);
+  animation: ah-blob 16s ease-in-out infinite alternate;
+}
+
+.ah-hero__blob--2 {
+  bottom: -10%;
+  left: 20%;
+  width: 34vw;
+  height: 34vw;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.35), transparent 70%);
+  animation: ah-blob 20s ease-in-out -6s infinite alternate-reverse;
+}
+
+@keyframes ah-blob {
+  to {
+    transform: translate(12%, -10%) scale(1.15);
+  }
+}
+
+.ah-hero__copy {
+  width: min(100% - 40px, 1180px);
+  margin-inline: auto;
+}
+
+.ah-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ah-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ah-blue);
+}
+
+.ah-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--ah-blue);
+  animation: ah-ping 2s ease-out infinite;
+}
+
+@keyframes ah-ping {
+  from {
+    opacity: 0.8;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+.ah-hero__title {
+  margin-top: 20px;
+  font-size: clamp(36px, 9.6vw, 86px);
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.ah-hero__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.05em;
+  white-space: nowrap;
+}
+
+.ah-ch {
+  display: inline-block;
+}
+
+/* 2行目は文字ごとに青のグラデーション（文字を分けて動かすため、1文字ずつに色を付ける） */
+.ah-hero__line.is-accent .ah-ch {
+  background: linear-gradient(100deg, var(--ah-blue), #0ea5e9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ah-hero__lead {
+  max-width: 34em;
+  margin-top: 20px;
+  color: var(--ah-soft);
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 600;
+  line-height: 1.9;
+}
+
+.ah-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.ah-hero__chips {
+  display: flex;
+  gap: 10px;
+  width: min(100% - 40px, 1180px);
+  margin: 28px auto 0;
+}
+
+.ah-chip {
+  display: grid;
+  gap: 2px;
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
+  animation: ah-float 6s ease-in-out infinite;
+}
+
+.ah-chip:nth-child(2) {
+  animation-delay: -3s;
+}
+
+.ah-chip b {
+  color: var(--ah-blue);
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.ah-chip span {
+  color: var(--ah-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@keyframes ah-float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (min-width: 900px) {
+  .ah-hero__chips {
+    position: absolute;
+    right: 40px;
+    bottom: 60px;
+    width: auto;
+    margin: 0;
+    flex-direction: column;
+  }
+}
+
+.ah-scroll {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  display: none;
+  justify-items: center;
+  gap: 6px;
+  color: var(--ah-soft);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+}
+
+.ah-scroll i {
+  position: relative;
+  width: 1px;
+  height: 44px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.15);
+}
+
+.ah-scroll i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ah-ink);
+  animation: ah-scrollline 2s var(--ah-ease) infinite;
+}
+
+@keyframes ah-scrollline {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@media (min-width: 900px) {
+  .ah-scroll {
+    display: grid;
+  }
+}
+
+/* ── 流れる帯 ── */
+.ah-marquee {
+  overflow: hidden;
+  padding: 22px 0;
+  border-block: 1px solid var(--ah-line);
+  background: var(--ah-ink);
+}
+
+.ah-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: ah-marquee 32s linear infinite;
+}
+
+.ah-marquee span {
+  display: flex;
+}
+
+.ah-marquee em {
+  display: inline-flex;
+  align-items: center;
+  gap: 28px;
+  padding-right: 28px;
+  color: #fff;
+  font-size: clamp(20px, 3vw, 34px);
+  font-style: normal;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.ah-marquee em::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ah-amber);
+}
+
+@keyframes ah-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── About ── */
+.ah-about__grid {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+.ah-about__text {
+  margin-top: 28px;
+  font-size: clamp(17px, 2vw, 21px);
+  font-weight: 700;
+  line-height: 2;
+}
+
+.ah-about__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: 28px;
+}
+
+.ah-about__links a,
+.ah-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--ah-ink);
+  color: var(--ah-ink);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.ah-about__links svg,
+.ah-more svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.4s var(--ah-ease);
+}
+
+.ah-about__links a:hover svg,
+.ah-more:hover svg {
+  transform: translateX(4px);
+}
+
+.ah-about__img {
+  overflow: hidden;
+  border-radius: 28px;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.15);
+}
+
+.ah-about__img img {
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+}
+
+@media (min-width: 900px) {
+  .ah-about__grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 72px;
+  }
+}
+
+/* ── 数字 ── */
+.ah-stats {
+  padding: 72px 0;
+  background: linear-gradient(135deg, var(--ah-blue-d), var(--ah-blue));
+  color: #fff;
+}
+
+.ah-stats__list {
+  display: grid;
+  gap: 28px;
+}
+
+.ah-stats__list li {
+  padding-left: 18px;
+  border-left: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.ah-stats__num b {
+  font-size: clamp(52px, 8vw, 84px);
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ah-stats__num small {
+  margin-left: 6px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.ah-stats__label {
+  margin-top: 6px;
+  color: #dbeafe;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.ah-stats__note {
+  margin-top: 24px;
+  color: #bfdbfe;
+  font-size: 12px;
+}
+
+@media (min-width: 900px) {
+  .ah-stats__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Service ── */
+.ah-service {
+  background: var(--ah-bg);
+}
+
+.ah-cards {
+  display: grid;
+  gap: 18px;
+  margin-top: 48px;
+  perspective: 1200px;
+}
+
+.ah-card {
+  --mx: 50%;
+  --my: 50%;
+  --rx: 0deg;
+  --ry: 0deg;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 30px 26px;
+  overflow: hidden;
+  border: 1px solid var(--ah-line);
+  border-radius: 24px;
+  background: #fff;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    transform 0.5s var(--ah-ease),
+    box-shadow 0.5s ease,
+    border-color 0.5s ease;
+}
+
+.ah-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(360px circle at var(--mx) var(--my), rgba(37, 99, 235, 0.12), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.ah-card:hover {
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.1);
+}
+
+.ah-card:hover::before {
+  opacity: 1;
+}
+
+.ah-card__no {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  color: rgba(15, 23, 42, 0.07);
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.ah-card__icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #dbeafe, #eff6ff);
+  color: var(--ah-blue);
+  transition: transform 0.5s var(--ah-ease);
+}
+
+.ah-card:hover .ah-card__icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.ah-card__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.ah-card h3 {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.ah-card p {
+  color: var(--ah-soft);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.ah-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--ah-blue);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.ah-card__link svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (min-width: 700px) {
+  .ah-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .ah-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── Works ── */
+.ah-works {
+  background: #0b1120;
+  color: #fff;
+}
+
+.ah-works__pin {
+  padding: 96px 0;
+  overflow: hidden;
+}
+
+.ah-works .ah-eyebrow {
+  color: #93c5fd;
+}
+
+.ah-works__track {
+  display: flex;
+  gap: 18px;
+  margin-top: 44px;
+  padding: 0 20px 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.ah-works__track::-webkit-scrollbar {
+  display: none;
+}
+
+.ah-work {
+  flex: 0 0 82%;
+  scroll-snap-align: start;
+}
+
+.ah-work__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ah-work__img {
+  overflow: hidden;
+  border-radius: 20px;
+  aspect-ratio: 16 / 9;
+}
+
+.ah-work__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ah-ease);
+}
+
+.ah-work__link:hover .ah-work__img img {
+  transform: scale(1.06);
+}
+
+.ah-work__tag {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 3px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ah-work h3 {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.ah-work__body {
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 15px;
+}
+
+@media (min-width: 900px) {
+  .ah-works__pin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 100px 0 60px;
+  }
+  .ah-works__track {
+    overflow: visible;
+    padding: 0 40px;
+    padding-left: max(40px, calc((100vw - 1180px) / 2));
+    gap: 32px;
+    width: max-content;
+  }
+  .ah-work {
+    flex: 0 0 min(44vw, 620px);
+  }
+}
+
+/* ── 強み ── */
+.ah-strength__grid {
+  display: grid;
+  gap: 40px;
+}
+
+.ah-strength__list {
+  position: relative;
+  display: grid;
+  gap: 36px;
+  padding-left: 30px;
+}
+
+.ah-strength__list::before,
+.ah-strength__bar {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  width: 3px;
+  border-radius: 3px;
+}
+
+.ah-strength__list::before {
+  background: var(--ah-line);
+}
+
+.ah-strength__bar {
+  background: linear-gradient(var(--ah-blue), #38bdf8);
+}
+
+.ah-strength__no {
+  color: var(--ah-blue);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.ah-strength__list h3 {
+  margin-top: 4px;
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.ah-strength__list p {
+  margin-top: 8px;
+  color: var(--ah-soft);
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+@media (min-width: 900px) {
+  .ah-strength__grid {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 80px;
+  }
+}
+
+/* ── 記事 ── */
+.ah-articles {
+  background: var(--ah-bg);
+}
+
+.ah-articles__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ah-articles__list {
+  display: grid;
+  margin-top: 40px;
+  border-top: 1px solid var(--ah-line);
+}
+
+.ah-article {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px 20px;
+  padding: 24px 6px;
+  border-bottom: 1px solid var(--ah-line);
+  color: var(--ah-ink);
+  text-decoration: none;
+  transition: padding 0.5s var(--ah-ease);
+}
+
+.ah-article::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #fff;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.5s var(--ah-ease);
+}
+
+.ah-article:hover {
+  padding-inline: 20px;
+}
+
+.ah-article:hover::before {
+  transform: none;
+}
+
+.ah-article__cat {
+  grid-column: 1;
+  color: var(--ah-blue);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ah-article h3 {
+  grid-column: 1;
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.ah-article__go {
+  display: grid;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--ah-line);
+  border-radius: 50%;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    transform 0.4s var(--ah-ease);
+}
+
+.ah-article__go svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ah-article:hover .ah-article__go {
+  background: var(--ah-ink);
+  color: #fff;
+  transform: rotate(-45deg);
+}
+
+/* ── お問い合わせ ── */
+.ah-contact {
+  position: relative;
+  padding: 120px 0;
+  overflow: hidden;
+  background: #0b1120;
+  text-align: center;
+}
+
+.ah-contact__bg span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.6;
+}
+
+.ah-contact__bg span:nth-child(1) {
+  top: -20%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: #2563eb;
+  animation: ah-blob 14s ease-in-out infinite alternate;
+}
+
+.ah-contact__bg span:nth-child(2) {
+  right: -10%;
+  bottom: -30%;
+  width: 46vw;
+  height: 46vw;
+  background: #0ea5e9;
+  animation: ah-blob 18s ease-in-out -4s infinite alternate-reverse;
+}
+
+.ah-contact__bg span:nth-child(3) {
+  top: 30%;
+  left: 40%;
+  width: 24vw;
+  height: 24vw;
+  background: #f59e0b;
+  opacity: 0.35;
+  animation: ah-blob 12s ease-in-out -2s infinite alternate;
+}
+
+.ah-contact__inner {
+  position: relative;
+}
+
+.ah-contact__lead {
+  max-width: 36em;
+  margin: 20px auto 0;
+  color: #cbd5e1;
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+/* ── フッター ── */
+.ah-footer {
+  padding: 56px 0 28px;
+  background: #fff;
+  border-top: 1px solid var(--ah-line);
+}
+
+.ah-footer__grid {
+  display: grid;
+  gap: 28px;
+}
+
+.ah-footer__brand {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.ah-footer__desc {
+  max-width: 28em;
+  margin-top: 8px;
+  color: var(--ah-soft);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.ah-footer nav {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 10px 28px;
+  justify-content: start;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ah-footer nav a {
+  color: var(--ah-ink);
+  text-decoration: none;
+}
+
+.ah-footer nav a:hover {
+  color: var(--ah-blue);
+}
+
+.ah-footer__copy {
+  margin-top: 32px;
+  color: var(--ah-soft);
+  font-size: 12px;
+}
+
+@media (min-width: 900px) {
+  .ah-footer__grid {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+/* ── 動きを減らす設定：すべて止めて表示 ── */
+.ah.is-static *,
+.ah.is-static *::before,
+.ah.is-static *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ah *,
+  .ah *::before,
+  .ah *::after {
+    animation: none !important;
+  }
+}

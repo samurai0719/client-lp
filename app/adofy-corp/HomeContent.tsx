@@ -1,996 +1,554 @@
 "use client";
 
-import React, { useId } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  ArrowRight,
-  ArrowUp,
-  BarChart3,
-  MonitorSmartphone,
-  Palette,
-  Megaphone,
-  Sparkles,
-  MapPin,
-  CheckCircle2,
-  Truck,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-import {
-  DotGrid,
-  WaveDivider,
-  OrbitRings,
-  TopographicLines,
-  CornerSpark,
-  HeroBackgroundArt,
-} from "@/components/adofy-corp/decorations";
-import { ScrollProgressBar, RevealText, MagneticButton, ScrollReveal } from "@/components/adofy-corp/animations";
-import MockupScreen from "@/components/adofy-corp/visuals/MockupScreen";
-import WorkCase from "@/components/adofy-corp/works/WorkCase";
-import MascotFigure from "@/components/adofy-corp/visuals/MascotFigure";
-import TopographicFlow from "@/components/adofy-corp/backgrounds/TopographicFlow";
-import CircuitNetwork from "@/components/adofy-corp/backgrounds/CircuitNetwork";
-import PerspectiveGrid from "@/components/adofy-corp/backgrounds/PerspectiveGrid";
-import ColorfulShapes from "@/components/adofy-corp/backgrounds/ColorfulShapes";
-import OrbitMetrics from "@/components/adofy-corp/backgrounds/OrbitMetrics";
-import ConvergenceField from "@/components/adofy-corp/backgrounds/ConvergenceField";
-import FooterHorizon from "@/components/adofy-corp/backgrounds/FooterHorizon";
-import { useGsapContext } from "@/components/adofy-corp/hooks/useGsapContext";
-import { useReducedMotion } from "@/components/adofy-corp/hooks/useReducedMotion";
+import { ArrowRight, ArrowUpRight, BarChart3, Megaphone, Menu, MonitorSmartphone, Palette, Truck, Users, X, type LucideIcon } from "lucide-react";
+import { ARTICLES } from "@/components/adofy-corp/articles/content";
+import "./home.css";
 
-const partners = [
-  {
-    name: "マイナビ薬剤師",
-    href: "/works/mynavi-pharmacist",
-  },
-  {
-    name: "ナース専科",
-    href: "/works/nurse-senka",
-  },
-  {
-    name: "RIZAP GOLF",
-    href: "/works/rizap-golf",
-  },
-  {
-    name: "レバレジーズグループ",
-    href: "/works/leverages",
-  },
+/**
+ * adofy コーポレートサイトのトップページ（https://adofy-site.com/）。
+ * 動きは GSAP（ScrollTrigger）と CSS。FVは写真（public/images/adofy-corp/hero-team.webp）＋HTMLの見出し。
+ * 「動きを減らす」設定では、演出を止めて最初からすべて表示する。
+ */
+
+gsap.registerPlugin(ScrollTrigger);
+
+const NAV = [
+  { href: "#service", label: "Service" },
+  { href: "#works", label: "Works" },
+  { href: "/business", label: "Business" },
+  { href: "/articles", label: "Articles" },
+  { href: "/profile", label: "Profile" },
 ];
 
-type Service = {
-  icon: LucideIcon;
-  title: string;
-  lines: string[];
-  /** 自社サービスなど、アイコンの代わりにロゴを出す場合に指定 */
-  logo?: { src: string; alt: string };
-  /** カード下部に出す導線 (任意) */
-  link?: { href: string; label: string; external?: boolean };
-};
+const HERO_LINES = ["成果から逆算する、", "Webマーケティング。"];
 
-const services: Service[] = [
+const MARQUEE = ["Web広告運用", "LP制作", "ホームページ制作", "クリエイティブ制作", "採用支援", "ドライバー採用"];
+
+type Service = { icon: LucideIcon; no: string; title: string; body: string; href?: string; linkLabel?: string };
+const SERVICES: Service[] = [
+  { icon: Megaphone, no: "01", title: "成果報酬型広告運用", body: "訴求・LP・クリエイティブまで改善しながら、広告費に対して成果が残る運用を目指します。" },
+  { icon: MonitorSmartphone, no: "02", title: "LP・ホームページ制作", body: "広告から問い合わせ・応募までの導線を設計したLPと、信頼感を伝えるホームページを制作します。" },
+  { icon: Palette, no: "03", title: "クリエイティブ制作", body: "バナー・動画広告・SNS画像など、見る人の行動につながるクリエイティブを企画・制作します。" },
+  { icon: BarChart3, no: "04", title: "マーケティング支援", body: "数値分析・改善提案・導線設計まで、売上につながる施策を一貫して支援します。" },
   {
-    icon: Megaphone,
-    title: "成果報酬型広告運用",
-    lines: ["成果につながる訴求・LP・クリエイティブを設計し、", "広告費に対して利益が残る運用を目指します。"],
-  },
-  {
-    icon: MonitorSmartphone,
-    title: "LP・HP制作",
-    lines: ["広告導線に最適化したLPから、", "企業の信頼感を高めるホームページまで制作します。"],
-  },
-  {
-    icon: Palette,
-    title: "クリエイティブ制作",
-    lines: ["バナー・動画広告・SNS画像など、", "ユーザーの行動を促すクリエイティブを制作します。"],
-  },
-  {
-    icon: BarChart3,
-    title: "マーケティング支援",
-    lines: ["数値分析・改善提案・導線設計まで、", "売上最大化に向けた施策を一貫して支援します。"],
+    icon: Users,
+    no: "05",
+    title: "採用支援「採用レスキュー」",
+    body: "採用LPと広告クリエイティブをセットで制作し、応募が集まる導線を設計します。",
+    href: "https://saiyo.adofy-site.com/",
+    linkLabel: "採用レスキューを見る",
   },
   {
     icon: Truck,
-    title: "自社サービス運営「ドラテク」",
-    lines: [
-      "トラックドライバー向けの求人紹介・転職支援サービス「ドラテク」を自社で運営。",
-      "集客から面談・入社後のフォローまで、adofy自身が事業者として取り組んでいます。",
-    ],
-    logo: { src: "/images/driver/logo-mark.png", alt: "ドラテク" },
-    link: {
-      href: "https://driver.taxidriver-beginner.com/",
-      label: "ドラテクのサイトを見る",
-      external: true,
-    },
+    no: "06",
+    title: "自社サービス「ドラテク」",
+    body: "愛知県の運送会社様向けドライバー採用サービス。面接したい人を選ぶと、連絡と日程調整をドラテクが行います。",
+    href: "https://scout.adofy-site.com/",
+    linkLabel: "ドラテクを見る",
   },
 ];
 
-const strengths = [
-  "広告・LP・クリエイティブを一貫して改善",
-  "数字をもとにしたスピード感のある運用",
-  "岐阜から全国対応できる柔軟な制作体制",
+const WORKS = [
+  { img: "/images/adofy/case-01-takanaga.webp", tag: "建設・外構", title: "高長建設様", body: "コーポレートサイト制作・集客設計", href: "/adofy-case-takanaga" },
+  { img: "/images/adofy/case-02-paintnet.webp", tag: "外壁塗装", title: "Paint Net様", body: "集客ページ制作・問い合わせ導線設計" },
+  { img: "/images/adofy/ad-02-mynavi-pharmacist.webp", tag: "人材・薬剤師", title: "マイナビ薬剤師", body: "広告運用 × 診断LP制作", href: "/works/mynavi-pharmacist" },
+  { img: "/images/adofy/ad-01-rizap-golf.webp", tag: "スクール", title: "RIZAP GOLF", body: "広告運用 × 記事LP制作", href: "/works/rizap-golf" },
+];
+
+const STATS = [
+  { value: 100, unit: "社以上", label: "採用・集客の支援実績" },
+  { value: 2000, unit: "人以上", label: "累計集客・応募者数" },
+  { value: 6, unit: "ジャンル", label: "看護師・薬剤師・ドライバーなど" },
+];
+
+const STRENGTHS = [
+  { title: "広告・LP・クリエイティブを一貫して改善", body: "広告を出して終わりにせず、訴求から導線までまとめて見直します。" },
+  { title: "数字をもとにしたスピード感のある運用", body: "配信結果を見ながら、デザイン・構成・コピーを素早く改善します。" },
+  { title: "岐阜から全国対応の柔軟な制作体制", body: "オンラインで打ち合わせから公開まで進め、全国のご相談に対応します。" },
 ];
 
 export default function HomeContent() {
-  const rawClipId = useId().replace(/:/g, "");
-  const heroClipId = `hero-clip-${rawClipId}`;
-  const reducedMotion = useReducedMotion();
+  const root = useRef<HTMLDivElement>(null);
+  const [menu, setMenu] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const headerRef = useGsapContext<HTMLElement>(({ scope }) => {
-    const el = scope.current;
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const el = root.current;
     if (!el) return;
-
-    if (reducedMotion) {
-      gsap.set(el, { opacity: 1, y: 0 });
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      el.classList.add("is-static");
       return;
     }
+    el.classList.add("is-motion");
 
-    gsap.set(el, { opacity: 0, y: -16 });
-    gsap.to(el, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" });
+    const ctx = gsap.context(() => {
+      // ── FV：写真 → 見出し（文字ごと） → 説明 → ボタン → 数字チップ
+      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+      tl.from(".ah-hero__photo", { scale: 1.12, opacity: 0, duration: 1.6 })
+        .from(".ah-hero__eyebrow", { y: 16, opacity: 0, duration: 0.7 }, 0.3)
+        .from(".ah-hero__title .ah-ch", { yPercent: 110, opacity: 0, duration: 0.9, stagger: 0.035 }, 0.4)
+        .from(".ah-hero__lead", { y: 20, opacity: 0, duration: 0.8 }, "-=0.5")
+        .from(".ah-hero__ctas > *", { y: 20, opacity: 0, duration: 0.7, stagger: 0.1 }, "-=0.55")
+        .from(".ah-chip", { y: 30, opacity: 0, scale: 0.9, duration: 0.8, stagger: 0.12 }, "-=0.5");
 
-    ScrollTrigger.create({
-      start: "top -80",
-      end: 99999,
-      toggleClass: { targets: el, className: "is-scrolled" },
-    });
-  }, [reducedMotion]);
+      // FVの写真はスクロールに合わせてゆっくり拡大・見出しは少し上へ（視差）
+      gsap.to(".ah-hero__photo img", { scale: 1.12, yPercent: 6, ease: "none", scrollTrigger: { trigger: ".ah-hero", start: "top top", end: "bottom top", scrub: true } });
+      gsap.to(".ah-hero__copy", { yPercent: -18, opacity: 0.2, ease: "none", scrollTrigger: { trigger: ".ah-hero", start: "top top", end: "bottom top", scrub: true } });
 
-  const heroContentRef = useGsapContext<HTMLDivElement>(({ scope }) => {
-    const el = scope.current;
-    if (!el) return;
-
-    const badge = el.querySelector('[data-hero="badge"]');
-    const desc = el.querySelector('[data-hero="desc"]');
-    const cta = el.querySelector('[data-hero="cta"]');
-    const targets = [badge, desc, cta].filter(Boolean);
-    if (!targets.length) return;
-
-    if (reducedMotion) {
-      gsap.set(targets, { opacity: 1, y: 0 });
-      return;
-    }
-
-    gsap.set(targets, { opacity: 0, y: 16 });
-    gsap.to(badge, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out", delay: 0.1 });
-    gsap.to(desc, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 0.95 });
-    gsap.to(cta, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", delay: 1.25 });
-  }, [reducedMotion]);
-
-  /** Very small desktop-only parallax on the hero video — never enough to hide the robot. */
-  const heroSectionRef = useGsapContext<HTMLElement>(({ scope }) => {
-    const section = scope.current;
-    if (!section || reducedMotion) return;
-
-    gsap.matchMedia().add("(min-width: 1024px)", () => {
-      const video = section.querySelector("#hero-desktop-video");
-      if (!video) return;
-
-      gsap.fromTo(
-        video,
-        { y: -14 },
-        {
-          y: 14,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
-    });
-  }, [reducedMotion]);
-
-  /** ABOUT card ring: a quiet 16° turn tied directly to scroll, not a free-spinning loop. */
-  const aboutSectionRef = useGsapContext<HTMLElement>(({ scope }) => {
-    const section = scope.current;
-    if (!section || reducedMotion) return;
-
-    const ring = section.querySelector('[data-about-ring]');
-    if (!ring) return;
-
-    gsap.to(ring, {
-      rotation: 16,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-  }, [reducedMotion]);
-
-  /** Each service card's corner square draws itself in once the card has scrolled into view. */
-  const serviceSectionRef = useGsapContext<HTMLElement>(({ scope }) => {
-    const section = scope.current;
-    if (!section) return;
-
-    const squares = Array.from(section.querySelectorAll<SVGRectElement>("[data-draw]"));
-    if (!squares.length) return;
-
-    if (reducedMotion) {
-      squares.forEach((square) => {
-        square.style.strokeDashoffset = "0";
+      // ── 見出し：行ごとに下から
+      gsap.utils.toArray<HTMLElement>(".ah-reveal-lines").forEach((h) => {
+        gsap.from(h.querySelectorAll(".ah-line > span"), { yPercent: 105, duration: 0.9, ease: "expo.out", stagger: 0.1, scrollTrigger: { trigger: h, start: "top 85%" } });
       });
-      return;
-    }
+      // ── 説明・カード：少しずつずらして
+      gsap.utils.toArray<HTMLElement>("[data-stagger]").forEach((wrap) => {
+        gsap.from(wrap.children, { y: 40, opacity: 0, duration: 0.9, ease: "power3.out", stagger: 0.1, scrollTrigger: { trigger: wrap, start: "top 82%" } });
+      });
+      gsap.utils.toArray<HTMLElement>("[data-fade]").forEach((n) => {
+        gsap.from(n, { y: 24, opacity: 0, duration: 0.9, ease: "power3.out", scrollTrigger: { trigger: n, start: "top 88%" } });
+      });
 
-    squares.forEach((square) => {
-      const length = square.getTotalLength();
-      square.style.strokeDasharray = `${length}`;
-      square.style.strokeDashoffset = `${length}`;
-    });
+      // ── About：写真の視差と、文章を1語ずつ濃くする
+      gsap.to(".ah-about__img img", { yPercent: -12, ease: "none", scrollTrigger: { trigger: ".ah-about", start: "top bottom", end: "bottom top", scrub: true } });
+      gsap.fromTo(".ah-about__text .ah-word", { opacity: 0.18 }, { opacity: 1, stagger: 0.05, ease: "none", scrollTrigger: { trigger: ".ah-about__text", start: "top 80%", end: "bottom 45%", scrub: true } });
 
-    gsap.to(squares, {
-      strokeDashoffset: 0,
-      duration: 1.1,
-      stagger: 0.1,
-      delay: 0.3,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: section,
-        start: "top 70%",
-        toggleActions: "play none none none",
-      },
-    });
-  }, [reducedMotion]);
+      // ── 数字：一度だけ数え上げ
+      gsap.utils.toArray<HTMLElement>("[data-count]").forEach((n) => {
+        const target = Number(n.dataset.count);
+        const obj = { v: 0 };
+        gsap.to(obj, {
+          v: target,
+          duration: 1.8,
+          ease: "power2.out",
+          scrollTrigger: { trigger: n, start: "top 85%", once: true },
+          onUpdate: () => (n.textContent = Math.round(obj.v).toLocaleString("ja-JP")),
+        });
+      });
 
-  /** Back-to-top button: its ring fills as a quiet readout of overall scroll progress. */
-  const backToTopRingRef = useGsapContext<SVGSVGElement>(({ scope }) => {
-    const svg = scope.current;
-    if (!svg) return;
-    const ring = svg.querySelector<SVGCircleElement>("[data-progress-ring]");
-    if (!ring) return;
+      // ── 強みの線：スクロールに合わせて伸びる
+      gsap.from(".ah-strength__bar", { scaleY: 0, transformOrigin: "top", ease: "none", scrollTrigger: { trigger: ".ah-strength__list", start: "top 70%", end: "bottom 60%", scrub: true } });
 
-    const circumference = 2 * Math.PI * 19;
-    gsap.set(ring, { strokeDasharray: circumference, strokeDashoffset: circumference });
+      // ── Works：PCは横スクロール（ピン留め）
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 900px)", () => {
+        const track = el.querySelector<HTMLElement>(".ah-works__track");
+        const pin = el.querySelector<HTMLElement>(".ah-works__pin");
+        if (!track || !pin) return;
+        const dist = () => track.scrollWidth - pin.clientWidth;
+        gsap.to(track, {
+          x: () => -dist(),
+          ease: "none",
+          scrollTrigger: { trigger: pin, start: "top top", end: () => `+=${dist()}`, pin: true, scrub: 0.6, invalidateOnRefresh: true },
+        });
+      });
+    }, el);
 
-    if (reducedMotion) return;
+    // ── サービスカード：マウスの位置で少し傾き、光が追いかける（PCのみ）
+    const cards = Array.from(el.querySelectorAll<HTMLElement>(".ah-card"));
+    const hover = window.matchMedia("(hover: hover)").matches;
+    const onMove = (e: PointerEvent) => {
+      const c = e.currentTarget as HTMLElement;
+      const r = c.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      c.style.setProperty("--mx", `${x * 100}%`);
+      c.style.setProperty("--my", `${y * 100}%`);
+      c.style.setProperty("--rx", `${(0.5 - y) * 8}deg`);
+      c.style.setProperty("--ry", `${(x - 0.5) * 10}deg`);
+    };
+    const onLeave = (e: PointerEvent) => {
+      const c = e.currentTarget as HTMLElement;
+      c.style.setProperty("--rx", "0deg");
+      c.style.setProperty("--ry", "0deg");
+    };
+    if (hover) cards.forEach((c) => (c.addEventListener("pointermove", onMove), c.addEventListener("pointerleave", onLeave)));
 
-    ScrollTrigger.create({
-      start: 0,
-      end: () => Math.max(document.documentElement.scrollHeight - window.innerHeight, 1),
-      onUpdate: (self) => gsap.set(ring, { strokeDashoffset: circumference * (1 - self.progress) }),
-    });
-  }, [reducedMotion]);
+    // ── ボタン：マウスに少し吸い寄せられる（PCのみ）
+    const mags = Array.from(el.querySelectorAll<HTMLElement>("[data-magnetic]"));
+    const magMove = (e: PointerEvent) => {
+      const b = e.currentTarget as HTMLElement;
+      const r = b.getBoundingClientRect();
+      b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.18}px, ${(e.clientY - r.top - r.height / 2) * 0.25}px)`;
+    };
+    const magLeave = (e: PointerEvent) => ((e.currentTarget as HTMLElement).style.transform = "");
+    if (hover) mags.forEach((b) => (b.addEventListener("pointermove", magMove), b.addEventListener("pointerleave", magLeave)));
+
+    // ── マウスについてくる光（PCのみ）
+    const glow = el.querySelector<HTMLElement>(".ah-cursor");
+    const onCursor = (e: PointerEvent) => glow && gsap.to(glow, { x: e.clientX, y: e.clientY, duration: 0.6, ease: "power3.out" });
+    if (hover) window.addEventListener("pointermove", onCursor);
+
+    return () => {
+      ctx.revert();
+      cards.forEach((c) => (c.removeEventListener("pointermove", onMove), c.removeEventListener("pointerleave", onLeave)));
+      mags.forEach((b) => (b.removeEventListener("pointermove", magMove), b.removeEventListener("pointerleave", magLeave)));
+      window.removeEventListener("pointermove", onCursor);
+    };
+  }, []);
+
+  const aboutText =
+    "adofyは、岐阜を拠点にWebマーケティング支援を行う会社です。見た目の美しさだけでなく、広告効果・問い合わせ・応募・売上につながる設計を重視し、制作から改善まで伴走します。";
 
   return (
-    <main className="min-h-screen overflow-hidden bg-surface text-ink">
-      <ScrollProgressBar />
+    <div ref={root} className="ah">
+      <div className="ah-cursor" aria-hidden="true" />
 
-      {/* ヘッダー：ページ全体で persist し、スクロールに応じて状態変化する */}
-      <header
-        ref={headerRef}
-        className="header-bar fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-border-soft bg-white/60 px-5 py-5 backdrop-blur-md md:px-10"
-      >
-        <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border-soft bg-white/80 shadow-sm backdrop-blur">
-            <Sparkles className="h-5 w-5 text-accent-blue" />
-          </div>
-
-          <div>
-            <p className="text-lg font-bold tracking-wide text-ink">adofy</p>
-            <p className="text-xs text-ink-soft">Creative Marketing Company</p>
-          </div>
+      {/* ── ヘッダー ── */}
+      <header className={`ah-header${scrolled ? " is-scrolled" : ""}`}>
+        <Link href="/" className="ah-logo" aria-label="adofy トップへ">
+          <span className="ah-logo__mark">ad</span>
+          <span className="ah-logo__text">
+            adofy<small>Creative Marketing Company</small>
+          </span>
         </Link>
-
-        <nav className="hidden items-center gap-8 text-sm font-medium text-ink-soft md:flex">
-          <a href="#service" className="group relative py-1 transition hover:text-accent-blue">
-            Service
-            <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-          </a>
-          <a href="#works" className="group relative py-1 transition hover:text-accent-blue">
-            Works
-            <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-          </a>
-          <a href="/business" className="group relative py-1 transition hover:text-accent-blue">
-            Business
-            <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-          </a>
-          <a href="/articles" className="group relative py-1 transition hover:text-accent-blue">
-            Articles
-            <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-          </a>
-          <a href="/profile" className="group relative py-1 transition hover:text-accent-blue">
-            Profile
-            <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-          </a>
-          <a href="/contact" className="group relative py-1 transition hover:text-accent-blue">
-            Contact
-            <span className="absolute inset-x-0 -bottom-0.5 h-[1.5px] origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
+        <nav className="ah-nav" aria-label="メニュー">
+          {NAV.map((n) => (
+            <a key={n.href} href={n.href}>
+              {n.label}
+            </a>
+          ))}
+          <a href="/contact" className="ah-nav__cta">
+            お問い合わせ
           </a>
         </nav>
+        <button type="button" className="ah-menu-btn" aria-label={menu ? "メニューを閉じる" : "メニューを開く"} aria-expanded={menu} onClick={() => setMenu((v) => !v)}>
+          {menu ? <X /> : <Menu />}
+        </button>
       </header>
+      <div className={`ah-drawer${menu ? " is-open" : ""}`} aria-hidden={!menu}>
+        <nav aria-label="スマホメニュー">
+          {NAV.map((n, i) => (
+            <a key={n.href} href={n.href} onClick={() => setMenu(false)} style={{ transitionDelay: `${0.05 * i + 0.1}s` }}>
+              {n.label}
+            </a>
+          ))}
+          <a href="/contact" onClick={() => setMenu(false)} className="ah-drawer__cta">
+            お問い合わせ
+          </a>
+        </nav>
+      </div>
 
-      {/* ファーストビュー */}
-      <section
-        id="hero"
-        ref={heroSectionRef}
-        className="relative isolate flex min-h-screen items-center overflow-hidden bg-gradient-to-b from-white via-white to-mist-blue pb-20 pt-28 md:pt-24"
-      >
-        {/* モバイル/タブレット：ロボット動画を背景レイヤーとして使用 */}
-        <div className="absolute inset-0 lg:hidden">
-          <video
-            className="h-full w-full object-cover"
-            style={{ objectPosition: "80% 38%", transform: "scale(1.06)" }}
-            src="/fv-robot.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(100deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.86) 38%, rgba(242,247,255,0.6) 68%, rgba(242,247,255,0.4) 100%), linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 26%, rgba(242,247,255,0.5) 100%)",
-            }}
-          />
-        </div>
-
-        <HeroBackgroundArt waveColor="#ffffff" />
-
-        {/* ファーストビュー本文 */}
-        <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-5 md:px-10 lg:grid-cols-2">
-          <div ref={heroContentRef} className="max-w-xl">
-            <div
-              data-hero="badge"
-              className="mb-7 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/70 px-4 py-2 text-sm text-ink-soft backdrop-blur"
-            >
-              <MapPin className="h-4 w-4 text-accent-blue" />
-              岐阜発・全国対応のITマーケティング企業
-            </div>
-
-            <h1 className="text-4xl font-black leading-tight tracking-tight text-ink md:text-6xl lg:text-7xl">
-              <RevealText
-                trigger="mount"
-                delay={0.35}
-                duration={0.85}
-                stagger={0.12}
-                lines={[
-                  "未来を創造する",
-                  <span
-                    key="line2"
-                    className="bg-gradient-to-r from-blue-600 via-cyan-500 to-amber-500 bg-clip-text text-transparent"
-                  >
-                    岐阜のIT企業
-                  </span>,
-                ]}
-              />
-            </h1>
-
-            <p
-              data-hero="desc"
-              className="mt-7 max-w-2xl text-base leading-relaxed text-ink-soft md:text-xl"
-            >
-              成果報酬型広告運用・LP制作・HP制作・クリエイティブ制作を通じて、
-              企業の魅力を引き出し、売上最大化を支援します。
-            </p>
-
-            <div data-hero="cta" className="relative mt-9 flex flex-col gap-4 sm:flex-row">
-              <MagneticButton strength={8}>
-                <a
-                  href="/contact"
-                  className="group inline-flex items-center justify-center rounded-full bg-accent-blue px-7 py-4 font-bold text-white shadow-xl shadow-blue-600/20 transition duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-2xl hover:shadow-blue-600/30"
-                >
-                  お問い合わせはこちら
-                  <ArrowRight className="ml-2 h-5 w-5 transition group-hover:translate-x-1" />
-                </a>
-              </MagneticButton>
-
-              <a
-                href="#service"
-                className="inline-flex items-center justify-center rounded-full border border-border-soft bg-white px-7 py-4 font-bold text-ink backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-border-soft-hover hover:bg-mist-blue"
-              >
-                事業内容を見る
-              </a>
-
-              <CornerSpark
-                variant="spark"
-                className="absolute -top-6 right-2 hidden h-6 w-6 text-accent-amber sm:block"
-                opacity={0.7}
-                fade
-              />
-
-              <MascotFigure
-                src="/images/mascots/cat-girl-jump.png"
-                alt="adofyのマスコットキャラクター"
-                trigger="mount"
-                delay={1.6}
-                className="absolute -top-14 right-0 h-16 w-auto drop-shadow-lg lg:hidden"
-              />
-            </div>
+      <main>
+        {/* ── FV ── */}
+        <section className="ah-hero" id="hero" aria-labelledby="ah-hero-title">
+          <div className="ah-hero__photo">
+            <picture>
+              <source media="(max-width: 767px)" srcSet="/images/adofy-corp/hero-team-sp.webp" />
+              <img src="/images/adofy-corp/hero-team.webp" alt="ノートパソコンを囲んで打ち合わせをするチーム" fetchPriority="high" />
+            </picture>
           </div>
+          <div className="ah-hero__shade" aria-hidden="true" />
+          <div className="ah-hero__blob ah-hero__blob--1" aria-hidden="true" />
+          <div className="ah-hero__blob ah-hero__blob--2" aria-hidden="true" />
 
-          {/* 右側：既存ビジュアル（背景動画）を曲線フレームに収める。モバイル/タブレットでは動画を背景レイヤーとして使うため非表示 */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.2 }}
-            className="relative mx-auto hidden w-full max-w-md lg:block lg:max-w-none"
-          >
-            <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
-              <defs>
-                <clipPath id={heroClipId} clipPathUnits="objectBoundingBox">
-                  <path d="M0.06,0.16 C0.02,0.04 0.18,0 0.34,0.02 L0.86,0.02 C0.95,0.02 1,0.09 1,0.18 L1,0.78 C1,0.91 0.9,0.98 0.78,0.98 L0.2,0.98 C0.08,0.98 0,0.87 0,0.73 L0,0.3 Z" />
-                </clipPath>
-              </defs>
-            </svg>
-
-            <OrbitRings
-              className="pointer-events-none absolute -inset-10 -z-10 text-accent-blue"
-              opacity={0.18}
-              rings={3}
-              accentColor="#f59e0b"
-            />
-
-            <div
-              className="relative aspect-[4/5] w-full overflow-hidden bg-mist-blue shadow-2xl shadow-blue-900/10"
-              style={{ clipPath: `url(#${heroClipId})` }}
-            >
-              <video
-                id="hero-desktop-video"
-                className="h-full w-full object-cover"
-                src="/fv-robot.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-              />
-            </div>
-
-            <div className="relative mt-4 w-full rounded-[1.75rem] border border-blue-100 bg-white/90 p-5 shadow-xl shadow-blue-900/5 backdrop-blur lg:absolute lg:-bottom-8 lg:-left-6 lg:mt-0 lg:w-56">
-              <div className="mb-4 flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-accent-blue/30" />
-                <span className="h-2.5 w-2.5 rounded-full bg-accent-amber/40" />
-                <span className="h-2.5 w-2.5 rounded-full bg-accent-blue/30" />
-              </div>
-
-              <div className="rounded-2xl bg-mist-blue px-4 py-3 text-center text-sm font-bold text-ink">
-                AI × Creative × Marketing
-              </div>
-
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-mist-ivory px-3 py-3">
-                  <p className="text-2xl font-black text-ink">LP</p>
-                  <p className="text-xs text-ink-soft">導線設計</p>
-                </div>
-
-                <div className="rounded-xl bg-mist-blue px-3 py-3">
-                  <p className="text-2xl font-black text-ink">AD</p>
-                  <p className="text-xs text-ink-soft">広告運用</p>
-                </div>
-              </div>
-            </div>
-
-            {/* マスコット：ロボット動画フレームの右下から少し覗く、welcomeアクセント */}
-            <MascotFigure
-              src="/images/mascots/cat-girl-jump.png"
-              alt="adofyのマスコットキャラクター"
-              trigger="mount"
-              delay={1.7}
-              className="absolute -bottom-6 -right-4 hidden h-28 w-auto drop-shadow-xl lg:block lg:h-32"
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" ref={aboutSectionRef} className="relative overflow-hidden bg-white px-5 py-24 md:px-10">
-        <TopographicFlow className="opacity-90" />
-        <DotGrid
-          className="absolute left-0 top-0 hidden h-full w-[38%] text-accent-blue sm:block"
-          opacity={0.08}
-        />
-
-        <div className="relative mx-auto grid max-w-7xl items-start gap-x-10 gap-y-10 lg:grid-cols-[1fr_1fr] xl:grid-cols-[1.5fr_1fr_0.6fr] xl:items-center">
-          <div className="relative min-w-0">
-            <p className="mb-[clamp(16px,2.5vw,20px)] text-sm font-black uppercase tracking-[0.14em] text-accent-blue">
-              About adofy
+          <div className="ah-hero__copy">
+            <p className="ah-hero__eyebrow">
+              <span className="ah-dot" aria-hidden="true" />
+              岐阜発・全国対応のWebマーケティング
             </p>
-            <h2 className="text-[28px] font-black leading-[1.4] tracking-[-0.03em] text-ink md:text-5xl md:leading-[1.15] lg:text-[36px] lg:leading-[1.18] xl:text-[2.75rem] xl:leading-[1.2]">
-              <RevealText lines={["成果から逆算する、", "次世代のWebパートナー。"]} />
-            </h2>
-
-            <MascotFigure
-              src="/images/mascots/cat-girl-thinking.png"
-              alt="考え込むadofyのマスコットキャラクター"
-              trigger="scroll"
-              delay={0.3}
-              className="mt-6 h-20 w-auto drop-shadow-lg sm:h-28 lg:h-32"
-            />
-          </div>
-
-          {/* xl以上ではこのラッパーを display:contents にし、子要素を外側gridの2/3列目へ直接配置する（flexの最小幅衝突による右端見切れを回避） */}
-          <div className="grid min-w-0 gap-6 xl:contents">
-            <ScrollReveal y={20} scale={0.98} duration={0.8} className="relative z-10 min-w-0 w-full mx-auto">
-              <div className="relative overflow-hidden rounded-[24px] border border-[rgba(59,96,180,0.10)] bg-gradient-to-br from-[rgba(255,255,255,0.92)] to-[rgba(247,250,255,0.86)] p-[clamp(24px,4vw,36px)] shadow-[0_8px_24px_rgba(23,32,51,0.04)]">
-                <div data-about-ring className="absolute -right-6 -top-6 h-20 w-20">
-                  <OrbitRings
-                    className="pointer-events-none h-full w-full text-accent-blue"
-                    opacity={0.08}
-                    rings={3}
-                    accentColor="#f59e0b"
-                    animated={false}
-                  />
-                </div>
-                <p className="relative text-[clamp(1rem,2vw,1.2rem)] leading-[1.85] tracking-[0.01em] text-ink-soft">
-                  adofyは、岐阜を拠点にWebマーケティング支援を行うIT企業です。
-                  見た目の美しさだけではなく、広告効果・問い合わせ・売上につながる設計を重視し、
-                  制作から改善まで伴走します。
-                </p>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal y={28} delay={0.15} duration={0.8} className="min-w-0 w-full mx-auto xl:mt-16">
-              <MockupScreen
-                variant="analytics"
-                label="adofy Team"
-                imageBase="/images/about/performance"
-                alt="adofyのメンバーがミーティングをしている様子"
-              />
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* SERVICE */}
-      <section id="service" ref={serviceSectionRef} className="relative overflow-hidden bg-mist-blue px-5 py-24 md:px-10">
-        <CircuitNetwork />
-        <TopographicLines
-          className="absolute -bottom-16 -right-10 hidden w-72 text-accent-blue md:block"
-          opacity={0.1}
-        />
-        <ColorfulShapes
-          shapes={[
-            { type: "circle", x: 70, y: 90, size: 100, color: "#2563eb", opacity: 0.3 },
-            { type: "ring", x: 130, y: 460, size: 140, color: "#2563eb", opacity: 0.32 },
-            { type: "blob", x: 930, y: 130, size: 160, color: "#f59e0b", opacity: 0.28 },
-            { type: "square", x: 900, y: 480, size: 60, color: "#0891b2", opacity: 0.34, rotate: 18 },
-            { type: "circle", x: 480, y: 40, size: 38, color: "#f59e0b", opacity: 0.4 },
-            { type: "ring", x: 600, y: 560, size: 80, color: "#0891b2", opacity: 0.3 },
-          ]}
-          mobileShapes={[
-            { type: "circle", x: 60, y: 60, size: 80, color: "#2563eb", opacity: 0.3 },
-            { type: "blob", x: 440, y: 110, size: 120, color: "#f59e0b", opacity: 0.26 },
-            { type: "ring", x: 40, y: 420, size: 100, color: "#0891b2", opacity: 0.3 },
-            { type: "square", x: 460, y: 480, size: 44, color: "#0891b2", opacity: 0.3, rotate: 16 },
-            { type: "circle", x: 420, y: 700, size: 36, color: "#f59e0b", opacity: 0.36 },
-            { type: "ring", x: 60, y: 800, size: 90, color: "#2563eb", opacity: 0.26 },
-          ]}
-        />
-
-        <div className="relative mx-auto max-w-7xl">
-          <MascotFigure
-            src="/images/mascots/cat-boy-thumbsup.png"
-            alt="サムズアップするadofyのマスコットキャラクター"
-            trigger="scroll"
-            delay={0.2}
-            className="absolute -top-2 right-0 h-16 w-auto drop-shadow-lg sm:h-20 lg:h-28"
-          />
-
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="mb-[clamp(16px,2.5vw,20px)] text-sm font-black tracking-widest text-accent-blue">
-              SERVICE
-            </p>
-            <h2 className="mb-[clamp(24px,4vw,32px)] text-3xl font-black tracking-tight text-ink md:text-5xl">
-              <RevealText lines={["事業内容"]} className="mx-auto" />
-            </h2>
-            <p className="text-[13px] leading-7 tracking-tight text-ink-soft md:text-base md:leading-8 md:tracking-normal">
-              <span className="block">広告運用から制作まで、</span>
-              <span className="block">成果を出すために必要な領域を一気通貫で支援します。</span>
-            </p>
-          </div>
-
-          <div
-            className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-3 lg:grid-rows-3 lg:[grid-template-areas:'a_b_b'_'a_c_d'_'e_e_e']"
-          >
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              const areaClass = ["lg:[grid-area:a]", "lg:[grid-area:b]", "lg:[grid-area:c]", "lg:[grid-area:d]", "lg:[grid-area:e]"][index];
-              const isFeatured = index === 0;
-
-              return (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-                  className={`group relative flex flex-col overflow-hidden rounded-[2rem] border border-border-soft bg-white shadow-soft transition duration-300 hover:-translate-y-1.5 hover:border-border-soft-hover hover:shadow-hover ${areaClass} ${
-                    isFeatured ? "p-7 lg:p-9" : "p-6"
-                  }`}
-                >
-                  <svg
-                    viewBox="0 0 60 60"
-                    className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 text-accent-blue opacity-50 transition group-hover:opacity-80"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <rect
-                      data-draw
-                      x="2"
-                      y="2"
-                      width="56"
-                      height="56"
-                      rx="18"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  </svg>
-
-                  <div className="flex items-start justify-between">
-                    {service.logo ? (
-                      /* 自社サービスはロゴをそのまま見せる（紺色ロゴのため白地のまま） */
-                      <div
-                        className={`flex items-center justify-center rounded-2xl border border-border-soft bg-white p-2 transition duration-300 group-hover:scale-105 ${
-                          isFeatured ? "h-16 w-16" : "h-14 w-14"
-                        }`}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={service.logo.src}
-                          alt={service.logo.alt}
-                          width={512}
-                          height={512}
-                          className="h-full w-full object-contain"
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        className={`flex items-center justify-center rounded-2xl bg-accent-blue text-white transition duration-300 group-hover:scale-105 ${
-                          isFeatured ? "h-16 w-16" : "h-14 w-14"
-                        }`}
-                      >
-                        <Icon className={isFeatured ? "h-7 w-7" : "h-6 w-6"} />
-                      </div>
-                    )}
-                    <span className="text-right text-xs font-black uppercase tracking-widest text-accent-blue/40">
-                      0{index + 1}
+            <h1 className="ah-hero__title" id="ah-hero-title" aria-label={HERO_LINES.join("")}>
+              {HERO_LINES.map((line, li) => (
+                <span key={line} className={`ah-hero__line${li === 1 ? " is-accent" : ""}`} aria-hidden="true">
+                  {Array.from(line).map((c, i) => (
+                    <span key={i} className="ah-ch">
+                      {c}
                     </span>
-                  </div>
-
-                  <h3 className={`leading-snug text-ink ${isFeatured ? "mt-8 text-2xl lg:text-3xl" : "mt-6 text-xl"} font-black`}>
-                    {service.title}
-                  </h3>
-
-                  <p
-                    className={`leading-6 tracking-tight text-ink-soft ${
-                      isFeatured ? "mt-4 max-w-sm text-sm lg:text-base lg:leading-7" : "mt-4 text-xs"
-                    }`}
-                  >
-                    {service.lines.map((line) => (
-                      <span key={line} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </p>
-
-                  {service.link && (
-                    <a
-                      href={service.link.href}
-                      {...(service.link.external
-                        ? { target: "_blank", rel: "noopener noreferrer" }
-                        : {})}
-                      className="mt-5 inline-flex w-fit items-center gap-1.5 text-xs font-black tracking-tight text-accent-blue transition hover:gap-2.5"
-                    >
-                      {service.link.label}
-                      <span aria-hidden="true">→</span>
-                    </a>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* WORKS */}
-      <section
-        id="works"
-        className="relative overflow-hidden bg-white px-5 py-24 md:px-10"
-      >
-        <PerspectiveGrid />
-        <ColorfulShapes
-          className="h-[640px] md:h-[760px]"
-          shapes={[
-            { type: "blob", x: 60, y: 60, size: 140, color: "#f59e0b", opacity: 0.24 },
-            { type: "circle", x: 950, y: 200, size: 70, color: "#f59e0b", opacity: 0.32 },
-            { type: "ring", x: 900, y: 480, size: 120, color: "#2563eb", opacity: 0.3 },
-            { type: "square", x: 50, y: 540, size: 54, color: "#0891b2", opacity: 0.34, rotate: -12 },
-            { type: "circle", x: 500, y: 30, size: 30, color: "#2563eb", opacity: 0.36 },
-          ]}
-          mobileShapes={[
-            { type: "blob", x: 60, y: 50, size: 110, color: "#f59e0b", opacity: 0.24 },
-            { type: "circle", x: 440, y: 70, size: 46, color: "#2563eb", opacity: 0.34 },
-            { type: "ring", x: 30, y: 360, size: 90, color: "#0891b2", opacity: 0.28 },
-            { type: "square", x: 450, y: 420, size: 40, color: "#0891b2", opacity: 0.3, rotate: -10 },
-            { type: "circle", x: 420, y: 600, size: 32, color: "#f59e0b", opacity: 0.36 },
-          ]}
-        />
-
-        <div className="relative mx-auto max-w-7xl">
-          <MascotFigure
-            src="/images/mascots/cat-girl-yay.png"
-            alt="喜ぶadofyのマスコットキャラクター"
-            trigger="scroll"
-            delay={0.2}
-            className="absolute -top-4 right-0 h-16 w-auto drop-shadow-lg sm:h-20 md:h-28"
-          />
-
-          <div className="max-w-3xl">
-            <p className="mb-[clamp(16px,2.5vw,20px)] text-sm font-black uppercase tracking-[0.14em] text-accent-blue">
-              Works / Partner
-            </p>
-
-            <h2 className="mb-[clamp(24px,4vw,32px)] text-3xl font-black leading-tight tracking-tight text-ink md:text-5xl">
-              <RevealText lines={["大手サービス領域での広告運用実績"]} />
-            </h2>
-
-            <p className="max-w-[44rem] text-[clamp(1rem,2vw,1.2rem)] leading-[1.85] tracking-[0.01em] text-ink-soft">
-              転職・教育・ライフスタイル領域など、複数ジャンルの案件で
-              成果報酬型広告運用・LP改善・クリエイティブ制作を行っています。
-            </p>
-
-            <p className="mt-[clamp(16px,2.5vw,20px)] max-w-[44rem] text-[clamp(0.85rem,1.5vw,1rem)] leading-[1.8] text-ink-soft/[0.82]">
-              ※掲載名は取扱実績・関連サービス名のテキスト表示です。
-              公式ロゴの無断使用は避け、必要に応じて掲載許可を取得してください。
-            </p>
-          </div>
-
-          <div className="mt-16 flex flex-col gap-16 lg:gap-24">
-            {partners.map((partner, index) => (
-              <WorkCase
-                key={partner.name}
-                index={`0${index + 1}`}
-                title={partner.name}
-                description="成果報酬型広告運用"
-                imageBase={`/images${partner.href}/creative`}
-                imageAlt={`${partner.name} 広告クリエイティブ`}
-                href={partner.href}
-                reverse={index % 2 === 1}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PARTNER marquee：実績企業名を帯で流す、サービス/実績セクションの区切り */}
-      <section className="relative overflow-hidden border-y border-border-soft bg-mist-gray py-6">
-        <div className="flex overflow-hidden" aria-hidden="true">
-          <div className="partner-marquee-track flex shrink-0 items-center gap-16 pr-16">
-            {[...partners, ...partners].map((partner, i) => (
-              <span key={i} className="flex items-center gap-3 whitespace-nowrap">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent-blue/40" />
-                <span className="text-xl font-black tracking-tight text-ink-soft/70 md:text-2xl">
-                  {partner.name}
+                  ))}
                 </span>
+              ))}
+            </h1>
+            <p className="ah-hero__lead">広告運用・LP制作・採用支援まで。数字を見ながら、問い合わせと応募につながる仕組みをつくります。</p>
+            <div className="ah-hero__ctas">
+              <a href="/contact" className="ah-btn ah-btn--primary" data-magnetic>
+                <span>無料で相談する</span>
+                <ArrowRight aria-hidden="true" />
+              </a>
+              <a href="#service" className="ah-btn ah-btn--ghost">
+                <span>サービスを見る</span>
+              </a>
+            </div>
+          </div>
+
+          <ul className="ah-hero__chips" aria-label="実績">
+            <li className="ah-chip">
+              <b>100</b>
+              <span>社以上の支援実績</span>
+            </li>
+            <li className="ah-chip">
+              <b>2,000</b>
+              <span>人以上の累計集客・応募</span>
+            </li>
+          </ul>
+
+          <a href="#about" className="ah-scroll" aria-label="下へスクロール">
+            <span>Scroll</span>
+            <i aria-hidden="true" />
+          </a>
+        </section>
+
+        {/* ── 流れる帯 ── */}
+        <div className="ah-marquee" aria-hidden="true">
+          <div className="ah-marquee__track">
+            {[0, 1].map((k) => (
+              <span key={k}>
+                {MARQUEE.map((m) => (
+                  <em key={m}>{m}</em>
+                ))}
               </span>
             ))}
           </div>
         </div>
-        <p className="sr-only">支援実績：{partners.map((p) => p.name).join("、")}</p>
-      </section>
 
-      {/* STRENGTH */}
-      <section
-        id="strength"
-        className="relative overflow-hidden bg-mist-ivory px-5 py-24 md:px-10"
-      >
-        <OrbitMetrics itemCount={strengths.length} />
-        <WaveDivider className="absolute top-0 left-0 text-white" flip />
-        <WaveDivider className="absolute bottom-0 left-0 text-[#eaf2ff]" />
-
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
-          <div>
-            <p className="mb-[clamp(16px,2.5vw,20px)] text-sm font-black tracking-widest text-accent-blue">
-              STRENGTH
-            </p>
-
-            <h2 className="mb-[clamp(32px,5vw,40px)] text-3xl font-black leading-tight tracking-tight text-ink md:text-5xl">
-              <RevealText lines={["adofyが選ばれる理由"]} />
-            </h2>
-
-            <p className="max-w-[44rem] text-[clamp(1rem,2vw,1.2rem)] leading-[1.85] tracking-[0.01em] text-ink-soft">
-              制作して終わりではなく、広告の数字を見ながら改善し続けることで、
-              成果につながるWeb施策を実現します。
-            </p>
-          </div>
-
-          <div className="relative space-y-10 border-l-2 border-accent-blue/15 pl-8 md:pl-10">
-            <MascotFigure
-              src="/images/mascots/cat-boy-cheer.png"
-              alt="ガッツポーズするadofyのマスコットキャラクター"
-              trigger="scroll"
-              delay={0.2}
-              className="absolute -top-6 right-0 h-16 w-auto drop-shadow-lg sm:h-20 lg:h-28"
-            />
-            {strengths.map((item, index) => (
-              <div
-                key={item}
-                data-strength-item={index}
-                className="group relative py-1"
-              >
-                <span
-                  aria-hidden="true"
-                  className="absolute -left-[42px] top-1 h-3 w-3 rounded-full border-2 border-accent-blue bg-mist-ivory md:-left-[50px]"
-                />
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -left-2 -top-8 text-[96px] font-black leading-none text-accent-blue/[0.07] transition duration-300 group-hover:text-accent-blue/[0.13] md:text-[120px]"
-                >
-                  0{index + 1}
+        {/* ── About ── */}
+        <section className="ah-sec ah-about" id="about" aria-labelledby="ah-about-title">
+          <div className="ah-wrap ah-about__grid">
+            <div>
+              <p className="ah-eyebrow">About adofy</p>
+              <h2 className="ah-h2 ah-reveal-lines" id="ah-about-title">
+                <span className="ah-line">
+                  <span>成果から逆算する、</span>
                 </span>
-                <div className="relative flex items-start gap-3">
-                  <CheckCircle2 className="mt-1 h-6 w-6 flex-none text-accent-blue" />
-                  <p className="text-lg font-bold leading-7 text-ink md:text-xl">{item}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section
-        id="contact"
-        className="cta-gradient relative overflow-hidden px-5 py-24 text-ink md:px-10"
-      >
-        <ConvergenceField />
-        <WaveDivider className="absolute bottom-0 left-0 text-footer" />
-
-        <div className="relative mx-auto max-w-5xl text-center">
-          <p className="mb-[clamp(16px,2.5vw,20px)] text-sm font-black tracking-widest text-accent-blue">
-            CONTACT
-          </p>
-
-          <h2 className="mb-[clamp(20px,3vw,28px)] text-3xl font-black tracking-tight text-ink md:text-5xl">
-            <RevealText lines={["Web集客・制作のご相談はこちら"]} className="mx-auto" />
-          </h2>
-
-          <p className="leading-8 text-ink-soft">
-            広告運用、LP制作、HP制作、クリエイティブ制作など、
-            まずはお気軽にご相談ください。岐阜県内はもちろん、全国対応可能です。
-          </p>
-
-          <div className="relative mt-9 inline-flex flex-col items-center sm:flex-row sm:justify-center">
-            <MascotFigure
-              src="/images/mascots/cat-boy-pointing.png"
-              alt="adofyのマスコットキャラクターがCTAボタンを指している"
-              trigger="scroll"
-              delay={0.15}
-              className="h-16 w-auto -rotate-3 drop-shadow-xl sm:mr-[-8px] sm:h-24 md:h-28"
-            />
-            <MagneticButton className="inline-block w-full sm:w-auto" strength={8}>
-              <a
-                href="/contact"
-                className="group relative inline-flex min-h-[62px] w-full items-center justify-center rounded-full bg-accent-blue px-[clamp(28px,5vw,52px)] font-black text-white shadow-xl shadow-blue-600/20 transition duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-2xl hover:shadow-blue-600/30 sm:w-auto"
-              >
-                お問い合わせする
-                <ArrowRight className="ml-2 h-5 w-5 transition group-hover:translate-x-1" />
-              </a>
-            </MagneticButton>
-            <MascotFigure
-              src="/images/mascots/cat-girl-wave.png"
-              alt="手を振るadofyのマスコットキャラクター"
-              trigger="scroll"
-              delay={0.25}
-              wrapperClassName="-scale-x-100 rotate-3 sm:ml-[-8px]"
-              className="h-16 w-auto drop-shadow-xl sm:h-24 md:h-28"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="relative overflow-hidden bg-footer px-5 py-12 text-ink-soft md:px-10">
-        <FooterHorizon />
-
-        <div className="relative mx-auto max-w-7xl">
-          <div className="grid gap-12 text-center md:grid-cols-[1.3fr_0.8fr_0.8fr] md:text-left">
-            <div className="flex flex-col items-center md:items-start">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-border-soft bg-white">
-                  <Sparkles className="h-4 w-4 text-accent-blue" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-ink">adofy</p>
-                  <p className="text-xs text-ink-soft">Creative Marketing Company</p>
-                </div>
-              </div>
-              <p className="mt-5 max-w-xs text-sm leading-7 text-ink-soft">
-                岐阜発・全国対応のITマーケティング企業。
-                成果報酬型広告運用・LP制作・HP制作・クリエイティブ制作を通じて、
-                企業の魅力を引き出し、売上最大化を支援します。
+                <span className="ah-line">
+                  <span>次世代のWebパートナー。</span>
+                </span>
+              </h2>
+              <p className="ah-about__text">
+                {aboutText.split(/(?<=、|。)/).map((w, i) => (
+                  <span key={i} className="ah-word">
+                    {w}
+                  </span>
+                ))}
               </p>
-              <MascotFigure
-                src="/images/mascots/cat-boy-peace-sitting.png"
-                alt="くつろぐadofyのマスコットキャラクター"
-                trigger="scroll"
-                delay={0.2}
-                className="mt-4 h-24 w-auto drop-shadow-lg"
-              />
+              <div className="ah-about__links" data-fade>
+                <Link href="/business">
+                  事業内容・会社概要 <ArrowRight aria-hidden="true" />
+                </Link>
+                <Link href="/profile">
+                  代表プロフィール <ArrowRight aria-hidden="true" />
+                </Link>
+              </div>
             </div>
-
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest text-accent-blue/60">Service</p>
-              <nav className="mt-4 flex flex-col items-center gap-3 text-sm font-medium md:items-start">
-                <a href="#service" className="group relative transition hover:text-accent-blue">
-                  事業内容
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-                </a>
-                <a href="#works" className="group relative transition hover:text-accent-blue">
-                  実績紹介
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-                </a>
-                <a href="#strength" className="group relative transition hover:text-accent-blue">
-                  選ばれる理由
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-                </a>
-              </nav>
-            </div>
-
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest text-accent-blue/60">Company</p>
-              <nav className="mt-4 flex flex-col items-center gap-3 text-sm font-medium md:items-start">
-                <a href="/business" className="group relative transition hover:text-accent-blue">
-                  事業内容・会社概要
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-                </a>
-                <a href="/articles" className="group relative transition hover:text-accent-blue">
-                  ドライバー採用の記事
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-                </a>
-                <a href="/profile" className="group relative transition hover:text-accent-blue">
-                  代表紹介
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-                </a>
-                <a href="/contact" className="group relative transition hover:text-accent-blue">
-                  お問い合わせ
-                  <span className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-accent-blue transition-transform duration-300 group-hover:scale-x-100" />
-                </a>
-              </nav>
+            <div className="ah-about__img">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/adofy/photo-planning.webp" alt="打ち合わせで企画を練る様子" loading="lazy" />
             </div>
           </div>
+        </section>
 
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border-soft pt-6 text-center md:flex-row md:text-left">
-            <p className="text-xs text-ink-soft">© 2026 adofy</p>
-            <a
-              href="#hero"
-              aria-label="ページ上部へ戻る"
-              className="relative flex h-11 w-11 flex-none items-center justify-center rounded-full border border-border-soft bg-white text-accent-blue shadow-soft transition duration-300 hover:-translate-y-0.5 hover:border-border-soft-hover hover:shadow-hover"
-            >
-              <svg
-                ref={backToTopRingRef as React.RefObject<SVGSVGElement>}
-                viewBox="0 0 44 44"
-                aria-hidden="true"
-                focusable="false"
-                className="pointer-events-none absolute inset-0 -rotate-90 text-accent-blue"
-              >
-                <circle
-                  data-progress-ring
-                  cx="22"
-                  cy="22"
-                  r="19"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  opacity="0.5"
-                  vectorEffect="non-scaling-stroke"
-                />
-              </svg>
-              <ArrowUp className="relative h-4 w-4" />
+        {/* ── 数字 ── */}
+        <section className="ah-stats" aria-label="実績の数字">
+          <ul className="ah-wrap ah-stats__list" data-stagger>
+            {STATS.map((s) => (
+              <li key={s.label}>
+                <p className="ah-stats__num">
+                  <b data-count={s.value}>{s.value.toLocaleString("ja-JP")}</b>
+                  <small>{s.unit}</small>
+                </p>
+                <p className="ah-stats__label">{s.label}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="ah-wrap ah-stats__note">※運営者がこれまでに行ってきた支援の実績です。</p>
+        </section>
+
+        {/* ── Service ── */}
+        <section className="ah-sec ah-service" id="service" aria-labelledby="ah-service-title">
+          <div className="ah-wrap">
+            <p className="ah-eyebrow">Service</p>
+            <h2 className="ah-h2 ah-reveal-lines" id="ah-service-title">
+              <span className="ah-line">
+                <span>集客も、採用も。</span>
+              </span>
+              <span className="ah-line">
+                <span>Webでまとめて伴走します。</span>
+              </span>
+            </h2>
+            <ul className="ah-cards" data-stagger>
+              {SERVICES.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <li key={s.title} className="ah-card">
+                    <span className="ah-card__no">{s.no}</span>
+                    <span className="ah-card__icon" aria-hidden="true">
+                      <Icon />
+                    </span>
+                    <h3>{s.title}</h3>
+                    <p>{s.body}</p>
+                    {s.href && (
+                      <a href={s.href} target="_blank" rel="noopener noreferrer" className="ah-card__link">
+                        {s.linkLabel}
+                        <ArrowUpRight aria-hidden="true" />
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        {/* ── Works（PCは横スクロール） ── */}
+        <section className="ah-works" id="works" aria-labelledby="ah-works-title">
+          <div className="ah-works__pin">
+            <div className="ah-wrap ah-works__head">
+              <p className="ah-eyebrow">Works</p>
+              <h2 className="ah-h2 ah-reveal-lines" id="ah-works-title">
+                <span className="ah-line">
+                  <span>数字を追い続けた、</span>
+                </span>
+                <span className="ah-line">
+                  <span>支援の実績。</span>
+                </span>
+              </h2>
+            </div>
+            <ul className="ah-works__track">
+              {WORKS.map((w) => {
+                const inner = (
+                  <>
+                    <div className="ah-work__img">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={w.img} alt={`${w.title}の実績`} loading="lazy" />
+                    </div>
+                    <p className="ah-work__tag">{w.tag}</p>
+                    <h3>{w.title}</h3>
+                    <p className="ah-work__body">{w.body}</p>
+                  </>
+                );
+                return (
+                  <li key={w.title} className="ah-work">
+                    {w.href ? (
+                      <Link href={w.href} className="ah-work__link">
+                        {inner}
+                      </Link>
+                    ) : (
+                      <div className="ah-work__link">{inner}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        {/* ── 強み ── */}
+        <section className="ah-sec ah-strength" aria-labelledby="ah-strength-title">
+          <div className="ah-wrap ah-strength__grid">
+            <div>
+              <p className="ah-eyebrow">Strength</p>
+              <h2 className="ah-h2 ah-reveal-lines" id="ah-strength-title">
+                <span className="ah-line">
+                  <span>adofyが</span>
+                </span>
+                <span className="ah-line">
+                  <span>選ばれる理由。</span>
+                </span>
+              </h2>
+            </div>
+            <ol className="ah-strength__list">
+              <span className="ah-strength__bar" aria-hidden="true" />
+              {STRENGTHS.map((s, i) => (
+                <li key={s.title} data-fade>
+                  <span className="ah-strength__no">0{i + 1}</span>
+                  <h3>{s.title}</h3>
+                  <p>{s.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* ── 記事 ── */}
+        <section className="ah-sec ah-articles" aria-labelledby="ah-articles-title">
+          <div className="ah-wrap">
+            <div className="ah-articles__head">
+              <div>
+                <p className="ah-eyebrow">Articles</p>
+                <h2 className="ah-h2 ah-reveal-lines" id="ah-articles-title">
+                  <span className="ah-line">
+                    <span>ドライバー採用の</span>
+                  </span>
+                  <span className="ah-line">
+                    <span>お役立ち記事。</span>
+                  </span>
+                </h2>
+              </div>
+              <Link href="/articles" className="ah-more" data-fade>
+                記事一覧へ <ArrowRight aria-hidden="true" />
+              </Link>
+            </div>
+            <ul className="ah-articles__list" data-stagger>
+              {ARTICLES.map((a) => (
+                <li key={a.slug}>
+                  <Link href={`/articles/${a.slug}`} className="ah-article">
+                    <span className="ah-article__cat">{a.category}</span>
+                    <h3>{a.title}</h3>
+                    <span className="ah-article__go" aria-hidden="true">
+                      <ArrowRight />
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* ── お問い合わせ ── */}
+        <section className="ah-contact" id="contact" aria-labelledby="ah-contact-title">
+          <div className="ah-contact__bg" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="ah-wrap ah-contact__inner">
+            <p className="ah-eyebrow is-light">Contact</p>
+            <h2 className="ah-h2 is-light ah-reveal-lines" id="ah-contact-title">
+              <span className="ah-line">
+                <span>Web集客・採用の</span>
+              </span>
+              <span className="ah-line">
+                <span>ご相談はこちら。</span>
+              </span>
+            </h2>
+            <p className="ah-contact__lead" data-fade>
+              広告運用、LP・HP制作、採用支援など、まずはお気軽にご相談ください。岐阜県内はもちろん、全国対応です。
+            </p>
+            <a href="/contact" className="ah-btn ah-btn--light" data-magnetic data-fade>
+              <span>無料で相談する</span>
+              <ArrowRight aria-hidden="true" />
             </a>
           </div>
+        </section>
+      </main>
+
+      {/* ── フッター ── */}
+      <footer className="ah-footer">
+        <div className="ah-wrap ah-footer__grid">
+          <div>
+            <p className="ah-footer__brand">adofy</p>
+            <p className="ah-footer__desc">岐阜発・全国対応のWebマーケティング会社。広告運用・LP制作・HP制作・クリエイティブ制作・採用支援を行っています。</p>
+          </div>
+          <nav aria-label="フッターメニュー">
+            <a href="#service">サービス</a>
+            <a href="#works">実績</a>
+            <Link href="/business">事業内容・会社概要</Link>
+            <Link href="/articles">ドライバー採用の記事</Link>
+            <Link href="/profile">代表プロフィール</Link>
+            <a href="/contact">お問い合わせ</a>
+          </nav>
         </div>
+        <p className="ah-wrap ah-footer__copy">© 2026 adofy</p>
       </footer>
-    </main>
+    </div>
   );
 }

@@ -6,12 +6,12 @@
 
 .ds-lp {
   --ds-ok: #12805c;
-  /* 最新のFV（深緑・金・生成り）に合わせ、見出しの濃紺を深緑に置き換える */
-  --dt-navy: #143d2e;
-  --ds-gold: #b8862b;
-  --ds-gold-soft: #fbf5e6;
-  --ds-cream: #fefdf6;
-  --ds-green-soft: #eef5f0;
+  /* 配色は採用レスキューLP（濃紺・青・黄のCTA）に合わせる */
+  --dt-navy: #0a1f4e;
+  --ds-gold: #1659e0;
+  --ds-gold-soft: #eef4ff;
+  --ds-cream: #f5f8fc;
+  --ds-green-soft: #eef4ff;
 }
 
 /* ── CTA ──────────────────────────────────────────────── */
@@ -1507,15 +1507,6 @@ select.ds-input {
   }
 }
 
-/* ── イラストの配色：kit の青系を、このLPの深緑系に置き換える ─────────── */
-.ds-lp svg [fill="#1659e0"] { fill: #1f6b4f; }
-.ds-lp svg [stroke="#1659e0"] { stroke: #1f6b4f; }
-.ds-lp svg [fill="#dce8ff"] { fill: #d6eadd; }
-.ds-lp svg [stroke="#dce8ff"] { stroke: #d6eadd; }
-.ds-lp svg [fill="#eef4ff"] { fill: #f1f6ef; }
-.ds-lp svg [fill="#c9d8f5"] { fill: #bcd6c5; }
-.ds-lp svg [fill="#0a1f4e"] { fill: #143d2e; }
-.ds-lp svg [stroke="#0a1f4e"] { stroke: #143d2e; }
 
 /* ── 1. 概要の3段階（イラスト付き） ─────────────────────── */
 .ds-steps3 {
@@ -1839,7 +1830,7 @@ select.ds-input {
 
 .ds-flow3__lanes .is-us dt {
   background: var(--ds-green-soft);
-  color: #1f6b4f;
+  color: var(--ds-gold);
 }
 
 @media (min-width: 900px) {
@@ -1899,7 +1890,7 @@ select.ds-input {
   border: 3px solid #cfe0d5;
   border-radius: 50%;
   background: #fff;
-  color: #1f6b4f;
+  color: var(--ds-gold);
 }
 
 .ds-feeline__icon svg {
@@ -1920,7 +1911,7 @@ select.ds-input {
 }
 
 .ds-feeline__fee {
-  color: #1f6b4f;
+  color: var(--ds-gold);
   font-size: 22px;
   font-weight: 900;
   line-height: 1.1;

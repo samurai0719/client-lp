@@ -7,6 +7,7 @@ import { SCOUT_PATHS, SERVICE_NAME } from "@/components/driver-scout/content";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
 import { STATUS_LABEL, STATUS_MESSAGE, type RequestStatus } from "@/lib/driverScout/requests";
+import "../../scout-saiyo.css";
 
 /**
  * 企業向けの面接希望の受付状況（公開URL https://scout.adofy-site.com/requests/<token> ）。

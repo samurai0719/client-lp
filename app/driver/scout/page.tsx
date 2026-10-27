@@ -5,6 +5,7 @@ import ScoutShell from "@/components/driver-scout/Shell";
 import ScrollMotion from "@/components/driver-scout/ScrollMotion";
 // 演出の CSS は共通スタイル（Shell が読み込む）のあとに読む
 import "./scout-motion.css";
+import "./scout-saiyo.css";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { buildJsonLd, DESCRIPTION, OG_IMAGE, SITE_URL, TITLE } from "@/components/driver-scout/seo";
 import { getWaitingDriverCount } from "@/lib/driverCandidates/count";
