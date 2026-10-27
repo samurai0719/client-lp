@@ -42,7 +42,7 @@ export default function ScoutShell({
 }) {
   return (
     <WaitingCountProvider count={waiting}>
-      <div className={`dt-lp ds-lp ${gothic.variable}`}>
+      <div className={`dt-lp ds-lp${home ? " ds-home" : ""} ${gothic.variable}`}>
         <PageViewTracker event={event} />
         <Header home={home} cta={headerCta} />
         <main>{children}</main>
