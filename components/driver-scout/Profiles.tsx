@@ -1,6 +1,7 @@
 import { Headset, Lock, UserRound } from "lucide-react";
 import type { AnonymousProfile } from "@/lib/driverCandidates/profiles";
-import { HIDDEN_FIELDS, SAMPLE_PROFILE, SCOUT_PATHS } from "./content";
+import { HIDDEN_FIELDS, SAMPLE_PROFILE } from "./content";
+import { Breakable } from "../driver-company/lp/ui";
 import { DiscloseButton } from "./ui";
 
 /**
@@ -61,7 +62,7 @@ export function ProfileCard({ p }: { p: AnonymousProfile }) {
         </p>
         <p className="ds-disclose__note">
           <Headset aria-hidden="true" />
-          ドラテクが連絡し、面接の希望を確認します
+          <Breakable text="ドラテクが|連絡し、|面接の|希望を|確認します" />
         </p>
         <DiscloseButton no={p.no} />
       </div>
@@ -71,7 +72,8 @@ export function ProfileCard({ p }: { p: AnonymousProfile }) {
 
 /**
  * 公開中のプロフィールが0件のときに出す、架空の表示イメージ。
- * 実在の登録者と誤認されないよう「表示イメージ（架空）」と明記し、番号も伏せ、面接希望のボタンは置かない。
+ * 実在の登録者と誤認されないよう「表示イメージ（架空）」と明記し、番号も伏せる。
+ * ボタンは本物のカードと同じ「この方と面接を希望する」。押すと、表示例のため依頼できない旨と会社の無料登録フォームを出す。
  */
 export function SampleProfileCard() {
   return (
@@ -106,11 +108,13 @@ export function SampleProfileCard() {
         </dl>
         <p className="ds-disclose__lock">
           <Lock aria-hidden="true" />
-          実際のプロフィールには「この方と面接を希望する」ボタンが表示され、ドラテクが連絡し、面接の希望を確認します。
+          氏名・連絡先は表示されません。本人の同意なく企業に開示することはありません。
         </p>
-        <a href={SCOUT_PATHS.register} className="ds-form__back">
-          先に無料登録（企業登録）をする
-        </a>
+        <p className="ds-disclose__note">
+          <Headset aria-hidden="true" />
+          <Breakable text="ドラテクが|連絡し、|面接の|希望を|確認します" />
+        </p>
+        <DiscloseButton />
       </div>
     </article>
   );

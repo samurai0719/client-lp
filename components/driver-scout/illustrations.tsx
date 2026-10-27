@@ -88,7 +88,7 @@ export function SceneLook(props: IllustrationProps) {
   );
 }
 
-/** ② 会ってみたい人を選ぶ：一覧の1人に印を付け、社長が親指を立てる */
+/** ② 面接したい人を選ぶ：一覧の1人に印を付け、社長が親指を立てる */
 export function SceneChoose(props: IllustrationProps) {
   return (
     <Svg viewBox="0 0 240 170" {...props}>
@@ -106,7 +106,7 @@ export function SceneChoose(props: IllustrationProps) {
       <CheckBadge x={214} y={84} s={1.1} />
       <Bubble x={160} y={28} w={104} h={28} tail="bl">
         <Txt x={0} y={4} size={10}>
-          この人に会いたい
+          この人と面接したい
         </Txt>
       </Bubble>
     </Svg>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
+import ApplyForm from "./ApplyForm";
 import InterviewRequestForm from "./InterviewRequestForm";
 import { OPEN_INTERVIEW_EVENT } from "./events";
 
@@ -10,6 +11,7 @@ import { OPEN_INTERVIEW_EVENT } from "./events";
  * 面接希望のライトボックス（匿名プロフィール一覧に1つだけ置く）。
  * 各カードのボタンが候補者番号つきのイベントを出し、ここで企業登録フォームを開く。
  * フォームは InterviewRequestForm（会社情報・仕事内容・確認したいこと・面接できる日時を送る）。
+ * 表示例のカードから開いたとき（候補者番号なし）は、依頼できない旨を伝え、会社の無料登録フォーム（ApplyForm）を出す。
  * ネイティブの <dialog> を使うので、Esc キー・フォーカスの閉じ込めはブラウザが行う。
  */
 export default function InterviewModal() {
@@ -20,7 +22,7 @@ export default function InterviewModal() {
 
   useEffect(() => {
     const onOpen = (e: Event) => {
-      const no = (e as CustomEvent<string>).detail;
+      const no = (e as CustomEvent<string | null>).detail ?? null;
       setCandidate(no);
       setFormKey((k) => k + 1);
       const dialog = ref.current;
@@ -48,17 +50,30 @@ export default function InterviewModal() {
     >
       <div className="ds-modal__head">
         <p className="ds-modal__title" id="ds-modal-title">
-          {candidate ? `候補者 No.${candidate} との面接を希望する` : "面接を希望する"}
+          {candidate ? `候補者 No.${candidate} との面接を希望する` : "この方と面接を希望する（表示例）"}
         </p>
         <button type="button" className="ds-modal__close" onClick={close} aria-label="閉じる">
           <X aria-hidden="true" />
         </button>
       </div>
       <div className="ds-modal__body">
-        <p className="ds-modal__lead">
-          ドラテクが求職者に連絡し、面接の希望と御社が確認したい内容を聞いたうえで、面接の日程を調整します。はじめての企業さまは、ご契約の前に担当者がサービス内容と料金をご説明します。
-        </p>
-        {candidate && <InterviewRequestForm key={formKey} candidateNo={candidate} />}
+        {candidate ? (
+          <>
+            <p className="ds-modal__lead">
+              ドラテクが求職者に連絡し、面接の希望と御社が確認したい内容を聞いたうえで、面接の日程を調整します。はじめての企業様は、ご契約の前に担当者がサービス内容と料金をご説明します。
+            </p>
+            <InterviewRequestForm key={formKey} candidateNo={candidate} />
+          </>
+        ) : (
+          <>
+            <p className="ds-modal__lead">
+              このカードは表示例（架空の求職者）のため、この方への面接のご依頼はお受けできません。
+              <br />
+              先に会社情報を無料でご登録いただけます。実際の求職者が公開されたら、その方のカードの「この方と面接を希望する」からご依頼ください。
+            </p>
+            <ApplyForm key={formKey} />
+          </>
+        )}
       </div>
     </dialog>
   );

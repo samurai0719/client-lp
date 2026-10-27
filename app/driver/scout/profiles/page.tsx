@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SectionHead } from "@/components/driver-company/lp/ui";
+import { Breakable, SectionHead } from "@/components/driver-company/lp/ui";
 import InterviewModal from "@/components/driver-scout/InterviewModal";
 import { ProfileCard, SampleProfileCard } from "@/components/driver-scout/Profiles";
 import ScoutShell from "@/components/driver-scout/Shell";
@@ -16,7 +16,7 @@ import { listAnonymousProfiles } from "@/lib/driverCandidates/profiles";
 
 const TITLE = `ドライバー求職者の匿名プロフィール一覧｜愛知の運送会社向け｜${SERVICE_NAME}`;
 const DESCRIPTION =
-  "愛知県で働きたいトラックドライバー希望者の匿名プロフィール一覧。年齢（年代）・免許・運転経験・希望勤務地・希望年収を登録なしで確認でき、会いたい人を選ぶと、ドラテクが連絡と面接の日程調整を行います。";
+  "愛知県で働きたいトラックドライバー希望者の匿名プロフィール一覧。年齢（年代）・免許・運転経験・希望勤務地・希望年収を登録なしで確認でき、面接したい人を選ぶと、ドラテクが連絡と面接の日程調整を行います。";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -50,8 +50,8 @@ export default async function ScoutProfilesPage() {
           <SectionHead
             eyebrow="PROFILES"
             id="ds-profiles-title"
-            title="ドライバー求職者の匿名プロフィール"
-            lead="個人を特定できる情報は表示していません。会いたい方がいれば「この方と面接を希望する」から無料登録できます。ご契約後、ドラテクが求職者に連絡し、面接の日程を調整します。"
+            title={<Breakable text="ドライバー求職者の|匿名プロフィール" />}
+            lead="個人を特定できる情報は表示していません。面接したい方がいれば「この方と面接を希望する」から無料登録できます。ご契約後、ドラテクが求職者に連絡し、面接の日程を調整します。"
           />
           <div className="ds-profiles__count">
             <WaitingLine />

@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: SERVICE_NAME,
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ ...OG_IMAGE, alt: "仕事を断らない採用へ。人が残り続けるドライバー採用。運営者の実績：採用支援実績100社以上・累計応募者数2,000人以上" }],
+    images: [{ ...OG_IMAGE, alt: "人が残り続けるドライバー採用。仕事を断らない採用へ。運営者の実績：採用支援実績100社以上・累計応募者数2,000人以上" }],
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: [OG_IMAGE.url] },
   formatDetection: { telephone: false },

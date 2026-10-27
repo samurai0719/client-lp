@@ -13,7 +13,7 @@ export const TITLE = `愛知の運送会社向けドライバー採用サービ�
 
 /** 検索結果の説明文（120文字前後） */
 export const DESCRIPTION =
-  "愛知県（名古屋・尾張・三河）の運送会社向けドライバー採用サービス。トラックドライバー希望者の匿名プロフィールを年齢・免許・経験・希望勤務地を登録なしで確認でき、会いたい人を選ぶと、ドラテクが連絡と面接の日程調整を行います。初期費用・月額0円、採用決定時のみ想定年収の10％。";
+  "愛知県（名古屋・尾張・三河）の運送会社向けドライバー採用サービス。トラックドライバー希望者の匿名プロフィールを年齢・免許・経験・希望勤務地を登録なしで確認でき、面接したい人を選ぶと、ドラテクが連絡と面接の日程調整を行います。初期費用・月額0円、採用決定時のみ想定年収の10％。";
 
 /** "**強調**" 記法を外す */
 const plain = (s: string) => s.replace(/\*\*/g, "");
@@ -64,7 +64,7 @@ export function buildJsonLd() {
         areaServed: { "@type": "State", name: "愛知県" },
         audience: { "@type": "BusinessAudience", audienceType: "運送会社・物流会社の経営者・採用担当者" },
         description:
-          "トラックドライバー希望者の匿名プロフィールを登録なしで閲覧でき、会いたい人を選ぶと、ドラテクが求職者への連絡・企業指定の確認事項の聞き取り・面接の日程調整を行う採用サービス。面接・採用の判断は企業が行います。",
+          "トラックドライバー希望者の匿名プロフィールを登録なしで閲覧でき、面接したい人を選ぶと、ドラテクが求職者への連絡・企業指定の確認事項の聞き取り・面接の日程調整を行う採用サービス。面接・採用の判断は企業が行います。",
         offers: {
           "@type": "Offer",
           name: "初期費用0円・月額0円・採用決定時のみ成功報酬",
@@ -77,7 +77,7 @@ export function buildJsonLd() {
         "@type": "HowTo",
         "@id": `${SITE_URL}/#flow`,
         name: "利用開始までの流れ",
-        step: FLOW.map((f, i) => ({ "@type": "HowToStep", position: i + 1, name: f.title, text: f.body })),
+        step: FLOW.map((f, i) => ({ "@type": "HowToStep", position: i + 1, name: f.title.replaceAll("|", ""), text: f.body })),
       },
       {
         "@type": "FAQPage",

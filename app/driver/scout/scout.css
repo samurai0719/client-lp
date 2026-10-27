@@ -136,8 +136,8 @@
 .ds-hero {
   --ds-hero-ink: #12302a;
   --ds-hero-accent: #e8542e;
-  /* 画像の下端の地色（生成り）に合わせ、画像の外側とCTA部分を同じ色でつなぐ */
-  background: #fefdf6;
+  /* 画像の下端の地色（淡い水色）に合わせ、画像の外側とCTA部分を同じ色でつなぐ */
+  background: #eef9fd;
 }
 
 .ds-hero__img {
@@ -2794,4 +2794,11 @@ td.is-ours > .ds-cmp__big {
   color: var(--dt-mute);
   font-size: 13px;
   font-weight: 700;
+}
+
+/* 見出しは文節（<wbr> を入れた位置）でだけ改行し、言葉の途中で折り返さない。
+   1つの文節が1行に入りきらないときだけ、例外的に途中で折り返す。文字の大きさは変えない */
+.ds-lp :is(h1, h2, h3, .dt-head__title, .ds-ctabox__reason, .ds-flow3__title, .ds-modal__title, .ds-final__title, .ds-disclose__note) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }

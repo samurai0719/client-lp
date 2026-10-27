@@ -111,8 +111,9 @@ export function StickyCta() {
 /**
  * 匿名プロフィールの「この方と面接を希望する」ボタン。
  * 押すと面接希望のライトボックス（InterviewModal）が開く。JSが動かない環境では、リンク先の /register へ進む。
+ * 表示例のカード（no なし）でも同じボタンを置き、押すと「表示例のため依頼できない」旨と会社の無料登録フォームを出す。
  */
-export function DiscloseButton({ no }: { no: string }) {
+export function DiscloseButton({ no }: { no?: string }) {
   return (
     <a
       href={registerHref(no)}
@@ -120,8 +121,9 @@ export function DiscloseButton({ no }: { no: string }) {
       className="dt-btn dt-btn--lg ds-disclose__btn"
       onClick={(e) => {
         e.preventDefault();
-        trackCompany("company_disclose_click", { candidate: no });
-        window.dispatchEvent(new CustomEvent(OPEN_INTERVIEW_EVENT, { detail: no }));
+        trackCompany("company_disclose_click", { candidate: no ?? "sample" });
+        // 表示例（no なし）のときは、候補者番号なしでライトボックスを開く（会社の無料登録フォームになる）
+        window.dispatchEvent(new CustomEvent(OPEN_INTERVIEW_EVENT, { detail: no ?? null }));
       }}
     >
       <span className="dt-btn__body">

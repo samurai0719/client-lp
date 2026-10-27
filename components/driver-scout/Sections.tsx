@@ -24,11 +24,11 @@ import {
   UserRound,
   type LucideIcon,
 } from "lucide-react";
-import type { ComponentType, ReactNode } from "react";
+import { Fragment, type ComponentType, type ReactNode } from "react";
 import type { IllustrationProps } from "../driver-company/lp/illustrations/kit";
 import { OPERATOR, PATHS, SHOW_NOTICE_NUMBER } from "@/config/driver-company";
 import { OwnerQuestion } from "../driver-company/lp/illustrations/scenes";
-import { Rich, SectionHead } from "../driver-company/lp/ui";
+import { Breakable, Rich, SectionHead } from "../driver-company/lp/ui";
 import {
   ACHIEVEMENTS,
   ACHIEVEMENTS_NOTE,
@@ -80,7 +80,7 @@ import { ScoutCta } from "./ui";
 function CtaBlock({ location, reason }: { location: string; reason: ReactNode }) {
   return (
     <div className="ds-ctabox">
-      <p className="ds-ctabox__reason">{reason}</p>
+      <p className="ds-ctabox__reason">{typeof reason === "string" ? <Breakable text={reason} /> : reason}</p>
       <ScoutCta location={location} />
     </div>
   );
@@ -114,6 +114,20 @@ function SampleCard({ highlight = [], compact = false }: { highlight?: readonly 
   );
 }
 
+/** 見出し：「\n」で必ず改行し、「|」の位置でだけ折り返す */
+function Heading({ text }: { text: string }) {
+  return (
+    <>
+      {text.split("\n").map((line, i) => (
+        <Fragment key={line}>
+          {i > 0 && <br />}
+          <Breakable text={line} />
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 /* ═══════════════════════ 1. ファーストビュー ═══════════════════════ */
 
 /**
@@ -127,7 +141,7 @@ export function Hero() {
   return (
     <section className="ds-hero" id="top" aria-labelledby="ds-hero-title">
       <h1 className="dt-visually-hidden" id="ds-hero-title">
-        仕事を断らない採用へ。人が残り続けるドライバー採用。愛知県の運送会社さま向け{SERVICE_KIND}。
+        人が残り続けるドライバー採用。仕事を断らない採用へ。愛知県の運送会社さま向け{SERVICE_KIND}。
       </h1>
       <picture>
         <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1672} />
@@ -172,7 +186,7 @@ export function Intro() {
   return (
     <section className="dt-section ds-intro" aria-labelledby="ds-intro-title">
       <div className="dt-container">
-        <SectionHead eyebrow="ドラテクとは" id="ds-intro-title" title={INTRO.title} />
+        <SectionHead eyebrow="ドラテクとは" id="ds-intro-title" title={<Heading text={INTRO.title} />} />
         <div className="ds-intro__body">
           {INTRO.body.map((t) => (
             <p key={t}>{t}</p>
@@ -213,7 +227,7 @@ export function Problems() {
   return (
     <section className="dt-section ds-problems2" aria-labelledby="ds-problems-title">
       <div className="dt-container">
-        <SectionHead eyebrow="こんなお悩み" id="ds-problems-title" title="人が足りないことで、こんな悩みはありませんか？" />
+        <SectionHead eyebrow="こんなお悩み" id="ds-problems-title" title={<Breakable text="人が|足りない|ことで、|こんな|悩みは|ありませんか？" />} />
         <ul className="ds-pgrid">
           {PROBLEMS.map((p) => {
             const Art = PROBLEM_ARTS[p.icon];
@@ -240,13 +254,15 @@ export function Reasons() {
   return (
     <section className="dt-section ds-reasons" aria-labelledby="ds-reasons-title">
       <div className="dt-container">
-        <SectionHead eyebrow="ドラテクを使う理由" id="ds-reasons-title" title="応募を待つだけでなく、会いたい人を選べます。" />
+        <SectionHead eyebrow="ドラテクを使う理由" id="ds-reasons-title" title={<Breakable text="応募を|待つだけでなく、|面接したい|人を|選べます。" />} />
         <div className="ds-reasons__list">
           {REASONS.map((r, i) => (
             <article key={r.title} className={`ds-reason${i % 2 ? " is-rev" : ""}`}>
               <div className="ds-reason__text">
                 <p className="ds-reason__no">理由 {["①", "②"][i]}</p>
-                <h3>{r.title}</h3>
+                <h3>
+                  <Breakable text={r.title} />
+                </h3>
                 <p>{r.body}</p>
                 <p className="ds-reason__ex">{r.example}</p>
               </div>
@@ -260,7 +276,9 @@ export function Reasons() {
           <article className="ds-reason ds-reason--table">
             <div className="ds-reason__text">
               <p className="ds-reason__no">理由 ③</p>
-              <h3>まずは無料で、どんな人がいるか見られる</h3>
+              <h3>
+                <Breakable text="まずは|無料で、|どんな|人が|いるか|見られる" />
+              </h3>
               <p>候補者の情報は、登録なしで見られます。会社情報の登録が必要になるのは、面接を希望するときです。</p>
             </div>
             <div className="ds-free" role="table" aria-label="無料でできることと、必要な手続き">
@@ -290,7 +308,7 @@ export function Visible() {
   return (
     <section className="dt-section ds-visible2" id="profile" aria-labelledby="ds-visible-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="見られる情報" id="ds-visible-title" title="まずは、こんな情報を確認できます。" />
+        <SectionHead eyebrow="見られる情報" id="ds-visible-title" title={<Breakable text="まずは、|こんな|情報を|確認できます。" />} />
         <div className="ds-visible2__grid">
           <SampleCard />
           <div className="ds-visible2__side">
@@ -322,7 +340,7 @@ export function Delegate() {
   return (
     <section className="dt-section ds-delegate" id="delegate" aria-labelledby="ds-delegate-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="連絡と日程調整" id="ds-delegate-title" title={DELEGATE.title} />
+        <SectionHead eyebrow="連絡と日程調整" id="ds-delegate-title" title={<Breakable text={DELEGATE.title} />} />
         <div className="ds-intro__body">
           {DELEGATE.body.map((t) => (
             <p key={t}>{t}</p>
@@ -335,8 +353,8 @@ export function Delegate() {
             <span className="ds-relay__icon" aria-hidden="true">
               <Building2 />
             </span>
-            <b>企業さま</b>
-            <span>会いたい人と確認したい内容を伝える</span>
+            <b>企業様</b>
+            <span>面接したい人と確認したい内容を伝える</span>
           </li>
           <li className="is-us">
             <span className="ds-relay__icon" aria-hidden="true">
@@ -358,7 +376,7 @@ export function Delegate() {
           <div className="ds-split__box is-company">
             <p className="ds-split__who">
               <Building2 aria-hidden="true" />
-              企業さまがすること
+              企業様がすること
             </p>
             <ul className="ds-checklist">
               {DELEGATE.company.map((t) => (
@@ -408,7 +426,7 @@ export function Retention() {
   return (
     <section className="dt-section ds-retention" aria-labelledby="ds-retention-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="人が残る採用のために" id="ds-retention-title" title={RETENTION.title} />
+        <SectionHead eyebrow="人が残る採用のために" id="ds-retention-title" title={<Breakable text={RETENTION.title} />} />
         <div className="ds-retention__top">
           <SceneInterview className="ds-retention__art" />
           <div className="ds-intro__body">
@@ -466,7 +484,7 @@ export function Flow() {
   return (
     <section className="dt-section ds-flow2" id="flow" aria-labelledby="ds-flow-title">
       <div className="dt-container">
-        <SectionHead eyebrow="利用の流れ" id="ds-flow-title" title="見るところから、採用までの流れ。" />
+        <SectionHead eyebrow="利用の流れ" id="ds-flow-title" title={<Breakable text="見るところから、|採用までの|流れ。" />} />
         <p className="ds-flownote">
           <CircleCheck aria-hidden="true" />
           {FLOW_NOTE}
@@ -482,7 +500,7 @@ export function Flow() {
                 <div className="ds-flow3__main">
                   <p className="ds-flow3__title">
                     <span>{i + 1}</span>
-                    {f.title}
+                    <Breakable text={f.title} />
                     {f.tag && <em>{f.tag}</em>}
                   </p>
                   <dl className="ds-flow3__lanes">
@@ -524,7 +542,7 @@ export function Compare() {
   return (
     <section className="dt-section ds-compare" id="compare" aria-labelledby="ds-compare-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="採用費用の比較" id="ds-compare-title" title={COMPARE.title} lead={COMPARE.lead} />
+        <SectionHead eyebrow="採用費用の比較" id="ds-compare-title" title={<Breakable text={COMPARE.title} />} lead={COMPARE.lead} />
 
         <table className="ds-cmp">
           <caption className="dt-visually-hidden">中途採用1人あたりの平均採用コスト（調査値）と、ドラテクの料金例</caption>
@@ -585,7 +603,7 @@ export function Pricing() {
   return (
     <section className="dt-section ds-pricing2" id="pricing" aria-labelledby="ds-pricing-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="料金" id="ds-pricing-title" title="見るのは無料。費用がかかる条件も、先に確認できます。" />
+        <SectionHead eyebrow="料金" id="ds-pricing-title" title={<Breakable text="見るのは無料。|費用がかかる条件も、|先に確認できます。" />} />
 
         <ol className="ds-feeline" aria-label="費用がかかるタイミング">
           {FEE_STEPS.map((f, i) => {
@@ -634,7 +652,7 @@ export function AboutResults() {
   return (
     <section className="dt-section ds-results" aria-labelledby="ds-results-title">
       <div className="dt-container dt-container--narrow">
-        <SectionHead eyebrow="実績について" id="ds-results-title" title="ページ上部の実績は、運営者のこれまでの採用支援の実績です。" />
+        <SectionHead eyebrow="実績について" id="ds-results-title" title={<Breakable text="ページ上部の|実績は、|運営者の|これまでの|採用支援の|実績です。" />} />
         <div className="ds-rtable">
           {ACHIEVEMENT_ROWS.map((r) => (
             <div key={r.label} className="ds-rtable__row">
@@ -645,7 +663,9 @@ export function AboutResults() {
           ))}
         </div>
         <div className="ds-ads">
-          <h3 className="ds-ads__title">{AD_VIDEOS.title}</h3>
+          <h3 className="ds-ads__title">
+            <Breakable text={AD_VIDEOS.title} />
+          </h3>
           <p className="ds-ads__lead">{AD_VIDEOS.lead}</p>
           <ul className="ds-ads__list" aria-label="ドライバー求人の動画広告の例">
             {AD_VIDEOS.items.map((v) => (
@@ -710,7 +730,7 @@ export function FinalCta() {
     <section className="dt-section ds-final" aria-labelledby="ds-final-title">
       <div className="dt-container dt-container--narrow">
         <h2 className="ds-final__title" id="ds-final-title">
-          {FINAL_CTA.title}
+          <Breakable text={FINAL_CTA.title} />
         </h2>
         <p className="ds-final__body">{FINAL_CTA.body}</p>
         <ScoutCta location="final" />
