@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: a.title,
     description: a.description,
     alternates: { canonical: path },
-    openGraph: { type: "article", locale: CORP_SITE.locale, siteName: CORP_SITE.name, title: a.title, description: a.description, url: `${CORP_SITE.url}${path}`, publishedTime: a.date },
+    openGraph: { images: [a.image], type: "article", locale: CORP_SITE.locale, siteName: CORP_SITE.name, title: a.title, description: a.description, url: `${CORP_SITE.url}${path}`, publishedTime: a.date },
     robots: { index: true, follow: true },
   };
 }
@@ -59,7 +59,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               <span className="ml-3 font-normal text-ink-soft">{a.date.replaceAll("-", ".")}</span>
             </p>
             <h1 className="mt-3 text-2xl font-black leading-snug tracking-tight text-ink md:text-4xl">{a.title}</h1>
-            <p className="mt-3 text-sm text-ink-soft">文：{COMPANY.name} 代表 {COMPANY.representative}</p>
+            <p className="mt-3 text-sm text-ink-soft">
+              文：{COMPANY.name} 代表 {COMPANY.representative}・約{a.minutes}分で読めます
+            </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={a.image} alt="" className="mt-6 aspect-video w-full rounded-3xl object-cover shadow-soft" />
 
             <div className="mt-8 rounded-2xl border border-border-soft bg-mist-blue p-5">
               <p className="font-black text-ink">この記事のポイント</p>
@@ -77,6 +81,41 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               {a.blocks.map((b, i) => {
                 if (b.type === "h2") return <h2 key={i} className="pt-6 text-xl font-black text-ink md:text-2xl">{b.text}</h2>;
                 if (b.type === "p") return <p key={i} className="text-base leading-8 text-ink md:text-[17px]">{b.text}</p>;
+                if (b.type === "h3") return <h3 key={i} className="pt-2 text-lg font-black text-ink md:text-xl">{b.text}</h3>;
+                if (b.type === "example")
+                  return (
+                    <div key={i} className="rounded-2xl border border-border-soft bg-mist-blue p-5">
+                      <p className="text-sm font-black text-accent-blue">{b.title}</p>
+                      <div className="mt-2 space-y-1 text-base leading-7 text-ink">
+                        {b.lines.map((l) => (
+                          <p key={l}>{l}</p>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                if (b.type === "table")
+                  return (
+                    <div key={i} className="overflow-hidden rounded-2xl border border-border-soft bg-white">
+                      <table className="w-full text-left text-[15px] leading-7">
+                        <thead className="bg-ink text-white">
+                          <tr>
+                            {b.rows[0].map((c, j) => (
+                              <th key={j} className="px-4 py-2 font-bold">{c}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {b.rows.slice(1).map((r, k) => (
+                            <tr key={k} className="border-t border-border-soft">
+                              {r.map((c, j) => (
+                                <td key={j} className={`px-4 py-3 align-top text-ink ${j === 0 ? "font-bold" : ""}`}>{c}</td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
                 if (b.type === "list")
                   return (
                     <ul key={i} className="list-disc space-y-1 pl-6 text-base leading-8 text-ink">

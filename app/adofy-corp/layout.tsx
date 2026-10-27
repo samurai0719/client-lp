@@ -3,6 +3,7 @@ import "./adofy-corp.css";
 
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import LpInsightTracker, { ADOFY_CORP_PROJECT_ID } from "@/components/analytics/LpInsightTracker";
+import SiteHeader from "@/components/adofy-corp/chrome/SiteHeader";
 
 export const metadata: Metadata = {
   title: {
@@ -20,6 +21,7 @@ export default function AdofyCorpLayout({ children }: { children: React.ReactNod
       {/* コーポレートサイト配下は全ページ共通で1回だけ読み込む（重複設置しない） */}
       <AdofyMetaPixel />
       <LpInsightTracker projectId={ADOFY_CORP_PROJECT_ID} />
+      <SiteHeader />
       {children}
     </div>
   );

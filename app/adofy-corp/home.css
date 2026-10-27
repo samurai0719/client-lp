@@ -215,23 +215,6 @@
   }
 }
 
-.ah-menu-btn {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border: 0;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--ah-ink);
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
-}
-
-@media (min-width: 1024px) {
-  .ah-menu-btn {
-    display: none;
-  }
-}
 
 .ah-drawer {
   position: fixed;
@@ -259,31 +242,6 @@
   text-align: center;
 }
 
-.ah-drawer a {
-  color: var(--ah-ink);
-  font-size: 26px;
-  font-weight: 900;
-  text-decoration: none;
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.5s ease,
-    transform 0.6s var(--ah-ease);
-}
-
-.ah-drawer.is-open a {
-  opacity: 1;
-  transform: none;
-}
-
-.ah-drawer__cta {
-  margin-top: 8px;
-  padding: 14px 28px;
-  border-radius: 999px;
-  background: var(--ah-blue);
-  color: #fff !important;
-  font-size: 18px !important;
-}
 
 @media (min-width: 1024px) {
   .ah-drawer {
@@ -1289,5 +1247,306 @@
   .ah *::before,
   .ah *::after {
     animation: none !important;
+  }
+}
+
+/* ── 共通ヘッダーの外枠（全ページ） ── */
+.ah-chrome {
+  position: static;
+  overflow: visible;
+  background: transparent;
+}
+
+.ah-header-space {
+  height: 68px;
+}
+
+@media (min-width: 900px) {
+  .ah-header-space {
+    height: 76px;
+  }
+}
+
+/* ── ハンバーガーメニュー（スマホ・タブレット） ── */
+.ah-burger {
+  position: relative;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--ah-ink);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
+}
+
+.ah-burger span {
+  position: absolute;
+  left: 13px;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: #fff;
+  transition:
+    transform 0.4s var(--ah-ease),
+    opacity 0.3s ease,
+    top 0.4s var(--ah-ease);
+}
+
+.ah-burger span:nth-child(1) {
+  top: 16px;
+}
+
+.ah-burger span:nth-child(2) {
+  top: 22px;
+}
+
+.ah-burger span:nth-child(3) {
+  top: 28px;
+}
+
+.ah-burger.is-open span:nth-child(1) {
+  top: 22px;
+  transform: rotate(45deg);
+}
+
+.ah-burger.is-open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.ah-burger.is-open span:nth-child(3) {
+  top: 22px;
+  transform: rotate(-45deg);
+}
+
+@media (min-width: 1024px) {
+  .ah-burger {
+    display: none;
+  }
+}
+
+/* 全画面のメニュー：右上から円が広がって開く */
+.ah-drawer {
+  z-index: 45; /* ヘッダー（50）の下。ヘッダーとハンバーガーは開いている間も押せる */
+  place-items: center;
+  padding-top: 70px;
+  background: #0b1120;
+  backdrop-filter: none;
+  clip-path: circle(0% at calc(100% - 43px) 43px);
+  opacity: 1;
+  transition:
+    clip-path 0.7s var(--ah-ease),
+    visibility 0.7s;
+}
+
+.ah-drawer.is-open {
+  clip-path: circle(150% at calc(100% - 43px) 43px);
+}
+
+.ah-drawer nav {
+  display: grid;
+  gap: 8px;
+  width: min(100% - 48px, 420px);
+  text-align: left;
+}
+
+.ah-drawer nav > a {
+  display: grid;
+  gap: 2px;
+  padding: 14px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s var(--ah-ease),
+    color 0.3s ease;
+}
+
+.ah-drawer.is-open nav > a {
+  opacity: 1;
+  transform: none;
+}
+
+.ah-drawer__en {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.ah-drawer__ja {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ah-drawer nav > a:hover .ah-drawer__en {
+  color: #60a5fa;
+}
+
+.ah-drawer nav > a.ah-drawer__cta {
+  margin-top: 20px;
+  padding: 16px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(120deg, var(--ah-blue), #38bdf8);
+  font-size: 17px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.ah-drawer__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: none;
+}
+
+/* ── コラム（トップページ） ── */
+.ah-columns {
+  display: grid;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.ah-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--ah-line);
+  border-radius: 24px;
+  background: #fff;
+  color: var(--ah-ink);
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.5s var(--ah-ease),
+    box-shadow 0.5s ease;
+}
+
+.ah-column:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
+}
+
+.ah-column__img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.ah-column__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ah-ease);
+}
+
+.ah-column:hover .ah-column__img img {
+  transform: scale(1.07);
+}
+
+.ah-column__cat {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ah-blue);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ah-column__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 22px 24px;
+}
+
+.ah-column__meta {
+  color: var(--ah-soft);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.ah-column h3 {
+  font-size: clamp(19px, 2vw, 22px);
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+.ah-column__desc {
+  color: var(--ah-soft);
+  font-size: 15px;
+  line-height: 1.85;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ah-column__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--ah-blue);
+  font-weight: 800;
+}
+
+.ah-column__more svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.4s var(--ah-ease);
+}
+
+.ah-column:hover .ah-column__more svg {
+  transform: translateX(4px);
+}
+
+@media (min-width: 800px) {
+  .ah-columns {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .ah-columns {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  /* 1本目は大きく横長に */
+  .ah-columns > li.is-feature {
+    grid-column: 1 / -1;
+  }
+  .ah-columns > li.is-feature .ah-column {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .ah-columns > li.is-feature .ah-column__img {
+    aspect-ratio: auto;
+    min-height: 360px;
+  }
+  .ah-columns > li.is-feature .ah-column__body {
+    justify-content: center;
+    padding: 40px;
+  }
+  .ah-columns > li.is-feature h3 {
+    font-size: 30px;
+  }
+  .ah-columns > li.is-feature .ah-column__desc {
+    -webkit-line-clamp: 4;
+    font-size: 16px;
   }
 }

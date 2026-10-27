@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, ArrowUpRight, BarChart3, Megaphone, Menu, MonitorSmartphone, Palette, Truck, Users, X, type LucideIcon } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BarChart3, Megaphone, MonitorSmartphone, Palette, Truck, Users, type LucideIcon } from "lucide-react";
 import { ARTICLES } from "@/components/adofy-corp/articles/content";
 import "./home.css";
 
@@ -16,13 +16,6 @@ import "./home.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const NAV = [
-  { href: "#service", label: "Service" },
-  { href: "#works", label: "Works" },
-  { href: "/business", label: "Business" },
-  { href: "/articles", label: "Articles" },
-  { href: "/profile", label: "Profile" },
-];
 
 const HERO_LINES = ["成果から逆算する、", "Webマーケティング。"];
 
@@ -53,7 +46,7 @@ const SERVICES: Service[] = [
 ];
 
 const WORKS = [
-  { img: "/images/adofy/case-01-takanaga.webp", tag: "建設・外構", title: "高長建設様", body: "コーポレートサイト制作・集客設計", href: "/adofy-case-takanaga" },
+  { img: "/images/adofy/case-01-takanaga.webp", tag: "建設・外構", title: "高長建設様", body: "コーポレートサイト制作・集客設計", href: "https://www.takanagakensetu.com/", external: true },
   { img: "/images/adofy/case-02-paintnet.webp", tag: "外壁塗装", title: "Paint Net様", body: "集客ページ制作・問い合わせ導線設計" },
   { img: "/images/adofy/ad-02-mynavi-pharmacist.webp", tag: "人材・薬剤師", title: "マイナビ薬剤師", body: "広告運用 × 診断LP制作", href: "/works/mynavi-pharmacist" },
   { img: "/images/adofy/ad-01-rizap-golf.webp", tag: "スクール", title: "RIZAP GOLF", body: "広告運用 × 記事LP制作", href: "/works/rizap-golf" },
@@ -73,15 +66,6 @@ const STRENGTHS = [
 
 export default function HomeContent() {
   const root = useRef<HTMLDivElement>(null);
-  const [menu, setMenu] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     const el = root.current;
@@ -203,41 +187,6 @@ export default function HomeContent() {
   return (
     <div ref={root} className="ah">
       <div className="ah-cursor" aria-hidden="true" />
-
-      {/* ── ヘッダー ── */}
-      <header className={`ah-header${scrolled ? " is-scrolled" : ""}`}>
-        <Link href="/" className="ah-logo" aria-label="adofy トップへ">
-          <span className="ah-logo__mark">ad</span>
-          <span className="ah-logo__text">
-            adofy<small>Creative Marketing Company</small>
-          </span>
-        </Link>
-        <nav className="ah-nav" aria-label="メニュー">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href}>
-              {n.label}
-            </a>
-          ))}
-          <a href="/contact" className="ah-nav__cta">
-            お問い合わせ
-          </a>
-        </nav>
-        <button type="button" className="ah-menu-btn" aria-label={menu ? "メニューを閉じる" : "メニューを開く"} aria-expanded={menu} onClick={() => setMenu((v) => !v)}>
-          {menu ? <X /> : <Menu />}
-        </button>
-      </header>
-      <div className={`ah-drawer${menu ? " is-open" : ""}`} aria-hidden={!menu}>
-        <nav aria-label="スマホメニュー">
-          {NAV.map((n, i) => (
-            <a key={n.href} href={n.href} onClick={() => setMenu(false)} style={{ transitionDelay: `${0.05 * i + 0.1}s` }}>
-              {n.label}
-            </a>
-          ))}
-          <a href="/contact" onClick={() => setMenu(false)} className="ah-drawer__cta">
-            お問い合わせ
-          </a>
-        </nav>
-      </div>
 
       <main>
         {/* ── FV ── */}
@@ -427,7 +376,11 @@ export default function HomeContent() {
                 );
                 return (
                   <li key={w.title} className="ah-work">
-                    {w.href ? (
+                    {w.href && "external" in w ? (
+                      <a href={w.href} target="_blank" rel="noopener noreferrer" className="ah-work__link">
+                        {inner}
+                      </a>
+                    ) : w.href ? (
                       <Link href={w.href} className="ah-work__link">
                         {inner}
                       </Link>
@@ -473,29 +426,39 @@ export default function HomeContent() {
           <div className="ah-wrap">
             <div className="ah-articles__head">
               <div>
-                <p className="ah-eyebrow">Articles</p>
+                <p className="ah-eyebrow">Column</p>
                 <h2 className="ah-h2 ah-reveal-lines" id="ah-articles-title">
                   <span className="ah-line">
-                    <span>ドライバー採用の</span>
+                    <span>運送会社のための</span>
                   </span>
                   <span className="ah-line">
-                    <span>お役立ち記事。</span>
+                    <span>ドライバー採用コラム。</span>
                   </span>
                 </h2>
               </div>
               <Link href="/articles" className="ah-more" data-fade>
-                記事一覧へ <ArrowRight aria-hidden="true" />
+                コラム一覧へ <ArrowRight aria-hidden="true" />
               </Link>
             </div>
-            <ul className="ah-articles__list" data-stagger>
-              {ARTICLES.map((a) => (
-                <li key={a.slug}>
-                  <Link href={`/articles/${a.slug}`} className="ah-article">
-                    <span className="ah-article__cat">{a.category}</span>
-                    <h3>{a.title}</h3>
-                    <span className="ah-article__go" aria-hidden="true">
-                      <ArrowRight />
-                    </span>
+            <ul className="ah-columns" data-stagger>
+              {ARTICLES.map((a, i) => (
+                <li key={a.slug} className={i === 0 ? "is-feature" : undefined}>
+                  <Link href={`/articles/${a.slug}`} className="ah-column">
+                    <div className="ah-column__img">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={a.image} alt="" loading="lazy" />
+                      <span className="ah-column__cat">{a.category}</span>
+                    </div>
+                    <div className="ah-column__body">
+                      <p className="ah-column__meta">
+                        COLUMN {String(i + 1).padStart(2, "0")}・約{a.minutes}分で読めます
+                      </p>
+                      <h3>{a.title}</h3>
+                      <p className="ah-column__desc">{a.description}</p>
+                      <span className="ah-column__more">
+                        続きを読む <ArrowRight aria-hidden="true" />
+                      </span>
+                    </div>
                   </Link>
                 </li>
               ))}
