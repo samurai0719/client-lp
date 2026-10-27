@@ -8,7 +8,7 @@
      ・本文の強調は黄色のマーカー
    ───────────────────────────────────────────────────────────────────────────── */
 
-.ds-home {
+.ds-lp.ds-home {
   --sr-line: #dbe3ef;
   --sr-shadow: 0 10px 30px rgba(11, 22, 48, 0.08);
   --sr-paper: #f5f8fc;
@@ -18,80 +18,80 @@
   --ds-section-gap: 64px;
 }
 
-.ds-home .dt-container--narrow {
+.ds-lp.ds-home .dt-container--narrow {
   max-width: 820px;
 }
 
 @media (min-width: 768px) {
-  .ds-home .dt-container {
+  .ds-lp.ds-home .dt-container {
     padding: 0 32px;
   }
 }
 
 /* 見出し */
-.ds-home .dt-head {
+.ds-lp.ds-home .dt-head {
   margin-bottom: 36px;
 }
 
-.ds-home .dt-head__eyebrow {
+.ds-lp.ds-home .dt-head__eyebrow {
   margin-bottom: 10px;
   color: #1659e0;
   font-size: 13px;
   letter-spacing: 0.18em;
 }
 
-.ds-home .dt-head__title {
+.ds-lp.ds-home .dt-head__title {
   font-size: 28px;
   line-height: 1.4;
   letter-spacing: 0.03em;
 }
 
-.ds-home .dt-head__lead {
+.ds-lp.ds-home .dt-head__lead {
   margin-top: 18px;
   font-size: 16px;
   text-align: left;
 }
 
 @media (min-width: 768px) {
-  .ds-home .dt-head {
+  .ds-lp.ds-home .dt-head {
     margin-bottom: 56px;
   }
-  .ds-home .dt-head__title {
+  .ds-lp.ds-home .dt-head__title {
     font-size: 40px;
   }
-  .ds-home .dt-head__lead {
+  .ds-lp.ds-home .dt-head__lead {
     font-size: 17px;
     text-align: center;
   }
 }
 
 /* セクションの地色：白と淡い青を交互に（採用レスキューと同じ #f5f8fc） */
-.ds-home :is(.ds-problems2, .ds-visible2, .ds-delegate, .ds-flow2, .ds-compare, .dt-faq) {
+.ds-lp.ds-home :is(.ds-problems2, .ds-visible2, .ds-delegate, .ds-flow2, .ds-compare, .dt-faq) {
   background: var(--sr-paper);
 }
 
-.ds-home :is(.ds-intro, .ds-reasons, .ds-retention, .ds-pricing2, .ds-results, .ds-final) {
+.ds-lp.ds-home :is(.ds-intro, .ds-reasons, .ds-retention, .ds-pricing2, .ds-results, .ds-final) {
   background: #fff;
 }
 
 /* カードの形をそろえる */
-.ds-home :is(.ds-steps3 li, .ds-pgrid li, .ds-split__box, .ds-relay li, .ds-flow3__main, .ds-free, .ds-scard, .ds-ptable, .ds-tbd, .ds-rtable__row, .ds-operator, .ds-faq__item, .ds-icongrid li) {
+.ds-lp.ds-home :is(.ds-steps3 li, .ds-pgrid li, .ds-split__box, .ds-relay li, .ds-flow3__main, .ds-free, .ds-scard, .ds-ptable, .ds-tbd, .ds-rtable__row, .ds-operator, .ds-faq__item, .ds-icongrid li) {
   border: 1px solid var(--sr-line);
   border-radius: 16px;
   box-shadow: var(--sr-shadow);
 }
 
-.ds-home :is(.ds-split__box, .ds-icongrid li) {
+.ds-lp.ds-home :is(.ds-split__box, .ds-icongrid li) {
   background: #fff;
 }
 
-.ds-home .ds-relay li.is-us {
+.ds-lp.ds-home .ds-relay li.is-us {
   border-color: #1659e0;
   background: #eef4ff;
 }
 
 /* 結論の一文（.ds-goal）は採用レスキューの「まとめ」と同じく、白のカードに中央寄せ */
-.ds-home .ds-goal {
+.ds-lp.ds-home .ds-goal {
   justify-content: center;
   padding: 22px 20px;
   border: 1px solid var(--sr-line);
@@ -103,73 +103,73 @@
   text-align: center;
 }
 
-.ds-home .ds-goal > svg {
+.ds-lp.ds-home .ds-goal > svg {
   display: none;
 }
 
 /* CTAの枠：採用レスキューと同じ淡い青の角丸ボックス */
-.ds-home .ds-ctabox {
+.ds-lp.ds-home .ds-ctabox {
   border: 0;
   border-radius: 24px;
   background: #eef4ff;
 }
 
-.ds-home .ds-ctabox__reason {
+.ds-lp.ds-home .ds-ctabox__reason {
   color: #0a1f4e;
 }
 
 /* マーカーは採用レスキューと同じ黄色 */
-.ds-home main :is(p, li, dd, span) strong {
+.ds-lp.ds-home main :is(p, li, dd, span) strong {
   background: linear-gradient(transparent 62%, rgba(242, 176, 30, 0.45) 62%);
 }
 
 /* 料金比較：ドラテクの列は青で強調 */
-.ds-home .ds-cmp thead th.is-ours {
+.ds-lp.ds-home .ds-cmp thead th.is-ours {
   background: #0a1f4e;
 }
 
-.ds-home .ds-cmp tbody td.is-ours {
+.ds-lp.ds-home .ds-cmp tbody td.is-ours {
   border-left-color: #0a1f4e;
   border-right-color: #0a1f4e;
   background: #eef4ff;
 }
 
-.ds-home .ds-cmp tbody tr:last-child td.is-ours {
+.ds-lp.ds-home .ds-cmp tbody tr:last-child td.is-ours {
   border-bottom-color: #0a1f4e;
 }
 
-.ds-home .ds-cmp td.is-ours > .ds-cmp__big {
+.ds-lp.ds-home .ds-cmp td.is-ours > .ds-cmp__big {
   color: #1659e0;
 }
 
 @media (max-width: 599px) {
-  .ds-home .ds-cmp tbody th {
+  .ds-lp.ds-home .ds-cmp tbody th {
     border-right-color: #0a1f4e;
   }
 }
 
 /* 最後のCTA：採用レスキューと同じ淡い青の帯 */
-.ds-home .ds-final {
+.ds-lp.ds-home .ds-final {
   background: linear-gradient(180deg, #fff 0%, #eef4ff 100%);
 }
 
 /* 背景の縁取り文字は青系に */
-.ds-home :is(.ds-problems2, .ds-flow2, .ds-final)::before {
+.ds-lp.ds-home :is(.ds-problems2, .ds-flow2, .ds-final)::before {
   -webkit-text-stroke-color: rgba(22, 89, 224, 0.1);
 }
 
 /* LP専用の仕上げ。ds-home がない一覧・登録・受付画面へは適用しない。
    採用レスキューの実値（見出し28/40px、余白64/104px）を基準にする。 */
-.ds-home .dt-container {
+.ds-lp.ds-home .dt-container {
   max-width: 1120px;
   padding-inline: 20px;
 }
-.ds-home .dt-container--narrow { max-width: 820px; }
-.ds-home main > .dt-section {
+.ds-lp.ds-home .dt-container--narrow { max-width: 820px; }
+.ds-lp.ds-home main > .dt-section {
   padding-block: var(--ds-section-gap);
   border-top: 0;
 }
-.ds-home :is(.dt-head__title, .ds-final__title) {
+.ds-lp.ds-home :is(.dt-head__title, .ds-final__title) {
   max-width: 900px;
   margin-inline: auto;
   font-size: 28px;
@@ -178,54 +178,54 @@
   letter-spacing: .03em;
   text-wrap: balance;
 }
-.ds-home .dt-head__lead {
+.ds-lp.ds-home .dt-head__lead {
   max-width: 720px;
   margin-inline: auto;
   line-height: 1.8;
 }
-.ds-home :is(.ds-reason h3, .ds-ads__title) {
+.ds-lp.ds-home :is(.ds-reason h3, .ds-ads__title) {
   font-size: 24px;
   line-height: 1.5;
   text-wrap: balance;
 }
-.ds-home :is(.ds-reason__text p, .ds-steps3__sub, .ds-faq__a,
+.ds-lp.ds-home :is(.ds-reason__text p, .ds-steps3__sub, .ds-faq__a,
   .ds-checklist li, .ds-flow3__lanes > div, .ds-ptable > div) {
   font-size: var(--ds-body-size);
   line-height: 1.8;
 }
-.ds-home :is(.ds-steps3__title, .ds-flow3__title, .ds-split__who) {
+.ds-lp.ds-home :is(.ds-steps3__title, .ds-flow3__title, .ds-split__who) {
   font-size: var(--ds-card-title);
   line-height: 1.5;
 }
-.ds-home :is(.ds-goal, .ds-ctabox__reason) {
+.ds-lp.ds-home :is(.ds-goal, .ds-ctabox__reason) {
   font-size: 20px;
   line-height: 1.7;
 }
 /* 常時読める本文。背景の流れる文字と光は情報階層を弱めるため省く。 */
-.ds-home :is(.ds-problems2, .ds-flow2, .ds-final)::before,
-.ds-home .ds-final::after { content: none; }
-.ds-home .dt-footer { background: #0a1f4e; }
-.ds-home .ds-final__body { margin-top: 24px; line-height: 1.8; }
+.ds-lp.ds-home :is(.ds-problems2, .ds-flow2, .ds-final)::before,
+.ds-lp.ds-home .ds-final::after { content: none; }
+.ds-lp.ds-home .dt-footer { background: #0a1f4e; }
+.ds-lp.ds-home .ds-final__body { margin-top: 24px; line-height: 1.8; }
 
 /* FV画像は維持し、HTMLの料金・CTAを同じ紺/青/黄色へ統一。 */
-.ds-home .ds-hero {
+.ds-lp.ds-home .ds-hero {
   --ds-hero-ink: #0a1f4e;
   --ds-hero-accent: #1659e0;
 }
-.ds-home .ds-hero__below { gap: 24px; padding-block: 24px 40px; }
-.ds-home .ds-hero__price {
+.ds-lp.ds-home .ds-hero__below { gap: 24px; padding-block: 24px 40px; }
+.ds-lp.ds-home .ds-hero__price {
   border-color: var(--sr-line);
   box-shadow: var(--sr-shadow);
 }
-.ds-home .ds-hero__price > div { padding: 16px 6px; }
-.ds-home .ds-hero__price > div + div { border-color: var(--sr-line); }
-.ds-home .ds-hero__price dt { font-size: 13px; }
-.ds-home .ds-hero__price small { font-size: 12px; margin-bottom: 6px; }
+.ds-lp.ds-home .ds-hero__price > div { padding: 16px 6px; }
+.ds-lp.ds-home .ds-hero__price > div + div { border-color: var(--sr-line); }
+.ds-lp.ds-home .ds-hero__price dt { font-size: 13px; }
+.ds-lp.ds-home .ds-hero__price small { font-size: 12px; margin-bottom: 6px; }
 
 /* CTAの長い既存文言を保ち、入れ子カード内でも収まる幅にする。 */
-.ds-home .ds-ctabox { padding: 32px 16px; margin-top: 40px; }
-.ds-home .ds-cta { width: 100%; gap: 14px; }
-.ds-home .ds-cta .dt-btn--lg {
+.ds-lp.ds-home .ds-ctabox { padding: 32px 16px; margin-top: 40px; }
+.ds-lp.ds-home .ds-cta { width: 100%; gap: 14px; }
+.ds-lp.ds-home .ds-cta .dt-btn--lg {
   width: 100%;
   max-width: 460px;
   min-height: 64px;
@@ -234,104 +234,104 @@
   letter-spacing: 0;
   white-space: normal;
 }
-.ds-home .ds-cta .dt-btn__label { white-space: normal; overflow-wrap: anywhere; }
-.ds-home .ds-cta .dt-btn__arrow { right: 12px; width: 18px; }
-.ds-home .ds-cta__points { gap: 6px 12px; }
-.ds-home .ds-cta__points li { font-size: 12px; white-space: normal; }
-.ds-home .ds-ctabox .ds-cta { margin-top: 24px; }
+.ds-lp.ds-home .ds-cta .dt-btn__label { white-space: normal; overflow-wrap: anywhere; }
+.ds-lp.ds-home .ds-cta .dt-btn__arrow { right: 12px; width: 18px; }
+.ds-lp.ds-home .ds-cta__points { gap: 6px 12px; }
+.ds-lp.ds-home .ds-cta__points li { font-size: 12px; white-space: normal; }
+.ds-lp.ds-home .ds-ctabox .ds-cta { margin-top: 24px; }
 
 /* 悩み：PCの5列を解消。スマホもイラストより文章に幅を割く。 */
-.ds-home .ds-pgrid { grid-template-columns: 1fr; gap: 16px; }
-.ds-home .ds-pgrid li {
+.ds-lp.ds-home .ds-pgrid { grid-template-columns: 1fr; gap: 16px; }
+.ds-lp.ds-home .ds-pgrid li {
   grid-template-columns: minmax(64px, 28%) minmax(0, 1fr);
   align-items: center;
   padding: 20px 16px;
   gap: 16px;
 }
-.ds-home .ds-pgrid p { font-size: 17px; line-height: 1.75; }
-.ds-home .ds-steps3 { gap: 24px; }
-.ds-home .ds-steps3 li { padding: 24px 16px; }
-.ds-home .ds-steps3__title { align-items: flex-start; }
-.ds-home .ds-steps3__no { margin-top: 2px; }
-.ds-home .ds-steps3__sub { margin-top: 12px; }
-.ds-home .ds-reasons__list { gap: 56px; }
-.ds-home .ds-reason { gap: 28px; }
-.ds-home .ds-reason__screen { max-width: 440px; }
-.ds-home .ds-scard.is-compact .ds-scard__rows > div:not(.is-hl) { opacity: 1; }
-.ds-home .ds-scard__rows > div.is-hl { background: #eef4ff; }
-.ds-home .ds-free__row.is-free { background: #eef4ff; }
-.ds-home .ds-retention__top { display: block; }
-.ds-home .ds-roles { gap: 24px; }
-.ds-home .ds-split__box { padding: 24px 20px; }
-.ds-home .ds-icongrid { gap: 16px; }
+.ds-lp.ds-home .ds-pgrid p { font-size: 17px; line-height: 1.75; }
+.ds-lp.ds-home .ds-steps3 { gap: 24px; }
+.ds-lp.ds-home .ds-steps3 li { padding: 24px 16px; }
+.ds-lp.ds-home .ds-steps3__title { align-items: flex-start; }
+.ds-lp.ds-home .ds-steps3__no { margin-top: 2px; }
+.ds-lp.ds-home .ds-steps3__sub { margin-top: 12px; }
+.ds-lp.ds-home .ds-reasons__list { gap: 56px; }
+.ds-lp.ds-home .ds-reason { gap: 28px; }
+.ds-lp.ds-home .ds-reason__screen { max-width: 440px; }
+.ds-lp.ds-home .ds-scard.is-compact .ds-scard__rows > div:not(.is-hl) { opacity: 1; }
+.ds-lp.ds-home .ds-scard__rows > div.is-hl { background: #eef4ff; }
+.ds-lp.ds-home .ds-free__row.is-free { background: #eef4ff; }
+.ds-lp.ds-home .ds-retention__top { display: block; }
+.ds-lp.ds-home .ds-roles { gap: 24px; }
+.ds-lp.ds-home .ds-split__box { padding: 24px 20px; }
+.ds-lp.ds-home .ds-icongrid { gap: 16px; }
 
 /* 7手順は縦のタイムラインで順番を明瞭に。内容や手順数は維持。 */
-.ds-home .ds-flow3 {
+.ds-lp.ds-home .ds-flow3 {
   grid-template-columns: 1fr;
   max-width: 900px;
   margin-inline: auto;
   gap: 24px;
 }
-.ds-home .ds-flow3::before {
+.ds-lp.ds-home .ds-flow3::before {
   display: block;
   left: 19px;
   background: #dbe3ef;
 }
-.ds-home .ds-flow3 li {
+.ds-lp.ds-home .ds-flow3 li {
   grid-template-columns: 40px minmax(0, 1fr);
   gap: 12px;
   justify-items: stretch;
 }
-.ds-home .ds-flow3__icon { width: 40px; height: 40px; z-index: 1; }
-.ds-home .ds-flow3__main { width: 100%; min-width: 0; margin-top: 0; padding: 20px 16px; }
-.ds-home .ds-flow3__title { font-size: 18px; }
-.ds-home .ds-flow3__lanes { margin-top: 18px; gap: 16px; }
-.ds-home .ds-flow3__lanes > div { grid-template-columns: 1fr; gap: 6px; }
-.ds-home .ds-flow3__lanes dt { width: fit-content; padding: 2px 10px; }
-.ds-home .ds-flow3 li.is-fee .ds-flow3__icon { background: #0a1f4e; }
-.ds-home .ds-flow3 li.is-key .ds-flow3__title em { color: #1659e0; }
-.ds-home .ds-flow3 li.is-fee .ds-flow3__title em { background: #fff7e2; color: #805400; }
-.ds-home .ds-faq { display: grid; gap: 16px; }
-.ds-home .ds-faq__item summary { padding: 22px 40px 22px 18px; font-size: 17px; line-height: 1.65; }
-.ds-home .ds-faq__a { padding: 0 20px 24px; }
-.ds-home .ds-rtable { gap: 20px; }
-.ds-home .ds-rtable__row { padding: 24px; }
-.ds-home .ds-rtable__label { color: #1659e0; font-size: 24px; }
-.ds-home .ds-ptable > div { padding-block: 20px; }
+.ds-lp.ds-home .ds-flow3__icon { width: 40px; height: 40px; z-index: 1; }
+.ds-lp.ds-home .ds-flow3__main { width: 100%; min-width: 0; margin-top: 0; padding: 20px 16px; }
+.ds-lp.ds-home .ds-flow3__title { font-size: 18px; }
+.ds-lp.ds-home .ds-flow3__lanes { margin-top: 18px; gap: 16px; }
+.ds-lp.ds-home .ds-flow3__lanes > div { grid-template-columns: 1fr; gap: 6px; }
+.ds-lp.ds-home .ds-flow3__lanes dt { width: fit-content; padding: 2px 10px; }
+.ds-lp.ds-home .ds-flow3 li.is-fee .ds-flow3__icon { background: #0a1f4e; }
+.ds-lp.ds-home .ds-flow3 li.is-key .ds-flow3__title em { color: #1659e0; }
+.ds-lp.ds-home .ds-flow3 li.is-fee .ds-flow3__title em { background: #fff7e2; color: #805400; }
+.ds-lp.ds-home .ds-faq { display: grid; gap: 16px; }
+.ds-lp.ds-home .ds-faq__item summary { padding: 22px 40px 22px 18px; font-size: 17px; line-height: 1.65; }
+.ds-lp.ds-home .ds-faq__a { padding: 0 20px 24px; }
+.ds-lp.ds-home .ds-rtable { gap: 20px; }
+.ds-lp.ds-home .ds-rtable__row { padding: 24px; }
+.ds-lp.ds-home .ds-rtable__label { color: #1659e0; font-size: 24px; }
+.ds-lp.ds-home .ds-ptable > div { padding-block: 20px; }
 
 @media (min-width: 768px) {
-  .ds-home {
+  .ds-lp.ds-home {
     --ds-section-gap: 104px;
     --ds-body-size: 17px;
     --ds-card-title: 22px;
   }
-  .ds-home .dt-container { padding-inline: 32px; }
-  .ds-home :is(.dt-head__title, .ds-final__title) { font-size: 40px; }
-  .ds-home :is(.ds-reason h3, .ds-ads__title) { font-size: 28px; }
-  .ds-home :is(.ds-goal, .ds-ctabox__reason) { font-size: 24px; }
-  .ds-home .ds-hero__below { padding-block: 32px 56px; }
-  .ds-home .ds-hero__price b { font-size: 44px; }
-  .ds-home .ds-cta .dt-btn--lg { min-height: 72px; font-size: 21px; }
-  .ds-home .ds-ctabox { padding: 40px 32px; margin-top: 56px; }
-  .ds-home .ds-pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-  .ds-home .ds-pgrid li { padding: 24px; }
-  .ds-home .ds-pgrid li:last-child { grid-column: 1 / -1; width: calc(50% - 12px); justify-self: center; }
-  .ds-home .ds-pgrid p { font-size: 18px; }
-  .ds-home .ds-reasons__list { gap: 80px; }
-  .ds-home .ds-reason { gap: 48px; }
-  .ds-home .ds-flow3 li { grid-template-columns: 56px minmax(0, 1fr); gap: 24px; }
-  .ds-home .ds-flow3::before { left: 27px; }
-  .ds-home .ds-flow3__icon { width: 56px; height: 56px; }
-  .ds-home .ds-flow3__main { padding: 28px 32px; }
-  .ds-home .ds-flow3__title { font-size: 22px; }
-  .ds-home .ds-flow3__lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-  .ds-home .ds-rtable__label { font-size: 28px; }
-  .ds-home .ds-faq__item summary { padding: 28px 56px 28px 28px; font-size: 19px; }
-  .ds-home .ds-faq__a { padding: 0 28px 28px; }
+  .ds-lp.ds-home .dt-container { padding-inline: 32px; }
+  .ds-lp.ds-home :is(.dt-head__title, .ds-final__title) { font-size: 40px; }
+  .ds-lp.ds-home :is(.ds-reason h3, .ds-ads__title) { font-size: 28px; }
+  .ds-lp.ds-home :is(.ds-goal, .ds-ctabox__reason) { font-size: 24px; }
+  .ds-lp.ds-home .ds-hero__below { padding-block: 32px 56px; }
+  .ds-lp.ds-home .ds-hero__price b { font-size: 44px; }
+  .ds-lp.ds-home .ds-cta .dt-btn--lg { min-height: 72px; font-size: 21px; }
+  .ds-lp.ds-home .ds-ctabox { padding: 40px 32px; margin-top: 56px; }
+  .ds-lp.ds-home .ds-pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .ds-lp.ds-home .ds-pgrid li { padding: 24px; }
+  .ds-lp.ds-home .ds-pgrid li:last-child { grid-column: 1 / -1; width: calc(50% - 12px); justify-self: center; }
+  .ds-lp.ds-home .ds-pgrid p { font-size: 18px; }
+  .ds-lp.ds-home .ds-reasons__list { gap: 80px; }
+  .ds-lp.ds-home .ds-reason { gap: 48px; }
+  .ds-lp.ds-home .ds-flow3 li { grid-template-columns: 56px minmax(0, 1fr); gap: 24px; }
+  .ds-lp.ds-home .ds-flow3::before { left: 27px; }
+  .ds-lp.ds-home .ds-flow3__icon { width: 56px; height: 56px; }
+  .ds-lp.ds-home .ds-flow3__main { padding: 28px 32px; }
+  .ds-lp.ds-home .ds-flow3__title { font-size: 22px; }
+  .ds-lp.ds-home .ds-flow3__lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .ds-lp.ds-home .ds-rtable__label { font-size: 28px; }
+  .ds-lp.ds-home .ds-faq__item summary { padding: 28px 56px 28px 28px; font-size: 19px; }
+  .ds-lp.ds-home .ds-faq__a { padding: 0 28px 28px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ds-home *, .ds-home *::before, .ds-home *::after {
+  .ds-lp.ds-home *, .ds-lp.ds-home *::before, .ds-lp.ds-home *::after {
     animation: none !important;
     transition: none !important;
   }
