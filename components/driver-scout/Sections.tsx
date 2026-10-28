@@ -131,48 +131,47 @@ function Heading({ text }: { text: string }) {
 
 /* ═══════════════════════ 1. ファーストビュー ═══════════════════════ */
 
-/**
- * ファーストビュー。見出し・写真・運営者の実績は画像に焼き込み済みで、
- * スマホ用（941×1515）とPC用（1586×877）を <picture> で出し分ける。
- * 差し替えは public/images/driver/scout/fv-sp.webp / fv-pc.webp を置き換える。
- * 画像の文字は検索エンジンや読み上げに伝わらないため、同じ内容を見えない h1 に持たせる。
- * 料金とCTAは画像の直下にHTMLで置く。
- */
+/** 見出し・実績をHTMLで組み、写真だけ既存FVから表示する。 */
 export function Hero() {
   return (
-    <section className="ds-hero" id="top" aria-labelledby="ds-hero-title">
-      <h1 className="dt-visually-hidden" id="ds-hero-title">
-        人が残り続けるドライバー採用。仕事を断らない採用へ。愛知県の運送会社さま向け{SERVICE_KIND}。
-      </h1>
-      <picture>
-        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1515} />
-        <img
-          className="ds-hero__img"
-          src="/images/driver/scout/fv-pc.webp"
-          width={1586}
-          height={877}
-          alt={`運営者の実績：${ACHIEVEMENTS.map((a) => `${a.label}${a.value.toLocaleString("ja-JP")}${a.unit}`).join("、")}（${ACHIEVEMENTS_NOTE}）`}
-          fetchPriority="high"
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
-
+    <section className="ds-hero ds-hero--editorial" id="top" aria-labelledby="ds-hero-title">
+      <div className="ds-hero__stage">
+        <div className="ds-hero__copy">
+          <p className="ds-hero__audience">愛知県の運送会社さま向け</p>
+          <p className="ds-hero__brand"><b>{SERVICE_NAME}</b><span>{SERVICE_KIND}</span></p>
+          <h1 className="ds-hero__headline" id="ds-hero-title">
+            <span>人が残り続ける</span><span>ドライバー<span className="ds-hero__blue">採用。</span></span>
+          </h1>
+          <p className="ds-hero__promise">仕事を断らない採用へ。</p>
+          <p className="ds-hero__explain">採用したいドライバーを選ぶ。<br />連絡と面接調整はドラテクへ。</p>
+        </div>
+        <div className="ds-hero__photograph" role="img" aria-label="トラックのそばで話す採用担当者とドライバー">
+          <img src="/images/driver/scout/fv-pc.webp" width={1586} height={877} alt="" fetchPriority="high" loading="eager" decoding="async" />
+        </div>
+        <div className="ds-hero__proof">
+          <p className="ds-hero__proof-title">運営者の採用支援実績</p>
+          <div className="ds-hero__metrics">
+            {ACHIEVEMENTS.map((a, i) => (
+              <div className="ds-hero__metric" key={a.label}>
+                <span className="ds-hero__metric-icon" aria-hidden="true">{i === 0 ? <Building2 /> : <UserCheck />}</span>
+                <div><p>{a.label}</p><strong>{a.value.toLocaleString("ja-JP")}<span>{a.unit}</span></strong></div>
+              </div>
+            ))}
+          </div>
+          <p className="ds-hero__proof-note">※{ACHIEVEMENTS_NOTE}</p>
+        </div>
+      </div>
       <div className="ds-hero__below">
-        <dl className="ds-hero__price" aria-label="料金">
-          {HERO_PRICES.map((p) => (
-            <div key={p.label} className={p.pre ? "is-fee" : undefined}>
-              <dt>{p.label}</dt>
-              <dd>
-                {p.pre && <small>{p.pre}</small>}
-                <b>{p.num}</b>
-                {p.unit}
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <div className="ds-hero__cta">
-          <ScoutCta location="hero" />
+        <div className="ds-hero__offer">
+          <dl className="ds-hero__price" aria-label="料金">
+            {HERO_PRICES.map((p) => (
+              <div key={p.label} className={p.pre ? "is-fee" : undefined}>
+                <dt>{p.label}</dt>
+                <dd>{p.pre && <small>{p.pre}</small>}<b>{p.num}</b>{p.unit}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="ds-hero__cta"><ScoutCta location="hero" /></div>
         </div>
       </div>
     </section>
@@ -208,6 +207,50 @@ export function Intro() {
   );
 }
 
+/* ═══════════════════════ 元ドライバーが運営 ═══════════════════════ */
+
+const DRIVER_OPERATOR_POINTS = [
+  {
+    Icon: Route,
+    title: "現場の働き方が分かる",
+    body: "運行内容や勤務時間など、ドライバーが転職時に気にする点を理解したうえで支援します。",
+  },
+  {
+    Icon: MessageCircle,
+    title: "希望をドライバー目線で確認",
+    body: "免許や経験だけでなく、希望する働き方や転職理由も確認して面接につなげます。",
+  },
+  {
+    Icon: HeartHandshake,
+    title: "長く働ける採用を目指す",
+    body: "会社と求職者の希望を事前に確認し、入社後の行き違いを減らす採用を目指します。",
+  },
+] as const;
+
+export function DriverOperated() {
+  return (
+    <section className="dt-section ds-driver-operated" aria-labelledby="ds-driver-operated-title">
+      <div className="dt-container">
+        <SectionHead
+          eyebrow="元ドライバーが運営"
+          id="ds-driver-operated-title"
+          title={<>元ドライバーが運営する<br /><span className="ds-heading-accent">ドライバー転職サービス</span></>}
+          lead="運送会社とドライバー、両方の立場を考えて採用を支援します。"
+        />
+        <ul className="ds-driver-operated__grid">
+          {DRIVER_OPERATOR_POINTS.map(({ Icon, title, body }) => (
+            <li key={title}>
+              <span className="ds-driver-operated__icon" aria-hidden="true"><Icon /></span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 /* ═══════════════════════ 2. 経営者の悩み ═══════════════════════ */
 
 const PROBLEM_ARTS: Record<(typeof PROBLEMS)[number]["icon"], ComponentType<IllustrationProps>> = {
@@ -222,16 +265,14 @@ export function Problems() {
   return (
     <section className="dt-section ds-problems2" aria-labelledby="ds-problems-title">
       <div className="dt-container">
-        <SectionHead eyebrow="こんなお悩み" id="ds-problems-title" title={<Breakable text="人が|足りない|ことで、|こんな|悩みは|ありませんか？" />} />
+        <SectionHead eyebrow="こんなお悩み" id="ds-problems-title" title={<>人が足りないことで、<br /><Breakable text="こんな|悩みは|ありませんか？" /></>} />
         <ul className="ds-pgrid">
-          {PROBLEMS.map((p) => {
+          {PROBLEMS.map((p, i) => {
             const Art = PROBLEM_ARTS[p.icon];
             return (
               <li key={p.text}>
                 <Art className="ds-pgrid__art" />
-                <p>
-                  <Rich text={p.text} />
-                </p>
+                <div className="ds-pgrid__copy"><span className="ds-pgrid__label">お悩み {String(i + 1).padStart(2, "0")}</span><p><Rich text={p.text} /></p></div>
               </li>
             );
           })}
@@ -253,7 +294,7 @@ export function Reasons() {
   return (
     <section className="dt-section ds-reasons" aria-labelledby="ds-reasons-title">
       <div className="dt-container">
-        <SectionHead eyebrow="ドラテクを使う理由" id="ds-reasons-title" title={<Breakable text="応募を|待つだけでなく、|面接したい|人を|選べます。" />} />
+        <SectionHead eyebrow="ドラテクを使う理由" id="ds-reasons-title" title={<>応募を待つだけでなく、<br /><span className="ds-heading-accent">面接したい人を選べます。</span></>} />
         <div className="ds-reasons__list">
           {REASONS.map((r, i) => (
             <article key={r.title} className={`ds-reason${i % 2 ? " is-rev" : ""}`}>

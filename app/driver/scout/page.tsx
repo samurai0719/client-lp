@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
-import { AboutResults, Compare, Delegate, Faq, FinalCta, Flow, Hero, Intro, Pricing, Problems, Reasons, Retention, Visible } from "@/components/driver-scout/Sections";
+import { AboutResults, Compare, Delegate, DriverOperated, Faq, FinalCta, Flow, Hero, Intro, Pricing, Problems, Reasons, Retention, Visible } from "@/components/driver-scout/Sections";
 import ScoutShell from "@/components/driver-scout/Shell";
-import ScrollMotion from "@/components/driver-scout/ScrollMotion";
 // 演出の CSS は共通スタイル（Shell が読み込む）のあとに読む
 import "./scout-motion.css";
 import "./scout-saiyo.css";
@@ -58,6 +57,7 @@ export default async function DriverScoutPage() {
       <ScoutShell waiting={waiting} event="company_lp_view" home sticky>
         <Hero />
         <Intro />
+        <DriverOperated />
         <Problems />
         <Reasons />
         <Visible />
@@ -69,7 +69,6 @@ export default async function DriverScoutPage() {
         <AboutResults />
         <Faq />
         <FinalCta />
-        <ScrollMotion />
       </ScoutShell>
     </>
   );
