@@ -218,6 +218,19 @@ const DRIVER_OPERATOR_POINTS = [
 export function DriverOperated() {
   return (
     <section className="dt-section ds-driver-operated" aria-labelledby="ds-driver-operated-title">
+      <video
+        className="ds-driver-operated__video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/images/saiyo-rescue/ad-levjob-driver.webp"
+        aria-hidden="true"
+      >
+        <source src="/videos/saiyo-rescue/levjob-driver.mp4" type="video/mp4" />
+      </video>
+      <div className="ds-driver-operated__overlay" aria-hidden="true" />
       <div className="dt-container">
         <SectionHead
           eyebrow="元ドライバーが運営"
