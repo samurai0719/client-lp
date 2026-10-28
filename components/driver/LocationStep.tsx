@@ -34,7 +34,7 @@ export default function LocationStep({ answers, onChange, onNext }: LocationStep
   const secondQuestion = useRef<HTMLDivElement>(null);
   /** お住まいが決まったら、同じページの2問目（勤務エリア）へスクロールする */
   const scrollToSecond = () =>
-    window.setTimeout(() => secondQuestion.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
+    window.setTimeout(() => secondQuestion.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
 
   // 7桁そろったら住所を引く
   useEffect(() => {

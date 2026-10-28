@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import HeroSection from './HeroSection';
 import StepHeader from './StepHeader';
 import QuestionCard, { StepSection } from './QuestionCard';
@@ -75,9 +75,12 @@ const FIRST_QUESTION: Partial<Record<Step, keyof DriverAnswers>> = {
   6: 'priorities',
 };
 
-/** 複数選択の最初の質問は、続けて選べるよう、最後に押してから少し待ってから2問目へ移る */
-const MULTI_SCROLL_DELAY = 1200;
-const SINGLE_SCROLL_DELAY = 250;
+/**
+ * 2問目へ移るまでの待ち時間。単一選択はすぐ（描画を待つだけ）。
+ * 複数選択は続けて選べるよう、最後に押してから少しだけ待つ（待っている間に押せば待ち直す）。
+ */
+const MULTI_SCROLL_DELAY = 450;
+const SINGLE_SCROLL_DELAY = 30;
 
 const MISSING_MESSAGE: Record<number, string> = {
   2: 'お持ちの免許とドライバー経験を選んでください',
@@ -106,6 +109,17 @@ export default function DriverContent() {
 
   useEffect(() => () => window.clearTimeout(scrollTimer.current), []);
 
+  /*
+   * ステップが変わったら、新しいページの一番上から表示する。
+   * 描画の前に一瞬で戻す（なめらかスクロールにすると、前のページで下までスクロールしていたとき
+   * 新しいページの描画とぶつかって、ページの途中や下から始まってしまう）。
+   * ブラウザの戻る/進むでも同じ。ブラウザ自身のスクロール位置の復元は止めておく。
+   */
+  useLayoutEffect(() => {
+    window.history.scrollRestoration = 'manual';
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [step, done]);
+
   useEffect(() => {
     attribution.current = readAttribution();
     window.history.replaceState({ ...window.history.state, driverStep: 1 }, '');
@@ -115,7 +129,6 @@ export default function DriverContent() {
       setStepError(null);
       window.clearTimeout(scrollTimer.current);
       setStep(s && s >= 1 && s <= TOTAL_STEPS ? (s as Step) : 1);
-      window.scrollTo({ top: 0 });
     };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
@@ -127,7 +140,6 @@ export default function DriverContent() {
     setNotice(null);
     setStep(next);
     window.history.pushState({ ...window.history.state, driverStep: next }, '');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   /** 画面の「戻る」。ブラウザ履歴を1つ戻す（popstate でステップが変わる） */
@@ -189,7 +201,6 @@ export default function DriverContent() {
     }
     setDone(true);
     window.history.replaceState({ ...window.history.state, driverStep: TOTAL_STEPS }, '');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const options = (list: readonly string[]) => list.map((label) => ({ label }));
