@@ -207,6 +207,50 @@ export function Intro() {
   );
 }
 
+/* ═══════════════════════ 元ドライバーが運営 ═══════════════════════ */
+
+const DRIVER_OPERATOR_POINTS = [
+  {
+    Icon: Route,
+    title: "現場の働き方が分かる",
+    body: "運行内容や勤務時間など、ドライバーが転職時に気にする点を理解したうえで支援します。",
+  },
+  {
+    Icon: MessageCircle,
+    title: "希望をドライバー目線で確認",
+    body: "免許や経験だけでなく、希望する働き方や転職理由も確認して面接につなげます。",
+  },
+  {
+    Icon: HeartHandshake,
+    title: "長く働ける採用を目指す",
+    body: "会社と求職者の希望を事前に確認し、入社後の行き違いを減らす採用を目指します。",
+  },
+] as const;
+
+export function DriverOperated() {
+  return (
+    <section className="dt-section ds-driver-operated" aria-labelledby="ds-driver-operated-title">
+      <div className="dt-container">
+        <SectionHead
+          eyebrow="元ドライバーが運営"
+          id="ds-driver-operated-title"
+          title={<>元ドライバーが運営する<br /><span className="ds-heading-accent">ドライバー転職サービス</span></>}
+          lead="運送会社とドライバー、両方の立場を考えて採用を支援します。"
+        />
+        <ul className="ds-driver-operated__grid">
+          {DRIVER_OPERATOR_POINTS.map(({ Icon, title, body }) => (
+            <li key={title}>
+              <span className="ds-driver-operated__icon" aria-hidden="true"><Icon /></span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 /* ═══════════════════════ 2. 経営者の悩み ═══════════════════════ */
 
 const PROBLEM_ARTS: Record<(typeof PROBLEMS)[number]["icon"], ComponentType<IllustrationProps>> = {
