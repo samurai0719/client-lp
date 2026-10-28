@@ -131,48 +131,36 @@ function Heading({ text }: { text: string }) {
 
 /* ═══════════════════════ 1. ファーストビュー ═══════════════════════ */
 
-/** 見出し・実績をHTMLで組み、写真だけ既存FVから表示する。 */
+/** PC・スマホそれぞれの既存FV画像を、そのまま表示する。 */
 export function Hero() {
   return (
-    <section className="ds-hero ds-hero--editorial" id="top" aria-labelledby="ds-hero-title">
-      <div className="ds-hero__stage">
-        <div className="ds-hero__copy">
-          <p className="ds-hero__audience">愛知県の運送会社さま向け</p>
-          <p className="ds-hero__brand"><b>{SERVICE_NAME}</b><span>{SERVICE_KIND}</span></p>
-          <h1 className="ds-hero__headline" id="ds-hero-title">
-            <span>人が残り続ける</span><span>ドライバー<span className="ds-hero__blue">採用。</span></span>
-          </h1>
-          <p className="ds-hero__promise">仕事を断らない採用へ。</p>
-          <p className="ds-hero__explain">採用したいドライバーを選ぶ。<br />連絡と面接調整はドラテクへ。</p>
-        </div>
-        <div className="ds-hero__photograph" role="img" aria-label="トラックのそばで話す採用担当者とドライバー">
-          <img src="/images/driver/scout/fv-pc.webp" width={1586} height={877} alt="" fetchPriority="high" loading="eager" decoding="async" />
-        </div>
-        <div className="ds-hero__proof">
-          <p className="ds-hero__proof-title">運営者の採用支援実績</p>
-          <div className="ds-hero__metrics">
-            {ACHIEVEMENTS.map((a, i) => (
-              <div className="ds-hero__metric" key={a.label}>
-                <span className="ds-hero__metric-icon" aria-hidden="true">{i === 0 ? <Building2 /> : <UserCheck />}</span>
-                <div><p>{a.label}</p><strong>{a.value.toLocaleString("ja-JP")}<span>{a.unit}</span></strong></div>
-              </div>
-            ))}
-          </div>
-          <p className="ds-hero__proof-note">※{ACHIEVEMENTS_NOTE}</p>
-        </div>
-      </div>
+    <section className="ds-hero" id="top" aria-labelledby="ds-hero-title">
+      <h1 className="dt-visually-hidden" id="ds-hero-title">
+        人が残り続けるドライバー採用。仕事を断らない採用へ。愛知県の運送会社さま向け{SERVICE_KIND}。
+      </h1>
+      <picture>
+        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1515} />
+        <img
+          className="ds-hero__img"
+          src="/images/driver/scout/fv-pc.webp"
+          width={1586}
+          height={877}
+          alt={`運営者の実績：${ACHIEVEMENTS.map((a) => `${a.label}${a.value.toLocaleString("ja-JP")}${a.unit}`).join("、")}（${ACHIEVEMENTS_NOTE}）`}
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
       <div className="ds-hero__below">
-        <div className="ds-hero__offer">
-          <dl className="ds-hero__price" aria-label="料金">
-            {HERO_PRICES.map((p) => (
-              <div key={p.label} className={p.pre ? "is-fee" : undefined}>
-                <dt>{p.label}</dt>
-                <dd>{p.pre && <small>{p.pre}</small>}<b>{p.num}</b>{p.unit}</dd>
-              </div>
-            ))}
-          </dl>
-          <div className="ds-hero__cta"><ScoutCta location="hero" /></div>
-        </div>
+        <dl className="ds-hero__price" aria-label="料金">
+          {HERO_PRICES.map((p) => (
+            <div key={p.label} className={p.pre ? "is-fee" : undefined}>
+              <dt>{p.label}</dt>
+              <dd>{p.pre && <small>{p.pre}</small>}<b>{p.num}</b>{p.unit}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="ds-hero__cta"><ScoutCta location="hero" /></div>
       </div>
     </section>
   );

@@ -88,7 +88,6 @@ export function StickyCta() {
 
   return (
     <div className={`dt-sticky${hidden ? " is-hidden" : ""}`} aria-hidden={hidden}>
-      <p className="ds-sticky__operator">元ドライバーが運営するドライバー転職サービス</p>
       <a
         href={CTA_HREF}
         className="dt-btn dt-btn--lg dt-sticky__btn"
