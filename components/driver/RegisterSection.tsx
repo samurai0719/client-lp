@@ -6,6 +6,7 @@ import {
   birthYearOptions,
   isValidEmail,
   normalizeDriverPhone,
+  TOTAL_STEPS,
   type DriverContact,
 } from './questions';
 
@@ -62,7 +63,7 @@ export default function RegisterSection({ contact, onChange, onSubmit }: Registe
       {/* 見出し */}
       <div className="text-center mb-6">
         <p className="text-[10px] font-bold tracking-[0.2em] text-blue-500 uppercase mb-2">
-          STEP 7 / 7
+          STEP {TOTAL_STEPS} / {TOTAL_STEPS}
         </p>
         <h2 className="text-xl font-bold text-slate-800 leading-snug">
           診断が完了しました

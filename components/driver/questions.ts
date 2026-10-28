@@ -8,8 +8,8 @@
  * 1ステップに2問ある・複数選択がある、ため番号では表せないためです。
  */
 
-/** 全ステップ数。STEP7 が連絡先入力（登録） */
-export const TOTAL_STEPS = 7;
+/** 全ステップ数。最後のステップが連絡先入力（登録） */
+export const TOTAL_STEPS = 6;
 
 // ── 選択肢 ──────────────────────────────────────────────────
 
@@ -29,18 +29,6 @@ export const LICENSES = [
   'その他',
 ] as const;
 export const DRIVER_EXPERIENCES = ['未経験', '1年未満', '1〜3年', '3〜5年', '5〜10年', '10年以上'] as const;
-export const EXPERIENCED_VEHICLES = [
-  '軽貨物、軽車両',
-  '2t、小型トラック',
-  '4t、中型トラック',
-  '大型トラック',
-  'トレーラー',
-  'ダンプ',
-  'タクシー',
-  'バス、送迎',
-  '経験なし',
-  'その他',
-] as const;
 export const DESIRED_JOB_TYPES = [
   '軽貨物、宅配',
   '小型トラック',
@@ -56,7 +44,6 @@ export const DESIRED_JOB_TYPES = [
   '特に決めていない',
 ] as const;
 export const EMPLOYMENT_STATUSES = ['ドライバーとして在職中', '別の仕事で在職中', '離職中', 'アルバイト、派遣、学生', 'その他'] as const;
-export const EMPLOYMENT_TYPES = ['正社員', '契約社員', 'パート、アルバイト', '業務委託', 'こだわらない'] as const;
 export const DESIRED_AREAS = [
   '現在の住所周辺',
   '北海道、東北',
@@ -80,15 +67,12 @@ export const PRIORITIES = [
   '資格取得支援がほしい',
   '特に決めていない',
 ] as const;
-export const PRIORITIES_MAX = 3;
 export const DESIRED_SALARIES = ['300万円未満', '300〜400万円', '400〜500万円', '500〜600万円', '600万円以上', 'まだ決めていない'] as const;
 export const CONTACT_TIMES = ['いつでも', '平日 午前（9〜12時）', '平日 午後（12〜17時）', '平日 夕方以降（17〜20時）', '土日・祝日'] as const;
 
 /** 選ぶと他の選択を外す選択肢（複数選択の質問） */
 export const EXCLUSIVE_CHOICES = {
-  experiencedVehicles: '経験なし',
   desiredJobTypes: '特に決めていない',
-  priorities: '特に決めていない',
 } as const;
 
 export const PREFECTURES = [
@@ -119,16 +103,14 @@ export type DriverAnswers = {
   desiredTiming: string;
   licenses: string[];
   driverExperience: string;
-  experiencedVehicles: string[];
   desiredJobTypes: string[];
   employmentStatus: string;
-  desiredEmploymentType: string;
   postalCode: string;
   currentPrefecture: string;
   currentCity: string;
   desiredArea: string;
   desiredPrefecture: string;
-  priorities: string[];
+  topPriority: string;
   desiredSalary: string;
 };
 
@@ -137,16 +119,14 @@ export const EMPTY_ANSWERS: DriverAnswers = {
   desiredTiming: '',
   licenses: [],
   driverExperience: '',
-  experiencedVehicles: [],
   desiredJobTypes: [],
   employmentStatus: '',
-  desiredEmploymentType: '',
   postalCode: '',
   currentPrefecture: '',
   currentCity: '',
   desiredArea: '',
   desiredPrefecture: '',
-  priorities: [],
+  topPriority: '',
   desiredSalary: '',
 };
 
@@ -174,16 +154,14 @@ export const ANSWER_LABELS: Record<keyof DriverAnswers, string> = {
   desiredTiming: '転職希望時期',
   licenses: 'お持ちの免許',
   driverExperience: 'ドライバー経験',
-  experiencedVehicles: '運転経験のある車両',
   desiredJobTypes: '希望する仕事',
   employmentStatus: '現在の状況',
-  desiredEmploymentType: '希望する雇用形態',
   postalCode: '郵便番号',
   currentPrefecture: 'お住まいの都道府県',
   currentCity: 'お住まいの市区町村',
   desiredArea: '希望勤務エリア',
   desiredPrefecture: '希望勤務地（都道府県）',
-  priorities: '転職先で重視すること',
+  topPriority: '転職先で最も重視すること',
   desiredSalary: '希望年収',
 };
 
@@ -192,10 +170,14 @@ export const ANSWER_LABELS: Record<keyof DriverAnswers, string> = {
  * ここに無い項目名（旧LPの回答など）は後ろに元の順で出す。
  */
 export const ANSWER_DISPLAY_ORDER: string[] = [
-  ...Object.values(ANSWER_LABELS).slice(0, 8),
+  ...Object.values(ANSWER_LABELS).slice(0, 6),
   '生まれ年',
-  ...Object.values(ANSWER_LABELS).slice(8),
+  ...Object.values(ANSWER_LABELS).slice(6),
   '連絡希望時間帯',
+  // 以前の診断（2026-10-28 まで）にあった質問。過去の登録者の表示用
+  '運転経験のある車両',
+  '希望する雇用形態',
+  '転職先で重視すること',
 ];
 
 /** 回答を「表示名 → 文字列」に並べる（未回答は省く。複数選択は「、」区切りではなく「／」区切り） */
@@ -233,13 +215,11 @@ export function isStepComplete(step: number, a: DriverAnswers): boolean {
     case 2:
       return a.licenses.length > 0 && Boolean(a.driverExperience);
     case 3:
-      return a.experiencedVehicles.length > 0 && a.desiredJobTypes.length > 0;
+      return a.desiredJobTypes.length > 0 && Boolean(a.employmentStatus);
     case 4:
-      return Boolean(a.employmentStatus && a.desiredEmploymentType);
-    case 5:
       return Boolean(a.currentPrefecture) && Boolean(a.desiredArea);
-    case 6:
-      return a.priorities.length > 0 && Boolean(a.desiredSalary);
+    case 5:
+      return Boolean(a.topPriority && a.desiredSalary);
     default:
       return true;
   }
@@ -262,10 +242,8 @@ export function sanitizeAnswers(raw: unknown): DriverAnswers {
     desiredTiming: one(r.desiredTiming, DESIRED_TIMINGS),
     licenses: many(r.licenses, LICENSES),
     driverExperience: one(r.driverExperience, DRIVER_EXPERIENCES),
-    experiencedVehicles: many(r.experiencedVehicles, EXPERIENCED_VEHICLES),
     desiredJobTypes: many(r.desiredJobTypes, DESIRED_JOB_TYPES),
     employmentStatus: one(r.employmentStatus, EMPLOYMENT_STATUSES),
-    desiredEmploymentType: one(r.desiredEmploymentType, EMPLOYMENT_TYPES),
     postalCode: (() => {
       const p = normalizePostalCode(text(r.postalCode, 10));
       return p.length === 7 ? p : '';
@@ -274,7 +252,7 @@ export function sanitizeAnswers(raw: unknown): DriverAnswers {
     currentCity: text(r.currentCity, 60),
     desiredArea,
     desiredPrefecture: one(r.desiredPrefecture, AREA_PREFECTURES[desiredArea] ?? []),
-    priorities: many(r.priorities, PRIORITIES).slice(0, PRIORITIES_MAX),
+    topPriority: one(r.topPriority, PRIORITIES),
     desiredSalary: one(r.desiredSalary, DESIRED_SALARIES),
   };
 }

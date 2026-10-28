@@ -27,6 +27,31 @@ const BADGES = ['✓ 未経験歓迎', '✓ 資格取得支援あり', '✓ 高�
  *   ローカル画像に差し替える場合は FV_IMAGE_SRC を
  *   "/images/driver/fv.png" に変更し、public/images/driver/ に画像を配置してください。
  */
+/** FV画像の右下に王冠つきで重ねる実績（数字は運営者の実績。変えるときは根拠を確認すること） */
+const FV_ACHIEVEMENTS = [
+  { sub: '累計応募者数', main: '2,000人以上', size: 'text-[8.6cqw]' },
+  { sub: 'ドラテクは', main: '元大型ドライバーが運営', size: 'text-[7cqw]' },
+];
+
+/** 王冠マーク（金） */
+function CrownIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-[10cqw] w-[10cqw] shrink-0">
+      <path
+        d="M3 8.5l4.2 3.6L12 5l4.8 7.1L21 8.5l-1.7 9.5H4.7L3 8.5z"
+        fill="#f5b800"
+        stroke="#b07a00"
+        strokeWidth="1"
+        strokeLinejoin="round"
+      />
+      <rect x="4.7" y="18.6" width="14.6" height="2.2" rx="0.6" fill="#d99a00" />
+      <circle cx="12" cy="4.4" r="1.4" fill="#f5b800" />
+      <circle cx="2.8" cy="8" r="1.2" fill="#f5b800" />
+      <circle cx="21.2" cy="8" r="1.2" fill="#f5b800" />
+    </svg>
+  );
+}
+
 const FV_IMAGE_SRC =
   'https://static.wixstatic.com/media/5ebda9_99d3d0d773514fa1acce476635216af6~mv2.png';
 
@@ -79,12 +104,31 @@ export default function HeroSection({ motivation, desiredTiming, onMotivation, o
            object-cover で強制クロップせず、画像全体を崩さずに見せる。
            グラデーション背景は画像読み込み失敗時のフォールバック。
       */}
-      <div className="w-full bg-gradient-to-br from-blue-900 to-blue-600">
+      <div className="relative w-full bg-gradient-to-br from-blue-900 to-blue-600">
         <img
           src={FV_IMAGE_SRC}
           alt="ドラテク トラックドライバー求人 メインビジュアル"
           className="w-full h-auto block"
         />
+
+        {/* ── 実績バッジ（王冠） ──
+             画像右下（運転席の窓・腕のあたり）に重ねる。画像の文字や顔にかからない位置。
+             画像の幅に合わせて文字も縮むよう、サイズは cqw（画像幅に対する割合）で指定。
+        */}
+        <ul className="absolute right-[2.5%] bottom-[5%] flex w-[47%] flex-col gap-[1.6cqw] [container-type:inline-size]" aria-label="ドラテクの実績">
+          {FV_ACHIEVEMENTS.map((a) => (
+            <li
+              key={a.main}
+              className="flex items-center gap-[2cqw] rounded-[3cqw] border border-amber-300/80 bg-white/92 px-[3cqw] py-[2cqw] shadow-[0_4px_14px_rgba(15,40,100,0.30)] backdrop-blur-sm"
+            >
+              <CrownIcon />
+              <span className="min-w-0 leading-[1.2]">
+                <span className="block text-[6.2cqw] font-bold text-slate-600">{a.sub}</span>
+                <span className={`block whitespace-nowrap ${a.size} font-black tracking-tight text-blue-800`}>{a.main}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* ── 訴求バッジ ── */}
@@ -99,6 +143,16 @@ export default function HeroSection({ motivation, desiredTiming, onMotivation, o
             </span>
           ))}
         </div>
+      </div>
+
+      {/* ── サービス紹介のミニセクション ── */}
+      <div className="border-b border-blue-100 bg-gradient-to-b from-blue-50 to-white px-4 py-4 text-center">
+        <p className="text-[15px] font-black leading-snug text-blue-800">
+          トラックドライバーの<span className="text-orange-500">逆採用</span>サービス！
+        </p>
+        <p className="mt-1 text-[13px] font-bold leading-snug text-slate-700">
+          あなたは<span className="bg-[linear-gradient(transparent_60%,#fde68a_60%)] px-0.5">企業からのスカウトを待つだけ！</span>
+        </p>
       </div>
 
       {/* ── Q1: あなたの今のお気持ちは？ ──

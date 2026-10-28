@@ -12,13 +12,10 @@ import {
   DESIRED_SALARIES,
   DRIVER_EXPERIENCES,
   EMPLOYMENT_STATUSES,
-  EMPLOYMENT_TYPES,
   EMPTY_ANSWERS,
   EMPTY_CONTACT,
   EXCLUSIVE_CHOICES,
-  EXPERIENCED_VEHICLES,
   PRIORITIES,
-  PRIORITIES_MAX,
   TOTAL_STEPS,
   isStepComplete,
   type DriverAnswers,
@@ -26,22 +23,21 @@ import {
 } from './questions';
 
 /**
- * step（全7ステップ・1ステップ1画面）:
+ * step（全6ステップ・1ステップ1画面）:
  *   1 = ファーストビュー + 今のお気持ち → 転職時期
  *   2 = 免許（複数） + ドライバー経験
- *   3 = 運転経験のある車両（複数） + 希望する仕事（複数）
- *   4 = 現在の状況 + 希望する雇用形態
- *   5 = 郵便番号（住所） + 希望勤務エリア
- *   6 = 重視すること（最大3つ） + 希望年収
- *   7 = 診断完了 + 連絡先入力（無料登録）
+ *   3 = 希望する仕事（複数） + 現在の状況
+ *   4 = 郵便番号（住所） + 希望勤務エリア
+ *   5 = 転職先で最も重視すること + 希望年収
+ *   6 = 診断完了 + 連絡先入力（無料登録）
  *
  * 単一選択だけのステップは、そのステップの回答が揃った時点で自動で次へ進む。
  * 複数選択・入力があるステップは「次へ進む」ボタン（または最後の単一選択）で進む。
  * 戻る（画面の戻る・ブラウザの戻る）でも回答と入力内容は消さない。
  */
-type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+type Step = 1 | 2 | 3 | 4 | 5 | 6;
 
-type MultiKey = 'licenses' | 'experiencedVehicles' | 'desiredJobTypes' | 'priorities';
+type MultiKey = 'licenses' | 'desiredJobTypes';
 
 /** 流入計測。最初に開いたときの URL から取る（ステップを進めても変わらない） */
 type Attribution = {
@@ -70,9 +66,8 @@ function readAttribution(): Attribution {
 /** 1ページに2問あるステップの、最初の質問のキー（答えたら2問目へ自動でスクロールする） */
 const FIRST_QUESTION: Partial<Record<Step, keyof DriverAnswers>> = {
   2: 'licenses',
-  3: 'experiencedVehicles',
-  4: 'employmentStatus',
-  6: 'priorities',
+  3: 'desiredJobTypes',
+  5: 'topPriority',
 };
 
 /**
@@ -84,8 +79,7 @@ const SINGLE_SCROLL_DELAY = 30;
 
 const MISSING_MESSAGE: Record<number, string> = {
   2: 'お持ちの免許とドライバー経験を選んでください',
-  3: '運転経験のある車両と希望する仕事を選んでください',
-  6: '重視することと希望年収を選んでください',
+  3: '希望する仕事と現在の状況を選んでください',
 };
 
 export default function DriverContent() {
@@ -94,7 +88,6 @@ export default function DriverContent() {
   const [contact, setContact] = useState<DriverContact>(EMPTY_CONTACT);
   const [done, setDone] = useState(false);
   const [stepError, setStepError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
   const attribution = useRef<Attribution | null>(null);
   const secondQuestion = useRef<HTMLDivElement>(null);
   const scrollTimer = useRef<number | undefined>(undefined);
@@ -137,7 +130,6 @@ export default function DriverContent() {
   const goTo = useCallback((next: Step) => {
     window.clearTimeout(scrollTimer.current);
     setStepError(null);
-    setNotice(null);
     setStep(next);
     window.history.pushState({ ...window.history.state, driverStep: next }, '');
   }, []);
@@ -157,27 +149,18 @@ export default function DriverContent() {
   /** 複数選択を切り替える。「経験なし」「特に決めていない」は他と同時に選べない。重視することは最大3つ */
   const toggle = (key: MultiKey, value: string) => {
     setStepError(null);
-    setNotice(null);
     const current = answers[key];
     const exclusive = EXCLUSIVE_CHOICES[key as keyof typeof EXCLUSIVE_CHOICES];
     let next: string[];
     if (current.includes(value)) next = current.filter((v) => v !== value);
     else if (exclusive && value === exclusive) next = [value];
-    else {
-      const without = exclusive ? current.filter((v) => v !== exclusive) : current;
-      if (key === 'priorities' && without.length >= PRIORITIES_MAX) {
-        setNotice(`重視することは${PRIORITIES_MAX}つまで選べます`);
-        return;
-      }
-      next = [...without, value];
-    }
+    else next = [...(exclusive ? current.filter((v) => v !== exclusive) : current), value];
     setAnswers((prev) => ({ ...prev, [key]: next }));
 
     // 1問目で選んだとき（外したときは動かさない）は2問目へ。
-    // 「経験なし」「特に決めていない」や上限まで選んだときは、それ以上選ばないのですぐ移る
+    // 「特に決めていない」はそれ以上選ばないので、すぐ移る
     if (FIRST_QUESTION[step] === key && next.includes(value)) {
-      const finished = (exclusive && value === exclusive) || (key === 'priorities' && next.length >= PRIORITIES_MAX);
-      scrollToSecond(finished ? SINGLE_SCROLL_DELAY : MULTI_SCROLL_DELAY);
+      scrollToSecond(exclusive && value === exclusive ? SINGLE_SCROLL_DELAY : MULTI_SCROLL_DELAY);
     }
   };
 
@@ -257,21 +240,19 @@ export default function DriverContent() {
                   <QuestionCard
                     index={1}
                     mode="multi"
-                    question="運転経験のある車両を教えてください"
+                    question="希望する仕事を教えてください"
                     hint="複数選択できます"
-                    choices={options(EXPERIENCED_VEHICLES)}
-                    values={answers.experiencedVehicles}
-                    onToggle={(v) => toggle('experiencedVehicles', v)}
+                    choices={options(DESIRED_JOB_TYPES)}
+                    values={answers.desiredJobTypes}
+                    onToggle={(v) => toggle('desiredJobTypes', v)}
                   />
                   <div ref={secondQuestion} className="scroll-mt-28">
                     <QuestionCard
                       index={2}
-                      mode="multi"
-                      question="希望する仕事を教えてください"
-                      hint="複数選択できます"
-                      choices={options(DESIRED_JOB_TYPES)}
-                      values={answers.desiredJobTypes}
-                      onToggle={(v) => toggle('desiredJobTypes', v)}
+                      question="現在の状況を教えてください"
+                      choices={options(EMPLOYMENT_STATUSES)}
+                      value={answers.employmentStatus}
+                      onSelect={(v) => answerOne('employmentStatus', v)}
                     />
                   </div>
                   <NextButton error={stepError} onClick={tryNext} />
@@ -280,45 +261,20 @@ export default function DriverContent() {
 
               {step === 4 && (
                 <StepSection stepNumber={4} totalSteps={TOTAL_STEPS}>
-                  <QuestionCard
-                    index={1}
-                    question="現在の状況を教えてください"
-                    choices={options(EMPLOYMENT_STATUSES)}
-                    value={answers.employmentStatus}
-                    onSelect={(v) => answerOne('employmentStatus', v)}
-                  />
-                  <div ref={secondQuestion} className="scroll-mt-28">
-                    <QuestionCard
-                      index={2}
-                      question="希望する雇用形態を教えてください"
-                      choices={options(EMPLOYMENT_TYPES)}
-                      value={answers.desiredEmploymentType}
-                      onSelect={(v) => answerOne('desiredEmploymentType', v)}
-                    />
-                  </div>
+                  <LocationStep answers={answers} onChange={changeLocation} onNext={() => goTo(5)} />
                 </StepSection>
               )}
 
               {step === 5 && (
                 <StepSection stepNumber={5} totalSteps={TOTAL_STEPS}>
-                  <LocationStep answers={answers} onChange={changeLocation} onNext={() => goTo(6)} />
-                </StepSection>
-              )}
-
-              {step === 6 && (
-                <StepSection stepNumber={6} totalSteps={TOTAL_STEPS}>
-                  <div>
-                    <QuestionCard
-                      index={1}
-                      mode="multi"
-                      question="転職先で重視することを教えてください"
-                      hint={`${PRIORITIES_MAX}つまで選べます`}
-                      choices={options(PRIORITIES)}
-                      values={answers.priorities}
-                      onToggle={(v) => toggle('priorities', v)}
-                    />
-                    {notice && <p role="status" className="mt-2 text-center text-xs font-bold text-orange-600">{notice}</p>}
-                  </div>
+                  <QuestionCard
+                    index={1}
+                    question="転職先で最も重視することを教えてください"
+                    hint="ひとつ選んでください"
+                    choices={options(PRIORITIES)}
+                    value={answers.topPriority}
+                    onSelect={(v) => answerOne('topPriority', v)}
+                  />
                   <div ref={secondQuestion} className="scroll-mt-28">
                     <QuestionCard
                       index={2}
@@ -328,11 +284,10 @@ export default function DriverContent() {
                       onSelect={(v) => answerOne('desiredSalary', v)}
                     />
                   </div>
-                  <NextButton error={stepError} onClick={tryNext} />
                 </StepSection>
               )}
 
-              {step === 7 && (
+              {step === 6 && (
                 <RegisterSection contact={contact} onChange={(p) => setContact((prev) => ({ ...prev, ...p }))} onSubmit={submit} />
               )}
             </>

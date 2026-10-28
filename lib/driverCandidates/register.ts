@@ -43,11 +43,7 @@ export function registrationToRow(r: DriverRegistration) {
 
   // 希望勤務地：都道府県まで選んでいればそれ、「現在の住所周辺」ならお住まいの都道府県
   const desiredPrefecture = a.desiredPrefecture || (a.desiredArea === "現在の住所周辺" ? a.currentPrefecture : "") || null;
-  const vehicles = a.experiencedVehicles.filter((v) => v !== "経験なし");
-  const experience =
-    [a.driverExperience && `ドライバー経験 ${a.driverExperience}`, vehicles.length > 0 && `（${vehicles.join("・")}）`]
-      .filter(Boolean)
-      .join("") || null;
+  const experience = a.driverExperience ? `ドライバー経験 ${a.driverExperience}` : null;
 
   return {
     full_name: r.name,
