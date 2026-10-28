@@ -13,8 +13,9 @@ interface ChoiceButtonProps {
   /**
    * 'card' = 縦型 (画像上 + テキスト下・中央寄せ) → グリッド2列に適している
    * 'list' = 横型 (画像左 + テキスト中 + 矢印右)   → スタック1列に適している
+   * 'text' = 画像なしの文字だけのカード            → 選択肢が多い質問のグリッド2列に適している
    */
-  cardLayout?: 'card' | 'list';
+  cardLayout?: 'card' | 'list' | 'text';
   /** 複数選択モード用: true のとき選択済み状態の見た目になります */
   selected?: boolean;
   className?: string;
@@ -162,10 +163,24 @@ export default function ChoiceButton({
     </div>
   );
 
-  const inner = cardLayout === 'card' ? cardInner : listInner;
+  /* ────────────────────────────────────────────────────
+     文字だけのカード (cardLayout='text')
+     押せる範囲は card と同じく横幅いっぱい・高さ 56px 以上を確保する
+  ──────────────────────────────────────────── */
+  const textInner = (
+    <div className="flex min-h-[56px] items-center justify-center px-2 py-2.5 text-center">
+      {selected && <CheckBadge />}
+      <div className={selected ? 'px-3' : ''}>
+        <span className={labelCls}>{label}</span>
+        {subLabel && <span className={subLabelCls}>{subLabel}</span>}
+      </div>
+    </div>
+  );
+
+  const inner = cardLayout === 'card' ? cardInner : cardLayout === 'text' ? textInner : listInner;
 
   return (
-    <button type="button" onClick={onClick} className={baseWrapper}>
+    <button type="button" onClick={onClick} aria-pressed={selected} className={baseWrapper}>
       {inner}
     </button>
   );

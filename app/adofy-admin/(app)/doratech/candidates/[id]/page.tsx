@@ -17,6 +17,7 @@ import {
   type CandidateRow,
 } from "@/lib/driverCandidates/admin";
 import CandidateForm from "../CandidateForm";
+import { ANSWER_DISPLAY_ORDER } from "@/components/driver/questions";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "ドラテク 求職者の詳細｜adofy 管理画面" };
@@ -37,7 +38,11 @@ export default async function CandidateDetailPage({ params }: { params: Promise<
     .eq("candidate_id", id)
     .order("created_at", { ascending: false });
   const requests = (reqData ?? []) as { id: string; company_name: string; status: RequestStatus; created_at: string; outcome?: string | null }[];
-  const answers = Object.entries(c.answers ?? {});
+  const rank = (k: string) => {
+    const i = ANSWER_DISPLAY_ORDER.indexOf(k);
+    return i === -1 ? ANSWER_DISPLAY_ORDER.length : i;
+  };
+  const answers = Object.entries(c.answers ?? {}).sort(([a], [b]) => rank(a) - rank(b));
 
   return (
     <AdofyAdminShell>
@@ -68,7 +73,7 @@ export default async function CandidateDetailPage({ params }: { params: Promise<
                   {answers.map(([k, val]) => (
                     <div key={k} className="py-1.5">
                       <dt className="text-xs font-bold text-slate-500">{k}</dt>
-                      <dd className="text-slate-900">{val}</dd>
+                      <dd className="text-slate-900">{Array.isArray(val) ? val.join(" ／ ") : String(val)}</dd>
                     </div>
                   ))}
                 </dl>

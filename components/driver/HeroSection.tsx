@@ -1,15 +1,26 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+import QuestionCard from './QuestionCard';
+import { DESIRED_TIMINGS, TOTAL_STEPS } from './questions';
+
 interface HeroSectionProps {
-  onAnswer: (answer: string) => void;
+  /** 質問1（今のお気持ち）の回答 */
+  motivation: string;
+  /** 質問2（転職時期）の回答 */
+  desiredTiming: string;
+  onMotivation: (answer: string) => void;
+  /** 転職時期を選んだら親が STEP2 へ進める */
+  onTiming: (answer: string) => void;
 }
 
 const BADGES = ['✓ 未経験歓迎', '✓ 資格取得支援あり', '✓ 高収入求人あり'];
 
 /**
- * ファーストビュー + Q1 セクション。
- * 1問目の回答後は DriverContent 側で step を進めることで
- * このコンポーネントごと非表示になります。
+ * ファーストビュー + STEP1（今のお気持ち → 転職時期）。
+ * 今のお気持ちを選ぶと、同じページの下に転職時期の質問が出てスクロールします。
+ * 転職時期を選ぶと DriverContent 側で STEP2 へ進み、このコンポーネントは非表示になります。
+ * 戻るボタンで STEP1 に戻ったときは、選んだ回答が選択済みの見た目で残ります。
  *
  * 画像差し替え:
  *   現在は Wixstatic の URL を直接参照しています。
@@ -19,7 +30,21 @@ const BADGES = ['✓ 未経験歓迎', '✓ 資格取得支援あり', '✓ 高�
 const FV_IMAGE_SRC =
   'https://static.wixstatic.com/media/5ebda9_99d3d0d773514fa1acce476635216af6~mv2.png';
 
-export default function HeroSection({ onAnswer }: HeroSectionProps) {
+export default function HeroSection({ motivation, desiredTiming, onMotivation, onTiming }: HeroSectionProps) {
+  const timingRef = useRef<HTMLDivElement>(null);
+  const prevMotivation = useRef(motivation);
+
+  // 今のお気持ちを（新しく）選んだら、転職時期の質問までスクロールする
+  useEffect(() => {
+    if (motivation && motivation !== prevMotivation.current) {
+      timingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    prevMotivation.current = motivation;
+  }, [motivation]);
+
+  const ring = (label: string) =>
+    motivation === label ? ' ring-4 ring-blue-300 ring-offset-2' : motivation ? ' opacity-70' : '';
+
   return (
     <section className="w-full bg-white">
 
@@ -90,6 +115,9 @@ export default function HeroSection({ onAnswer }: HeroSectionProps) {
             あなたの今のお気持ちは？
           </h2>
           <p className="text-[11px] text-slate-400 mt-1">あてはまるものを選んでください</p>
+          <p className="mt-2 inline-block rounded-full bg-blue-50 px-3 py-0.5 text-[11px] font-bold text-blue-600">
+            STEP 1 / {TOTAL_STEPS}・あと{TOTAL_STEPS - 1}ステップ
+          </p>
         </div>
 
         {/* ── CTA ボタン ──
@@ -102,13 +130,14 @@ export default function HeroSection({ onAnswer }: HeroSectionProps) {
           {/* プライマリ: 今すぐ転職したい */}
           <button
             type="button"
-            onClick={() => onAnswer('今すぐ転職したい')}
-            className="group w-full rounded-2xl transition-all duration-150 active:scale-[0.97]
+            onClick={() => onMotivation('今すぐ転職したい')}
+            aria-pressed={motivation === '今すぐ転職したい'}
+            className={`group w-full rounded-2xl transition-all duration-150 active:scale-[0.97]
               bg-gradient-to-br from-blue-600 to-blue-800
               hover:from-blue-500 hover:to-blue-700
               shadow-[0_6px_22px_rgba(29,78,216,0.38)]
               hover:shadow-[0_8px_28px_rgba(29,78,216,0.50)]
-              text-white px-5 py-6"
+              text-white px-5 py-6${ring('今すぐ転職したい')}`}
           >
             <div className="flex items-center justify-between gap-3">
               <div className="text-left">
@@ -128,13 +157,14 @@ export default function HeroSection({ onAnswer }: HeroSectionProps) {
           {/* セカンダリ: まずは情報収集したい */}
           <button
             type="button"
-            onClick={() => onAnswer('まずは情報収集したい')}
-            className="group w-full rounded-2xl transition-all duration-150 active:scale-[0.97]
+            onClick={() => onMotivation('まずは情報収集したい')}
+            aria-pressed={motivation === 'まずは情報収集したい'}
+            className={`group w-full rounded-2xl transition-all duration-150 active:scale-[0.97]
               bg-gradient-to-br from-sky-400 to-sky-600
               hover:from-sky-300 hover:to-sky-500
               shadow-[0_4px_16px_rgba(14,165,233,0.30)]
               hover:shadow-[0_6px_22px_rgba(14,165,233,0.44)]
-              text-white px-5 py-5"
+              text-white px-5 py-5${ring('まずは情報収集したい')}`}
           >
             <div className="flex items-center justify-between gap-3">
               <div className="text-left">
@@ -153,6 +183,19 @@ export default function HeroSection({ onAnswer }: HeroSectionProps) {
 
         </div>
         {/* 「※ 無料・登録不要でご確認いただけます」削除済み */}
+
+        {/* 転職時期: 今のお気持ちを選ぶと表示。選ぶと STEP2 へ */}
+        {motivation && (
+          <div ref={timingRef} className="mt-8 scroll-mt-4 border-t border-slate-100 pt-7">
+            <QuestionCard
+              index={2}
+              question="いつ頃の転職を考えていますか？"
+              choices={DESIRED_TIMINGS.map((label) => ({ label }))}
+              value={desiredTiming}
+              onSelect={onTiming}
+            />
+          </div>
+        )}
 
       </div>
     </section>

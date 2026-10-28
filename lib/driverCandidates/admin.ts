@@ -4,7 +4,9 @@
  */
 import { normalizeEmail, normalizePhone } from "@/lib/types/driverScoutApply";
 
-export { SCOUT_JOB_TYPES as CANDIDATE_JOB_TYPES, SCOUT_LICENSES as CANDIDATE_LICENSES } from "@/lib/types/driverScoutApply";
+// 免許・希望の仕事の選択肢は求職者LP（/driver）の診断と同じものを使う。
+// これ以外の値（旧LPの回答・手入力）が入っている人は、編集画面でその値も選択肢として出す。
+export { DESIRED_JOB_TYPES as CANDIDATE_JOB_TYPES, LICENSES as CANDIDATE_LICENSES } from "@/components/driver/questions";
 
 // ── 求職者 ───────────────────────────────────────────────────
 
@@ -55,7 +57,8 @@ export type CandidateRow = {
   landing_page: string | null;
   is_test?: boolean;
   source?: string | null;
-  answers?: Record<string, string> | null;
+  /** 登録時の回答（項目名 → 回答）。旧形式・新形式とも同じ形。念のため配列も受ける */
+  answers?: Record<string, string | string[]> | null;
   comment?: string | null;
   staff_memo?: string | null;
   created_at: string;

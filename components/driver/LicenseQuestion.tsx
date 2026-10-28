@@ -1,95 +1,41 @@
-import ChoiceButton from './ChoiceButton';
+import QuestionCard, { type Choice } from './QuestionCard';
+import { LICENSES } from './questions';
 
-const LICENSE_CHOICES = [
-  {
-    value: 'at-mt-normal',
-    label: 'AT/MT普通',
-    subLabel: '(H29/3以降)',
-    imageSrc: 'https://static.wixstatic.com/media/5ebda9_1b40937d390f4c40bd3b01f9c487bec1~mv2.png',
-  },
-  {
-    value: 'at-semi-mid-5t',
-    label: 'AT準中型',
-    subLabel: '(5t限定)',
-    imageSrc: 'https://static.wixstatic.com/media/5ebda9_6177120472e6466c801931e292e20f3d~mv2.png',
-  },
-  {
-    value: 'at-mid-8t',
-    label: 'AT中型',
-    subLabel: '(8t限定)',
-    imageSrc: 'https://static.wixstatic.com/media/5ebda9_92dbd8da3a9c4f88be9f8561b4cdaa8e~mv2.png',
-  },
-  {
-    value: 'mt-semi-mid-5t',
-    label: 'MT準中型',
-    subLabel: '(5t限定)',
-    imageSrc: 'https://static.wixstatic.com/media/5ebda9_b2cdfd4e1f0446a7809fba3eb8e10c8e~mv2.png',
-  },
-  {
-    value: 'semi-mid',
-    label: '準中型免許',
-    imageSrc: 'https://static.wixstatic.com/media/5ebda9_cb8f0d0787b34430bbbdf18d0313561d~mv2.png',
-  },
-  {
-    value: 'mt-mid-8t',
-    label: 'MT中型',
-    subLabel: '(8t限定)',
-    imageSrc: 'https://static.wixstatic.com/media/5ebda9_e41191b102a041a2a70ef914602699f4~mv2.png',
-  },
-  {
-    value: 'mid',
-    label: '中型免許',
-    imageSrc: 'https://static.wixstatic.com/media/5ebda9_9c78e2426c274f158dbe958336166be8~mv2.png',
-  },
-  {
-    value: 'large',
-    label: '大型免許',
-    imageSrc: 'https://static.wixstatic.com/media/5ebda9_e0bebf481ece4a009278382a9eff777f~mv2.png',
-  },
-];
+/**
+ * 免許の選択肢と画像。表示順と保存する値は questions.ts の LICENSES に合わせる。
+ * 画像未用意の免許（けん引・フォークリフト・第二種・その他）は ChoiceButton のプレースホルダー表示。
+ * 画像を用意したら imageSrc: '/images/driver/license-towing.png' のように追加してください。
+ */
+const LICENSE_IMAGES: Partial<Record<(typeof LICENSES)[number], Omit<Choice, 'label'>>> = {
+  '普通免許（AT）': { imageSrc: 'https://static.wixstatic.com/media/5ebda9_1b40937d390f4c40bd3b01f9c487bec1~mv2.png' },
+  '普通免許（MT）': { imageSrc: 'https://static.wixstatic.com/media/5ebda9_1b40937d390f4c40bd3b01f9c487bec1~mv2.png' },
+  準中型5t限定: { imageSrc: 'https://static.wixstatic.com/media/5ebda9_6177120472e6466c801931e292e20f3d~mv2.png' },
+  準中型免許: { imageSrc: 'https://static.wixstatic.com/media/5ebda9_cb8f0d0787b34430bbbdf18d0313561d~mv2.png' },
+  中型8t限定: { imageSrc: 'https://static.wixstatic.com/media/5ebda9_92dbd8da3a9c4f88be9f8561b4cdaa8e~mv2.png' },
+  中型免許: { imageSrc: 'https://static.wixstatic.com/media/5ebda9_9c78e2426c274f158dbe958336166be8~mv2.png' },
+  大型免許: { imageSrc: 'https://static.wixstatic.com/media/5ebda9_e0bebf481ece4a009278382a9eff777f~mv2.png' },
+};
+
+const LICENSE_CHOICES: Choice[] = LICENSES.map((label) => ({ label, ...LICENSE_IMAGES[label] }));
 
 interface LicenseQuestionProps {
-  stepNumber: number;
-  /** 全ステップ数 (StepHeader と同期) */
-  totalSteps?: number;
-  /** 選択したら呼ばれる */
-  onSelect?: (answer: string) => void;
+  index?: number;
+  values: string[];
+  onToggle: (license: string) => void;
 }
 
-export default function LicenseQuestion({
-  stepNumber,
-  totalSteps = 7,
-  onSelect,
-}: LicenseQuestionProps) {
+/** 免許（複数選択）。従来の画像つき免許カードの見た目のまま、押すたびに選択/解除する */
+export default function LicenseQuestion({ index, values, onToggle }: LicenseQuestionProps) {
   return (
-    <section className="px-5 py-8 animate-fade-in">
-
-      <div className="text-center mb-6">
-        <p className="text-[10px] font-bold tracking-[0.2em] text-blue-500 uppercase mb-2">
-          STEP {stepNumber} / {totalSteps}
-        </p>
-        <h2 className="text-xl font-bold text-slate-800 leading-snug">
-          どんな免許をお持ちですか？
-        </h2>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        {LICENSE_CHOICES.map((c) => (
-          <ChoiceButton
-            key={c.value}
-            label={c.label}
-            subLabel={c.subLabel}
-            imageSrc={c.imageSrc}
-            cardLayout="card"
-            onClick={
-              onSelect
-                ? () => onSelect(c.subLabel ? `${c.label}${c.subLabel}` : c.label)
-                : undefined
-            }
-          />
-        ))}
-      </div>
-
-    </section>
+    <QuestionCard
+      index={index}
+      mode="multi"
+      question="お持ちの免許を教えてください"
+      hint="複数選択できます"
+      choices={LICENSE_CHOICES}
+      variant="card"
+      values={values}
+      onToggle={onToggle}
+    />
   );
 }

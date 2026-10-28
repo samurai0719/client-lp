@@ -30,6 +30,11 @@ const EMPTY: CandidateValues = {
   staffMemo: "",
 };
 
+/** 選択肢に、いま入っている値（旧LPの回答など選択肢に無いもの）を足す */
+function withCurrent(options: readonly string[], current: string[]): string[] {
+  return [...options, ...current.filter((c) => !options.includes(c))];
+}
+
 /**
  * 求職者の登録・編集。上段は企業に見せる匿名プロフィール、下段は運営だけが見る個人情報。
  * 「公開中」にすると企業向けの求職者一覧（scout）に匿名で載る。
@@ -129,13 +134,13 @@ export default function CandidateForm({ id, initial }: { id?: string; initial?: 
         </div>
         <p className={`${label} mt-3`}>免許</p>
         <div className="flex flex-wrap gap-1.5">
-          {CANDIDATE_LICENSES.map((l) => (
+          {withCurrent(CANDIDATE_LICENSES, v.licenses).map((l) => (
             <button key={l} type="button" className={chip(v.licenses.includes(l))} onClick={() => toggle("licenses", l)}>{l}</button>
           ))}
         </div>
         <p className={`${label} mt-3`}>希望の仕事</p>
         <div className="flex flex-wrap gap-1.5">
-          {CANDIDATE_JOB_TYPES.map((l) => (
+          {withCurrent(CANDIDATE_JOB_TYPES, v.desiredJobTypes).map((l) => (
             <button key={l} type="button" className={chip(v.desiredJobTypes.includes(l))} onClick={() => toggle("desiredJobTypes", l)}>{l}</button>
           ))}
         </div>
