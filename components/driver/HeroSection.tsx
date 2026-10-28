@@ -146,12 +146,16 @@ export default function HeroSection({ motivation, desiredTiming, onMotivation, o
       </div>
 
       {/* ── サービス紹介のミニセクション ── */}
-      <div className="border-b border-blue-100 bg-gradient-to-b from-blue-50 to-white px-4 py-4 text-center">
-        <p className="text-[15px] font-black leading-snug text-blue-800">
-          トラックドライバーの<span className="text-orange-500">逆採用</span>サービス！
+      <div className="border-b border-blue-100 bg-gradient-to-b from-blue-50 to-white px-4 py-6 text-center">
+        <p className="text-[21px] min-[400px]:text-[23px] font-black leading-snug tracking-tight text-blue-800">
+          トラックドライバーの
+          <br />
+          <span className="text-[26px] min-[400px]:text-[29px] text-orange-500">逆採用</span>サービス！
         </p>
-        <p className="mt-1 text-[13px] font-bold leading-snug text-slate-700">
-          あなたは<span className="bg-[linear-gradient(transparent_60%,#fde68a_60%)] px-0.5">企業からのスカウトを待つだけ！</span>
+        <p className="mt-3 text-[16px] min-[400px]:text-[17px] font-bold leading-snug text-slate-700">
+          あなたは
+          <br />
+          <span className="bg-[linear-gradient(transparent_60%,#fde68a_60%)] px-0.5 whitespace-nowrap">企業からのスカウトを待つだけ！</span>
         </p>
       </div>
 
