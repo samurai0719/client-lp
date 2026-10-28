@@ -39,7 +39,7 @@ export default async function DoratechPostingPage({ params }: { params: Promise<
   return (
     <AdofyAdminShell>
       <div className="p-4 sm:p-6">
-        <Link href="/adofy-admin/doratech" className="mb-3 inline-flex items-center text-sm font-bold text-blue-700">
+        <Link href="/adofy-admin/doratech/postings" className="mb-3 inline-flex items-center text-sm font-bold text-blue-700">
           <ChevronLeft className="h-4 w-4" />
           一覧へ戻る
         </Link>

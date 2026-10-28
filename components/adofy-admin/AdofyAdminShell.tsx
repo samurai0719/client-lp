@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LayoutDashboard, LifeBuoy, LogOut, Mail, MessageSquare, Palette, Truck, CalendarCheck } from "lucide-react";
+import { LayoutDashboard, LifeBuoy, LogOut, Mail, MessageSquare, Palette, Truck } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
 
@@ -67,14 +67,7 @@ export default function AdofyAdminShell({ children }: { children: React.ReactNod
               className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-2 text-sm font-bold text-amber-700 hover:bg-amber-50"
             >
               <Truck className="h-4 w-4" />
-              ドラテク
-            </Link>
-            <Link
-              href="/adofy-admin/doratech/interviews"
-              className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-2 text-sm font-bold text-amber-700 hover:bg-amber-50"
-            >
-              <CalendarCheck className="h-4 w-4" />
-              ドラテク面接希望
+              ドラテク管理
             </Link>
             <Link
               href="/adofy-admin/outreach"

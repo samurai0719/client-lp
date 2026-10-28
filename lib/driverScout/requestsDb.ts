@@ -33,6 +33,15 @@ export type RequestRow = {
   company_notified_status: string | null;
   created_at: string;
   updated_at: string;
+  // 採用結果・成功報酬（migration 017。未適用の間は列が無い）
+  outcome?: "hired" | "not_hired" | null;
+  hired_at?: string | null;
+  joined_at?: string | null;
+  annual_salary?: number | null;
+  fee_amount?: number | null;
+  invoiced_at?: string | null;
+  paid_at?: string | null;
+  billing_memo?: string | null;
 };
 
 /** 表・列がまだ無い（migration 016 未適用）ときのエラーか */

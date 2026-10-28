@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import AdofyAdminShell from "@/components/adofy-admin/AdofyAdminShell";
+import DoratechNav from "@/components/doratech-admin/DoratechNav";
 import { getAuthorizedLeadsDb } from "@/lib/saiyoRescue/adminAccess";
 import { formatJst } from "@/lib/saiyoRescue/leads";
 import { REQUEST_STATUSES, STATUS_LABEL, type RequestStatus } from "@/lib/driverScout/requests";
@@ -28,13 +29,8 @@ export default async function InterviewRequestsPage({ searchParams }: { searchPa
   return (
     <AdofyAdminShell>
       <div className="p-4 sm:p-6">
-        <div className="mb-4 flex flex-wrap items-center gap-2">
-          <span className="rounded-md bg-amber-100 px-2 py-1 text-xs font-black text-amber-800">ドラテク</span>
-          <h1 className="text-xl font-bold text-slate-900">面接希望（連絡・日程調整の依頼）</h1>
-          <Link href="/adofy-admin/doratech" className="ml-auto text-sm font-bold text-slate-500 hover:text-slate-800">
-            企業・求人登録へ
-          </Link>
-        </div>
+        <DoratechNav current="interviews" />
+        <h1 className="mb-4 text-xl font-bold text-slate-900">面接希望（連絡・日程調整の依頼）</h1>
 
         {error && (
           <p className="mb-4 rounded-lg bg-rose-50 p-3 text-sm text-rose-700">

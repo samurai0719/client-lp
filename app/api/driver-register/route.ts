@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { QUESTION_LABELS } from '@/components/driver/questions';
+import { saveDriverRegistration } from '@/lib/driverCandidates/register';
 
 /**
  * ドラテク（ドライバー求人・転職サービス）の無料登録受付。
- * 診断7問の回答とお客様情報を運営宛にメール通知します。
+ * 診断7問の回答とお客様情報を driver_candidates に保存し（企業には非公開の「確認待ち」）、運営宛にメール通知します。
+ * 管理画面：/adofy-admin/doratech/candidates
  */
 export async function POST(req: Request) {
   try {
@@ -23,6 +25,20 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    const url = new URL(req.url);
+    const referer = req.headers.get('referer');
+    const refUrl = referer ? new URL(referer) : null;
+    const db = await saveDriverRegistration({
+      name,
+      phone,
+      email,
+      comment,
+      answers,
+      utmSource: refUrl?.searchParams.get('utm_source') ?? url.searchParams.get('utm_source'),
+      utmCampaign: refUrl?.searchParams.get('utm_campaign') ?? url.searchParams.get('utm_campaign'),
+      landingPage: refUrl ? `${refUrl.host}${refUrl.pathname}` : null,
+    });
 
     const answersText = Object.keys(QUESTION_LABELS)
       .map(Number)
@@ -57,6 +73,9 @@ export async function POST(req: Request) {
       '',
       '━━━━━━━━━━━━━━━━━━━━━━━━',
       `送信日時：${now}`,
+      db.saved
+        ? `管理画面：https://www.adofy-site.com/adofy-admin/doratech/candidates${db.existing ? '（登録済みの方の再登録）' : ''}`
+        : '※ DBへの保存に失敗しました。この内容を管理画面へ手で登録してください。',
       '━━━━━━━━━━━━━━━━━━━━━━━━',
     ].join('\n');
 
@@ -66,7 +85,7 @@ export async function POST(req: Request) {
 
     if (!apiKey) {
       console.warn('[driver-register] RESEND_API_KEY is not set — skipping email in dev');
-      return NextResponse.json({ success: true, dev: true });
+      return NextResponse.json({ success: true, dev: true, saved: db.saved });
     }
 
     const resend = new Resend(apiKey);
@@ -80,6 +99,8 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error('[driver-register] Resend error:', error);
+      // DBに保存できていれば登録は受け付けられている（管理画面で確認できる）
+      if (db.saved) return NextResponse.json({ success: true });
       return NextResponse.json({ error: 'メール送信に失敗しました' }, { status: 500 });
     }
 

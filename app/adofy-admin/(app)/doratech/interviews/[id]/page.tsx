@@ -8,6 +8,9 @@ import { STATUS_LABEL } from "@/lib/driverScout/requests";
 import { REQUEST_STATUS_STYLE } from "@/lib/driverScout/adminStyle";
 import { statusUrl, type RequestRow } from "@/lib/driverScout/requestsDb";
 import RequestEditor from "./RequestEditor";
+import OutcomeEditor from "./OutcomeEditor";
+import DoratechNav from "@/components/doratech-admin/DoratechNav";
+import { MIGRATION_017_MESSAGE } from "@/lib/driverCandidates/admin";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "ドラテク 面接希望の詳細｜adofy 管理画面" };
@@ -54,6 +57,7 @@ export default async function InterviewRequestDetail({ params }: { params: Promi
   return (
     <AdofyAdminShell>
       <div className="p-4 sm:p-6">
+        <DoratechNav current="interviews" />
         <Link href="/adofy-admin/doratech/interviews" className="mb-3 inline-flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-slate-800">
           <ChevronLeft className="h-4 w-4" />
           面接希望の一覧
@@ -73,6 +77,11 @@ export default async function InterviewRequestDetail({ params }: { params: Promi
             <Row k="メール" v={r.email} />
             <Row k="所在地" v={`${r.prefecture ?? ""}${r.city ?? ""}`} />
             <Row k="契約" v={contracted ? "契約済み" : "未契約（サービス説明・契約の案内が必要）"} />
+            {r.company_inquiry_id && (
+              <Link href={`/adofy-admin/doratech/companies/${r.company_inquiry_id}`} className="mt-2 inline-block text-sm font-bold text-blue-700 hover:underline">
+                企業の詳細を開く（契約・メモ）
+              </Link>
+            )}
             <Row k="受付" v={formatJst(r.created_at)} />
             <Row k="受付状況ページ" v={statusUrl(r.public_token)} />
           </Box>
@@ -86,6 +95,9 @@ export default async function InterviewRequestDetail({ params }: { params: Promi
                 <Row k="年代・希望勤務地" v={`${c.age_band ?? ""} ${c.desired_prefecture ?? ""}${c.desired_area ? ` ${c.desired_area}` : ""}`} />
                 <Row k="免許・経験" v={`${(c.licenses ?? []).join("・")} ／ ${c.experience ?? ""}`} />
                 <Row k="公開状態" v={`${c.status}${c.is_test ? "（テスト用）" : ""}`} />
+                <Link href={`/adofy-admin/doratech/candidates/${r.candidate_id}`} className="mt-2 inline-block text-sm font-bold text-blue-700 hover:underline">
+                  求職者の詳細を開く
+                </Link>
               </>
             ) : (
               <p className="text-sm text-slate-500">求職者の情報を読み込めませんでした。</p>
@@ -114,6 +126,21 @@ export default async function InterviewRequestDetail({ params }: { params: Promi
               hasCompany={Boolean(r.company_inquiry_id)}
             />
           </div>
+
+          <OutcomeEditor
+            id={r.id}
+            disabled={"outcome" in r ? undefined : MIGRATION_017_MESSAGE}
+            initial={{
+              outcome: r.outcome ?? "",
+              hiredAt: r.hired_at ?? "",
+              joinedAt: r.joined_at ?? "",
+              annualSalary: r.annual_salary != null ? String(r.annual_salary) : "",
+              feeAmount: r.fee_amount != null ? String(r.fee_amount) : "",
+              invoicedAt: r.invoiced_at ?? "",
+              paidAt: r.paid_at ?? "",
+              billingMemo: r.billing_memo ?? "",
+            }}
+          />
         </div>
       </div>
     </AdofyAdminShell>
