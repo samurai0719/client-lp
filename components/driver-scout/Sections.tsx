@@ -225,10 +225,10 @@ export function DriverOperated() {
         loop
         playsInline
         preload="metadata"
-        poster="/images/saiyo-rescue/ad-levjob-driver.webp"
+        poster="/images/driver-scout/operator-driving-poster.webp"
         aria-hidden="true"
       >
-        <source src="/videos/saiyo-rescue/levjob-driver.mp4" type="video/mp4" />
+        <source src="/videos/driver-scout/operator-driving.mp4" type="video/mp4" />
       </video>
       <div className="ds-driver-operated__overlay" aria-hidden="true" />
       <div className="dt-container">
