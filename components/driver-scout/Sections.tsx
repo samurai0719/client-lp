@@ -138,7 +138,7 @@ export function Hero() {
       <div className="ds-hero__stage">
         <div className="ds-hero__copy">
           <p className="ds-hero__audience">愛知県の運送会社さま向け</p>
-          <p className="ds-hero__brand">{SERVICE_NAME}<span>{SERVICE_KIND}</span></p>
+          <p className="ds-hero__brand"><b>{SERVICE_NAME}</b><span>{SERVICE_KIND}</span></p>
           <h1 className="ds-hero__headline" id="ds-hero-title">
             <span>人が残り続ける</span><span>ドライバー<span className="ds-hero__blue">採用。</span></span>
           </h1>
