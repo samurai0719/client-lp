@@ -67,6 +67,18 @@ function readAttribution(): Attribution {
   };
 }
 
+/** 1ページに2問あるステップの、最初の質問のキー（答えたら2問目へ自動でスクロールする） */
+const FIRST_QUESTION: Partial<Record<Step, keyof DriverAnswers>> = {
+  2: 'licenses',
+  3: 'experiencedVehicles',
+  4: 'employmentStatus',
+  6: 'priorities',
+};
+
+/** 複数選択の最初の質問は、続けて選べるよう、最後に押してから少し待ってから2問目へ移る */
+const MULTI_SCROLL_DELAY = 1200;
+const SINGLE_SCROLL_DELAY = 250;
+
 const MISSING_MESSAGE: Record<number, string> = {
   2: 'お持ちの免許とドライバー経験を選んでください',
   3: '運転経験のある車両と希望する仕事を選んでください',
@@ -81,6 +93,18 @@ export default function DriverContent() {
   const [stepError, setStepError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const attribution = useRef<Attribution | null>(null);
+  const secondQuestion = useRef<HTMLDivElement>(null);
+  const scrollTimer = useRef<number | undefined>(undefined);
+
+  /** 同じページの2問目へスクロールする（待っている間にもう一度呼ばれたら待ち直す） */
+  const scrollToSecond = useCallback((delay: number) => {
+    window.clearTimeout(scrollTimer.current);
+    scrollTimer.current = window.setTimeout(() => {
+      secondQuestion.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, delay);
+  }, []);
+
+  useEffect(() => () => window.clearTimeout(scrollTimer.current), []);
 
   useEffect(() => {
     attribution.current = readAttribution();
@@ -89,6 +113,7 @@ export default function DriverContent() {
     const onPop = (e: PopStateEvent) => {
       const s = (e.state as { driverStep?: number } | null)?.driverStep;
       setStepError(null);
+      window.clearTimeout(scrollTimer.current);
       setStep(s && s >= 1 && s <= TOTAL_STEPS ? (s as Step) : 1);
       window.scrollTo({ top: 0 });
     };
@@ -97,6 +122,7 @@ export default function DriverContent() {
   }, []);
 
   const goTo = useCallback((next: Step) => {
+    window.clearTimeout(scrollTimer.current);
     setStepError(null);
     setNotice(null);
     setStep(next);
@@ -113,6 +139,7 @@ export default function DriverContent() {
     setAnswers(next);
     setStepError(null);
     if (isStepComplete(step, next) && step < TOTAL_STEPS) goTo((step + 1) as Step);
+    else if (FIRST_QUESTION[step] === key) scrollToSecond(SINGLE_SCROLL_DELAY);
   };
 
   /** 複数選択を切り替える。「経験なし」「特に決めていない」は他と同時に選べない。重視することは最大3つ */
@@ -133,6 +160,13 @@ export default function DriverContent() {
       next = [...without, value];
     }
     setAnswers((prev) => ({ ...prev, [key]: next }));
+
+    // 1問目で選んだとき（外したときは動かさない）は2問目へ。
+    // 「経験なし」「特に決めていない」や上限まで選んだときは、それ以上選ばないのですぐ移る
+    if (FIRST_QUESTION[step] === key && next.includes(value)) {
+      const finished = (exclusive && value === exclusive) || (key === 'priorities' && next.length >= PRIORITIES_MAX);
+      scrollToSecond(finished ? SINGLE_SCROLL_DELAY : MULTI_SCROLL_DELAY);
+    }
   };
 
   const tryNext = () => {
@@ -194,13 +228,15 @@ export default function DriverContent() {
               {step === 2 && (
                 <StepSection stepNumber={2} totalSteps={TOTAL_STEPS}>
                   <LicenseQuestion index={1} values={answers.licenses} onToggle={(v) => toggle('licenses', v)} />
-                  <QuestionCard
-                    index={2}
-                    question="ドライバー経験はどのくらいありますか？"
-                    choices={options(DRIVER_EXPERIENCES)}
-                    value={answers.driverExperience}
-                    onSelect={(v) => answerOne('driverExperience', v)}
-                  />
+                  <div ref={secondQuestion} className="scroll-mt-28">
+                    <QuestionCard
+                      index={2}
+                      question="ドライバー経験はどのくらいありますか？"
+                      choices={options(DRIVER_EXPERIENCES)}
+                      value={answers.driverExperience}
+                      onSelect={(v) => answerOne('driverExperience', v)}
+                    />
+                  </div>
                   <NextButton error={stepError} onClick={tryNext} />
                 </StepSection>
               )}
@@ -216,15 +252,17 @@ export default function DriverContent() {
                     values={answers.experiencedVehicles}
                     onToggle={(v) => toggle('experiencedVehicles', v)}
                   />
-                  <QuestionCard
-                    index={2}
-                    mode="multi"
-                    question="希望する仕事を教えてください"
-                    hint="複数選択できます"
-                    choices={options(DESIRED_JOB_TYPES)}
-                    values={answers.desiredJobTypes}
-                    onToggle={(v) => toggle('desiredJobTypes', v)}
-                  />
+                  <div ref={secondQuestion} className="scroll-mt-28">
+                    <QuestionCard
+                      index={2}
+                      mode="multi"
+                      question="希望する仕事を教えてください"
+                      hint="複数選択できます"
+                      choices={options(DESIRED_JOB_TYPES)}
+                      values={answers.desiredJobTypes}
+                      onToggle={(v) => toggle('desiredJobTypes', v)}
+                    />
+                  </div>
                   <NextButton error={stepError} onClick={tryNext} />
                 </StepSection>
               )}
@@ -238,13 +276,15 @@ export default function DriverContent() {
                     value={answers.employmentStatus}
                     onSelect={(v) => answerOne('employmentStatus', v)}
                   />
-                  <QuestionCard
-                    index={2}
-                    question="希望する雇用形態を教えてください"
-                    choices={options(EMPLOYMENT_TYPES)}
-                    value={answers.desiredEmploymentType}
-                    onSelect={(v) => answerOne('desiredEmploymentType', v)}
-                  />
+                  <div ref={secondQuestion} className="scroll-mt-28">
+                    <QuestionCard
+                      index={2}
+                      question="希望する雇用形態を教えてください"
+                      choices={options(EMPLOYMENT_TYPES)}
+                      value={answers.desiredEmploymentType}
+                      onSelect={(v) => answerOne('desiredEmploymentType', v)}
+                    />
+                  </div>
                 </StepSection>
               )}
 
@@ -268,13 +308,15 @@ export default function DriverContent() {
                     />
                     {notice && <p role="status" className="mt-2 text-center text-xs font-bold text-orange-600">{notice}</p>}
                   </div>
-                  <QuestionCard
-                    index={2}
-                    question="希望する年収を教えてください"
-                    choices={options(DESIRED_SALARIES)}
-                    value={answers.desiredSalary}
-                    onSelect={(v) => answerOne('desiredSalary', v)}
-                  />
+                  <div ref={secondQuestion} className="scroll-mt-28">
+                    <QuestionCard
+                      index={2}
+                      question="希望する年収を教えてください"
+                      choices={options(DESIRED_SALARIES)}
+                      value={answers.desiredSalary}
+                      onSelect={(v) => answerOne('desiredSalary', v)}
+                    />
+                  </div>
                   <NextButton error={stepError} onClick={tryNext} />
                 </StepSection>
               )}

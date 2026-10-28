@@ -31,6 +31,10 @@ export default function LocationStep({ answers, onChange, onNext }: LocationStep
   const [manual, setManual] = useState(!answers.postalCode && Boolean(answers.currentPrefecture));
   const [error, setError] = useState<string | null>(null);
   const lastLooked = useRef(answers.postalCode);
+  const secondQuestion = useRef<HTMLDivElement>(null);
+  /** お住まいが決まったら、同じページの2問目（勤務エリア）へスクロールする */
+  const scrollToSecond = () =>
+    window.setTimeout(() => secondQuestion.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
 
   // 7桁そろったら住所を引く
   useEffect(() => {
@@ -54,6 +58,7 @@ export default function LocationStep({ answers, onChange, onNext }: LocationStep
         setLookup('found');
         setManual(false);
         setError(null);
+        scrollToSecond();
       })
       .catch(() => {
         if (cancelled) return;
@@ -154,6 +159,7 @@ export default function LocationStep({ answers, onChange, onNext }: LocationStep
               onChange={(e) => {
                 onChange({ currentPrefecture: e.target.value, currentCity: answers.postalCode ? answers.currentCity : '' });
                 setError(null);
+                if (e.target.value) scrollToSecond();
               }}
               className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-base text-slate-800 shadow-sm focus:border-blue-500 focus:outline-none"
             >
@@ -169,7 +175,7 @@ export default function LocationStep({ answers, onChange, onNext }: LocationStep
       </div>
 
       {/* 質問2：希望勤務エリア */}
-      <div>
+      <div ref={secondQuestion} className="scroll-mt-28">
         <QuestionCard
           index={2}
           question="希望する勤務エリアを教えてください"
