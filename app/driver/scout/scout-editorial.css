@@ -178,3 +178,81 @@
   background: #fff;
   box-shadow: 0 10px 26px rgba(22, 89, 224, 0.10);
 }
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   スマホ（〜767px）の仕上げ
+     ・見出しの番号と小見出しを横に並べ、見出しまわりの縦の長さを詰める
+     ・同じ形のカードが縦に続く所は、横にスワイプして見るカードにする（次のカードが少し見える）
+       ドラテクとは（3ステップ）／元ドライバーが運営（3つ）。実績の説明は注記まで一度に読めるよう縦のまま
+     ・利用の流れは「会社」「ドラテク」を色分けし、ラベルを左・文章を右にして1ステップの高さを抑える
+   文言・文字の大きさ・ボタンの形は変えない。
+   ═════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* 見出し：番号＋小見出しを1行に */
+  .ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results) .dt-head::before {
+    display: inline-block;
+    margin: 0 10px 0 0;
+    font-size: 44px;
+    vertical-align: middle;
+  }
+  .ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results) .dt-head__eyebrow {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+  .ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results) .dt-head__title {
+    margin-top: 14px;
+  }
+
+  /* 横スワイプのカード（共通） */
+  .ds-lp.ds-home :is(.ds-steps3, .ds-driver-operated__grid) {
+    display: flex;
+    gap: 12px;
+    margin-inline: -16px;
+    padding: 6px 16px 20px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ds-lp.ds-home :is(.ds-steps3, .ds-driver-operated__grid)::-webkit-scrollbar { display: none; }
+  .ds-lp.ds-home :is(.ds-steps3 > li, .ds-driver-operated__grid > li) {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+    margin: 0;
+  }
+
+  /* ドラテクとは：画像を上に大きく、文章を下に */
+  .ds-lp.ds-home .ds-steps3 > li {
+    grid-template-columns: 1fr;
+    align-content: start;
+    justify-items: stretch;
+    padding: 12px 16px 20px;
+  }
+  .ds-lp.ds-home .ds-steps3 > li + li::before { content: none; }
+  .ds-lp.ds-home .ds-steps3__art {
+    width: 100%;
+    height: 170px;
+    max-height: none;
+    margin: 0 0 12px;
+    object-fit: contain;
+    grid-row: auto;
+  }
+
+  /* 利用の流れ：会社・ドラテクを色分けし、ラベル左・文章右 */
+  .ds-lp.ds-home .ds-flow3__lanes { display: grid; gap: 6px; }
+  .ds-lp.ds-home .ds-flow3__lanes > div {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+    margin: 0;
+    padding: 9px 10px;
+    border-radius: 12px;
+    background: #f4f8fe;
+  }
+  .ds-lp.ds-home .ds-flow3__lanes > div.is-us { background: #eef8ea; }
+  .ds-lp.ds-home .ds-flow3__lanes dd { margin: 0; }
+}
