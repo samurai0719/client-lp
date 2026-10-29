@@ -4,17 +4,19 @@ import "../saiyo-rescue.css";
 import "./kensetsu.css";
 
 import {
-  Contact,
+  Delegate,
   FAQ,
+  FinalCta,
   Footer,
   Header,
   Hero,
+  Intro,
   Pricing,
   Problems,
+  Reasons,
   Results,
-  Services,
+  Retention,
   Steps,
-  Strengths,
 } from "@/components/saiyo-rescue-kensetsu/Sections";
 import StickyCta from "@/components/saiyo-rescue-kensetsu/StickyCta";
 import AttributionCapture from "@/components/saiyo-rescue/AttributionCapture";
@@ -55,6 +57,7 @@ export const viewport: Viewport = {
 /**
  * 採用レスキュー 建設業向けLP。
  * 公開URL：saiyo.adofy-site.com/kensetsu（next.config.ts の rewrite でこの物理ルートを配信）
+ * CTAはすべて匿名プロフィール一覧（/kensetsu/profiles）へ進む。フォームは一覧ページのライトボックスにある。
  */
 export default function SaiyoRescueKensetsuPage() {
   return (
@@ -68,14 +71,16 @@ export default function SaiyoRescueKensetsuPage() {
       <Header />
       <main>
         <Hero />
+        <Intro />
         <Problems />
+        <Reasons />
+        <Retention />
+        <Delegate />
         <Results />
-        <Services />
-        <Strengths />
         <Pricing />
         <Steps />
         <FAQ />
-        <Contact />
+        <FinalCta />
       </main>
       <Footer />
       <StickyCta />

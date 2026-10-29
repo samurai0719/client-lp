@@ -6,14 +6,15 @@ import { ArrowRight, LoaderCircle } from "lucide-react";
 import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
 import { loadAttribution } from "@/lib/saiyoRescue/attribution";
 import { PREFECTURES } from "@/lib/saiyoRescue/leads";
-import { CTA_LABEL, FORM_HIRE_COUNTS, FORM_JOB_TYPES } from "./config";
+import { FORM_HIRE_COUNTS, FORM_JOB_TYPES, FORM_SUBMIT_LABEL } from "./config";
 
 /**
- * 建設業向けLPの無料相談フォーム。
+ * 建設業の匿名プロフィール一覧から開く「面接希望（会社の無料登録）」フォーム。
  * 送信先・保存先・通知は採用レスキュー本体と共通（/api/saiyo-rescue-contact → saiyo_rescue_leads）。
  * plan: "kensetsu" を必ず付けて送り、管理画面・通知メールで建設業LP経由と識別できるようにする。
+ * どのカードから押されたか（候補者番号 / 表示例）は、相談内容の先頭に書いて残す。
  */
-export default function ContactForm() {
+export default function ContactForm({ candidate = null }: { candidate?: string | null }) {
   const router = useRouter();
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
@@ -33,8 +34,11 @@ export default function ContactForm() {
     setError("");
 
     const fd = new FormData(e.currentTarget);
+    const from = candidate ? `【面接希望】候補者 No.${candidate}` : "【会社の無料登録】表示例のカードから登録";
+    const note = String(fd.get("message") ?? "").trim();
     const payload = {
       ...Object.fromEntries(fd.entries()),
+      message: note ? `${from}\n\n${note}` : from,
       ...loadAttribution(),
       // 流入元（landing_page・utm）は本体LPと共通の保存値のまま送り、建設業LP経由かどうかは plan で識別する
       plan: "kensetsu",
@@ -136,12 +140,12 @@ export default function ContactForm() {
         </Field>
       </div>
 
-      <Field label="ご相談内容">
+      <Field label="仕事内容・求職者に確認したいこと">
         <textarea
           name="message"
           rows={4}
           maxLength={3000}
-          placeholder="例）足場の職人を2名採用したい。ハローワークに出しているが応募がない。など"
+          placeholder="例）足場の組立て（戸建て中心）。日給1.3万円〜。玉掛けの資格の有無と、通勤手段を聞いてほしい。など"
         />
       </Field>
 
@@ -167,7 +171,7 @@ export default function ContactForm() {
           </>
         ) : (
           <>
-            <span>{CTA_LABEL}</span>
+            <span>{FORM_SUBMIT_LABEL}</span>
             <ArrowRight className="sr-btn__arrow" aria-hidden="true" strokeWidth={2.6} />
           </>
         )}

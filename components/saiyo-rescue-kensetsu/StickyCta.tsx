@@ -6,8 +6,8 @@ import { CTA_HREF, CTA_LABEL } from "./config";
 
 /**
  * スマホ下部の固定CTA（PCでは非表示）。
- * ・ファーストビューのCTAが見えている間と、相談フォーム（#contact）以降が見えている間は隠す
- *   （同じボタンが二重に見えたり、フォームの入力・送信ボタンに重なったりしないため）
+ * ・ファーストビューのCTAが見えている間と、最終CTA（#final）・フッターが見えている間は隠す
+ *   （同じボタンが二重に見えたり、フッターの文字に重なったりしないため）
  * ・本文の末尾が隠れないよう、.sr-lp の padding-bottom で固定CTA分の余白を確保している
  */
 export default function StickyCta() {
@@ -16,7 +16,7 @@ export default function StickyCta() {
 
   useEffect(() => {
     const hero = document.querySelector(".ks-hero__cta");
-    const form = document.getElementById("contact");
+    const form = document.getElementById("final");
     const footer = document.querySelector(".sr-footer");
     const ios: IntersectionObserver[] = [];
 
@@ -25,7 +25,7 @@ export default function StickyCta() {
     if (hero) io.observe(hero);
     ios.push(io);
 
-    // フォームとフッターのどちらかが見えている間は隠す
+    // 最終CTAとフッターのどちらかが見えている間は隠す
     const seen = new Map<Element, boolean>();
     const io2 = new IntersectionObserver(
       (entries) => {

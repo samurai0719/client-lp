@@ -50,6 +50,7 @@ const adofyLpHosts = ["lp.adofy-site.com"];
 //     /admin           → /adofy-admin/saiyo-rescue（管理画面。adofy管理者のみ）
 //     /kensetsu        → /saiyo-rescue/kensetsu   （建設業向けLP）
 //     /kensetsu/thanks → /saiyo-rescue/kensetsu/thanks
+//     /kensetsu/profiles → /saiyo-rescue/kensetsu/profiles（建設業の匿名プロフィール一覧）
 // ─────────────────────────────────────────────────────────────────────────────
 const saiyoHosts = ["saiyo.adofy-site.com"];
 
@@ -248,6 +249,7 @@ const nextConfig: NextConfig = {
         { source: "/saiyo-rescue/thanks", has: [{ type: "host" as const, value: host }], destination: "/thanks", statusCode: 301 as const },
         { source: "/saiyo-rescue/kensetsu", has: [{ type: "host" as const, value: host }], destination: "/kensetsu", statusCode: 301 as const },
         { source: "/saiyo-rescue/kensetsu/thanks", has: [{ type: "host" as const, value: host }], destination: "/kensetsu/thanks", statusCode: 301 as const },
+        { source: "/saiyo-rescue/kensetsu/profiles", has: [{ type: "host" as const, value: host }], destination: "/kensetsu/profiles", statusCode: 301 as const },
       ]),
       // 候補者プロフィール検索LP：内部パスへの直アクセスは公開URLへ寄せる（重複URLを作らない）
       ...scoutHosts.flatMap((host) => [
@@ -344,6 +346,7 @@ const nextConfig: NextConfig = {
           { source: "/thanks", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/thanks" },
           { source: "/kensetsu", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/kensetsu" },
           { source: "/kensetsu/thanks", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/kensetsu/thanks" },
+          { source: "/kensetsu/profiles", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/kensetsu/profiles" },
         ]),
 
         // ── scout.adofy-site.com（候補者プロフィール検索LP） ─────────────
