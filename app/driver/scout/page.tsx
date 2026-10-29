@@ -9,6 +9,8 @@ import "./scout-saiyo.css";
 import "./scout-fv-theme.css";
 // セクションごとに見せ方を変える仕上げ（通し番号・道路標識・荷台の料金表など）
 import "./scout-editorial.css";
+// 建設業LPの完成度を基準に、物流ルート図・運行票・安全色で再設計した最終テーマ
+import "./scout-logistics-editorial.css";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { buildJsonLd, DESCRIPTION, OG_IMAGE, SITE_URL, TITLE } from "@/components/driver-scout/seo";
 import { getWaitingDriverCount } from "@/lib/driverCandidates/count";
