@@ -143,8 +143,8 @@ export function Hero() {
         <img
           className="ds-hero__img"
           src="/images/driver/scout/fv-pc.webp"
-          width={1586}
-          height={877}
+          width={1686}
+          height={933}
           alt={`運営者の実績：${ACHIEVEMENTS.map((a) => `${a.label}${a.value.toLocaleString("ja-JP")}${a.unit}`).join("、")}（${ACHIEVEMENTS_NOTE}）`}
           fetchPriority="high"
           loading="eager"

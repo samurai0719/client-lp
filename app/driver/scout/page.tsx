@@ -5,6 +5,8 @@ import ScoutShell from "@/components/driver-scout/Shell";
 // 演出の CSS は共通スタイル（Shell が読み込む）のあとに読む
 import "./scout-motion.css";
 import "./scout-saiyo.css";
+// FV（空・道・街並み）の世界観をLP全体にそろえる仕上げ。scout-saiyo.css のあとに読む
+import "./scout-fv-theme.css";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { buildJsonLd, DESCRIPTION, OG_IMAGE, SITE_URL, TITLE } from "@/components/driver-scout/seo";
 import { getWaitingDriverCount } from "@/lib/driverCandidates/count";

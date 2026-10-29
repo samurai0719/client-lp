@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 160" preserveAspectRatio="xMidYMax slice" fill="#d6e7fb">
+  <!-- 街並みと木（FVの背景の街のシルエット） -->
+  <path d="M0 160V120h40v-30h26v30h20V70h34v50h18V96h30v24h22V58h16V40h12v18h16v62h26v-34h40v34h18V80h30v40h24V100h22v20h30V64h40v56h20V90h28v30h36v-52h22V50h14v18h20v52h30v-28h34v28h22V76h44v44h18V96h26v24h40V60h18V44h10v16h18v60h24v-40h36v40h22V88h30v32h28V70h40v50h20V98h26v22h38V56h16V36h12v20h16v64h30v-30h34v30h24V84h36v36h20V100h24v20h42V66h38v54h22V92h28v28h40v40z"/>
+  <g fill="#c4dcf7">
+    <circle cx="90" cy="128" r="18"/><circle cx="118" cy="132" r="14"/>
+    <circle cx="430" cy="130" r="17"/><circle cx="456" cy="134" r="13"/>
+    <circle cx="790" cy="128" r="18"/><circle cx="816" cy="133" r="13"/>
+    <circle cx="1150" cy="129" r="17"/><circle cx="1176" cy="134" r="13"/>
+  </g>
+  <rect y="150" width="1440" height="10" fill="#c4dcf7"/>
+</svg>

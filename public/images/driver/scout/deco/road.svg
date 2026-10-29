@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" fill="none">
+  <!-- FVと同じ、空にのびる青い道（2本）とトラック・地図ピン -->
+  <path d="M-40 250 C 220 250, 300 120, 560 110 S 900 40, 1240 20" stroke="#cfe3fb" stroke-width="46" stroke-linecap="round"/>
+  <path d="M-40 250 C 220 250, 300 120, 560 110 S 900 40, 1240 20" stroke="#3a76e6" stroke-width="34" stroke-linecap="round"/>
+  <path d="M-40 250 C 220 250, 300 120, 560 110 S 900 40, 1240 20" stroke="#fff" stroke-width="3" stroke-dasharray="18 16" stroke-linecap="round"/>
+  <path d="M-40 290 C 260 300, 420 210, 700 196 S 1040 150, 1240 140" stroke="#e3effd" stroke-width="30" stroke-linecap="round"/>
+  <path d="M-40 290 C 260 300, 420 210, 700 196 S 1040 150, 1240 140" stroke="#8fb6f2" stroke-width="20" stroke-linecap="round"/>
+  <path d="M-40 290 C 260 300, 420 210, 700 196 S 1040 150, 1240 140" stroke="#fff" stroke-width="2" stroke-dasharray="12 12" stroke-linecap="round"/>
+  <g transform="translate(470 66)">
+    <rect x="0" y="6" width="58" height="30" rx="3" fill="#1f4fae"/>
+    <path d="M58 14h16l10 12v10H58z" fill="#2b62d1"/>
+    <path d="M62 17h10l6 8H62z" fill="#dbe9ff"/>
+    <circle cx="14" cy="38" r="6" fill="#0b2a5b"/><circle cx="14" cy="38" r="2.4" fill="#cfe3fb"/>
+    <circle cx="70" cy="38" r="6" fill="#0b2a5b"/><circle cx="70" cy="38" r="2.4" fill="#cfe3fb"/>
+  </g>
+  <g transform="translate(860 0)">
+    <path d="M18 0C8 0 0 8 0 18c0 13 18 32 18 32s18-19 18-32C36 8 28 0 18 0z" fill="#1659e0"/>
+    <circle cx="18" cy="18" r="7" fill="#fff"/>
+  </g>
+</svg>
