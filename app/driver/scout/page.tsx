@@ -7,6 +7,8 @@ import "./scout-motion.css";
 import "./scout-saiyo.css";
 // FV（空・道・街並み）の世界観をLP全体にそろえる仕上げ。scout-saiyo.css のあとに読む
 import "./scout-fv-theme.css";
+// セクションごとに見せ方を変える仕上げ（通し番号・道路標識・荷台の料金表など）
+import "./scout-editorial.css";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { buildJsonLd, DESCRIPTION, OG_IMAGE, SITE_URL, TITLE } from "@/components/driver-scout/seo";
 import { getWaitingDriverCount } from "@/lib/driverCandidates/count";

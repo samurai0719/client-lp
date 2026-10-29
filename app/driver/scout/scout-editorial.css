@@ -1,0 +1,169 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   セクションごとに見せ方を変える仕上げ（scout-fv-theme.css のあとに読む）。
+   どのセクションも「見出し→カード」の同じ見た目にならないよう、題材に合わせたモチーフを使い分ける。
+     ・見出しの上に、雑誌のような大きな通し番号（01〜）
+     ・小見出しは、水色ピル（通常）／緑の道路標識（連絡と日程調整・利用の流れ）／青の道路標識（料金）
+     ・お悩み：PCでは大小のカードを組み合わせたグリッド
+     ・使う理由：候補者カードを少し傾け、後ろに色の円を置いて奥行きを出す
+     ・採用費用の比較：配車表のような方眼の地
+     ・料金表：トラックの荷台に見立て、運転席と車輪をつける
+     ・利用の流れ：縦の線を配送ルート（点線）にする
+   文言・数値・リンク・文字の大きさ・ボタンの形は変えない。飾りはすべて疑似要素（読み上げ対象外）。
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── 見出しの上の大きな通し番号 ── */
+.ds-lp.ds-home { counter-reset: ds-sec; }
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results) .dt-head {
+  counter-increment: ds-sec;
+}
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results) .dt-head::before {
+  content: counter(ds-sec, decimal-leading-zero);
+  display: block;
+  margin-bottom: 4px;
+  color: transparent;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 56px;
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  -webkit-text-stroke: 1.5px #9cc0f5;
+}
+@media (min-width: 768px) {
+  .ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results) .dt-head::before {
+    font-size: 76px;
+  }
+}
+
+/* ── 小見出しを道路標識に（使いすぎないよう3か所だけ） ── */
+.ds-lp.ds-home :is(.ds-delegate, .ds-flow2, .ds-pricing2) .dt-head__eyebrow {
+  position: relative;
+  padding: 7px 18px;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  letter-spacing: 0.12em;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.95), 0 4px 10px rgba(11, 42, 91, 0.18);
+  outline: 3px solid currentColor;
+  outline-offset: -1px;
+}
+.ds-lp.ds-home :is(.ds-delegate, .ds-flow2) .dt-head__eyebrow { background: #2e8b3e; outline-color: #2e8b3e; }
+.ds-lp.ds-home .ds-pricing2 .dt-head__eyebrow { background: #1659e0; outline-color: #1659e0; }
+
+/* ── お悩み：PCは大小のカードを組み合わせる ── */
+@media (min-width: 1024px) {
+  .ds-lp.ds-home .ds-pgrid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px; }
+  .ds-lp.ds-home .ds-pgrid li:nth-child(1),
+  .ds-lp.ds-home .ds-pgrid li:nth-child(2) { grid-column: span 3; }
+  .ds-lp.ds-home .ds-pgrid li:nth-child(n + 3) {
+    grid-column: span 2;
+    width: auto;
+    justify-self: stretch;
+    flex-direction: column;
+  }
+  .ds-lp.ds-home .ds-pgrid li:nth-child(n + 3) .ds-pgrid__art { width: 100%; padding: 12px; }
+  .ds-lp.ds-home .ds-pgrid li:nth-child(n + 3) .ds-pgrid__copy {
+    width: 100%;
+    border-left: 0;
+    border-top: 1px dashed #dbe3ef;
+    justify-content: flex-start;
+  }
+  /* 大きい2枚は、色の帯で先頭の悩みを強調 */
+  .ds-lp.ds-home .ds-pgrid li:nth-child(-n + 2) {
+    background: linear-gradient(135deg, #ffffff 55%, #eef6ff 100%);
+  }
+}
+@media (hover: hover) {
+  .ds-lp.ds-home .ds-pgrid li,
+  .ds-lp.ds-home .ds-steps3 li {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .ds-lp.ds-home .ds-pgrid li:hover,
+  .ds-lp.ds-home .ds-steps3 li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(22, 89, 224, 0.16);
+  }
+}
+
+/* ── 使う理由：候補者カードに奥行き ── */
+.ds-lp.ds-home .ds-reason__screen { position: relative; isolation: isolate; }
+.ds-lp.ds-home .ds-reason__screen::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 78%;
+  aspect-ratio: 1;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-40%, -50%);
+  background: radial-gradient(circle at 35% 35%, #d7ecff 0%, #e9f5e4 60%, rgba(233, 245, 228, 0) 72%);
+}
+.ds-lp.ds-home .ds-reason.is-rev .ds-reason__screen::before { transform: translate(-60%, -50%); }
+@media (min-width: 1024px) {
+  .ds-lp.ds-home .ds-reason .ds-reason__screen > * { transform: rotate(-1.5deg); }
+  .ds-lp.ds-home .ds-reason.is-rev .ds-reason__screen > * { transform: rotate(1.5deg); }
+}
+
+/* ── 採用費用の比較：配車表のような方眼 ── */
+.ds-lp.ds-home .ds-compare {
+  background-color: #fff;
+  background-image:
+    linear-gradient(rgba(22, 89, 224, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 89, 224, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.ds-lp.ds-home .ds-compare::before { display: none; }
+.ds-lp.ds-home .ds-cmp { box-shadow: 0 16px 40px rgba(11, 42, 91, 0.12); }
+
+/* ── 料金表：トラックの荷台に見立てる ── */
+.ds-lp.ds-home .ds-pricing2 .ds-ptable { position: relative; margin-bottom: 44px; overflow: visible; }
+/* 枠の外に運転席と車輪を出すため overflow を外し、角の丸みは先頭・末尾の行で保つ */
+.ds-lp.ds-home .ds-pricing2 .ds-ptable > div:first-child { border-radius: 16px 16px 0 0; }
+.ds-lp.ds-home .ds-pricing2 .ds-ptable > div:last-child { border-radius: 0 0 16px 16px; }
+/* 荷台の下の車輪（後輪2つ） */
+.ds-lp.ds-home .ds-pricing2 .ds-ptable::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  bottom: -26px;
+  width: 200px;
+  height: 34px;
+  pointer-events: none;
+  background: url("/images/driver/scout/deco/wheels.svg") left center / auto 100% no-repeat;
+}
+@media (min-width: 900px) {
+  .ds-lp.ds-home .ds-pricing2 .ds-ptable { margin-right: 112px; border-bottom-right-radius: 0; }
+  .ds-lp.ds-home .ds-pricing2 .ds-ptable > div:last-child { border-bottom-right-radius: 0; }
+  /* 運転席：荷台の右下にくっつける。車輪の高さを後輪とそろえる */
+  .ds-lp.ds-home .ds-pricing2 .ds-ptable::before {
+    content: "";
+    position: absolute;
+    right: -112px;
+    bottom: -26px;
+    width: 112px;
+    height: 140px;
+    pointer-events: none;
+    background: url("/images/driver/scout/deco/truck-cab.svg") left bottom / 100% 100% no-repeat;
+  }
+}
+
+/* ── 利用の流れ：縦の線を配送ルート（点線）に ── */
+.ds-lp.ds-home .ds-flow3::before {
+  background: repeating-linear-gradient(180deg, #3a76e6 0 10px, transparent 10px 18px);
+  width: 4px;
+  border-radius: 2px;
+}
+.ds-lp.ds-home .ds-flow3__icon { box-shadow: 0 0 0 6px #eaf4ff; }
+
+/* ── 見出し下の道の線は、標識を使うセクションでは出さない（同じ飾りの繰り返しを減らす） ── */
+.ds-lp.ds-home :is(.ds-delegate, .ds-flow2, .ds-pricing2) .dt-head__title::after { display: none; }
+
+/* 白いセクション上部の道は、お悩み・実績だけに減らす */
+.ds-lp.ds-home :is(.ds-visible2, .ds-retention)::before { display: none; }
+.ds-lp.ds-home .ds-visible2 {
+  background:
+    radial-gradient(circle at 12% 18%, #e4f1ff 0, rgba(228, 241, 255, 0) 32%),
+    radial-gradient(circle at 88% 82%, #edf7e8 0, rgba(237, 247, 232, 0) 30%),
+    #fff;
+}
