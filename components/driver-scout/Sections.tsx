@@ -73,11 +73,29 @@ import { ScoutCta } from "./ui";
  * 文言はすべて ./content.ts。
  */
 
+/**
+ * 料金（初期費用0円・月額費用0円・採用決定時のみ想定年収の10％）。
+ * FVの下と、追従CTA以外のCTAの直前に同じものを置く。FV以外は白い枠つき（ds-price-strip）。
+ */
+function PriceStrip({ framed = false }: { framed?: boolean }) {
+  return (
+    <dl className={`ds-hero__price${framed ? " ds-price-strip" : ""}`} aria-label="料金">
+      {HERO_PRICES.map((p) => (
+        <div key={p.label} className={p.pre ? "is-fee" : undefined}>
+          <dt>{p.label}</dt>
+          <dd>{p.pre && <small>{p.pre}</small>}<b>{p.num}</b>{p.unit}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 /** 押す理由をボタンの直前に添えたCTA */
 function CtaBlock({ location, reason }: { location: string; reason: ReactNode }) {
   return (
     <div className="ds-ctabox">
       <p className="ds-ctabox__reason">{typeof reason === "string" ? <Breakable text={reason} /> : reason}</p>
+      <PriceStrip framed />
       <ScoutCta location={location} />
     </div>
   );
@@ -148,14 +166,7 @@ export function Hero() {
         />
       </picture>
       <div className="ds-hero__below">
-        <dl className="ds-hero__price" aria-label="料金">
-          {HERO_PRICES.map((p) => (
-            <div key={p.label} className={p.pre ? "is-fee" : undefined}>
-              <dt>{p.label}</dt>
-              <dd>{p.pre && <small>{p.pre}</small>}<b>{p.num}</b>{p.unit}</dd>
-            </div>
-          ))}
-        </dl>
+        <PriceStrip />
         <div className="ds-hero__cta"><ScoutCta location="hero" /></div>
       </div>
     </section>
@@ -801,6 +812,7 @@ export function FinalCta() {
         <p className="ds-final__body">
           <Rich text={FINAL_CTA.body} />
         </p>
+        <PriceStrip framed />
         <ScoutCta location="final" />
       </div>
     </section>

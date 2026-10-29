@@ -167,3 +167,14 @@
     radial-gradient(circle at 88% 82%, #edf7e8 0, rgba(237, 247, 232, 0) 30%),
     #fff;
 }
+
+/* ── 料金（0円・0円・10％）：数字は FV の「採用」と同じ緑。FV以外のCTAの前では白い枠つき ── */
+.ds-lp.ds-home .ds-hero__price b { color: #3c9e2e; }
+.ds-lp.ds-home .ds-price-strip {
+  margin: 18px auto 22px;
+  padding: 8px 4px;
+  border: 1px solid #d3e4fa;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 26px rgba(22, 89, 224, 0.10);
+}
