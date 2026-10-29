@@ -62,10 +62,6 @@ import {
   ProblemOwnerDrives,
   ProblemRepeat,
   ProblemTurnDown,
-  SceneChoose,
-  SceneContact,
-  SceneInterview,
-  SceneLook,
 } from "./illustrations";
 import AdVideo from "./AdVideo";
 import { ScoutCta } from "./ui";
@@ -168,7 +164,20 @@ export function Hero() {
 
 /* ═══════════════════════ 1. 何のサービスか ═══════════════════════ */
 
-const INTRO_SCENES = [SceneLook, SceneChoose, SceneContact];
+const INTRO_ARTWORKS = [
+  {
+    src: "/images/driver/scout/sections/candidate-discovery.webp",
+    alt: "愛知県内のドライバー候補者を見つけるイメージ",
+  },
+  {
+    src: "/images/driver/scout/sections/profile-screening.webp",
+    alt: "免許や経験などの候補者情報を確認するイメージ",
+  },
+  {
+    src: "/images/driver/scout/sections/direct-scout.webp",
+    alt: "運送会社とドライバーをドラテクがつなぐイメージ",
+  },
+] as const;
 
 export function Intro() {
   return (
@@ -177,10 +186,18 @@ export function Intro() {
         <SectionHead eyebrow="ドラテクとは" id="ds-intro-title" title={<Heading text={INTRO.title} />} />
         <ol className="ds-steps3" aria-label="利用の概要">
           {INTRO.steps.map((st, i) => {
-            const Scene = INTRO_SCENES[i];
+            const artwork = INTRO_ARTWORKS[i];
             return (
               <li key={st.title}>
-                <Scene className="ds-steps3__art" />
+                <img
+                  className="ds-steps3__art"
+                  src={artwork.src}
+                  width={1120}
+                  height={747}
+                  alt={artwork.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
                 <p className="ds-steps3__title">
                   <span className="ds-steps3__no">{i + 1}</span>
                   {st.title}
@@ -464,7 +481,15 @@ export function Retention() {
       <div className="dt-container dt-container--narrow">
         <SectionHead eyebrow="人が残る採用のために" id="ds-retention-title" title={<Breakable text={RETENTION.title} />} />
         <div className="ds-retention__top">
-          <SceneInterview className="ds-retention__art" />
+          <img
+            className="ds-retention__art"
+            src="/images/driver/scout/sections/interview-coordination.webp"
+            width={1120}
+            height={747}
+            alt="ドライバーへの連絡と面接日程を調整するイメージ"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
 
         <p className="ds-split__who">
@@ -761,6 +786,15 @@ export function FinalCta() {
   return (
     <section className="dt-section ds-final" aria-labelledby="ds-final-title">
       <div className="dt-container dt-container--narrow">
+        <img
+          className="ds-final__art"
+          src="/images/driver/scout/sections/hire-and-retention.webp"
+          width={1120}
+          height={747}
+          alt="運送会社とドライバーの採用成立を表すイメージ"
+          loading="lazy"
+          decoding="async"
+        />
         <h2 className="ds-final__title" id="ds-final-title">
           <Breakable text={FINAL_CTA.title} />
         </h2>
