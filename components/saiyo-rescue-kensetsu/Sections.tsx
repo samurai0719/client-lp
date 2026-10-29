@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode } from "react";
+import { Fragment, type ComponentType, type ReactNode } from "react";
 import { ArrowRight, Check, HardHat, MessageCircle } from "lucide-react";
 import CountUpNumber from "@/components/saiyo-rescue/CountUpNumber";
 import LegalOpener from "@/components/saiyo-rescue/LegalOpener";
@@ -45,6 +45,7 @@ import {
   STEPS,
   STRENGTHS,
   man,
+  plain,
   successFee,
   yen,
   type ProblemArt,
@@ -59,6 +60,20 @@ import {
  */
 
 /* ═══════════════════════ 共通部品 ═══════════════════════ */
+
+/** "|" を <wbr>（ここで改行してよい位置）に変換する。.ks-nowrap-word と組み合わせて使う */
+function W({ text }: { text: string }) {
+  return (
+    <>
+      {text.split("|").map((part, i) => (
+        <Fragment key={i}>
+          {i > 0 && <wbr />}
+          {part}
+        </Fragment>
+      ))}
+    </>
+  );
+}
 
 function CtaButton({ location, size = "lg", label = CTA_LABEL }: { location: string; size?: "sm" | "lg"; label?: string }) {
   return (
@@ -171,7 +186,7 @@ export function Hero() {
     <section className="ks-hero" id="hero" aria-labelledby="ks-hero-title">
       {/* 見出し・料金は画像に焼き込み済み。読み上げ・検索用にテキストでも持つ */}
       <h1 id="ks-hero-title" className="sr-visually-hidden">
-        {HERO.title.join("")} {HERO.body}
+        {HERO.title.join("")} {plain(HERO.body)}
       </h1>
       <picture className="ks-hero__visual">
         <source media="(max-width: 767px)" srcSet={HERO_IMAGE.sp} width={HERO_IMAGE.spW} height={HERO_IMAGE.spH} />
@@ -189,7 +204,7 @@ export function Hero() {
 
       <div className="sr-container ks-hero__inner">
         <div className="ks-hero__card">
-          <p className="ks-hero__body">{HERO.body}</p>
+          <p className="ks-hero__body"><W text={HERO.body} /></p>
           <ul className="ks-hero__trades" aria-label="対象の職種">
             {HERO.trades.map((t) => (
               <li key={t}>{t}</li>
@@ -249,7 +264,7 @@ export function Problems() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <Art className="ks-pcard__art" />
-                <h3 className="ks-pcard__title">{p.title}</h3>
+                <h3 className="ks-pcard__title"><W text={p.title} /></h3>
                 <p className="ks-pcard__body">{p.body}</p>
               </li>
             );
@@ -267,13 +282,20 @@ export function Problems() {
       <div className="ks-turn">
         <div className="sr-container">
           <p className="ks-turn__text">
-            人が足りないのは、会社の魅力がないからとは限りません。
+            人が足りないのは、
+            <wbr />
+            会社の魅力が
+            <wbr />
+            ないからとは
+            <wbr />
+            限りません。
             <br />
             <strong>
-              求職者に「届いていない」
-              <br className="sr-sp-only" />
-              「伝わっていない」
+              <span className="ks-chunk">求職者に</span>
+              <span className="ks-chunk">「届いていない」</span>
+              <span className="ks-chunk">「伝わっていない」</span>
             </strong>
+            <br />
             だけかもしれません。
           </p>
         </div>
@@ -348,7 +370,11 @@ export function Results() {
         </div>
 
         <div className="ks-others">
-          <h4 className="ks-others__title">建設業以外の職種での応募獲得実績</h4>
+          <h4 className="ks-others__title">
+            建設業以外の職種での
+            <wbr />
+            応募獲得実績
+          </h4>
           <p className="ks-others__lead">以下は建設業ではなく、看護師・ドライバー・薬剤師などの求人での実績です。</p>
           <div className="ks-table-wrap">
             <table className="ks-table">
@@ -389,9 +415,13 @@ export function Results() {
           location="results"
           lead={
             <>
-              自社の求人でも応募を集められるか、
+              自社の求人でも
+              <wbr />
+              応募を集められるか、
               <br />
-              まずは相談してみませんか？
+              まずは
+              <wbr />
+              相談してみませんか？
             </>
           }
         />
@@ -425,7 +455,7 @@ export function Services() {
               広告運用・改善まで
             </>
           }
-          lead="職人・現場スタッフからの応募獲得に向けて、次の4つをまとめてお手伝いします。"
+          lead={<W text="職人・現場スタッフからの|応募獲得に向けて、|次の4つを|まとめて|お手伝いします。" />}
         />
         <ol className="ks-services__grid">
           {SERVICES.map((s) => {
@@ -500,7 +530,7 @@ export function Strengths() {
           {STRENGTHS.map((s, i) => (
             <li key={s.title}>
               <span className="ks-strengths__no">{String(i + 1).padStart(2, "0")}</span>
-              <h3>{s.title}</h3>
+              <h3><W text={s.title} /></h3>
               <p>{s.body}</p>
             </li>
           ))}
@@ -634,7 +664,7 @@ export function Steps() {
                 {s.no}
               </span>
               <div className="ks-step__text">
-                <h3 className="ks-step__title">{s.title}</h3>
+                <h3 className="ks-step__title"><W text={s.title} /></h3>
                 <p className="ks-step__body">{s.body}</p>
               </div>
             </li>
@@ -644,7 +674,9 @@ export function Steps() {
           location="steps"
           lead={
             <>
-              まずは、今の求人の状況を
+              まずは、
+              <wbr />
+              今の求人の状況を
               <br className="sr-sp-only" />
               お聞かせください。
             </>
@@ -669,7 +701,7 @@ export function FAQ() {
                 <span className="ks-faq__q" aria-hidden="true">
                   Q
                 </span>
-                <span className="ks-faq__qtext">{f.q}</span>
+                <span className="ks-faq__qtext"><W text={f.q} /></span>
               </summary>
               <div className="ks-faq__answer">
                 <span className="ks-faq__a" aria-hidden="true">
@@ -700,12 +732,18 @@ export function Contact() {
         <h2 id="ks-contact-title" className="ks-contact__title">
           人が足りないまま、
           <br />
-          仕事を<span>断り続けますか？</span>
+          仕事を
+          <wbr />
+          <span>断り続けますか？</span>
         </h2>
         <p className="ks-contact__text">
-          職人・現場スタッフの採用について、
+          職人・現場スタッフの
+          <wbr />
+          採用について、
           <br className="sr-sp-only" />
-          まずは無料でご相談ください。
+          まずは
+          <wbr />
+          無料でご相談ください。
         </p>
         <CrewRelief className="ks-contact__art" />
         <PriceSummary invert />

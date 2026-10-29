@@ -47,6 +47,29 @@
   padding-bottom: 0;
 }
 
+/* ── 改行位置 ─────────────────────────────────────────
+   見出し・強調文は単語の途中で折り返さない（"|" → <wbr> の位置でだけ改行する）。
+   はみ出しそうなときだけ overflow-wrap で救済する。Chrome系は auto-phrase で文節単位にもなる */
+.ks-lp :where(.ks-head__title, .ks-head__lead, .ks-ctablock__lead, .ks-turn__text, .ks-contact__title,
+    .ks-contact__text, .ks-pcard__title, .ks-scard__title, .ks-strengths__list h3, .ks-step__title,
+    .ks-faq__qtext, .ks-form-card__title, .ks-hero__body, .ks-others__title, .ks-others__lead,
+    .ks-plan__badge, .ks-subhead) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+@supports (word-break: auto-phrase) {
+  .ks-lp :where(p, li, dd, td, th, summary) {
+    word-break: auto-phrase;
+  }
+}
+
+/* まとまりごと改行させたい語句（「届いていない」など） */
+.ks-chunk {
+  display: inline-block;
+}
+
 /* ── 線画イラストの配色（parts のブルー系 → オレンジ系） ── */
 .ks-lp svg [fill="#1659e0"] {
   fill: var(--ks-orange);
