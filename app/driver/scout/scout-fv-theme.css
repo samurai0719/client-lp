@@ -130,16 +130,6 @@
   color: var(--fv-green);
 }
 
-/* 小見出し → FV の「愛知県の運送会社向け」と同じ水色のピル */
-.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results) .dt-head__eyebrow {
-  display: inline-block;
-  padding: 6px 16px;
-  border: 1px solid #cfe2fb;
-  border-radius: 999px;
-  background: #e3f0ff;
-  color: var(--fv-blue);
-  font-weight: 800;
-}
 .ds-lp.ds-home .dt-head { text-align: center; }
 
 /* 見出しの下に、道とトラックの線 */
