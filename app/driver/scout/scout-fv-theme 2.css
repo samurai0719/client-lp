@@ -1,0 +1,208 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   ファーストビュー（fv-pc.webp）の世界観を、LP全体にそろえる仕上げ。
+     ・空の水色グラデーションと雲、空にのびる青い道とトラック、地図ピン、街並みのシルエット
+     ・見出しは濃紺、強調（ds-heading-accent）は FV の「採用」と同じ緑
+     ・小見出しは FV の「愛知県の運送会社向け」と同じ水色のピル
+     ・カードは白・淡い青の枠・やわらかい影
+   文字の大きさ・ボタンの形・文言・並び順は変えない（scout-saiyo.css の指定のまま）。
+   装飾の画像は public/images/driver/scout/deco/ の SVG。すべて飾り（中身を持たない）。
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.ds-lp.ds-home {
+  --fv-navy: #0b2a5b;
+  --fv-blue: #1659e0;
+  --fv-green: #3c9e2e;
+  --fv-sky: linear-gradient(180deg, #e6f3ff 0%, #f4f9ff 55%, #ffffff 100%);
+  --fv-line: #d3e4fa;
+  --fv-shadow: 0 12px 32px rgba(22, 89, 224, 0.10);
+}
+
+/* ── ファーストビュー ── */
+.ds-lp.ds-home .ds-hero__img { max-width: 1686px; }
+.ds-lp.ds-home .ds-hero { background: linear-gradient(180deg, #eaf5ff, #f6fbff); }
+.ds-lp.ds-home .ds-hero__below {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #eaf5ff 0%, #f6fbff 100%);
+}
+.ds-lp.ds-home .ds-hero__offer {
+  position: relative;
+  border: 1px solid var(--fv-line);
+  box-shadow: var(--fv-shadow);
+}
+
+/* ── 明るいセクション：空と雲・道・街並み ── */
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results, .dt-faq) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results, .dt-faq) > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 空の地色（交互に、空のグラデーションと白） */
+.ds-lp.ds-home :is(.ds-intro, .ds-reasons, .ds-delegate, .ds-flow2, .ds-pricing2, .dt-faq) {
+  background: var(--fv-sky);
+}
+.ds-lp.ds-home :is(.ds-problems2, .ds-visible2, .ds-retention, .ds-compare, .ds-results) {
+  background: #fff;
+}
+
+/* 雲（空の地色のセクションの右上と左） */
+.ds-lp.ds-home :is(.ds-intro, .ds-reasons, .ds-delegate, .ds-flow2, .ds-pricing2, .dt-faq)::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("/images/driver/scout/deco/cloud.svg") right -40px top 24px / 260px auto no-repeat,
+    url("/images/driver/scout/deco/cloud.svg") left -70px top 160px / 200px auto no-repeat;
+  opacity: 0.95;
+}
+
+/* 空にのびる道とトラック（白い地色のセクションの上に、うすく） */
+.ds-lp.ds-home :is(.ds-problems2, .ds-visible2, .ds-retention, .ds-compare, .ds-results)::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 50%;
+  width: min(1400px, 180%);
+  height: 220px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: url("/images/driver/scout/deco/road.svg") center top / 100% 100% no-repeat;
+  opacity: 0.16;
+}
+
+/* 街並み（セクションの下辺） */
+.ds-lp.ds-home :is(.ds-intro, .ds-delegate, .ds-pricing2)::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 110px;
+  pointer-events: none;
+  background: url("/images/driver/scout/deco/skyline.svg") bottom center / 1440px 110px repeat-x;
+  opacity: 0.75;
+}
+.ds-lp.ds-home :is(.ds-intro, .ds-delegate, .ds-pricing2) { padding-bottom: calc(var(--ds-section-gap, 64px) + 64px); }
+
+/* 地図とピン（PCの余白にだけ。スマホは文字にかかるので出さない） */
+@media (min-width: 1024px) {
+  .ds-lp.ds-home :is(.ds-reasons, .ds-flow2, .ds-results)::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 56px;
+    right: max(16px, calc(50% - 700px));
+    width: 260px;
+    height: 190px;
+    pointer-events: none;
+    background: url("/images/driver/scout/deco/map.svg") center / contain no-repeat;
+    opacity: 0.85;
+  }
+  .ds-lp.ds-home :is(.ds-visible2, .ds-compare)::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 64px;
+    left: max(16px, calc(50% - 700px));
+    width: 220px;
+    height: 160px;
+    pointer-events: none;
+    background: url("/images/driver/scout/deco/map.svg") center / contain no-repeat;
+    opacity: 0.6;
+  }
+}
+
+/* ── 見出し ── */
+.ds-lp.ds-home .ds-intro .dt-head__title,
+.ds-lp.ds-home :is(.ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results, .dt-faq) .dt-head__title {
+  color: var(--fv-navy);
+}
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results, .dt-faq) .ds-heading-accent {
+  color: var(--fv-green);
+}
+
+/* 小見出し → FV の「愛知県の運送会社向け」と同じ水色のピル */
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results) .dt-head__eyebrow {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid #cfe2fb;
+  border-radius: 999px;
+  background: #e3f0ff;
+  color: var(--fv-blue);
+  font-weight: 800;
+}
+.ds-lp.ds-home .dt-head { text-align: center; }
+
+/* 見出しの下に、道とトラックの線 */
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results, .dt-faq) .dt-head__title::after {
+  content: "";
+  display: block;
+  width: 126px;
+  height: 20px;
+  margin: 18px auto 0;
+  background: url("/images/driver/scout/deco/road-line.svg") center / contain no-repeat;
+}
+
+/* ── カード：白・淡い青の枠・やわらかい影 ── */
+.ds-lp.ds-home :is(.ds-steps3 li, .ds-pgrid li, .ds-split__box, .ds-relay li, .ds-flow3__main, .ds-free, .ds-scard, .ds-ptable, .ds-tbd, .ds-rtable__row, .ds-operator, .ds-faq__item, .ds-icongrid li) {
+  border-color: var(--fv-line);
+  box-shadow: var(--fv-shadow);
+}
+
+/* ── 最後のCTA：FVと同じ空・道・街並み ── */
+.ds-lp.ds-home .ds-final {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0a1f4e 0%, #1453c5 70%, #2f7ae8 100%);
+}
+/* 街並み（濃い地色の上なので、うすく） */
+.ds-lp.ds-home .ds-final::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 110px;
+  pointer-events: none;
+  background: url("/images/driver/scout/deco/skyline.svg") bottom center / 1440px 110px repeat-x;
+  opacity: 0.18;
+}
+/* 濃い地色の上の「元ドライバーが運営する…」は、白寄りの色にして読めるようにする */
+.ds-lp.ds-home .ds-final .ds-cta__operator { color: #d6e7ff; }
+.ds-lp.ds-home .ds-final .ds-cta__operator::before,
+.ds-lp.ds-home .ds-final .ds-cta__operator::after { background: rgba(214, 231, 255, 0.6); }
+.ds-lp.ds-home .ds-final::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 50%;
+  width: min(1400px, 180%);
+  height: 240px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: url("/images/driver/scout/deco/road.svg") center top / 100% 100% no-repeat;
+  opacity: 0.22;
+}
+.ds-lp.ds-home .ds-final { padding-bottom: calc(var(--ds-section-gap, 64px) + 72px); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-lp.ds-home :is(.ds-intro, .ds-reasons, .ds-delegate, .ds-flow2, .ds-pricing2, .dt-faq)::before {
+    animation: fv-cloud-drift 18s ease-in-out infinite alternate;
+  }
+}
+@keyframes fv-cloud-drift {
+  from { background-position: right -40px top 24px, left -70px top 160px; }
+  to { background-position: right 0 top 30px, left -30px top 150px; }
+}

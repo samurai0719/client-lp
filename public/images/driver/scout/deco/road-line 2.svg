@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 26" fill="none">
+  <!-- 見出しの下の道の線とトラック -->
+  <rect x="0" y="15" width="126" height="8" rx="4" fill="#3a76e6"/>
+  <path d="M6 19h114" stroke="#fff" stroke-width="1.6" stroke-dasharray="7 6" stroke-linecap="round"/>
+  <g transform="translate(130 0)">
+    <rect x="0" y="4" width="22" height="13" rx="2" fill="#1f4fae"/>
+    <path d="M22 7h7l5 6v4H22z" fill="#2b62d1"/>
+    <circle cx="6" cy="19" r="3.4" fill="#0b2a5b"/><circle cx="28" cy="19" r="3.4" fill="#0b2a5b"/>
+  </g>
+</svg>

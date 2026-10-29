@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" fill="none">
+  <!-- 地図とピンをつないだネットワーク（FV右上の地図モチーフ） -->
+  <path d="M60 70l60-30 50 18 40-24 70 30 30 60-26 54-70 26-54-12-46 20-40-40 6-50z" fill="#e6f1fd" stroke="#c6dcf8" stroke-width="2"/>
+  <g stroke="#7fa9ee" stroke-width="2" stroke-dasharray="4 6">
+    <path d="M110 92L190 120L258 86"/><path d="M190 120L230 182L130 170L110 92"/>
+  </g>
+  <g fill="#1659e0">
+    <circle cx="110" cy="92" r="6"/><circle cx="258" cy="86" r="6"/><circle cx="230" cy="182" r="6"/><circle cx="130" cy="170" r="6"/>
+  </g>
+  <g transform="translate(174 84)">
+    <path d="M16 0C7 0 0 7 0 16c0 12 16 28 16 28s16-16 16-28C32 7 25 0 16 0z" fill="#1659e0"/>
+    <circle cx="16" cy="16" r="6" fill="#fff"/>
+  </g>
+</svg>
