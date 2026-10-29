@@ -103,7 +103,14 @@ export const PLAN_LABEL: Record<string, string> = {
   light: "ライト（150,000円・税込）",
   standard: "スタンダード（250,000円・税込）",
   premium: "プレミアム（350,000円・税込・返金保証付き）",
+  /** 建設業向けLP（/kensetsu）からの問い合わせ。フォームが自動で付与する（プラン選択ではなく流入LPの識別） */
+  kensetsu: "建設業LP経由（初期費用89,800円・月額0円・成果報酬 想定年収の10%）",
 };
+
+/** 建設業向けLP経由の問い合わせか */
+export function isKensetsuLead(r: { desired_plan: string | null }): boolean {
+  return r.desired_plan === "kensetsu";
+}
 
 export const DEVICE_LABEL: Record<string, string> = {
   pc: "PC",
@@ -237,6 +244,11 @@ export function validateLead(body: Record<string, unknown>): ValidationResult {
   const plan = str(body.plan, 20);
   const device = str(body.deviceType, 20);
 
+  // 建設業LPの「採用エリア」は専用カラムが無いため、相談内容の先頭にまとめて保存する
+  const recruitArea = str(body.recruitArea, LIMIT.short);
+  const rawMessage = str(body.message, LIMIT.message);
+  const message = recruitArea ? `【採用エリア】${recruitArea}${rawMessage ? `\n\n${rawMessage}` : ""}` : rawMessage;
+
   return {
     ok: true,
     row: {
@@ -252,7 +264,7 @@ export function validateLead(body: Record<string, unknown>): ValidationResult {
       monthly_recruitment_budget: opt(body.monthlyBudget, LIMIT.short),
       website_url: optUrl(body.websiteUrl),
       job_page_url: optUrl(body.jobPageUrl),
-      message: opt(body.message, LIMIT.message),
+      message: message || null,
       desired_plan: plan in PLAN_LABEL ? plan : null,
       utm_source: opt(body.utm_source, LIMIT.short),
       utm_medium: opt(body.utm_medium, LIMIT.short),

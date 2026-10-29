@@ -1,0 +1,1895 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   採用レスキュー 建設業向けLP 専用スタイル
+   FV画像のトーン（生成りの紙・墨色の極太文字・オレンジ・設計図の線）にLP全体を合わせる。
+   土台は ../saiyo-rescue.css（sr- クラス）で、CSS変数を .ks-lp で上書きして配色を差し替え、
+   このLPだけの部品を ks- プレフィックスで足す。スマホ基準で書き、768px / 1024px で広げる。
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.ks-lp {
+  --ks-paper: #f4f1ea;
+  --ks-paper-2: #ebe5d8;
+  --ks-paper-3: #fbf9f4;
+  --ks-ink: #1c1b19;
+  --ks-ink-2: #2b2926;
+  --ks-mute: #6b6559;
+  --ks-line: #d8cfbf;
+  --ks-orange: #ec5a1f;
+  --ks-orange-deep: #c4430f;
+  --ks-orange-soft: #fbe2d3;
+  --ks-grid: rgba(28, 27, 25, 0.06);
+  --ks-grid-strong: rgba(28, 27, 25, 0.1);
+  --ks-stripe: repeating-linear-gradient(-45deg, var(--ks-orange) 0 14px, var(--ks-ink) 14px 28px);
+  /* 設計図の方眼（細線24px・太線120px） */
+  --ks-blueprint:
+    linear-gradient(var(--ks-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--ks-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(var(--ks-grid-strong) 1px, transparent 1px) 0 0 / 120px 120px,
+    linear-gradient(90deg, var(--ks-grid-strong) 1px, transparent 1px) 0 0 / 120px 120px;
+
+  /* 本体LP（sr-）の配色を上書き */
+  --sr-navy: var(--ks-ink);
+  --sr-ink: var(--ks-ink);
+  --sr-text: var(--ks-ink-2);
+  --sr-mute: var(--ks-mute);
+  --sr-line: var(--ks-line);
+  --sr-blue: var(--ks-orange);
+  --sr-blue-deep: var(--ks-orange-deep);
+  --sr-blue-hi: var(--ks-orange);
+  --sr-blue-soft: var(--ks-orange-soft);
+  --sr-paper-2: var(--ks-paper-2);
+  --sr-cta: var(--ks-orange);
+  --sr-cta-deep: var(--ks-orange-deep);
+  --sr-gold-soft: var(--ks-orange-soft);
+
+  background: var(--ks-paper);
+  color: var(--ks-ink-2);
+  /* 固定CTAはフォーム・フッターが見えている間は隠れるため、ページ末尾の余白は不要 */
+  padding-bottom: 0;
+}
+
+/* ── 線画イラストの配色（parts のブルー系 → オレンジ系） ── */
+.ks-lp svg [fill="#1659e0"] {
+  fill: var(--ks-orange);
+}
+.ks-lp svg [stroke="#1659e0"] {
+  stroke: var(--ks-orange);
+}
+.ks-lp svg [fill="#dce8ff"] {
+  fill: var(--ks-orange-soft);
+}
+.ks-lp svg [stroke="#dce8ff"] {
+  stroke: var(--ks-orange-soft);
+}
+.ks-lp svg [fill="#eef4ff"] {
+  fill: #ece4d4;
+}
+.ks-lp svg [fill="#eef1f6"] {
+  fill: #e9e2d4;
+}
+.ks-lp svg [stroke="#2b3140"] {
+  stroke: var(--ks-ink);
+}
+
+/* ── ボタン（オレンジ×墨色の太枠・ずらし影） ─────────── */
+.ks-lp .sr-btn--primary {
+  color: #fff;
+  background: var(--ks-orange);
+  border: 2.5px solid var(--ks-ink);
+  box-shadow: 0 5px 0 var(--ks-ink);
+}
+
+.ks-lp .sr-btn--primary:active {
+  box-shadow: 0 2px 0 var(--ks-ink);
+}
+
+.ks-lp .sr-btn--sm {
+  box-shadow: 0 3px 0 var(--ks-ink);
+}
+
+.ks-lp .sr-btn:focus-visible {
+  outline-color: var(--ks-ink);
+}
+
+/* 長いCTA文言（「建設業の採用について無料相談する」）をスマホでも1行に収める */
+.ks-lp .sr-btn--lg.ks-btn {
+  padding-right: 40px;
+  padding-left: 14px;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  border-radius: 12px;
+}
+
+.ks-lp .sr-btn--lg.ks-btn .sr-btn__arrow {
+  right: 16px;
+}
+
+@media (min-width: 768px) {
+  .ks-lp .sr-btn--lg.ks-btn {
+    max-width: 520px;
+    font-size: 20px;
+  }
+}
+
+/* ── ヘッダー ───────────────────────────────────────── */
+.ks-lp .ks-header {
+  background: rgba(244, 241, 234, 0.95);
+  border-bottom: 2px solid var(--ks-ink);
+}
+
+.ks-lp .sr-logo {
+  color: var(--ks-ink);
+}
+
+.ks-logo__mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ks-logo__sub {
+  margin-left: 6px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--ks-ink);
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+  vertical-align: 3px;
+}
+
+.ks-lp .sr-header .sr-btn--sm {
+  white-space: nowrap;
+  border-radius: 8px;
+}
+
+/* ── 共通：セクション・見出し ─────────────────────────── */
+.ks-section {
+  position: relative;
+  padding: 72px 0;
+  background: var(--ks-blueprint), var(--ks-paper);
+}
+
+@media (min-width: 768px) {
+  .ks-section {
+    padding: 112px 0;
+  }
+}
+
+.ks-head {
+  margin-bottom: 36px;
+  text-align: center;
+}
+
+/* 工事看板風のラベル：［01｜PROBLEM｜よくあるお悩み］ */
+.ks-head__label {
+  display: inline-flex;
+  align-items: stretch;
+  border: 2px solid var(--ks-ink);
+  background: var(--ks-paper-3);
+  box-shadow: 3px 3px 0 var(--ks-orange);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.ks-head__label > span {
+  display: flex;
+  align-items: center;
+  padding: 7px 10px;
+}
+
+.ks-head__no {
+  background: var(--ks-ink);
+  color: #fff;
+  font-size: 15px;
+}
+
+.ks-head__en {
+  color: var(--ks-orange);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  border-right: 1.5px dashed var(--ks-line);
+}
+
+.ks-head__jp {
+  color: var(--ks-ink);
+  font-size: 13px;
+}
+
+.ks-head__title {
+  position: relative;
+  margin-top: 22px;
+  padding-bottom: 18px;
+  color: var(--ks-ink);
+  font-size: 29px;
+  font-weight: 900;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+/* FV画像と同じ「オレンジの太い下線」 */
+.ks-head__title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 120px;
+  height: 6px;
+  transform: translateX(-50%) skewX(-18deg);
+  background: var(--ks-orange);
+}
+
+.ks-head__lead {
+  margin-top: 20px;
+  color: var(--ks-mute);
+  font-size: 16px;
+  text-align: left;
+}
+
+.ks-head--invert .ks-head__label {
+  background: var(--ks-ink-2);
+  border-color: #fff;
+}
+
+.ks-head--invert .ks-head__no {
+  background: #fff;
+  color: var(--ks-ink);
+}
+
+.ks-head--invert .ks-head__jp,
+.ks-head--invert .ks-head__title {
+  color: #fff;
+}
+
+.ks-head--invert .ks-head__en {
+  border-right-color: rgba(255, 255, 255, 0.25);
+}
+
+@media (min-width: 768px) {
+  .ks-head {
+    margin-bottom: 56px;
+  }
+  .ks-head__label > span {
+    padding: 8px 14px;
+  }
+  .ks-head__no {
+    font-size: 17px;
+  }
+  .ks-head__en {
+    font-size: 13px;
+  }
+  .ks-head__jp {
+    font-size: 15px;
+  }
+  .ks-head__title {
+    font-size: 42px;
+  }
+  .ks-head__lead {
+    font-size: 17px;
+    text-align: center;
+  }
+}
+
+.ks-hl {
+  color: var(--ks-orange);
+}
+
+/* カード共通：墨色の太枠＋オレンジのずらし影（スタンプ風） */
+.ks-card {
+  position: relative;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background: var(--ks-paper-3);
+  box-shadow: 6px 6px 0 var(--ks-orange);
+}
+
+.ks-note {
+  margin-top: 20px;
+  color: var(--ks-mute);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.ks-note--center {
+  text-align: center;
+}
+
+.ks-subhead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 44px 0 18px;
+  color: var(--ks-ink);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.ks-subhead::before,
+.ks-subhead::after {
+  content: "";
+  flex: 1;
+  height: 0;
+  border-top: 1.5px dashed var(--ks-ink);
+}
+
+/* 途中CTA */
+.ks-ctablock {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 56px;
+  padding: 34px 16px 26px;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background: var(--ks-orange-soft);
+  text-align: center;
+  overflow: hidden;
+}
+
+.ks-ctablock::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10px;
+  background: var(--ks-stripe);
+}
+
+.ks-ctablock__icon {
+  width: 34px;
+  height: 34px;
+  color: var(--ks-orange);
+}
+
+.ks-ctablock__lead {
+  color: var(--ks-ink);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.7;
+}
+
+.ks-ctablock__note {
+  color: var(--ks-mute);
+  font-size: 12px;
+}
+
+@media (min-width: 768px) {
+  .ks-ctablock {
+    margin-top: 72px;
+    padding: 44px 32px 32px;
+  }
+  .ks-ctablock__lead {
+    font-size: 21px;
+  }
+}
+
+/* ── 1. ファーストビュー ───────────────────────────────── */
+/* 見出し・料金は画像（PC 16:9 / スマホ 9:16）に焼き込み済み。画像の下にリード文・CTAを置く */
+.ks-hero {
+  padding-bottom: 44px;
+  background: var(--ks-blueprint), var(--ks-paper);
+  border-bottom: 2px solid var(--ks-ink);
+}
+
+.ks-hero__visual {
+  display: block;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.ks-hero__img {
+  width: 100%;
+  height: auto;
+}
+
+.ks-hero__inner {
+  margin-top: -18px;
+}
+
+.ks-hero__card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 26px 16px 22px;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background: var(--ks-paper-3);
+  box-shadow: 6px 6px 0 var(--ks-orange);
+  text-align: center;
+}
+
+.ks-hero__body {
+  color: var(--ks-ink);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.7;
+}
+
+.ks-hero__trades {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ks-hero__trades li {
+  padding: 3px 10px;
+  border: 1.5px dashed var(--ks-ink);
+  border-radius: 3px;
+  background: #fff;
+  color: var(--ks-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ks-hero__trades li.is-more {
+  border-color: transparent;
+  background: none;
+  padding-left: 2px;
+  color: var(--ks-mute);
+}
+
+.ks-hero__cta {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.ks-hero__reassure {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--ks-mute);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.ks-hero__reassure svg {
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  flex-shrink: 0;
+  color: var(--ks-orange);
+}
+
+.ks-hero__price-note {
+  color: var(--ks-mute);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.ks-hero__price-note a {
+  color: var(--ks-orange-deep);
+}
+
+@media (min-width: 768px) {
+  .ks-hero {
+    padding-bottom: 64px;
+  }
+  .ks-hero__inner {
+    margin-top: -40px;
+  }
+  .ks-hero__card {
+    padding: 36px 40px 28px;
+  }
+  .ks-hero__body {
+    font-size: 21px;
+  }
+  .ks-hero__trades li {
+    font-size: 14px;
+  }
+}
+
+/* ── 料金の要点（最終CTA） ─────────────────────────── */
+.ks-psum {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 6px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.ks-psum > div {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  border: 2px solid var(--ks-ink);
+  border-radius: 4px;
+  background: #fff;
+  text-align: center;
+}
+
+.ks-psum dt {
+  color: var(--ks-mute);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ks-psum dd {
+  margin: 0;
+  color: var(--ks-ink);
+  font-weight: 900;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.ks-psum dd b {
+  font-size: 22px;
+  letter-spacing: 0;
+}
+
+.ks-psum dd span {
+  font-size: 13px;
+}
+
+.ks-psum dd small {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ks-mute);
+}
+
+.ks-psum .ks-psum__main dd b {
+  font-size: 40px;
+}
+
+.ks-psum .ks-psum__main dd span {
+  font-size: 18px;
+}
+
+.ks-psum--invert > div {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ks-psum--invert dt,
+.ks-psum--invert dd small {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.ks-psum--invert dd {
+  color: #fff;
+}
+
+.ks-psum--invert .ks-psum__main {
+  background: var(--ks-orange);
+  border-color: var(--ks-orange);
+}
+
+.ks-psum--invert .ks-psum__main dt,
+.ks-psum--invert .ks-psum__main dd {
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .ks-psum {
+    gap: 10px;
+  }
+  .ks-psum > div {
+    padding: 14px 8px;
+  }
+  .ks-psum dt {
+    font-size: 14px;
+  }
+  .ks-psum dd b {
+    font-size: 30px;
+  }
+  .ks-psum .ks-psum__main dd b {
+    font-size: 52px;
+  }
+  .ks-psum dd small {
+    font-size: 12px;
+  }
+}
+
+/* ── 2. よくある悩み ─────────────────────────────────── */
+.ks-problems {
+  padding-bottom: 0;
+}
+
+.ks-problems__grid {
+  display: grid;
+  gap: 30px;
+}
+
+.ks-pcard {
+  padding: 22px 18px 22px;
+}
+
+.ks-pcard__no {
+  position: absolute;
+  top: -16px;
+  left: 14px;
+  padding: 2px 12px;
+  background: var(--ks-ink);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.ks-pcard__art {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  margin: 4px auto 8px;
+}
+
+.ks-pcard__title {
+  color: var(--ks-ink);
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+.ks-pcard__body {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1.5px dashed var(--ks-line);
+  color: var(--ks-mute);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.ks-problems__more {
+  display: grid;
+  gap: 8px;
+  margin-top: 32px;
+  padding: 20px 18px;
+  border: 2px dashed var(--ks-ink);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.ks-problems__more li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--ks-ink);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.ks-problems__more svg,
+.ks-plan__includes svg,
+.ks-form-card__reassure svg {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  flex-shrink: 0;
+  color: var(--ks-orange);
+}
+
+/* 「届いていない・伝わっていない」の転換：墨色の帯 */
+.ks-turn {
+  position: relative;
+  margin-top: 64px;
+  padding: 44px 0 46px;
+  background: var(--ks-ink);
+  color: #fff;
+}
+
+.ks-turn::before,
+.ks-turn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: var(--ks-stripe);
+}
+
+.ks-turn::before {
+  top: 0;
+}
+
+.ks-turn::after {
+  bottom: 0;
+}
+
+.ks-turn__text {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.9;
+  text-align: center;
+}
+
+.ks-turn__text strong {
+  display: inline-block;
+  margin: 4px 0;
+  color: var(--ks-orange);
+  font-size: 1.25em;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .ks-problems__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 28px;
+  }
+  .ks-pcard {
+    padding: 28px 26px 28px;
+  }
+  .ks-problems__more {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 24px 28px;
+  }
+  .ks-turn {
+    margin-top: 88px;
+    padding: 60px 0;
+  }
+  .ks-turn__text {
+    font-size: 21px;
+  }
+}
+
+/* ── 3. 実績 ─────────────────────────────────────────── */
+.ks-results {
+  background: var(--ks-paper-3);
+}
+
+.ks-total {
+  position: relative;
+  overflow: hidden;
+  padding: 34px 16px 22px;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--ks-ink);
+  box-shadow: 6px 6px 0 var(--ks-orange);
+  color: #fff;
+  text-align: center;
+}
+
+.ks-total::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10px;
+  background: var(--ks-stripe);
+}
+
+.ks-total__cat {
+  display: inline-block;
+  padding: 4px 16px;
+  background: var(--ks-orange);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ks-total__metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.ks-total__metrics > div {
+  padding: 14px 4px 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+}
+
+.ks-total__label {
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.ks-total__value {
+  margin-top: 4px;
+  color: var(--ks-orange);
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.ks-total__value .sr-unit {
+  margin-left: 2px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.ks-total__period {
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.ks-total__note {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: left;
+  opacity: 0.75;
+}
+
+.ks-feature {
+  padding: 22px 16px;
+  text-align: center;
+}
+
+.ks-feature__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border: 2px solid var(--ks-ink);
+  background: #fff;
+  color: var(--ks-ink);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ks-feature__cat svg {
+  width: 18px;
+  height: 18px;
+  color: var(--ks-orange);
+}
+
+.ks-feature__metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.ks-feature__metrics > div {
+  padding: 10px 4px;
+  border-top: 2px solid var(--ks-ink);
+}
+
+.ks-feature__label {
+  color: var(--ks-mute);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ks-feature__value {
+  color: var(--ks-ink);
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.ks-feature__value .sr-unit {
+  margin-left: 2px;
+  font-size: 15px;
+}
+
+.ks-others {
+  margin-top: 36px;
+}
+
+.ks-others__title {
+  color: var(--ks-ink);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.ks-others__lead {
+  margin-top: 6px;
+  color: var(--ks-mute);
+  font-size: 14px;
+  text-align: center;
+}
+
+.ks-table-wrap {
+  margin-top: 16px;
+  overflow-x: auto;
+  border: 2px solid var(--ks-ink);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.ks-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.ks-table th,
+.ks-table td {
+  padding: 12px 10px;
+  border-bottom: 1px dashed var(--ks-line);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ks-table tr:last-child th,
+.ks-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.ks-table thead th {
+  border-bottom: 2px solid var(--ks-ink);
+  background: var(--ks-ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ks-table th[scope="row"],
+.ks-table thead th:first-child {
+  text-align: left;
+  white-space: normal;
+}
+
+.ks-table th[scope="row"] {
+  color: var(--ks-ink);
+  font-weight: 700;
+}
+
+.ks-table__cat {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: 2px;
+  background: var(--ks-orange-soft);
+  color: var(--ks-orange-deep);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.ks-table td b {
+  margin-right: 1px;
+  color: var(--ks-ink);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+@media (min-width: 768px) {
+  .ks-total {
+    padding: 48px 40px 30px;
+  }
+  .ks-total__metrics {
+    gap: 20px;
+    max-width: 760px;
+    margin: 24px auto 0;
+  }
+  .ks-total__value {
+    font-size: 68px;
+  }
+  .ks-total__value .sr-unit {
+    font-size: 26px;
+  }
+  .ks-total__note {
+    text-align: center;
+  }
+  .ks-feature {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px 36px;
+    text-align: left;
+  }
+  .ks-feature__metrics {
+    flex: 0 1 460px;
+    margin-top: 0;
+  }
+  .ks-feature__value {
+    font-size: 44px;
+  }
+  .ks-others__title {
+    font-size: 22px;
+  }
+  .ks-table {
+    font-size: 16px;
+  }
+  .ks-table th,
+  .ks-table td {
+    padding: 14px 20px;
+  }
+  .ks-results .ks-note {
+    text-align: center;
+  }
+}
+
+/* ── 4. サービス内容 ─────────────────────────────────── */
+.ks-services {
+  background: var(--ks-blueprint), var(--ks-paper-2);
+}
+
+.ks-services__grid {
+  display: grid;
+  gap: 28px;
+}
+
+.ks-scard {
+  overflow: hidden;
+}
+
+.ks-scard__visual {
+  position: relative;
+  padding: 14px 16px 6px;
+  border-bottom: 2.5px solid var(--ks-ink);
+  background: var(--ks-blueprint), #fff;
+}
+
+.ks-scard__art {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* 輪郭だけの大きな番号 */
+.ks-scard__no {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  color: transparent;
+  font-size: 46px;
+  font-weight: 900;
+  line-height: 1;
+  -webkit-text-stroke: 1.6px var(--ks-orange);
+}
+
+.ks-scard__text {
+  padding: 18px 18px 22px;
+}
+
+.ks-scard__title {
+  color: var(--ks-ink);
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.ks-scard__body {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.ks-scard__points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.ks-scard__points li {
+  padding: 3px 10px;
+  border: 1.5px solid var(--ks-ink);
+  border-radius: 3px;
+  background: var(--ks-orange-soft);
+  color: var(--ks-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .ks-services__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px 28px;
+  }
+  .ks-scard__text {
+    padding: 22px 26px 26px;
+  }
+}
+
+/* ── 5. 取り組みと強み ───────────────────────────────── */
+.ks-strengths {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--ks-ink);
+  color: #fff;
+}
+
+.ks-strengths__intro {
+  display: grid;
+  border: 2.5px solid #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--ks-ink-2);
+}
+
+.ks-strengths__photo {
+  margin: 0;
+  border-bottom: 2.5px solid #fff;
+}
+
+.ks-strengths__photo img {
+  width: 100%;
+  height: auto;
+}
+
+.ks-strengths__checks {
+  padding: 20px 18px 22px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.ks-strengths__checks ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.ks-strengths__checks li {
+  padding: 4px 12px;
+  border-radius: 3px;
+  background: #fff;
+  color: var(--ks-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ks-strengths__checks strong {
+  color: var(--ks-orange);
+}
+
+.ks-strengths__list {
+  display: grid;
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.ks-strengths__list > li {
+  position: relative;
+  padding: 22px 18px 20px;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background: var(--ks-paper-3);
+  box-shadow: 6px 6px 0 var(--ks-orange);
+  color: var(--ks-ink-2);
+}
+
+.ks-strengths__no {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 0 10px;
+  background: var(--ks-orange);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.ks-strengths__list h3 {
+  color: var(--ks-ink);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.55;
+}
+
+.ks-strengths__list p {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+@media (min-width: 768px) {
+  .ks-strengths__intro {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: stretch;
+  }
+  .ks-strengths__photo {
+    border-bottom: 0;
+    border-right: 2.5px solid #fff;
+  }
+  .ks-strengths__photo img {
+    height: 100%;
+    object-fit: cover;
+  }
+  .ks-strengths__checks {
+    align-self: center;
+    padding: 28px 32px;
+    font-size: 16px;
+  }
+  .ks-strengths__list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  .ks-strengths__list > li {
+    padding: 28px;
+  }
+  .ks-strengths__list h3 {
+    font-size: 20px;
+  }
+}
+
+/* ── 6. 料金プラン ───────────────────────────────────── */
+.ks-plan {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 18px 26px;
+  border: 3px solid var(--ks-ink);
+  border-radius: 6px;
+  background: var(--ks-paper-3);
+  box-shadow: 8px 8px 0 var(--ks-orange);
+  text-align: center;
+}
+
+.ks-plan::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 12px;
+  background: var(--ks-stripe);
+}
+
+.ks-plan__badge {
+  display: inline-block;
+  padding: 4px 14px;
+  background: var(--ks-ink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.ks-plan__label {
+  color: var(--ks-mute);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ks-plan__monthly {
+  margin-top: 18px;
+  padding: 16px 12px 14px;
+  border: 2px solid var(--ks-ink);
+  background: var(--ks-orange-soft);
+}
+
+.ks-plan__monthly .ks-plan__label {
+  color: var(--ks-ink);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.ks-plan__zero {
+  color: var(--ks-orange);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.ks-plan__zero b {
+  font-size: 92px;
+  letter-spacing: 0;
+}
+
+.ks-plan__zero span {
+  margin-left: 4px;
+  color: var(--ks-ink);
+  font-size: 32px;
+}
+
+.ks-plan__rows {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.ks-plan__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 2px solid var(--ks-ink);
+  background: #fff;
+}
+
+.ks-plan__row .ks-plan__label {
+  color: var(--ks-ink);
+  font-size: 16px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.ks-plan__price {
+  color: var(--ks-ink);
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.ks-plan__price b {
+  color: var(--ks-orange);
+  font-size: 32px;
+  letter-spacing: 0;
+}
+
+.ks-plan__price span {
+  margin-left: 2px;
+  font-size: 16px;
+}
+
+.ks-plan__price small {
+  display: block;
+  color: var(--ks-mute);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ks-plan__example {
+  margin-top: 18px;
+  padding: 16px 14px;
+  border: 1.5px dashed var(--ks-ink);
+  background: var(--ks-blueprint), #fff;
+}
+
+.ks-plan__example-title {
+  display: inline-block;
+  padding: 0 10px;
+  background: var(--ks-orange);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.ks-plan__example-calc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px 6px;
+  margin-top: 10px;
+  color: var(--ks-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ks-plan__example-calc b {
+  margin: 0 1px;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.ks-plan__example-calc .op {
+  color: var(--ks-mute);
+}
+
+.ks-plan__example-calc .is-total b {
+  color: var(--ks-orange);
+}
+
+.ks-plan__example-text {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.ks-plan__includes-title {
+  margin-top: 20px;
+  color: var(--ks-ink);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ks-plan__includes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.ks-plan__includes li {
+  display: flex;
+  gap: 4px;
+  color: var(--ks-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ks-plan__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.ks-pricing__notes {
+  display: grid;
+  gap: 4px;
+  margin-top: 22px;
+  color: var(--ks-mute);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+@media (min-width: 768px) {
+  .ks-plan {
+    padding: 52px 48px 36px;
+  }
+  .ks-plan__zero b {
+    font-size: 128px;
+  }
+  .ks-plan__rows {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .ks-plan__row {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .ks-plan__price {
+    text-align: center;
+  }
+  .ks-plan__price b {
+    font-size: 42px;
+  }
+  .ks-plan__example {
+    padding: 20px 28px;
+  }
+  .ks-plan__example-calc {
+    font-size: 16px;
+  }
+  .ks-plan__example-calc b {
+    font-size: 30px;
+  }
+  .ks-plan__example-text {
+    text-align: center;
+  }
+  .ks-plan__includes {
+    grid-template-columns: repeat(4, auto);
+    justify-content: center;
+    gap: 8px 20px;
+  }
+  .ks-pricing__notes {
+    font-size: 13px;
+  }
+}
+
+/* ── 7. 流れ（タイムライン） ──────────────────────────── */
+.ks-steps {
+  background: var(--ks-paper-3);
+}
+
+.ks-steps__art {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: -12px auto 24px;
+}
+
+.ks-steps__list {
+  position: relative;
+  display: grid;
+  gap: 16px;
+}
+
+/* 縦の工程線 */
+.ks-steps__list::before {
+  content: "";
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 27px;
+  border-left: 3px dashed var(--ks-orange);
+}
+
+.ks-step {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.ks-step__no {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 50%;
+  background: var(--ks-orange);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.ks-step__no small {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.ks-step__text {
+  flex: 1;
+  padding: 14px 16px;
+  border: 2px solid var(--ks-ink);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.ks-step__title {
+  color: var(--ks-ink);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.ks-step__body {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+@media (min-width: 768px) {
+  .ks-steps__list {
+    gap: 20px;
+  }
+  .ks-steps__list::before {
+    left: 35px;
+  }
+  .ks-step {
+    gap: 22px;
+  }
+  .ks-step__no {
+    width: 72px;
+    height: 72px;
+    font-size: 26px;
+  }
+  .ks-step__no small {
+    font-size: 10px;
+  }
+  .ks-step__text {
+    padding: 18px 24px;
+  }
+  .ks-step__title {
+    font-size: 20px;
+  }
+}
+
+/* ── 8. FAQ ──────────────────────────────────────────── */
+.ks-faq {
+  background: var(--ks-blueprint), var(--ks-paper-2);
+}
+
+.ks-faq__list {
+  display: grid;
+  gap: 14px;
+}
+
+.ks-faq__item {
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--ks-ink);
+  overflow: hidden;
+}
+
+.ks-faq__item[open] {
+  box-shadow: 4px 4px 0 var(--ks-orange);
+}
+
+.ks-faq__item summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: var(--ks-ink);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.5;
+  cursor: pointer;
+  list-style: none;
+}
+
+.ks-faq__item[open] summary {
+  border-bottom: 1.5px dashed var(--ks-line);
+}
+
+.ks-faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.ks-faq__q,
+.ks-faq__a {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.ks-faq__q {
+  background: var(--ks-ink);
+  color: #fff;
+}
+
+.ks-faq__a {
+  border: 2px solid var(--ks-orange);
+  color: var(--ks-orange);
+}
+
+.ks-faq__qtext {
+  flex: 1;
+}
+
+.ks-faq__item summary::after {
+  content: "+";
+  flex-shrink: 0;
+  color: var(--ks-orange);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.ks-faq__item[open] summary::after {
+  content: "−";
+}
+
+.ks-faq__answer {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.ks-faq__answer p + p {
+  margin-top: 8px;
+}
+
+@media (min-width: 768px) {
+  .ks-faq__item summary {
+    padding: 18px 24px;
+    font-size: 18px;
+  }
+  .ks-faq__answer {
+    padding: 20px 24px;
+    font-size: 16px;
+  }
+}
+
+/* ── 9. 問い合わせ ───────────────────────────────────── */
+.ks-contact {
+  overflow: hidden;
+  padding-top: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--ks-ink);
+  color: #fff;
+  text-align: center;
+}
+
+/* 上端の現場シルエット（設計図風の線画）。紙色の帯の上に描き、墨色の背景へつなぐ */
+.ks-contact__skyline {
+  display: block;
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+  margin: 0 0 40px 50%;
+  transform: translateX(-50%);
+  background: var(--ks-paper-2);
+  border-bottom: 2px solid #fff;
+}
+
+.ks-contact__label {
+  color: var(--ks-orange);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.24em;
+}
+
+.ks-contact__title {
+  margin-top: 10px;
+  font-size: 29px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.ks-contact__title span {
+  color: var(--ks-orange);
+}
+
+.ks-contact__text {
+  margin-top: 16px;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.ks-contact__art {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin: 20px auto 18px;
+}
+
+/* 墨色の背景では人物の後ろの楕円を白っぽくする */
+.ks-lp .ks-contact__art ellipse {
+  fill: #fff;
+}
+
+.ks-form-card {
+  position: relative;
+  overflow: hidden;
+  margin-top: 36px;
+  padding: 34px 16px 24px;
+  border: 3px solid #fff;
+  border-radius: 6px;
+  background: var(--ks-paper-3);
+  box-shadow: 8px 8px 0 var(--ks-orange);
+  color: var(--ks-ink-2);
+  text-align: left;
+}
+
+.ks-form-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10px;
+  background: var(--ks-stripe);
+}
+
+.ks-form-card__title {
+  color: var(--ks-ink);
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.ks-form-card__title span {
+  display: inline-block;
+  margin-top: 2px;
+  color: var(--ks-orange);
+  font-size: 1.25em;
+}
+
+.ks-form-card__lead {
+  margin-top: 4px;
+  color: var(--ks-mute);
+  font-size: 14px;
+  text-align: center;
+}
+
+.ks-form-card__reassure {
+  display: grid;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 14px;
+  border: 1.5px dashed var(--ks-line);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.ks-form-card__reassure p {
+  display: flex;
+  gap: 6px;
+}
+
+@media (min-width: 768px) {
+  .ks-contact__skyline {
+    min-width: 0;
+    margin-bottom: 64px;
+  }
+  .ks-contact__title {
+    font-size: 44px;
+  }
+  .ks-form-card {
+    padding: 48px 48px 36px;
+  }
+  .ks-form-card__title {
+    font-size: 26px;
+  }
+}
+
+/* フォーム部品（sr-form）の配色を合わせる */
+.ks-lp .sr-field input,
+.ks-lp .sr-field select,
+.ks-lp .sr-field textarea {
+  border: 2px solid var(--ks-ink);
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.ks-lp .sr-field input:focus,
+.ks-lp .sr-field select:focus,
+.ks-lp .sr-field textarea:focus {
+  border-color: var(--ks-orange);
+  box-shadow: 0 0 0 3px rgba(236, 90, 31, 0.2);
+  outline: none;
+}
+
+.ks-lp .sr-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ec5a1f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.ks-lp .sr-field__req {
+  background: var(--ks-orange);
+  border-radius: 2px;
+}
+
+.ks-lp .sr-form__privacy a {
+  color: var(--ks-orange-deep);
+}
+
+.ks-form__group {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.ks-form__group legend {
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+.ks-form__sublabel {
+  color: var(--ks-mute);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ── フッター ───────────────────────────────────────── */
+.ks-lp .ks-footer {
+  background: var(--ks-ink);
+  border-top: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.ks-lp .ks-footer .sr-footer__brand em {
+  color: var(--ks-orange);
+}
+
+/* ── スマホ固定CTA ───────────────────────────────────── */
+.ks-lp .sr-sticky {
+  background: rgba(244, 241, 234, 0.96);
+  border-top: 2px solid var(--ks-ink);
+}
+
+/* ── 幅の狭いスマホのヘッダー（ロゴ＋「建設業」バッジ＋ボタンを1行に収める） ── */
+@media (max-width: 420px) {
+  .ks-lp .sr-header__inner {
+    padding: 0 10px 0 12px;
+    gap: 8px;
+  }
+  .ks-lp .sr-logo {
+    gap: 6px;
+    font-size: 17px;
+  }
+  .ks-lp .sr-logo__mark {
+    width: 24px;
+    height: 24px;
+  }
+  .ks-logo__sub {
+    margin-left: 4px;
+    padding: 1px 5px;
+    font-size: 11px;
+  }
+  .ks-lp .sr-header .sr-btn--sm {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 359px) {
+  .ks-lp .sr-btn--lg.ks-btn {
+    font-size: 14px;
+  }
+  .ks-head__label > span {
+    padding: 6px 7px;
+  }
+}

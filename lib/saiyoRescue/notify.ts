@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { PLAN_LABEL, formatJst, type LeadInsert } from "./leads";
+import { PLAN_LABEL, formatJst, isKensetsuLead, type LeadInsert } from "./leads";
 
 /**
  * 採用レスキュー 新規問い合わせの通知。
@@ -28,6 +28,11 @@ export type LeadNotice = {
 export function adminLeadUrl(id: string | null): string {
   const base = (process.env.SAIYO_RESCUE_SITE_URL ?? "https://saiyo.adofy-site.com").replace(/\/$/, "");
   return id ? `${base}/adofy-admin/saiyo-rescue/leads/${id}` : `${base}/adofy-admin/saiyo-rescue/leads`;
+}
+
+/** 件名・本文の見出し。建設業LP経由は一目で分かるよう別の見出しにする */
+function brand(n: LeadNotice): string {
+  return isKensetsuLead(n.row) ? "【採用レスキュー｜建設業LP】" : "【採用レスキュー】";
 }
 
 function summaryLines(n: LeadNotice): string[] {
@@ -71,11 +76,11 @@ async function sendEmail(n: LeadNotice): Promise<boolean> {
     "info@tenshoku-gpt.com";
   const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
   const subject = n.dbFailed
-    ? `【採用レスキュー】新規問い合わせ【要手動登録】${n.row.company_name} 様`
-    : `【採用レスキュー】新規問い合わせ：${n.row.company_name} 様`;
+    ? `${brand(n)}新規問い合わせ【要手動登録】${n.row.company_name} 様`
+    : `${brand(n)}新規問い合わせ：${n.row.company_name} 様`;
 
   const text = [
-    "【採用レスキュー】新規問い合わせ",
+    `${brand(n)}新規問い合わせ`,
     "",
     ...summaryLines(n),
     "",
@@ -101,7 +106,7 @@ async function sendEmail(n: LeadNotice): Promise<boolean> {
 }
 
 function shortText(n: LeadNotice): string {
-  return ["【採用レスキュー】新規問い合わせ", ...summaryLines(n), adminLeadUrl(n.id)].join("\n");
+  return [`${brand(n)}新規問い合わせ`, ...summaryLines(n), adminLeadUrl(n.id)].join("\n");
 }
 
 async function postJson(url: string, body: unknown, headers: Record<string, string> = {}): Promise<boolean> {

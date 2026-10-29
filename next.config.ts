@@ -48,6 +48,8 @@ const adofyLpHosts = ["lp.adofy-site.com"];
 //     /thanks          → /saiyo-rescue/thanks     （送信完了）
 //     /contact         → /#contact へリダイレクト （フォームはLP内）
 //     /admin           → /adofy-admin/saiyo-rescue（管理画面。adofy管理者のみ）
+//     /kensetsu        → /saiyo-rescue/kensetsu   （建設業向けLP）
+//     /kensetsu/thanks → /saiyo-rescue/kensetsu/thanks
 // ─────────────────────────────────────────────────────────────────────────────
 const saiyoHosts = ["saiyo.adofy-site.com"];
 
@@ -244,6 +246,8 @@ const nextConfig: NextConfig = {
         // 内部パスへの直アクセスは公開URLへ寄せる
         { source: "/saiyo-rescue", has: [{ type: "host" as const, value: host }], destination: "/", statusCode: 301 as const },
         { source: "/saiyo-rescue/thanks", has: [{ type: "host" as const, value: host }], destination: "/thanks", statusCode: 301 as const },
+        { source: "/saiyo-rescue/kensetsu", has: [{ type: "host" as const, value: host }], destination: "/kensetsu", statusCode: 301 as const },
+        { source: "/saiyo-rescue/kensetsu/thanks", has: [{ type: "host" as const, value: host }], destination: "/kensetsu/thanks", statusCode: 301 as const },
       ]),
       // 候補者プロフィール検索LP：内部パスへの直アクセスは公開URLへ寄せる（重複URLを作らない）
       ...scoutHosts.flatMap((host) => [
@@ -336,11 +340,11 @@ const nextConfig: NextConfig = {
 
         // ── saiyo.adofy-site.com（採用レスキュー） ─────────────────────
         // ルート(/)は proxy.ts で処理する
-        ...saiyoHosts.map((host) => ({
-          source: "/thanks",
-          has: [{ type: "host" as const, value: host }],
-          destination: "/saiyo-rescue/thanks",
-        })),
+        ...saiyoHosts.flatMap((host) => [
+          { source: "/thanks", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/thanks" },
+          { source: "/kensetsu", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/kensetsu" },
+          { source: "/kensetsu/thanks", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/kensetsu/thanks" },
+        ]),
 
         // ── scout.adofy-site.com（候補者プロフィール検索LP） ─────────────
         ...scoutHosts.flatMap((host) => [
