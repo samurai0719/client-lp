@@ -18,7 +18,6 @@ import {
 } from "./illustrations";
 import {
   BRAND,
-  CONSTRUCTION_RESULT,
   CREW_IMAGE,
   CTA_HREF,
   CTA_LABEL,
@@ -34,7 +33,6 @@ import {
   HERO_IMAGE,
   HIDDEN_FIELDS,
   INTRO,
-  OTHER_RESULTS,
   PRICE,
   PRICE_EXAMPLE,
   PRICE_NOTE,
@@ -49,7 +47,6 @@ import {
   RESULTS_TOTAL_NOTE,
   RETENTION,
   SAMPLE_PROFILES,
-  SHOW_CLIENT_NAMES,
   SITE,
   man,
   plain,
@@ -575,66 +572,6 @@ export function Results() {
           </div>
           <p className="ks-total__period">{RESULTS_PERIOD}</p>
           <p className="ks-total__note">{RESULTS_TOTAL_NOTE}</p>
-        </div>
-
-        <h3 className="ks-subhead">
-          <span>内訳</span>
-        </h3>
-
-        <div className="ks-card ks-feature">
-          <p className="ks-feature__cat">
-            <HardHat aria-hidden="true" strokeWidth={2.6} />
-            {CONSTRUCTION_RESULT.label}
-          </p>
-          <div className="ks-feature__metrics">
-            <div>
-              <p className="ks-feature__label">応募件数</p>
-              <p className="ks-feature__value">
-                <CountUpNumber value={CONSTRUCTION_RESULT.count} duration={1200} suffix={<span className="sr-unit">件</span>} />
-              </p>
-            </div>
-            <div>
-              <p className="ks-feature__label">応募単価</p>
-              <p className="ks-feature__value">
-                <CountUpNumber value={CONSTRUCTION_RESULT.unitPrice} duration={1200} delay={120} suffix={<span className="sr-unit">円</span>} />
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="ks-others">
-          <h4 className="ks-others__title">
-            建設業以外の職種での
-            <wbr />
-            応募獲得実績
-          </h4>
-          <div className="ks-table-wrap">
-            <table className="ks-table">
-              <thead>
-                <tr>
-                  <th scope="col">職種・案件</th>
-                  <th scope="col">応募件数</th>
-                  <th scope="col">応募単価</th>
-                </tr>
-              </thead>
-              <tbody>
-                {OTHER_RESULTS.map((r) => (
-                  <tr key={r.name}>
-                    <th scope="row">
-                      <span className="ks-table__cat">{r.category}</span>
-                      {SHOW_CLIENT_NAMES ? r.name : r.anon}
-                    </th>
-                    <td>
-                      <b>{yen(r.count)}</b>件
-                    </td>
-                    <td>
-                      <b>{yen(r.unitPrice)}</b>円
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
 
         <p className="ks-note">
