@@ -29,7 +29,7 @@ import type { IllustrationProps } from "../driver-company/lp/illustrations/kit";
 import { OPERATOR, PATHS, SHOW_NOTICE_NUMBER } from "@/config/driver-company";
 import { COMPANY } from "@/components/adofy-corp/business";
 import { OwnerQuestion } from "../driver-company/lp/illustrations/scenes";
-import { Breakable, Rich, SectionHead } from "../driver-company/lp/ui";
+import { Breakable, Rich } from "../driver-company/lp/ui";
 import {
   ACHIEVEMENTS,
   ACHIEVEMENTS_NOTE,
@@ -140,6 +140,52 @@ function Heading({ text }: { text: string }) {
         </Fragment>
       ))}
     </>
+  );
+}
+
+/**
+ * 建設業LPの「番号＋英字＋日本語」見出しを、物流の運行票を思わせる意匠で展開する。
+ * 文言は変えず、LPを読み進めたときの現在地だけを明確にする。
+ */
+const SECTION_META: Record<string, { no: string; en: string }> = {
+  "ds-intro-title": { no: "01", en: "SERVICE" },
+  "ds-driver-operated-title": { no: "FIELD", en: "DRIVER LED" },
+  "ds-problems-title": { no: "02", en: "PROBLEM" },
+  "ds-reasons-title": { no: "03", en: "REASON" },
+  "ds-visible-title": { no: "04", en: "PROFILE" },
+  "ds-delegate-title": { no: "05", en: "SUPPORT" },
+  "ds-retention-title": { no: "06", en: "RETENTION" },
+  "ds-flow-title": { no: "07", en: "FLOW" },
+  "ds-compare-title": { no: "08", en: "COMPARE" },
+  "ds-pricing-title": { no: "09", en: "PRICE" },
+  "ds-results-title": { no: "10", en: "RESULTS" },
+  "ds-faq-title": { no: "11", en: "Q&A" },
+};
+
+function SectionHead({
+  eyebrow,
+  title,
+  lead,
+  id,
+}: {
+  eyebrow?: string;
+  title: ReactNode;
+  lead?: ReactNode;
+  id?: string;
+}) {
+  const meta = id ? SECTION_META[id] : undefined;
+  return (
+    <header className="dt-head ds-route-head">
+      {(meta || eyebrow) && (
+        <p className="dt-head__eyebrow ds-route-head__label">
+          {meta && <span className="ds-route-head__no">{meta.no}</span>}
+          {meta && <span className="ds-route-head__en">{meta.en}</span>}
+          {eyebrow && <span className="ds-route-head__jp">{eyebrow}</span>}
+        </p>
+      )}
+      <h2 className="dt-head__title" id={id}>{title}</h2>
+      {lead && <p className="dt-head__lead">{lead}</p>}
+    </header>
   );
 }
 
