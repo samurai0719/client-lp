@@ -92,11 +92,10 @@
   position: relative;
   z-index: 3;
   width: min(100% - 32px, 930px);
-  margin-top: -1px;
+  margin-top: 24px;
   padding: 28px 20px 52px;
   border: 2px solid var(--lg-ink);
-  border-top: 0;
-  border-radius: 0 0 6px 6px;
+  border-radius: 6px;
   background: var(--lg-paper-hi);
   box-shadow: var(--lg-card-shadow);
 }
@@ -408,7 +407,7 @@
   .ds-lp.ds-home .dt-header__inner { padding-inline: 14px; }
   .ds-lp.ds-home .dt-logo__sub { font-size: 9px; }
   .ds-lp.ds-home .ds-hero picture { border-inline: 0; }
-  .ds-lp.ds-home .ds-hero__below { margin-bottom: 24px; padding-inline: 12px; }
+  .ds-lp.ds-home .ds-hero__below { margin-top: 16px; margin-bottom: 24px; padding-inline: 12px; }
   .ds-lp.ds-home .ds-hero__price b { font-size: 31px; }
   .ds-lp.ds-home .ds-hero__price dt { font-size: 11px; }
   .ds-lp.ds-home .ds-route-head__label { max-width: calc(100vw - 32px); }
