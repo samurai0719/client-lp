@@ -1,0 +1,416 @@
+/*
+ * ドラテク企業向けLP 最終デザイン
+ * 採用レスキュー建設業版の設計思想（業界固有の世界観、太い情報階層、番号ラベル、
+ * 強い枠線とずらし影）を、物流のルート図・運行票・道路標示へ翻訳する。
+ * 文言・料金・導線・機能は変更しない。
+ */
+
+.ds-lp.ds-home {
+  --lg-paper: #f3f1e9;
+  --lg-paper-hi: #fbfaf5;
+  --lg-ink: #0a2144;
+  --lg-blue: #0c5bb8;
+  --lg-yellow: #ffc400;
+  --lg-yellow-deep: #e5a900;
+  --lg-line: #9fb2c8;
+  --lg-muted: #5a6775;
+  --lg-grid: rgba(10, 33, 68, .055);
+  --lg-grid-strong: rgba(10, 33, 68, .095);
+  --lg-blueprint:
+    linear-gradient(var(--lg-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--lg-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(var(--lg-grid-strong) 1px, transparent 1px) 0 0 / 120px 120px,
+    linear-gradient(90deg, var(--lg-grid-strong) 1px, transparent 1px) 0 0 / 120px 120px;
+  --lg-card-shadow: 7px 7px 0 var(--lg-yellow);
+  --lg-card-shadow-sm: 4px 4px 0 var(--lg-yellow);
+  color: var(--lg-ink);
+  background: var(--lg-paper);
+}
+
+/* ── ヘッダー：運行会社のサインボード ───────────────────── */
+.ds-lp.ds-home .dt-header {
+  border-bottom: 2px solid var(--lg-ink);
+  background: rgba(243, 241, 233, .96);
+  box-shadow: none;
+}
+.ds-lp.ds-home .dt-logo__name,
+.ds-lp.ds-home .dt-logo__sub { color: var(--lg-ink); }
+.ds-lp.ds-home .dt-logo__sub { font-weight: 800; letter-spacing: .035em; }
+
+/* 建設版のオレンジCTAを、道路標識の安全色イエローへ */
+.ds-lp.ds-home .dt-btn {
+  border: 2.5px solid var(--lg-ink);
+  border-radius: 9px;
+  background: var(--lg-yellow);
+  box-shadow: 0 5px 0 var(--lg-ink);
+  color: var(--lg-ink);
+}
+.ds-lp.ds-home .dt-btn:hover { background: #ffd633; }
+.ds-lp.ds-home .dt-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--lg-ink); }
+.ds-lp.ds-home .dt-btn::after { opacity: 0; }
+.ds-lp.ds-home .dt-btn__arrow { color: var(--lg-ink); }
+.ds-lp.ds-home .ds-header-cta .dt-btn { box-shadow: 0 3px 0 var(--lg-ink); }
+
+/* ── FV：現在の訴求力ある画像を、物流図面の一枚絵として見せる ── */
+.ds-lp.ds-home .ds-hero {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0;
+  border-bottom: 2px solid var(--lg-ink);
+  background: var(--lg-blueprint), var(--lg-paper);
+}
+.ds-lp.ds-home .ds-hero::before,
+.ds-lp.ds-home .ds-hero::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+.ds-lp.ds-home .ds-hero::before {
+  inset: 12px 12px auto;
+  height: 16px;
+  border-top: 1px solid rgba(10,33,68,.42);
+  border-right: 1px solid rgba(10,33,68,.42);
+}
+.ds-lp.ds-home .ds-hero::after {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+  background: repeating-linear-gradient(-45deg, var(--lg-yellow) 0 12px, var(--lg-ink) 12px 24px);
+}
+.ds-lp.ds-home .ds-hero picture {
+  display: block;
+  position: relative;
+  max-width: 1500px;
+  margin-inline: auto;
+  border-inline: 2px solid var(--lg-ink);
+  background: #fff;
+}
+.ds-lp.ds-home .ds-hero__img { max-width: none; }
+.ds-lp.ds-home .ds-hero__below {
+  position: relative;
+  z-index: 3;
+  width: min(100% - 32px, 930px);
+  margin-top: -1px;
+  padding: 28px 20px 52px;
+  border: 2px solid var(--lg-ink);
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+  background: var(--lg-paper-hi);
+  box-shadow: var(--lg-card-shadow);
+}
+.ds-lp.ds-home .ds-hero__price {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.ds-lp.ds-home .ds-hero__price > div { padding: 8px 6px 14px; }
+.ds-lp.ds-home .ds-hero__price > div + div { border-left: 1.5px dashed var(--lg-line); }
+.ds-lp.ds-home .ds-hero__price dt { color: var(--lg-ink); font-weight: 900; }
+.ds-lp.ds-home .ds-hero__price dd,
+.ds-lp.ds-home .ds-hero__price small { color: var(--lg-ink); }
+.ds-lp.ds-home .ds-hero__price b { color: var(--lg-blue); }
+.ds-lp.ds-home .ds-hero__cta .ds-cta { margin-top: 18px; }
+
+/* ── 背景：空や雲ではなく、配送ルートの図面 ─────────────── */
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results, .dt-faq) {
+  background: var(--lg-blueprint), var(--lg-paper);
+  border-top: 0;
+}
+.ds-lp.ds-home :is(.ds-intro, .ds-reasons, .ds-delegate, .ds-flow2, .ds-pricing2, .dt-faq)::before,
+.ds-lp.ds-home :is(.ds-problems2, .ds-visible2, .ds-retention, .ds-compare, .ds-results)::before,
+.ds-lp.ds-home :is(.ds-intro, .ds-delegate, .ds-pricing2)::after,
+.ds-lp.ds-home :is(.ds-reasons, .ds-flow2, .ds-results)::after,
+.ds-lp.ds-home :is(.ds-visible2, .ds-compare)::after {
+  content: none;
+  animation: none;
+}
+.ds-lp.ds-home main > .dt-section { padding-block: 82px; }
+.ds-lp.ds-home main > .dt-section:nth-of-type(even) {
+  background-color: #e8edf0;
+}
+
+/* 物流ルートの中央線。セクション間に細い道路を通し、長いLPを一本の旅にする */
+.ds-lp.ds-home main > .dt-section:not(.ds-driver-operated)::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: 0;
+  width: min(86%, 1040px);
+  height: 2px;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(90deg, var(--lg-blue) 0 28px, transparent 28px 45px);
+  opacity: .28;
+}
+
+/* ── セクション見出し：運行票ラベル ───────────────────── */
+.ds-lp.ds-home .dt-head { margin-bottom: 44px; text-align: center; }
+.ds-lp.ds-home .ds-route-head__label {
+  display: inline-flex;
+  align-items: stretch;
+  margin-bottom: 0;
+  padding: 0;
+  border: 2px solid var(--lg-ink);
+  border-radius: 3px;
+  background: var(--lg-paper-hi);
+  box-shadow: 4px 4px 0 var(--lg-yellow);
+  color: var(--lg-ink);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.ds-lp.ds-home .ds-route-head__label > span {
+  display: flex;
+  align-items: center;
+  padding: 8px 11px;
+}
+.ds-lp.ds-home .ds-route-head__no { background: var(--lg-ink); color: #fff; font-size: 14px; }
+.ds-lp.ds-home .ds-route-head__en {
+  border-right: 1.5px dashed var(--lg-line);
+  color: var(--lg-blue);
+  font-size: 11px;
+  letter-spacing: .13em;
+}
+.ds-lp.ds-home .ds-route-head__jp { font-size: 12px; }
+.ds-lp.ds-home .dt-head__title {
+  position: relative;
+  margin-top: 24px;
+  padding-bottom: 20px;
+  color: var(--lg-ink);
+  font-size: 29px;
+  font-weight: 900;
+  line-height: 1.4;
+  letter-spacing: .015em;
+}
+.ds-lp.ds-home :is(.ds-intro, .ds-problems2, .ds-reasons, .ds-visible2, .ds-delegate, .ds-retention, .ds-flow2, .ds-compare, .ds-pricing2, .ds-results, .dt-faq) .dt-head__title::after {
+  width: 128px;
+  height: 7px;
+  margin: 18px auto 0;
+  transform: skewX(-18deg);
+  background: var(--lg-yellow);
+}
+.ds-lp.ds-home .dt-head__lead { color: var(--lg-muted); }
+.ds-lp.ds-home .ds-heading-accent { color: var(--lg-blue) !important; }
+
+/* ── カード：車両台帳の太枠＋安全色のずらし影 ───────────── */
+.ds-lp.ds-home :is(.ds-steps3 li, .ds-pgrid li, .ds-split__box, .ds-relay li, .ds-flow3__main, .ds-free, .ds-scard, .ds-ptable, .ds-tbd, .ds-rtable__row, .ds-operator, .ds-faq__item, .ds-icongrid li) {
+  border: 2px solid var(--lg-ink);
+  border-radius: 5px;
+  background: var(--lg-paper-hi);
+  box-shadow: var(--lg-card-shadow-sm);
+}
+.ds-lp.ds-home .ds-steps3 { gap: 22px; }
+.ds-lp.ds-home .ds-steps3 li {
+  position: relative;
+  overflow: visible;
+  padding: 0 0 22px;
+}
+.ds-lp.ds-home .ds-steps3__art {
+  width: 100%;
+  max-height: 210px;
+  margin: 0 0 18px;
+  border-bottom: 2px solid var(--lg-ink);
+  background: #fff;
+  object-fit: contain;
+}
+.ds-lp.ds-home .ds-steps3__title,
+.ds-lp.ds-home .ds-steps3__sub { padding-inline: 18px; }
+.ds-lp.ds-home .ds-steps3__no {
+  border: 2px solid var(--lg-ink);
+  background: var(--lg-yellow);
+  color: var(--lg-ink);
+  box-shadow: 2px 2px 0 var(--lg-ink);
+}
+.ds-lp.ds-home .ds-steps3__sub { color: var(--lg-muted); }
+
+/* 悩みカードはイラストをポスターのように大きく見せる */
+.ds-lp.ds-home .ds-pgrid { gap: 20px; }
+.ds-lp.ds-home .ds-pgrid li { overflow: hidden; }
+.ds-lp.ds-home .ds-pgrid__art { background: #fff; }
+.ds-lp.ds-home .ds-pgrid__copy { border-color: var(--lg-line); }
+.ds-lp.ds-home .ds-pgrid__label {
+  border: 1.5px solid var(--lg-ink);
+  border-radius: 3px;
+  background: var(--lg-ink);
+  color: #fff;
+}
+.ds-lp.ds-home .ds-pgrid p { color: var(--lg-ink); }
+
+/* まとめ文・CTAブロックも一枚の運行票として扱う */
+.ds-lp.ds-home .ds-goal {
+  border: 2px solid var(--lg-ink);
+  border-radius: 5px;
+  background: var(--lg-paper-hi);
+  box-shadow: var(--lg-card-shadow);
+  color: var(--lg-ink);
+}
+.ds-lp.ds-home .ds-ctabox {
+  position: relative;
+  border: 2px solid var(--lg-ink);
+  border-radius: 5px;
+  background: var(--lg-paper-hi);
+  box-shadow: var(--lg-card-shadow);
+}
+.ds-lp.ds-home .ds-ctabox::before {
+  content: "CHECK THE DRIVER LIST";
+  position: absolute;
+  top: -13px;
+  left: 22px;
+  padding: 4px 10px;
+  border: 2px solid var(--lg-ink);
+  background: var(--lg-yellow);
+  color: var(--lg-ink);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+.ds-lp.ds-home .ds-ctabox__reason { color: var(--lg-ink); }
+.ds-lp.ds-home main :is(p, li, dd, span) strong {
+  background: linear-gradient(transparent 58%, rgba(255,196,0,.55) 58%);
+}
+
+/* プロフィール・理由・比較表 */
+.ds-lp.ds-home .ds-reason {
+  border: 2px solid var(--lg-ink);
+  border-radius: 5px;
+  background: var(--lg-paper-hi);
+  box-shadow: var(--lg-card-shadow);
+}
+.ds-lp.ds-home .ds-reason__no {
+  border: 1.5px solid var(--lg-ink);
+  border-radius: 3px;
+  background: var(--lg-yellow);
+  color: var(--lg-ink);
+}
+.ds-lp.ds-home .ds-reason h3 { color: var(--lg-ink); }
+.ds-lp.ds-home .ds-reason__ex {
+  border-left: 5px solid var(--lg-yellow);
+  border-radius: 0;
+  background: #edf2f5;
+}
+.ds-lp.ds-home .ds-scard__head { background: var(--lg-ink); }
+.ds-lp.ds-home .ds-scard__tag { background: var(--lg-yellow); color: var(--lg-ink); }
+.ds-lp.ds-home .ds-scard__rows > div.is-hl,
+.ds-lp.ds-home .ds-free__row.is-free { background: #e8f1fb; }
+.ds-lp.ds-home .ds-hidebox,
+.ds-lp.ds-home .ds-tbd { border-color: var(--lg-ink); border-radius: 5px; }
+
+/* 連絡リレーは道路のチェックポイントとして見せる */
+.ds-lp.ds-home .ds-relay { gap: 22px; }
+.ds-lp.ds-home .ds-relay li.is-us {
+  border-color: var(--lg-ink);
+  background: var(--lg-yellow);
+}
+.ds-lp.ds-home .ds-relay__icon,
+.ds-lp.ds-home .ds-flow3__icon { border: 2px solid var(--lg-ink); background: var(--lg-yellow); color: var(--lg-ink); }
+.ds-lp.ds-home .ds-flow3::before { background: repeating-linear-gradient(180deg, var(--lg-blue) 0 22px, transparent 22px 35px); }
+.ds-lp.ds-home .ds-flow3__main { border-top: 0; }
+.ds-lp.ds-home .ds-flow3 li.is-fee .ds-flow3__icon { background: var(--lg-ink); color: #fff; }
+.ds-lp.ds-home .ds-flow3 li.is-key .ds-flow3__title em { color: var(--lg-blue); }
+
+/* 料金・実績は数字を主役に */
+.ds-lp.ds-home .ds-cmp thead th.is-ours { background: var(--lg-ink); }
+.ds-lp.ds-home .ds-cmp tbody td.is-ours {
+  border-color: var(--lg-ink);
+  background: #e8f1fb;
+}
+.ds-lp.ds-home .ds-cmp td.is-ours > .ds-cmp__big,
+.ds-lp.ds-home .ds-rtable__label { color: var(--lg-blue); }
+.ds-lp.ds-home .ds-rtable__row { border-top: 0; text-align: left; }
+.ds-lp.ds-home .ds-feeline__icon { border-color: var(--lg-ink); }
+.ds-lp.ds-home .ds-feeline li:last-child .ds-feeline__icon { background: var(--lg-yellow); color: var(--lg-ink); }
+
+/* 元ドライバー運営：映像を残しつつ、暗い物流現場ポスターとして締める */
+.ds-lp.ds-home .ds-driver-operated {
+  border-block: 10px solid transparent;
+  border-image: repeating-linear-gradient(-45deg, var(--lg-yellow) 0 14px, var(--lg-ink) 14px 28px) 10;
+}
+.ds-lp.ds-home .ds-driver-operated__overlay {
+  background: linear-gradient(90deg, rgba(5,20,43,.94), rgba(5,20,43,.70));
+}
+.ds-lp.ds-home .ds-driver-operated .ds-route-head__label {
+  background: rgba(255,255,255,.96);
+}
+.ds-lp.ds-home .ds-driver-operated .dt-head__title,
+.ds-lp.ds-home .ds-driver-operated .dt-head__lead { color: #fff; }
+.ds-lp.ds-home .ds-driver-operated .dt-head__title::after { background: var(--lg-yellow); }
+.ds-lp.ds-home .ds-driver-operated .ds-heading-accent { color: var(--lg-yellow) !important; }
+.ds-lp.ds-home .ds-driver-operated__grid li {
+  border: 1.5px solid rgba(255,255,255,.75);
+  border-radius: 4px;
+  background: rgba(6,28,61,.78);
+  box-shadow: 5px 5px 0 var(--lg-yellow);
+}
+.ds-lp.ds-home .ds-driver-operated__icon { background: var(--lg-yellow); color: var(--lg-ink); }
+
+/* FAQ */
+.ds-lp.ds-home .ds-faq__item summary { color: var(--lg-ink); }
+.ds-lp.ds-home .ds-faq__q { background: var(--lg-yellow); color: var(--lg-ink); }
+
+/* 最終CTA：夜の物流拠点。アニメ挿絵を主役に残す */
+.ds-lp.ds-home .ds-final {
+  position: relative;
+  border-top: 10px solid transparent;
+  border-image: repeating-linear-gradient(-45deg, var(--lg-yellow) 0 14px, var(--lg-ink) 14px 28px) 10;
+  background:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(145deg, #071a36, #0c3974);
+}
+.ds-lp.ds-home .ds-final::before,
+.ds-lp.ds-home .ds-final::after { content: none; }
+.ds-lp.ds-home .ds-final__art {
+  filter: drop-shadow(7px 7px 0 rgba(255,196,0,.88));
+}
+.ds-lp.ds-home :is(.ds-final__title, .ds-final__body, .ds-final .ds-cta__points li) { color: #fff; }
+.ds-lp.ds-home .ds-final .ds-cta__points svg { color: var(--lg-yellow); }
+.ds-lp.ds-home .dt-footer { background: #06162f; border-top: 2px solid var(--lg-yellow); }
+
+/* ── PC ───────────────────────────────────────────────── */
+@media (min-width: 768px) {
+  .ds-lp.ds-home main > .dt-section { padding-block: 116px; }
+  .ds-lp.ds-home .dt-head { margin-bottom: 58px; }
+  .ds-lp.ds-home .ds-route-head__label > span { padding: 9px 15px; }
+  .ds-lp.ds-home .ds-route-head__no { font-size: 17px; }
+  .ds-lp.ds-home .ds-route-head__en { font-size: 13px; }
+  .ds-lp.ds-home .ds-route-head__jp { font-size: 14px; }
+  .ds-lp.ds-home .dt-head__title { font-size: 43px; }
+  .ds-lp.ds-home .ds-hero__below { padding: 34px 42px 58px; }
+  .ds-lp.ds-home .ds-hero__price b { font-size: 48px; }
+  .ds-lp.ds-home .ds-steps3 li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    top: 36%;
+    right: -31px;
+    width: 38px;
+    height: 16px;
+    background: linear-gradient(90deg, var(--lg-blue) 0 65%, transparent 65%) 0 7px / 13px 2px repeat-x;
+  }
+  .ds-lp.ds-home .ds-pgrid li:last-child { width: calc(50% - 10px); }
+  .ds-lp.ds-home .ds-reason { padding: 42px; }
+}
+
+/* ── スマホ ───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .ds-lp.ds-home .dt-header__inner { padding-inline: 14px; }
+  .ds-lp.ds-home .dt-logo__sub { font-size: 9px; }
+  .ds-lp.ds-home .ds-hero picture { border-inline: 0; }
+  .ds-lp.ds-home .ds-hero__below { margin-bottom: 24px; padding-inline: 12px; }
+  .ds-lp.ds-home .ds-hero__price b { font-size: 31px; }
+  .ds-lp.ds-home .ds-hero__price dt { font-size: 11px; }
+  .ds-lp.ds-home .ds-route-head__label { max-width: calc(100vw - 32px); }
+  .ds-lp.ds-home .ds-route-head__label > span { padding-inline: 8px; }
+  .ds-lp.ds-home .ds-route-head__en { letter-spacing: .08em; }
+  .ds-lp.ds-home .dt-head__title { font-size: 28px; }
+  .ds-lp.ds-home .ds-pgrid li:last-child { width: 100%; }
+  .ds-lp.ds-home .ds-reason { padding: 24px 18px; }
+  .ds-lp.ds-home .ds-final__art { max-width: 310px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-lp.ds-home * { scroll-behavior: auto; }
+}
