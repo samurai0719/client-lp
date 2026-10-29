@@ -409,6 +409,32 @@
   .ds-lp.ds-home .ds-pgrid li:last-child { width: 100%; }
   .ds-lp.ds-home .ds-reason { padding: 24px 18px; }
   .ds-lp.ds-home .ds-final__art { max-width: 310px; }
+
+  /* セクション1・2は横スライドにせず、全カードをそのまま縦に表示する */
+  .ds-lp.ds-home :is(.ds-steps3, .ds-driver-operated__grid) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    margin-inline: 0;
+    padding: 0;
+    overflow: visible;
+    overscroll-behavior-x: auto;
+    scroll-snap-type: none;
+    scroll-padding-inline: 0;
+  }
+  .ds-lp.ds-home :is(.ds-steps3 > li, .ds-driver-operated__grid > li) {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    flex: initial;
+    scroll-snap-align: none;
+  }
+  .ds-lp.ds-home .ds-steps3 > li {
+    padding: 0 0 22px;
+  }
+  .ds-lp.ds-home .ds-driver-operated__grid li {
+    padding: 24px 20px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
