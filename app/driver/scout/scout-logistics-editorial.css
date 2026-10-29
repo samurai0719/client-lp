@@ -394,6 +394,16 @@
   .ds-lp.ds-home .ds-reason { padding: 42px; }
 }
 
+/* タブレット幅では5枚目だけ全幅に伸ばさず、上のカードと同じ幅で中央に置く */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .ds-lp.ds-home .ds-pgrid li:last-child {
+    grid-column: 1 / -1;
+    width: 100% !important;
+    max-width: calc(50% - 10px);
+    justify-self: center;
+  }
+}
+
 /* ── スマホ ───────────────────────────────────────────── */
 @media (max-width: 767px) {
   .ds-lp.ds-home .dt-header__inner { padding-inline: 14px; }
