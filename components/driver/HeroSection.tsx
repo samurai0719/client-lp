@@ -114,8 +114,11 @@ export default function HeroSection({ motivation, desiredTiming, onMotivation, o
         {/* ── 実績バッジ（王冠） ──
              画像右下（運転席の窓・腕のあたり）に重ねる。画像の文字や顔にかからない位置。
              画像の幅に合わせて文字も縮むよう、サイズは cqw（画像幅に対する割合）で指定。
+             フォントは極太（W8〜W9）まである和文フォントを先に指定する。サイト共通の指定だと
+             数字は欧文フォントの極太、和文は太さ2段階しかないヒラギノ角ゴ ProN になり、
+             数字のある行だけ太く見えてしまうため。
         */}
-        <ul className="absolute right-[2.5%] bottom-[5%] flex w-[47%] flex-col gap-[1.6cqw] [container-type:inline-size]" aria-label="ドラテクの実績">
+        <ul className="absolute right-[2.5%] bottom-[5%] flex w-[47%] flex-col gap-[1.6cqw] [container-type:inline-size] [font-family:'Hiragino_Sans','Noto_Sans_JP','Noto_Sans_CJK_JP','Yu_Gothic',sans-serif]" aria-label="ドラテクの実績">
           {FV_ACHIEVEMENTS.map((a) => (
             <li
               key={a.main}
