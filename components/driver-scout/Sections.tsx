@@ -139,7 +139,7 @@ export function Hero() {
         人が残り続けるドライバー採用。仕事を断らない採用へ。愛知県の運送会社さま向け{SERVICE_KIND}。
       </h1>
       <picture>
-        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={941} height={1515} />
+        <source media="(max-width: 767px)" srcSet="/images/driver/scout/fv-sp.webp" width={989} height={1591} />
         <img
           className="ds-hero__img"
           src="/images/driver/scout/fv-pc.webp"
