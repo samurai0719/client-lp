@@ -48,19 +48,36 @@ import {
 
 /* ═══════════════════════ 共通部品 ═══════════════════════ */
 
-/** "|" を <wbr>（改行してよい位置）、"\n" を <br> に変換する */
+/** "|" を <wbr>（改行してよい位置）に変換する */
+function Breaks({ text }: { text: string }) {
+  return (
+    <>
+      {text.split("|").map((part, i) => (
+        <Fragment key={i}>
+          {i > 0 && <wbr />}
+          {part}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+/** "|" を <wbr>、"\n" を <br>、"**語句**" を強調（色＋下線）に変換する */
 function W({ text }: { text: string }) {
   return (
     <>
       {text.split("\n").map((line, li) => (
         <Fragment key={li}>
           {li > 0 && <br />}
-          {line.split("|").map((part, i) => (
-            <Fragment key={i}>
-              {i > 0 && <wbr />}
-              {part}
-            </Fragment>
-          ))}
+          {line.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+            i % 2 === 1 ? (
+              <strong key={i} className="sa-em">
+                <Breaks text={part} />
+              </strong>
+            ) : (
+              <Breaks key={i} text={part} />
+            ),
+          )}
         </Fragment>
       ))}
     </>
@@ -308,7 +325,7 @@ export function BeforeAfter() {
   return (
     <section className="ks-section ks-delegate" aria-labelledby="sa-ba-title">
       <div className="sr-container">
-        <Head no="04" en="BEFORE / AFTER" label="採用業務の変化" id="sa-ba-title" title={<H text="社長の仕事が、|ここまで変わります。" />} />
+        <Head no="04" en="BEFORE / AFTER" label="採用業務の変化" id="sa-ba-title" title={<H text="社長の仕事が、|**ここまで変わります。**" />} />
         <div className="sa-ba__grid">
           <article className="ks-card sa-ba__col">
             <p className="sa-ba__tag">Before</p>
@@ -378,7 +395,9 @@ export function Scope() {
             </ol>
           </div>
         </div>
-        <p className="ks-note ks-note--center">{SCOPE_NOTE}</p>
+        <p className="ks-note ks-note--center">
+          <W text={SCOPE_NOTE} />
+        </p>
       </div>
     </section>
   );
@@ -390,7 +409,7 @@ export function Strengths() {
   return (
     <section className="ks-section ks-strengths" aria-labelledby="sa-strengths-title">
       <div className="sr-container">
-        <Head no="06" en="STRENGTH" label="建設業特化の強み" id="sa-strengths-title" invert title={<H text={"建設業の採用は、\n職種を|理解していなければ|成功しません。"} />} />
+        <Head no="06" en="STRENGTH" label="建設業特化の強み" id="sa-strengths-title" invert title={<H text={"建設業の採用は、\n**職種を|理解していなければ**|成功しません。"} />} />
         <div className="ks-strengths__intro">
           <figure className="ks-strengths__photo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -413,7 +432,9 @@ export function Strengths() {
               <h3>
                 <H text={s.title} />
               </h3>
-              <p>{s.body}</p>
+              <p>
+                <W text={s.body} />
+              </p>
             </li>
           ))}
         </ol>
@@ -448,7 +469,7 @@ export function Pricing() {
   return (
     <section className="ks-section ks-pricing" id="pricing" aria-labelledby="sa-pricing-title">
       <div className="sr-container sr-container--narrow">
-        <Head no="08" en="PRICE" label="料金" id="sa-pricing-title" title={<H text={"料金は、|シンプルに|3つだけ。"} />} />
+        <Head no="08" en="PRICE" label="料金" id="sa-pricing-title" title={<H text={"料金は、|シンプルに|**3つだけ。**"} />} />
         <div className="ks-plan">
           <div className="ks-plan__monthly">
             <p className="ks-plan__label">月額費用</p>
@@ -535,7 +556,9 @@ export function FAQ() {
                 </span>
                 <div>
                   {f.a.map((p) => (
-                    <p key={p}>{p}</p>
+                    <p key={p}>
+                      <W text={p} />
+                    </p>
                   ))}
                 </div>
               </div>

@@ -921,3 +921,21 @@
   line-height: 1.2;
   background: linear-gradient(transparent 68%, rgba(255, 196, 0, 0.55) 68%);
 }
+
+/* 特に読んでほしい語句（見出し・本文共通）。文言側は "**語句**" で指定する */
+.sa-em {
+  color: var(--ks-orange-deep);
+  font-weight: 900;
+  text-decoration: underline;
+  text-decoration-color: var(--ks-orange);
+  text-decoration-thickness: 0.12em;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 0.2em;
+}
+
+/* 墨色の背景の上では黄色にする */
+.ks-head--invert .sa-em,
+.ks-contact__title .sa-em {
+  color: #ffc400;
+  text-decoration-color: #ffc400;
+}
