@@ -989,15 +989,22 @@
   -webkit-text-stroke-width: 2.4px;
 }
 
-/* 配色の調整：青は水色に、オレンジは少し薄くする（このLPだけ） */
+/* 配色の調整：青字は水色に、オレンジの文字だけ少し薄くする（ボタン・枠・影は変えない） */
 .sa-lp {
-  --ks-orange: #f6863c;
-  --ks-orange-deep: #ee7a30;
-  --ks-orange-soft: #fdeadd;
+  --sa-orange-text: #f6863c;
   --sa-blue: #2bb0ea;
   --sa-blue-light: #7fd6ff;
 }
 
 .sa-lp .sa-flow__owner.is-us {
   background: #dff4fd;
+}
+
+.sa-lp .sa-logo em,
+.sa-lp :is(h1, h2, h3) .sa-em,
+.sa-lp .sa-cost__hl,
+.sa-lp .sa-cost__calc > div:last-child,
+.sa-lp .ks-faq__a,
+.sa-lp .sa-consent a {
+  color: var(--sa-orange-text);
 }
