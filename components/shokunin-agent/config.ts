@@ -33,7 +33,7 @@ export const CTA_SUB = "相談しただけで料金が発生することはあ�
 export const UNDECIDED = "無料相談時に採用条件を確認したうえで個別にご案内します。";
 
 export const NAV = [
-  { href: "#features", label: "サービスの特徴" },
+  { href: "#service", label: "サービスの仕組み" },
   { href: "#scope", label: "代行内容" },
   { href: "#pricing", label: "料金" },
   { href: "#results", label: "実績" },
@@ -53,9 +53,14 @@ export const PRICE_FOOTNOTE = "詳細な料金条件は、ご契約前に書面�
 
 /* ─── FV ─── */
 export const HERO = {
-  tags: ["建設業特化", "採用業務を代行"],
-  title: "職人採用を、\n丸ごと|任せられる。",
-  body: "建設業に特化した採用代行。|求人づくりから|広告運用、|応募者対応、|面接調整まで|代行するから、|経営者は|面接と|採用判断に|集中できます。",
+  label: "建設会社専属の外部採用担当",
+  title: "職人の応募獲得から、|面接設定まで。\n採用業務を|丸ごと代行。",
+  body: "採用したい職種と|条件を|教えてください。|adofyが求人・|採用LP・広告を作り、|応募者への連絡と|面接日程の調整まで|代行します。|会社側が行うのは、|面接と採用判断です。",
+  steps: [
+    { who: "企業", text: "採用条件を伝える", owner: "company" },
+    { who: "adofy", text: "求人制作・広告運用・応募者対応・面接調整", owner: "us" },
+    { who: "企業", text: "面接・採用判断", owner: "company" },
+  ],
   /** 建設版の採用レスキュー（/kensetsu）と同じFV画像。見出し・料金は画像に焼き込み済み */
   image: {
     pc: { src: "/images/saiyo-rescue/kensetsu/hero-pc.webp", w: 1672, h: 941 },
@@ -108,48 +113,67 @@ export const COST = {
   ],
 } as const;
 
-/* ─── 経営者の悩み ─── */
-export type ProblemIcon = "noApply" | "noResponse" | "noContact" | "busy" | "schedule" | "young" | "noStaff" | "decline" | "site" | "leave";
+/* ─── お悩みエリア ─── */
+export type WorryArt = "noApplicant" | "missedCall" | "lost" | "conflict" | "declined";
 
-export const PROBLEMS: { icon: ProblemIcon; text: string }[] = [
-  { icon: "noApply", text: "求人を出しても|職人から|応募が来ない" },
-  { icon: "noResponse", text: "求人媒体へ|掲載しても|反応がない" },
-  { icon: "noContact", text: "応募が来ても|連絡が|つながらない" },
-  { icon: "busy", text: "現場が忙しく|応募者へ|すぐ対応できない" },
-  { icon: "schedule", text: "面接調整や|応募者対応まで|手が回らない" },
-  { icon: "young", text: "若手職人を採用したい" },
-  { icon: "noStaff", text: "採用担当者を|雇う余裕がない" },
-  { icon: "decline", text: "人手不足で|仕事を断っている" },
-  { icon: "site", text: "経営者自身が|現場から|抜けられない" },
-  { icon: "leave", text: "採用しても|早期離職が|続いている" },
-];
+export const WORRY = {
+  title: "こんな採用の悩み、|抱えていませんか？",
+  lead: "現場に出ながら、求人作成、応募者対応、面接調整まで行うのは簡単ではありません。",
+  items: [
+    { text: "求人を出しても|職人から|応募が来ない", art: "noApplicant" },
+    { text: "現場に出ているため|応募者からの電話に|対応できない", art: "missedCall" },
+    { text: "折り返す頃には|応募者が|他社へ決まっている", art: "lost" },
+    { text: "面接の日程調整まで|手が回らない", art: "conflict" },
+    { text: "人手不足によって|新しい仕事を|断っている", art: "declined" },
+  ] as { text: string; art: WorryArt }[],
+} as const;
 
-/* ─── 解決策 ─── */
-export const SOLUTION = {
-  ads: { label: "広告を出すだけの場合", items: ["求人を掲載・配信する", "応募が届く", "連絡・調整は自社で対応"] },
-  agent: {
-    label: `${SERVICE_NAME}の場合`,
-    items: ["採用戦略と求人をつくる", "広告を配信・改善する", "応募者へ初期対応する", "確認事項を聞き、面接日程を調整する", "応募状況を報告し、改善する"],
+/* ─── サービス全体図 ─── */
+export const SERVICE_FLOW = {
+  title: "その採用業務、|adofyが|代わりに動きます。",
+  lead: "求人を掲載して終わりではありません。応募を集め、応募者へ連絡し、面接が決まるところまで採用活動を進めます。",
+  steps: [
+    { text: "建設会社から|採用したい職種・|条件を確認", owner: "both" },
+    { text: "adofyが|求人原稿・採用LP・|広告を制作", owner: "us" },
+    { text: "広告を配信して|職人から|応募を獲得", owner: "us" },
+    { text: "adofyが応募者へ連絡し、|仕事内容と条件を説明", owner: "us" },
+    { text: "adofyが|企業と応募者の|面接日程を調整", owner: "us" },
+    { text: "企業が面接を行い、|採用可否を決定", owner: "company" },
+  ] as { text: string; owner: "both" | "us" | "company" }[],
+} as const;
+
+export const OWNER_LABEL = { both: "企業 → adofy", us: "adofyが担当", company: "企業が担当" } as const;
+
+/* ─── Before／After ─── */
+export const BEFORE_AFTER = {
+  before: {
+    title: "これまでは、|すべて社長が対応",
+    items: ["求人を考える", "原稿を作る", "広告を出す", "応募者へ連絡する", "仕事内容を説明する", "面接日程を調整する", "面接する", "採用判断をする"],
   },
-  close: "**広告を出すだけではなく、応募獲得後の対応まで行う。**それが、職人採用エージェントの一番の違いです。",
+  after: {
+    title: "adofy導入後は、|面接と採用判断に|集中",
+    usLabel: "adofyが代行する業務",
+    us: ["求人制作", "採用LP制作", "広告制作・運用", "応募獲得", "応募者への初期対応", "企業指定内容の説明", "面接日程調整"],
+    companyLabel: "企業が行う業務",
+    company: ["面接", "採用判断", "雇用条件の最終決定", "内定通知"],
+  },
 } as const;
 
 /* ─── 代行業務の範囲 ─── */
-export const SCOPE: { title: string; owner: "us" | "company" }[] = [
-  { title: "採用したい職種・|人物像の整理", owner: "us" },
-  { title: "求人原稿・採用LPの制作", owner: "us" },
-  { title: "広告クリエイティブの制作", owner: "us" },
-  { title: "求人広告の配信・改善", owner: "us" },
-  { title: "応募者への初期対応", owner: "us" },
-  { title: "企業指定項目に|基づく確認", owner: "us" },
-  { title: "面接日程の調整", owner: "us" },
-  { title: "応募状況の共有", owner: "us" },
-  { title: "企業による|面接・採用判断", owner: "company" },
-];
+export const SCOPE = [
+  "採用したい職種・人物像の整理",
+  "求人原稿・採用LPの制作",
+  "広告クリエイティブの制作",
+  "求人広告の配信・改善",
+  "応募者への初期対応",
+  "企業指定項目に基づく確認",
+  "面接日程の調整",
+  "応募状況の共有",
+] as const;
 
 export const COMPANY_TASKS = ["募集条件の決定", "選考基準の決定", "面接", "採用可否の判断", "雇用条件の最終決定", "内定通知", "雇用契約"] as const;
 
-export const SCOPE_NOTE = "当社が独自の判断で応募者を選別・推薦することはありません。";
+export const SCOPE_NOTE = "企業による面接・採用判断へ進みます。当社が独自の判断で応募者を選別・推薦することはありません。";
 
 /* ─── 建設業特化の強み ─── */
 export const STRENGTHS: { title: string; body: string }[] = [
@@ -159,6 +183,13 @@ export const STRENGTHS: { title: string; body: string }[] = [
   { title: "面接につながる|応募を増やす", body: "応募単価だけを見ず、面接につながる応募を増やすことを目指します。" },
   { title: "データを見て改善する", body: "応募データを見ながら、広告とLPを改善します。" },
 ];
+
+export const CREW_IMAGE = {
+  src: "/images/saiyo-rescue/kensetsu/crew-wide.webp",
+  w: 941,
+  h: 520,
+  alt: "ヘルメットをかぶり、木材や単管を担いで現場で働く職人",
+} as const;
 
 export const TRADES = ["鳶", "足場", "塗装", "防水", "左官", "土木", "型枠", "大工", "溶接", "鉄骨", "解体", "外構", "電気工事", "設備工事", "配管", "屋根", "内装", "施工管理"] as const;
 
@@ -177,18 +208,6 @@ export const RESULTS_NOTES = [
   "他業種を含む当社運用案件の応募獲得実績／当社集計",
   "掲載数値は過去の運用実績であり、応募数や採用を保証するものではありません。",
 ] as const;
-
-/* ─── 他の採用方法との比較 ─── */
-export const COMPARE_COLS = ["求人媒体への掲載のみ", "自社で採用活動", SERVICE_NAME] as const;
-export const COMPARE_ROWS: { label: string; values: [string, string, string] }[] = [
-  { label: "求人制作", values: ["自社で用意（媒体により支援あり）", "自社で対応", "当社が代行"] },
-  { label: "採用LP制作", values: ["サービス範囲外の場合が多い", "自社で対応", "当社が代行"] },
-  { label: "広告運用", values: ["媒体内の掲載が中心", "自社で対応", "当社が代行"] },
-  { label: "応募者への初期対応", values: ["自社で対応", "自社で対応", "当社が代行"] },
-  { label: "面接日程調整", values: ["自社で対応", "自社で対応", "当社が代行"] },
-  { label: "月額固定費", values: ["掲載プランによる", "採用方法による", "0円"] },
-  { label: "採用業務の負担", values: ["応募後の対応は自社", "担当者の時間が必要", "面接と採用判断が中心"] },
-];
 
 /* ─── ご利用の流れ ─── */
 export const FLOW = [

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, HardHat, Menu, X } from "lucide-react";
 import { CTA_HREF, CTA_MAIN, NAV, SERVICE_NAME } from "./config";
 
 /** ヘッダー。スマホではハンバーガーメニューに畳む */
@@ -12,7 +12,10 @@ export function Header() {
     <header className="sa-header">
       <div className="sa-header__inner">
         <a href="#hero" className="sa-logo" aria-label={`${SERVICE_NAME} トップへ`}>
-          {SERVICE_NAME}
+          <HardHat aria-hidden="true" strokeWidth={2.4} />
+          <span>
+            職人採用<em>エージェント</em>
+          </span>
         </a>
         <nav className="sa-nav" aria-label="ページ内">
           {NAV.map((n) => (

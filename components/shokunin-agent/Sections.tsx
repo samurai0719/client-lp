@@ -1,30 +1,26 @@
 import { Fragment, type ReactNode } from "react";
-import {
-  ArrowRight,
-  BriefcaseBusiness,
-  CalendarClock,
-  Check,
-  Clock3,
-  HardHat,
-  LogOut,
-  PhoneMissed,
-  PhoneOff,
-  SearchX,
-  UserPlus,
-  UserX,
-  X,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowDown, ArrowRight, Building2, Headset } from "lucide-react";
 import CountUpNumber from "@/components/saiyo-rescue/CountUpNumber";
 import LegalOpener from "@/components/saiyo-rescue/LegalOpener";
 import { OPERATOR } from "@/components/saiyo-rescue/config";
-import { BlueprintSkyline } from "@/components/saiyo-rescue-kensetsu/illustrations";
+import type { ComponentType } from "react";
+import { BlueprintSkyline, CrewRelief } from "@/components/saiyo-rescue-kensetsu/illustrations";
+import {
+  BeforeAfterIllustration,
+  DeclinedProjectIllustration,
+  LostApplicantIllustration,
+  MissedCallIllustration,
+  NoApplicantIllustration,
+  ProblemOwnerIllustration,
+  ScheduleConflictIllustration,
+  ServiceFlowIllustration,
+} from "./characters";
 import ContactForm from "./ContactForm";
 import {
+  BEFORE_AFTER,
   COMPANY_TASKS,
-  COMPARE_COLS,
-  COMPARE_ROWS,
   COST,
+  CREW_IMAGE,
   CTA_HREF,
   CTA_MAIN,
   CTA_SUB,
@@ -33,20 +29,21 @@ import {
   FINAL_TITLE,
   FLOW,
   HERO,
+  OWNER_LABEL,
   PRICE,
   PRICE_FOOTNOTE,
   PRICE_LINE,
-  PROBLEMS,
   RESULTS_NOTES,
   RESULTS_TOTAL,
   SCOPE,
   SCOPE_NOTE,
+  SERVICE_FLOW,
   SERVICE_NAME,
-  SOLUTION,
   STRENGTHS,
   TRADES,
+  WORRY,
   yen,
-  type ProblemIcon,
+  type WorryArt,
 } from "./config";
 
 /* ═══════════════════════ 共通部品 ═══════════════════════ */
@@ -70,17 +67,42 @@ function W({ text }: { text: string }) {
   );
 }
 
-/** "**強調**" を <strong> に変換する */
-function R({ text }: { text: string }) {
-  return <>{text.split(/\*\*(.+?)\*\*/g).map((p, i) => (i % 2 === 1 ? <strong key={i}>{p}</strong> : <Fragment key={i}>{p}</Fragment>))}</>;
-}
-
 function Cta({ location, label = CTA_MAIN }: { location: string; label?: string }) {
   return (
     <a href={CTA_HREF} className="sr-btn sr-btn--lg sr-btn--primary ks-btn" data-sr-cta={location}>
       <span>{label}</span>
       <ArrowRight className="sr-btn__arrow" aria-hidden="true" strokeWidth={2.6} />
     </a>
+  );
+}
+
+/** 料金の要点（最終CTA） */
+function PriceSummary() {
+  return (
+    <dl className="ks-psum ks-psum--invert">
+      <div className="ks-psum__main">
+        <dt>月額費用</dt>
+        <dd>
+          <b>{PRICE.monthly}</b>
+          <span>円</span>
+        </dd>
+      </div>
+      <div>
+        <dt>初期費用</dt>
+        <dd>
+          <b>{yen(PRICE.initial)}</b>
+          <span>円</span>
+        </dd>
+      </div>
+      <div>
+        <dt>採用成功時</dt>
+        <dd>
+          <small>想定年収の</small>
+          <b>{PRICE.rate}</b>
+          <span>%</span>
+        </dd>
+      </div>
+    </dl>
   );
 }
 
@@ -112,17 +134,22 @@ export function Hero() {
       </picture>
       <div className="sr-container">
         <div className="sa-hero__copy">
-          <ul className="sa-hero__tags">
-            {HERO.tags.map((t) => (
-              <li key={t}>{t}</li>
-            ))}
-          </ul>
+          <p className="sa-hero__label">{HERO.label}</p>
           <h1 className="sa-hero__title" id="sa-hero-title">
             <W text={HERO.title} />
           </h1>
           <p className="sa-hero__body">
             <W text={HERO.body} />
           </p>
+          <ol className="sa-hero__steps">
+            {HERO.steps.map((st, i) => (
+              <li key={st.text} className={`is-${st.owner}`}>
+                <span>{i + 1}</span>
+                <b>{st.who}</b>
+                <p>{st.text}</p>
+              </li>
+            ))}
+          </ol>
           <p className="sa-hero__price">
             {PRICE_LINE.map((t) => (
               <span key={t}>{t}</span>
@@ -191,36 +218,38 @@ export function Cost() {
   );
 }
 
-/* ═══════════════════════ 経営者の悩み ═══════════════════════ */
+/* ═══════════════════════ お悩みエリア ═══════════════════════ */
 
-const PROBLEM_ICONS: Record<ProblemIcon, LucideIcon> = {
-  noApply: UserX,
-  noResponse: SearchX,
-  noContact: PhoneMissed,
-  busy: Clock3,
-  schedule: CalendarClock,
-  young: UserPlus,
-  noStaff: BriefcaseBusiness,
-  decline: PhoneOff,
-  site: HardHat,
-  leave: LogOut,
+const WORRY_ARTS: Record<WorryArt, ComponentType<{ className?: string }>> = {
+  noApplicant: NoApplicantIllustration,
+  missedCall: MissedCallIllustration,
+  lost: LostApplicantIllustration,
+  conflict: ScheduleConflictIllustration,
+  declined: DeclinedProjectIllustration,
 };
 
-export function Problems() {
+export function Worry() {
   return (
-    <section className="ks-section sa-problems" aria-labelledby="sa-problems-title">
+    <section className="sa-worry" id="worry" aria-labelledby="sa-worry-title">
       <div className="sr-container">
-        <Head no="02" en="PROBLEM" label="経営者の悩み" id="sa-problems-title" title={<W text={"人が足りない。\nそれでも、|採用にかける|時間がない。"} />} />
-        <ul className="sa-problems__grid">
-          {PROBLEMS.map((p) => {
-            const Icon = PROBLEM_ICONS[p.icon];
+        <div className="sa-worry__top">
+          <div className="sa-worry__head">
+            <p className="sa-worry__label">PROBLEM</p>
+            <h2 id="sa-worry-title">
+              <W text={WORRY.title} />
+            </h2>
+            <p>{WORRY.lead}</p>
+          </div>
+          <ProblemOwnerIllustration className="sa-worry__owner" />
+        </div>
+        <ul className="sa-worry__grid">
+          {WORRY.items.map((w) => {
+            const Art = WORRY_ARTS[w.art];
             return (
-              <li key={p.text} className="sa-pcard">
-                <span aria-hidden="true">
-                  <Icon strokeWidth={2.2} />
-                </span>
+              <li key={w.text}>
+                <Art className="sa-worry__art" />
                 <p>
-                  <W text={p.text} />
+                  <W text={w.text} />
                 </p>
               </li>
             );
@@ -231,40 +260,76 @@ export function Problems() {
   );
 }
 
-/* ═══════════════════════ 解決策 ═══════════════════════ */
+/* ═══════════════════════ サービス全体図 ═══════════════════════ */
 
-export function Solution() {
+export function ServiceFlow() {
   return (
-    <section className="ks-section sa-solution" id="features" aria-labelledby="sa-solution-title">
+    <section className="ks-section sa-flow" id="service" aria-labelledby="sa-flow-title">
       <div className="sr-container">
-        <Head no="03" en="SOLUTION" label="サービスの特徴" id="sa-solution-title" invert title={<W text="職人採用に|必要な業務を、|企業の採用担当として|代行します。" />} />
-        <div className="sa-solution__grid">
-          <div className="sa-solution__col">
-            <h3>{SOLUTION.ads.label}</h3>
-            <ul>
-              {SOLUTION.ads.items.map((t) => (
-                <li key={t}>
-                  <X aria-hidden="true" strokeWidth={3} />
-                  {t}
-                </li>
+        <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<W text={SERVICE_FLOW.title} />} lead={SERVICE_FLOW.lead} />
+        <ol className="sa-flow__grid">
+          {SERVICE_FLOW.steps.map((st, i) => (
+            <li key={st.text} className={`is-${st.owner}`}>
+              <div className="sa-flow__top">
+                <span className="sa-flow__no">{i + 1}</span>
+                <span className="sa-flow__owner">{OWNER_LABEL[st.owner]}</span>
+              </div>
+              <ServiceFlowIllustration step={i + 1} className="sa-flow__art" />
+              <h3>
+                <W text={st.text} />
+              </h3>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════ Before／After ═══════════════════════ */
+
+export function BeforeAfter() {
+  const { before, after } = BEFORE_AFTER;
+  return (
+    <section className="ks-section sa-ba" aria-labelledby="sa-ba-title">
+      <div className="sr-container">
+        <Head no="04" en="BEFORE / AFTER" label="採用業務の変化" id="sa-ba-title" title={<W text="社長の仕事が、|ここまで変わります。" />} />
+        <div className="sa-ba__grid">
+          <article className="sa-ba__col">
+            <p className="sa-ba__tag">Before</p>
+            <h3>
+              <W text={before.title} />
+            </h3>
+            <BeforeAfterIllustration variant="before" className="sa-ba__art" />
+            <ul className="sa-ba__list">
+              {before.items.map((t) => (
+                <li key={t}>{t}</li>
               ))}
             </ul>
+          </article>
+          <div className="sa-ba__arrow" aria-hidden="true">
+            <ArrowDown strokeWidth={3} />
           </div>
-          <div className="sa-solution__col is-agent">
-            <h3>{SOLUTION.agent.label}</h3>
-            <ul>
-              {SOLUTION.agent.items.map((t) => (
-                <li key={t}>
-                  <Check aria-hidden="true" strokeWidth={3} />
-                  {t}
-                </li>
+          <article className="sa-ba__col is-after">
+            <p className="sa-ba__tag">After</p>
+            <h3>
+              <W text={after.title} />
+            </h3>
+            <BeforeAfterIllustration variant="after" className="sa-ba__art" />
+            <h4>{after.usLabel}</h4>
+            <ul className="sa-ba__list">
+              {after.us.map((t) => (
+                <li key={t}>{t}</li>
               ))}
             </ul>
-          </div>
+            <h4>{after.companyLabel}</h4>
+            <ul className="sa-ba__list is-company">
+              {after.company.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          </article>
         </div>
-        <p className="sa-solution__close">
-          <R text={SOLUTION.close} />
-        </p>
       </div>
     </section>
   );
@@ -274,34 +339,34 @@ export function Solution() {
 
 export function Scope() {
   return (
-    <section className="ks-section sa-scope" id="scope" aria-labelledby="sa-scope-title">
-      <div className="sr-container">
-        <Head no="04" en="SCOPE" label="代行業務の範囲" id="sa-scope-title" title={<W text="どこまで|任せられるか、|一目で分かります。" />} />
-        <div className="sa-scope__layout">
-          <ol className="sa-scope__list">
-            {SCOPE.map((s, i) => (
-              <li key={s.title} className={s.owner === "company" ? "is-company" : undefined}>
-                <span className="sa-scope__no">{i + 1}</span>
-                <span className="sa-scope__title">
-                  <W text={s.title} />
-                </span>
-                <span className="sa-scope__owner">{s.owner === "us" ? "当社が担当" : "企業が担当"}</span>
-              </li>
-            ))}
-          </ol>
-          <aside className="sa-scope__company" aria-labelledby="sa-scope-company">
-            <h3 id="sa-scope-company">企業が担当する業務</h3>
-            <ul>
-              {COMPANY_TASKS.map((t) => (
-                <li key={t}>
-                  <Check aria-hidden="true" strokeWidth={3} />
-                  {t}
-                </li>
+    <section className="ks-section ks-delegate" id="scope" aria-labelledby="sa-scope-title">
+      <div className="sr-container sr-container--narrow">
+        <Head no="05" en="SCOPE" label="代行業務の範囲" id="sa-scope-title" title={<W text="担当範囲の|詳細" />} />
+        <div className="ks-delegate__cols">
+          <div className="ks-card ks-delegate__col is-us">
+            <p className="ks-delegate__who">
+              <Headset aria-hidden="true" />
+              adofyが担当する業務
+            </p>
+            <ol>
+              {SCOPE.map((t) => (
+                <li key={t}>{t}</li>
               ))}
-            </ul>
-            <p>{SCOPE_NOTE}</p>
-          </aside>
+            </ol>
+          </div>
+          <div className="ks-card ks-delegate__col">
+            <p className="ks-delegate__who">
+              <Building2 aria-hidden="true" />
+              企業が担当する業務
+            </p>
+            <ol>
+              {COMPANY_TASKS.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ol>
+          </div>
         </div>
+        <p className="ks-note ks-note--center">{SCOPE_NOTE}</p>
       </div>
     </section>
   );
@@ -311,13 +376,28 @@ export function Scope() {
 
 export function Strengths() {
   return (
-    <section className="ks-section sa-strengths" aria-labelledby="sa-strengths-title">
+    <section className="ks-section ks-strengths" aria-labelledby="sa-strengths-title">
       <div className="sr-container">
-        <Head no="05" en="STRENGTH" label="建設業特化の強み" id="sa-strengths-title" title={<W text={"建設業の採用は、\n職種を|理解していなければ|成功しません。"} />} />
-        <ol className="sa-strengths__grid">
+        <Head no="06" en="STRENGTH" label="建設業特化の強み" id="sa-strengths-title" invert title={<W text={"建設業の採用は、\n職種を|理解していなければ|成功しません。"} />} />
+        <div className="ks-strengths__intro">
+          <figure className="ks-strengths__photo">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={CREW_IMAGE.src} width={CREW_IMAGE.w} height={CREW_IMAGE.h} alt={CREW_IMAGE.alt} loading="lazy" decoding="async" />
+          </figure>
+          <div className="ks-strengths__checks">
+            <p className="ks-retention__label">対応職種の例</p>
+            <ul>
+              {TRADES.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+              <li>など</li>
+            </ul>
+          </div>
+        </div>
+        <ol className="ks-strengths__list">
           {STRENGTHS.map((s, i) => (
-            <li key={s.title} className="ks-card">
-              <span>{String(i + 1).padStart(2, "0")}</span>
+            <li key={s.title}>
+              <span className="ks-strengths__no">{String(i + 1).padStart(2, "0")}</span>
               <h3>
                 <W text={s.title} />
               </h3>
@@ -325,15 +405,6 @@ export function Strengths() {
             </li>
           ))}
         </ol>
-        <h3 className="ks-subhead">
-          <span>対応職種の例</span>
-        </h3>
-        <ul className="sa-trades">
-          {TRADES.map((t) => (
-            <li key={t}>{t}</li>
-          ))}
-          <li className="is-more">など</li>
-        </ul>
       </div>
     </section>
   );
@@ -345,7 +416,7 @@ export function Results() {
   return (
     <section className="ks-section ks-results" id="results" aria-labelledby="sa-results-title">
       <div className="sr-container">
-        <Head no="06" en="RESULTS" label="採用支援実績" id="sa-results-title" title="応募獲得実績" />
+        <Head no="07" en="RESULTS" label="採用支援実績" id="sa-results-title" title="応募獲得実績" />
         <div className="ks-total">
           <p className="ks-total__cat">合計応募獲得数</p>
           <p className="sa-total__value">
@@ -354,43 +425,6 @@ export function Results() {
           <p className="sa-total__note">{RESULTS_NOTES[0]}</p>
         </div>
         <p className="sa-results__note">{RESULTS_NOTES[1]}</p>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════ 他の採用方法との比較 ═══════════════════════ */
-
-export function Compare() {
-  return (
-    <section className="ks-section sa-compare" aria-labelledby="sa-compare-title">
-      <div className="sr-container">
-        <Head no="07" en="COMPARE" label="他の採用方法との比較" id="sa-compare-title" title={<W text="採用方法ごとの|違い" />} />
-        {/* スマホでは横スクロールさせず、行ごとの縦型カードに切り替える */}
-        <table className="sa-compare__table">
-          <thead>
-            <tr>
-              <th scope="col">比較項目</th>
-              {COMPARE_COLS.map((c, i) => (
-                <th key={c} scope="col" className={i === 2 ? "is-agent" : undefined}>
-                  {c}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {COMPARE_ROWS.map((r) => (
-              <tr key={r.label}>
-                <th scope="row">{r.label}</th>
-                {r.values.map((v, i) => (
-                  <td key={i} data-label={COMPARE_COLS[i]} className={i === 2 ? "is-agent" : undefined}>
-                    {v}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </section>
   );
@@ -475,8 +509,8 @@ export function FAQ() {
       <div className="sr-container sr-container--narrow">
         <Head no="10" en="Q&A" label="よくある質問" id="sa-faq-title" title="よくある質問" />
         <div className="ks-faq__list">
-          {FAQS.map((f) => (
-            <details key={f.q} className="ks-faq__item" open>
+          {FAQS.map((f, i) => (
+            <details key={f.q} className="ks-faq__item" open={i < 3}>
               <summary>
                 <span className="ks-faq__q" aria-hidden="true">
                   Q
@@ -511,6 +545,8 @@ export function Contact() {
         <h2 id="sa-final-title" className="ks-contact__title">
           <W text={FINAL_TITLE} />
         </h2>
+        <CrewRelief className="ks-contact__art" />
+        <PriceSummary />
         <div className="sa-center sa-final-cta">
           <Cta location="final" />
           <p>{CTA_SUB}</p>

@@ -6,7 +6,7 @@ import "./shokunin.css";
 
 import { Header, StickyCta } from "@/components/shokunin-agent/Chrome";
 import {
-  Compare,
+  BeforeAfter,
   Contact,
   Cost,
   FAQ,
@@ -14,11 +14,11 @@ import {
   Footer,
   Hero,
   Pricing,
-  Problems,
   Results,
   Scope,
-  Solution,
+  ServiceFlow,
   Strengths,
+  Worry,
 } from "@/components/shokunin-agent/Sections";
 import { SITE } from "@/components/shokunin-agent/config";
 import AttributionCapture from "@/components/saiyo-rescue/AttributionCapture";
@@ -69,12 +69,12 @@ export default function ShokuninAgentPage() {
       <main>
         <Hero />
         <Cost />
-        <Problems />
-        <Solution />
+        <Worry />
+        <ServiceFlow />
+        <BeforeAfter />
         <Scope />
         <Strengths />
         <Results />
-        <Compare />
         <Pricing />
         <Flow />
         <FAQ />
