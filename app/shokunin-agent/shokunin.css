@@ -856,3 +856,31 @@
     padding: 28px;
   }
 }
+
+/* カードはイラストを控えめにし、文字を主役にする */
+.sa-lp .sa-worry .ks-pcard__art,
+.sa-lp .sa-flow__grid .ks-istep__art {
+  max-width: 190px;
+  margin-bottom: 6px;
+}
+
+.sa-lp .sa-worry .ks-pcard__title,
+.sa-lp .sa-flow__grid .ks-istep__title {
+  font-size: 22px;
+  line-height: 1.5;
+}
+
+.sa-lp .sa-ba__art {
+  max-width: 240px;
+}
+
+.sa-lp .sa-worry__owner {
+  max-width: 460px;
+}
+
+@media (min-width: 1000px) {
+  .sa-lp .sa-worry .ks-pcard__title,
+  .sa-lp .sa-flow__grid .ks-istep__title {
+    font-size: 21px;
+  }
+}
