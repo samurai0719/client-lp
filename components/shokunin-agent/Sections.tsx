@@ -138,9 +138,6 @@ export function Hero() {
           <h1 className="sa-hero__title" id="sa-hero-title">
             <W text={HERO.title} />
           </h1>
-          <p className="sa-hero__body">
-            <W text={HERO.body} />
-          </p>
           <ol className="sa-hero__steps">
             {HERO.steps.map((st, i) => (
               <li key={st.text} className={`is-${st.owner}`}>
@@ -346,7 +343,7 @@ export function Scope() {
           <div className="ks-card ks-delegate__col is-us">
             <p className="ks-delegate__who">
               <Headset aria-hidden="true" />
-              adofyが担当する業務
+              当社が担当する業務
             </p>
             <ol>
               {SCOPE.map((t) => (

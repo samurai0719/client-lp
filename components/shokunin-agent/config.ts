@@ -55,10 +55,9 @@ export const PRICE_FOOTNOTE = "詳細な料金条件は、ご契約前に書面�
 export const HERO = {
   label: "建設会社専属の外部採用担当",
   title: "職人の応募獲得から、|面接設定まで。\n採用業務を|丸ごと代行。",
-  body: "採用したい職種と|条件を|教えてください。|adofyが求人・|採用LP・広告を作り、|応募者への連絡と|面接日程の調整まで|代行します。|会社側が行うのは、|面接と採用判断です。",
   steps: [
     { who: "企業", text: "採用条件を伝える", owner: "company" },
-    { who: "adofy", text: "求人制作・広告運用・応募者対応・面接調整", owner: "us" },
+    { who: "当社", text: "求人制作・広告運用・応募者対応・面接調整", owner: "us" },
     { who: "企業", text: "面接・採用判断", owner: "company" },
   ],
   /** 建設版の採用レスキュー（/kensetsu）と同じFV画像。見出し・料金は画像に焼き込み済み */
@@ -130,19 +129,19 @@ export const WORRY = {
 
 /* ─── サービス全体図 ─── */
 export const SERVICE_FLOW = {
-  title: "その採用業務、|adofyが|代わりに動きます。",
+  title: "その採用業務、|当社が|代わりに動きます。",
   lead: "求人を掲載して終わりではありません。応募を集め、応募者へ連絡し、面接が決まるところまで採用活動を進めます。",
   steps: [
     { text: "建設会社から|採用したい職種・|条件を確認", owner: "both" },
-    { text: "adofyが|求人原稿・採用LP・|広告を制作", owner: "us" },
+    { text: "当社が|求人原稿・採用LP・|広告を制作", owner: "us" },
     { text: "広告を配信して|職人から|応募を獲得", owner: "us" },
-    { text: "adofyが応募者へ連絡し、|仕事内容と条件を説明", owner: "us" },
-    { text: "adofyが|企業と応募者の|面接日程を調整", owner: "us" },
+    { text: "当社が応募者へ連絡し、|仕事内容と条件を説明", owner: "us" },
+    { text: "当社が|企業と応募者の|面接日程を調整", owner: "us" },
     { text: "企業が面接を行い、|採用可否を決定", owner: "company" },
   ] as { text: string; owner: "both" | "us" | "company" }[],
 } as const;
 
-export const OWNER_LABEL = { both: "企業 → adofy", us: "adofyが担当", company: "企業が担当" } as const;
+export const OWNER_LABEL = { both: "企業 → 当社", us: "当社が担当", company: "企業が担当" } as const;
 
 /* ─── Before／After ─── */
 export const BEFORE_AFTER = {
@@ -151,8 +150,8 @@ export const BEFORE_AFTER = {
     items: ["求人を考える", "原稿を作る", "広告を出す", "応募者へ連絡する", "仕事内容を説明する", "面接日程を調整する", "面接する", "採用判断をする"],
   },
   after: {
-    title: "adofy導入後は、|面接と採用判断に|集中",
-    usLabel: "adofyが代行する業務",
+    title: "導入後は、|面接と採用判断に|集中",
+    usLabel: "当社が代行する業務",
     us: ["求人制作", "採用LP制作", "広告制作・運用", "応募獲得", "応募者への初期対応", "企業指定内容の説明", "面接日程調整"],
     companyLabel: "企業が行う業務",
     company: ["面接", "採用判断", "雇用条件の最終決定", "内定通知"],
