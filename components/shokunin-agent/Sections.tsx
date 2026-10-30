@@ -168,7 +168,15 @@ export function Cost() {
   return (
     <section className="ks-section sa-cost" aria-labelledby="sa-cost-title">
       <div className="sr-container">
-        <Head no="01" en="COST" label="採用コストの比較" id="sa-cost-title" title={<W text={COST.title} />} lead={<W text={COST.lead} />} />
+        <Head no="01" en="COST" label="採用コストの比較" id="sa-cost-title" title={
+            <>
+              {COST.title.before}
+              <wbr />
+              <span className="sa-cost__hl">{COST.title.highlight}</span>
+              <wbr />
+              {COST.title.after}
+            </>
+          } lead={<W text={COST.lead} />} />
         <table className="sa-cost__table">
           <caption className="sr-visually-hidden">中途採用の平均採用コストと職人採用エージェントの料金の比較</caption>
           <thead>

@@ -911,3 +911,13 @@
   opacity: 1;
   transform: none;
 }
+
+/* 採用コスト見出しの強調（オレンジの大きな文字＋黄色のマーカー） */
+.sa-cost__hl {
+  display: inline-block;
+  padding: 0 4px;
+  color: var(--ks-orange);
+  font-size: 1.28em;
+  line-height: 1.2;
+  background: linear-gradient(transparent 68%, rgba(255, 196, 0, 0.55) 68%);
+}
