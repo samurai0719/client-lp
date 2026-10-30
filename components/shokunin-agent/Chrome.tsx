@@ -80,3 +80,46 @@ export function StickyCta() {
     </div>
   );
 }
+
+const REVEAL_TARGETS = [
+  ".ks-head",
+  ".ks-card",
+  ".sa-cost__table",
+  ".sa-cost__diff",
+  ".sa-worry__owner",
+  ".ks-total",
+  ".ks-plan",
+  ".ks-step",
+  ".ks-faq__item",
+  ".ks-contact__art",
+  ".sa-form-card",
+].join(",");
+
+/**
+ * スクロールで要素をフェード＋軽いスライドで表示する。描画は何もしない。
+ * JSが動かない環境や prefers-reduced-motion では何もせず、最初からすべて表示される。
+ */
+export function ScrollReveal() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add("is-in");
+          io.unobserve(e.target);
+        }
+      },
+      { threshold: 0.12 },
+    );
+    document.querySelectorAll<HTMLElement>(REVEAL_TARGETS).forEach((el) => {
+      const index = el.parentElement ? [...el.parentElement.children].indexOf(el) : 0;
+      el.style.setProperty("--sa-delay", `${(index % 3) * 90}ms`);
+      el.classList.add("sa-reveal");
+      io.observe(el);
+    });
+    return () => io.disconnect();
+  }, []);
+
+  return null;
+}

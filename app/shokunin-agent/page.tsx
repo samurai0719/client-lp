@@ -4,7 +4,7 @@ import "../saiyo-rescue/saiyo-rescue.css";
 import "../saiyo-rescue/kensetsu/kensetsu.css";
 import "./shokunin.css";
 
-import { Header, StickyCta } from "@/components/shokunin-agent/Chrome";
+import { Header, ScrollReveal, StickyCta } from "@/components/shokunin-agent/Chrome";
 import {
   BeforeAfter,
   Contact,
@@ -82,6 +82,7 @@ export default function ShokuninAgentPage() {
       </main>
       <Footer />
       <StickyCta />
+      <ScrollReveal />
     </div>
   );
 }
