@@ -977,19 +977,14 @@
   }
 }
 
-/* 色を変えて強調している文字の白いアウトライン（文字の外側に出すため paint-order を指定） */
+/* 色を変えて強調している文字の黒いアウトライン（文字の外側に出すため paint-order を指定） */
 .sa-lp .sa-em,
 .sa-lp .sa-cost__hl {
   paint-order: stroke fill;
-  -webkit-text-stroke: 2.5px #fff;
+  -webkit-text-stroke: 1.6px var(--ks-ink);
 }
 
 .sa-lp :is(h1, h2, h3) .sa-em,
 .sa-lp .sa-cost__hl {
-  -webkit-text-stroke-width: 3px;
-}
-
-.sa-lp .ks-head--invert .sa-em,
-.sa-lp .ks-contact__title .sa-em {
-  -webkit-text-stroke-color: var(--ks-ink);
+  -webkit-text-stroke-width: 2.4px;
 }
