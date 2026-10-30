@@ -56,10 +56,11 @@ export const HERO = {
   tags: ["建設業特化", "採用業務を代行"],
   title: "職人採用を、\n丸ごと|任せられる。",
   body: "建設業に特化した採用代行。|求人づくりから|広告運用、|応募者対応、|面接調整まで|代行するから、|経営者は|面接と|採用判断に|集中できます。",
+  /** 建設版の採用レスキュー（/kensetsu）と同じFV画像。見出し・料金は画像に焼き込み済み */
   image: {
-    pc: { src: "/images/shokunin-agent/hero-pc.webp", w: 687, h: 941 },
-    sp: { src: "/images/shokunin-agent/hero-sp.webp", w: 941, h: 520 },
-    alt: "建設現場で木材や単管を担ぐ、ヘルメット姿の日本人職人",
+    pc: { src: "/images/saiyo-rescue/kensetsu/hero-pc.webp", w: 1672, h: 941 },
+    sp: { src: "/images/saiyo-rescue/kensetsu/hero-sp.webp", w: 941, h: 1672 },
+    alt: "建設業に特化した採用支援。人が足りずに、仕事を断っていませんか？職人・現場スタッフの応募獲得を支援。月額費用0円、初期費用89,800円、成果報酬は想定年収の10%。",
   },
 } as const;
 
@@ -82,8 +83,8 @@ export const COST = {
   },
   agent: {
     name: SERVICE_NAME,
-    note: "想定年収400万円の場合の計算例",
-    big: `${yen(EXAMPLE_TOTAL)}円`,
+    note: "初期費用（採用成功時は別途、成功報酬）",
+    big: `${yen(PRICE.initial)}円`,
     rows: [
       ["採用コスト", `初期費用${yen(PRICE.initial)}円＋成功報酬`],
       ["月額費用", "0円"],

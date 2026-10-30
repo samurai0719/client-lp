@@ -11,9 +11,8 @@ export function Header() {
   return (
     <header className="sa-header">
       <div className="sa-header__inner">
-        <a href="#hero" className="sa-logo" aria-label={`adofy ${SERVICE_NAME} トップへ`}>
-          <b>adofy</b>
-          <span>{SERVICE_NAME}</span>
+        <a href="#hero" className="sa-logo" aria-label={`${SERVICE_NAME} トップへ`}>
+          {SERVICE_NAME}
         </a>
         <nav className="sa-nav" aria-label="ページ内">
           {NAV.map((n) => (

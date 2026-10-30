@@ -37,7 +37,6 @@ import {
   PRICE_FOOTNOTE,
   PRICE_LINE,
   PROBLEMS,
-  RESULTS,
   RESULTS_NOTES,
   RESULTS_TOTAL,
   SCOPE,
@@ -107,7 +106,11 @@ export function Hero() {
   const { image } = HERO;
   return (
     <section className="sa-hero" id="hero" aria-labelledby="sa-hero-title">
-      <div className="sa-hero__inner">
+      <picture className="sa-hero__visual">
+        <source media="(max-width: 767px)" srcSet={image.sp.src} width={image.sp.w} height={image.sp.h} />
+        <img src={image.pc.src} width={image.pc.w} height={image.pc.h} alt={image.alt} fetchPriority="high" loading="eager" decoding="async" />
+      </picture>
+      <div className="sr-container">
         <div className="sa-hero__copy">
           <ul className="sa-hero__tags">
             {HERO.tags.map((t) => (
@@ -130,10 +133,6 @@ export function Hero() {
             <p className="sa-hero__sub">{CTA_SUB}</p>
           </div>
         </div>
-        <picture className="sa-hero__visual">
-          <source media="(max-width: 899px)" srcSet={image.sp.src} width={image.sp.w} height={image.sp.h} />
-          <img src={image.pc.src} width={image.pc.w} height={image.pc.h} alt={image.alt} fetchPriority="high" loading="eager" decoding="async" />
-        </picture>
       </div>
     </section>
   );
@@ -354,36 +353,7 @@ export function Results() {
           </p>
           <p className="sa-total__note">{RESULTS_NOTES[0]}</p>
         </div>
-        <div className="ks-table-wrap sa-results__table">
-          <table className="ks-table">
-            <caption className="sr-visually-hidden">案件別の応募獲得実績</caption>
-            <thead>
-              <tr>
-                <th scope="col">案件</th>
-                <th scope="col">応募獲得数</th>
-                <th scope="col">応募単価</th>
-              </tr>
-            </thead>
-            <tbody>
-              {RESULTS.map((r) => (
-                <tr key={r.name} className={r.construction ? "is-construction" : undefined}>
-                  <th scope="row">{r.name}</th>
-                  <td>
-                    <b>{yen(r.count)}</b>件
-                  </td>
-                  <td>
-                    <b>{yen(r.unitPrice)}</b>円
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <ul className="sa-results__notes">
-          {RESULTS_NOTES.map((n) => (
-            <li key={n}>{n}</li>
-          ))}
-        </ul>
+        <p className="sa-results__note">{RESULTS_NOTES[1]}</p>
       </div>
     </section>
   );

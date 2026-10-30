@@ -71,22 +71,19 @@
 }
 
 .sa-logo {
-  display: grid;
   margin-right: auto;
   color: var(--ks-ink);
-  line-height: 1.15;
-  text-decoration: none;
-}
-
-.sa-logo b {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 900;
-  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-.sa-logo span {
-  font-size: 12px;
-  font-weight: 700;
+@media (min-width: 768px) {
+  .sa-logo {
+    font-size: 22px;
+  }
 }
 
 .sa-nav {
@@ -174,20 +171,17 @@
 }
 
 /* ── FV ─────────────────────────────────────────────── */
+/* 画像は建設版と同じ（PC 16:9 / スマホ 9:16）。指定コピーとCTAは画像の直下に置く */
 .sa-hero {
-  overflow: hidden;
+  padding-bottom: 40px;
   background: var(--ks-blueprint), var(--ks-paper);
   border-bottom: 2px solid var(--ks-ink);
 }
 
-.sa-hero__inner {
-  display: flex;
-  flex-direction: column;
-}
-
 .sa-hero__visual {
-  order: -1;
   display: block;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .sa-hero__visual img {
@@ -196,12 +190,21 @@
 }
 
 .sa-hero__copy {
-  padding: 20px 16px 30px;
+  position: relative;
+  max-width: 860px;
+  margin: 20px auto 0;
+  padding: 24px 16px 22px;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background: var(--ks-paper-3);
+  box-shadow: 4px 4px 0 var(--ks-orange);
+  text-align: center;
 }
 
 .sa-hero__tags {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
 }
 
@@ -216,14 +219,14 @@
 .sa-hero__title {
   margin-top: 14px;
   color: var(--ks-ink);
-  font-size: 39px;
+  font-size: 37px;
   font-weight: 900;
   line-height: 1.3;
   letter-spacing: 0.01em;
 }
 
 .sa-hero__body {
-  margin-top: 14px;
+  margin-top: 12px;
   color: var(--ks-ink-2);
   font-size: 16px;
   font-weight: 700;
@@ -233,10 +236,10 @@
 .sa-hero__price {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0 14px;
   margin-top: 16px;
   padding: 11px 12px;
-  border-left: 7px solid var(--ks-orange);
   background: var(--ks-ink);
   color: #fff;
   font-size: 16px;
@@ -255,62 +258,29 @@
   color: var(--ks-ink-2);
   font-size: 14px;
   font-weight: 700;
-  text-align: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .sa-hero__copy {
-    animation: sa-rise 0.5s ease-out both;
-  }
-  @keyframes sa-rise {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-  }
-}
-
-@media (min-width: 900px) {
-  .sa-hero__inner {
-    flex-direction: row;
-    align-items: stretch;
-    max-width: 1320px;
-    margin: 0 auto;
+@media (min-width: 768px) {
+  .sa-hero {
+    padding-bottom: 60px;
   }
   .sa-hero__copy {
-    flex: 1 1 54%;
-    align-self: center;
-    padding: 56px 24px 56px 40px;
-  }
-  .sa-hero__visual {
-    order: 0;
-    flex: 0 0 46%;
-  }
-  .sa-hero__visual img {
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    /* 写真の紙の色と背景の方眼の境目が線に見えないよう、左右をぼかす */
-    mask-image: linear-gradient(to right, transparent, #000 9%, #000 97%, transparent);
+    margin-top: -36px;
+    padding: 34px 40px 28px;
+    box-shadow: 6px 6px 0 var(--ks-orange);
   }
   .sa-hero__title {
-    font-size: clamp(46px, 5vw, 68px);
+    font-size: 48px;
   }
   .sa-hero__body {
     font-size: 18px;
   }
   .sa-hero__price {
     gap: 0;
-    font-size: 19px;
+    font-size: 18px;
   }
   .sa-hero__price span + span::before {
     content: "｜";
-  }
-  .sa-hero__cta {
-    justify-items: start;
-  }
-  .sa-hero__sub {
-    text-align: left;
   }
 }
 
@@ -773,32 +743,13 @@
   font-weight: 700;
 }
 
-.sa-results__table {
-  margin-top: 24px;
-  overflow-x: visible;
-}
-
-.sa-lp .sa-results__table .ks-table {
-  table-layout: fixed;
-}
-
-.sa-lp .sa-results__table th:first-child {
-  width: 42%;
-}
-
-.sa-lp .ks-table tr.is-construction th,
-.sa-lp .ks-table tr.is-construction td {
-  background: var(--sa-yellow-soft);
-}
-
-.sa-results__notes {
-  display: grid;
-  gap: 4px;
+.sa-results__note {
   margin-top: 14px;
   color: var(--ks-ink-2);
   font-size: 14px;
   font-weight: 700;
   line-height: 1.7;
+  text-align: center;
 }
 
 @media (min-width: 768px) {
