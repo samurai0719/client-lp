@@ -131,7 +131,7 @@ export const SERVICE_FLOW = {
     { text: "建設会社から|採用したい職種・|条件を確認", owner: "both" },
     { text: "職人採用エージェントが|**求人原稿・採用LP・|広告を制作**", owner: "us" },
     { text: "広告を配信して|職人から|**応募を獲得**", owner: "us" },
-    { text: "職人採用エージェントが|**応募者へ連絡し、|仕事内容と条件を説明**", owner: "us" },
+    { text: "職人採用エージェントが|**応募者へ連絡し**、|**仕事内容と条件を説明**", owner: "us" },
     { text: "職人採用エージェントが|企業と応募者の|**面接日程を調整**", owner: "us" },
     { text: "企業が面接を行い、|**採用可否を決定**", owner: "company" },
   ] as { text: string; owner: "both" | "us" | "company" }[],
