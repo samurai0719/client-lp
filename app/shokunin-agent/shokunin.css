@@ -9,19 +9,7 @@
   --sa-yellow: var(--ks-orange);
   --sa-yellow-soft: var(--ks-orange-soft);
   --sr-header-h: 64px;
-  /* キャラクターSVGの色（ブランド色の変更はここだけ） */
-  --sa-c-ink: #1f2430;
-  --sa-c-navy: #1d2f55;
-  --sa-c-orange: #ec5a1f;
-  --sa-c-yellow: #ffc400;
-  --sa-c-yellow-soft: #fff1c9;
-  --sa-c-gray: #9aa1ad;
-  --sa-c-gray-light: #e7e8ec;
-  --sa-c-white: #ffffff;
-  --sa-c-skin: #f8d9bd;
-  --sa-c-shade: #e8bd9b;
-  --sa-c-hair: #2a2522;
-  font-size: 16px;
+    font-size: 16px;
 }
 
 .sa-center {
@@ -267,9 +255,9 @@
 
 .sa-hero__steps li {
   display: grid;
-  grid-template-columns: 30px auto 1fr;
+  grid-template-columns: 30px 1fr;
   align-items: center;
-  gap: 8px;
+  gap: 4px 8px;
   padding: 10px 12px;
   border: 2px solid var(--ks-ink);
   background: #fff;
@@ -298,6 +286,7 @@
 }
 
 .sa-hero__steps p {
+  grid-column: 1 / -1;
   font-size: 15px;
   font-weight: 700;
   line-height: 1.5;
@@ -346,11 +335,7 @@
     grid-template-columns: 1fr 1.5fr 1fr;
   }
   .sa-hero__steps li {
-    grid-template-columns: 30px 1fr;
     align-content: start;
-  }
-  .sa-hero__steps p {
-    grid-column: 1 / -1;
   }
   .sa-hero__body {
     font-size: 18px;
@@ -378,13 +363,12 @@
   padding: 22px 18px;
   border: 2.5px solid var(--ks-ink);
   border-radius: 6px;
-  background: #fff;
+  background: var(--ks-paper-3);
+  box-shadow: 4px 4px 0 var(--ks-orange);
 }
 
 .sa-cost-card.is-agent {
   background: var(--sa-yellow-soft);
-  border-color: var(--ks-orange);
-  box-shadow: 4px 4px 0 var(--ks-orange);
 }
 
 .sa-cost-card h3 {
@@ -491,7 +475,7 @@
   .sa-cost-card {
     padding: 24px;
   }
-  .sa-cost-card.is-agent {
+  .sa-cost-card {
     box-shadow: 6px 6px 0 var(--ks-orange);
   }
   .sa-cost-card__big {
@@ -751,101 +735,23 @@
 }
 
 
-/* ── お悩みエリア ───────────────────────────────────── */
-.sa-worry {
-  padding: 64px 0;
-  background: var(--sa-c-navy);
-  color: #fff;
-  border-top: 10px solid var(--ks-orange);
-}
-
-.sa-worry__top {
-  display: grid;
-  gap: 16px;
-  align-items: center;
-}
-
-.sa-worry__label {
-  color: var(--sa-c-yellow);
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 0.2em;
-}
-
-.sa-worry__head h2 {
-  margin-top: 8px;
-  font-size: 30px;
-  font-weight: 900;
-  line-height: 1.4;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-}
-
-.sa-worry__head > p:last-child {
-  margin-top: 14px;
-  font-size: 16px;
-  line-height: 1.8;
-}
-
+/* ── お悩みエリア（部品は建設版の ks-pcard） ───────────── */
 .sa-worry__owner {
+  display: block;
   width: 100%;
-  max-width: 420px;
+  max-width: 560px;
   height: auto;
-  margin: 0 auto;
+  margin: 0 auto 40px;
 }
 
-.sa-worry__grid {
-  display: grid;
-  gap: 16px;
-  margin-top: 28px;
+.sa-worry .ks-pcard__title {
+  text-align: center;
 }
 
-.sa-worry__grid li {
-  overflow: hidden;
-  border-radius: 6px;
-  background: #fff;
-  color: var(--ks-ink);
-}
-
-.sa-worry__art {
-  width: 100%;
-  height: auto;
-  background: var(--ks-paper);
-}
-
-.sa-worry__grid p {
-  padding: 14px 16px 16px;
-  border-top: 3px solid var(--ks-orange);
-  font-size: 17px;
-  font-weight: 900;
-  line-height: 1.5;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-}
-
-@media (min-width: 640px) {
-  .sa-worry__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 900px) {
-  .sa-worry {
-    padding: 96px 0;
-  }
-  .sa-worry__top {
-    grid-template-columns: 1.1fr 1fr;
-    gap: 40px;
-  }
-  .sa-worry__head h2 {
-    font-size: 42px;
-  }
-  .sa-worry__head > p:last-child {
-    font-size: 18px;
-  }
+@media (min-width: 1000px) {
   .sa-worry__grid {
     grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
+    gap: 40px 24px;
   }
   .sa-worry__grid li {
     grid-column: span 2;
@@ -855,114 +761,62 @@
   }
 }
 
-/* ── サービス全体図 ─────────────────────────────────── */
-.sa-flow {
-  background: var(--ks-paper-3);
-}
-
-.sa-flow__grid {
-  display: grid;
-  gap: 18px;
-}
-
-.sa-flow__grid li {
-  overflow: hidden;
-  border: 2.5px solid var(--ks-orange);
-  border-radius: 6px;
-  background: #fff;
-}
-
-.sa-flow__grid li.is-company,
-.sa-flow__grid li.is-both {
-  border-color: var(--sa-c-navy);
-}
-
-.sa-flow__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 12px;
-  background: var(--ks-orange);
-  color: #fff;
-  font-weight: 900;
-}
-
-.is-company .sa-flow__top,
-.is-both .sa-flow__top {
-  background: var(--sa-c-navy);
-}
-
-.sa-flow__no {
-  font-size: 20px;
-}
-
+/* ── サービス全体図（部品は建設版の ks-istep） ─────────── */
 .sa-flow__owner {
-  font-size: 15px;
-}
-
-.sa-flow__art {
-  width: 100%;
-  height: auto;
-}
-
-.sa-flow__grid h3 {
-  padding: 12px 14px 16px;
-  color: var(--ks-ink);
-  font-size: 17px;
+  display: inline-block;
+  margin-top: 10px;
+  padding: 2px 10px;
+  background: var(--ks-orange-soft);
+  color: var(--ks-orange-deep);
+  font-size: 14px;
   font-weight: 900;
-  line-height: 1.5;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
+}
+
+.sa-flow__owner.is-company,
+.sa-flow__owner.is-both {
+  background: var(--ks-ink);
+  color: #fff;
 }
 
 @media (min-width: 640px) {
-  .sa-flow__grid {
+  .sa-lp .sa-flow__grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 40px 28px;
   }
 }
 
 @media (min-width: 1000px) {
-  .sa-flow__grid {
+  .sa-lp .sa-flow__grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
   }
 }
 
 /* ── Before／After ──────────────────────────────────── */
 .sa-ba__grid {
   display: grid;
-  gap: 12px;
+  gap: 28px;
 }
 
 .sa-ba__col {
-  padding: 20px 16px;
-  border: 2.5px solid var(--ks-ink);
-  border-radius: 6px;
-  background: #fff;
-}
-
-.sa-ba__col.is-after {
-  border-color: var(--ks-orange);
-  background: var(--ks-orange-soft);
+  padding: 22px 18px;
 }
 
 .sa-ba__tag {
   display: inline-block;
-  padding: 2px 12px;
-  background: var(--sa-c-navy);
+  padding: 2px 14px;
+  background: var(--ks-ink);
   color: #fff;
   font-weight: 900;
 }
 
-.is-after .sa-ba__tag {
+.sa-ba__tag.is-after {
   background: var(--ks-orange);
 }
 
 .sa-ba__col h3 {
   margin-top: 8px;
   color: var(--ks-ink);
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 900;
   line-height: 1.45;
   word-break: keep-all;
@@ -970,8 +824,9 @@
 }
 
 .sa-ba__art {
+  display: block;
   width: 100%;
-  max-width: 400px;
+  max-width: 340px;
   height: auto;
   margin: 12px auto;
 }
@@ -984,58 +839,20 @@
 }
 
 .sa-ba__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  justify-content: flex-start;
 }
 
-.sa-ba__list li {
-  padding: 4px 10px;
-  border: 1.5px solid var(--ks-ink);
-  background: #fff;
-  color: var(--ks-ink);
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.is-after .sa-ba__list li {
-  background: var(--ks-orange);
-  border-color: var(--ks-orange);
+.sa-ba__list.is-company li {
+  border-style: solid;
+  background: var(--ks-ink);
   color: #fff;
-}
-
-.is-after .sa-ba__list.is-company li {
-  background: var(--sa-c-navy);
-  border-color: var(--sa-c-navy);
-}
-
-.sa-ba__arrow {
-  display: grid;
-  place-items: center;
-  color: var(--ks-orange);
-}
-
-.sa-ba__arrow svg {
-  width: 32px;
-  height: 32px;
 }
 
 @media (min-width: 900px) {
   .sa-ba__grid {
-    grid-template-columns: 1fr 40px 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
   }
   .sa-ba__col {
     padding: 28px;
   }
-  .sa-ba__col h3 {
-    font-size: 26px;
-  }
-  .sa-ba__arrow svg {
-    transform: rotate(-90deg);
-  }
-}
-
-.sa-lp .ks-note {
-  font-size: 13px;
 }

@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from "react";
-import { ArrowDown, ArrowRight, Building2, Headset } from "lucide-react";
+import { ArrowRight, Building2, Headset } from "lucide-react";
 import CountUpNumber from "@/components/saiyo-rescue/CountUpNumber";
 import LegalOpener from "@/components/saiyo-rescue/LegalOpener";
 import { OPERATOR } from "@/components/saiyo-rescue/config";
@@ -227,27 +227,22 @@ const WORRY_ARTS: Record<WorryArt, ComponentType<{ className?: string }>> = {
 
 export function Worry() {
   return (
-    <section className="sa-worry" id="worry" aria-labelledby="sa-worry-title">
+    <section className="ks-section sa-worry" id="worry" aria-labelledby="sa-worry-title">
       <div className="sr-container">
-        <div className="sa-worry__top">
-          <div className="sa-worry__head">
-            <p className="sa-worry__label">PROBLEM</p>
-            <h2 id="sa-worry-title">
-              <W text={WORRY.title} />
-            </h2>
-            <p>{WORRY.lead}</p>
-          </div>
-          <ProblemOwnerIllustration className="sa-worry__owner" />
-        </div>
-        <ul className="sa-worry__grid">
-          {WORRY.items.map((w) => {
+        <Head no="02" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<W text={WORRY.title} />} lead={WORRY.lead} />
+        <ProblemOwnerIllustration className="sa-worry__owner" />
+        <ul className="ks-problems__grid sa-worry__grid">
+          {WORRY.items.map((w, i) => {
             const Art = WORRY_ARTS[w.art];
             return (
-              <li key={w.text}>
-                <Art className="sa-worry__art" />
-                <p>
+              <li key={w.text} className="ks-card ks-pcard">
+                <span className="ks-pcard__no" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <Art className="ks-pcard__art" />
+                <h3 className="ks-pcard__title">
                   <W text={w.text} />
-                </p>
+                </h3>
               </li>
             );
           })}
@@ -261,20 +256,18 @@ export function Worry() {
 
 export function ServiceFlow() {
   return (
-    <section className="ks-section sa-flow" id="service" aria-labelledby="sa-flow-title">
+    <section className="ks-section ks-reasons" id="service" aria-labelledby="sa-flow-title">
       <div className="sr-container">
         <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<W text={SERVICE_FLOW.title} />} lead={SERVICE_FLOW.lead} />
-        <ol className="sa-flow__grid">
+        <ol className="ks-intro__steps sa-flow__grid">
           {SERVICE_FLOW.steps.map((st, i) => (
-            <li key={st.text} className={`is-${st.owner}`}>
-              <div className="sa-flow__top">
-                <span className="sa-flow__no">{i + 1}</span>
-                <span className="sa-flow__owner">{OWNER_LABEL[st.owner]}</span>
-              </div>
-              <ServiceFlowIllustration step={i + 1} className="sa-flow__art" />
-              <h3>
+            <li key={st.text} className="ks-card ks-istep">
+              <span className="ks-istep__no">STEP {i + 1}</span>
+              <ServiceFlowIllustration step={i + 1} className="ks-istep__art" />
+              <h3 className="ks-istep__title">
                 <W text={st.text} />
               </h3>
+              <p className={`sa-flow__owner is-${st.owner}`}>{OWNER_LABEL[st.owner]}</p>
             </li>
           ))}
         </ol>
@@ -288,39 +281,36 @@ export function ServiceFlow() {
 export function BeforeAfter() {
   const { before, after } = BEFORE_AFTER;
   return (
-    <section className="ks-section sa-ba" aria-labelledby="sa-ba-title">
+    <section className="ks-section ks-delegate" aria-labelledby="sa-ba-title">
       <div className="sr-container">
         <Head no="04" en="BEFORE / AFTER" label="採用業務の変化" id="sa-ba-title" title={<W text="社長の仕事が、|ここまで変わります。" />} />
         <div className="sa-ba__grid">
-          <article className="sa-ba__col">
+          <article className="ks-card sa-ba__col">
             <p className="sa-ba__tag">Before</p>
             <h3>
               <W text={before.title} />
             </h3>
             <BeforeAfterIllustration variant="before" className="sa-ba__art" />
-            <ul className="sa-ba__list">
+            <ul className="ks-hero__trades sa-ba__list">
               {before.items.map((t) => (
                 <li key={t}>{t}</li>
               ))}
             </ul>
           </article>
-          <div className="sa-ba__arrow" aria-hidden="true">
-            <ArrowDown strokeWidth={3} />
-          </div>
-          <article className="sa-ba__col is-after">
-            <p className="sa-ba__tag">After</p>
+          <article className="ks-card sa-ba__col">
+            <p className="sa-ba__tag is-after">After</p>
             <h3>
               <W text={after.title} />
             </h3>
             <BeforeAfterIllustration variant="after" className="sa-ba__art" />
             <h4>{after.usLabel}</h4>
-            <ul className="sa-ba__list">
+            <ul className="ks-hero__trades sa-ba__list">
               {after.us.map((t) => (
                 <li key={t}>{t}</li>
               ))}
             </ul>
             <h4>{after.companyLabel}</h4>
-            <ul className="sa-ba__list is-company">
+            <ul className="ks-hero__trades sa-ba__list is-company">
               {after.company.map((t) => (
                 <li key={t}>{t}</li>
               ))}
@@ -343,7 +333,7 @@ export function Scope() {
           <div className="ks-card ks-delegate__col is-us">
             <p className="ks-delegate__who">
               <Headset aria-hidden="true" />
-              当社が担当する業務
+              職人採用エージェントが担当する業務
             </p>
             <ol>
               {SCOPE.map((t) => (

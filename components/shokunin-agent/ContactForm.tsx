@@ -12,7 +12,7 @@ type Errors = Partial<Record<"company" | "name" | "phone" | "email" | "jobType" 
 function validate(fd: FormData): Errors {
   const v = (k: string) => String(fd.get(k) ?? "").trim();
   const errors: Errors = {};
-  if (!v("company")) errors.company = "会社名を入力してください";
+  if (!v("company")) errors.company = "会社名または屋号を入力してください";
   if (!v("name")) errors.name = "担当者名を入力してください";
   const digits = v("phone").replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0)).replace(/\D/g, "");
   if (digits.length < 10 || digits.length > 11) errors.phone = "電話番号を正しく入力してください";
@@ -84,8 +84,8 @@ export default function ContactForm() {
 
   return (
     <form className="sr-form" onSubmit={onSubmit} noValidate>
-      <Field label="会社名" required error={errors.company} errorId="sa-err-company">
-        <input name="company" type="text" required autoComplete="organization" placeholder="例）株式会社〇〇建設" maxLength={100} {...describe("company")} />
+      <Field label="会社名・屋号（個人事業主の方もOK）" required error={errors.company} errorId="sa-err-company">
+        <input name="company" type="text" required autoComplete="organization" placeholder="例）株式会社〇〇建設／〇〇塗装（屋号）" maxLength={100} {...describe("company")} />
       </Field>
       <Field label="担当者名" required error={errors.name} errorId="sa-err-name">
         <input name="name" type="text" required autoComplete="name" placeholder="例）山田 太郎" maxLength={60} {...describe("name")} />

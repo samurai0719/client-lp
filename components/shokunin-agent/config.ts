@@ -57,7 +57,7 @@ export const HERO = {
   title: "職人の応募獲得から、|面接設定まで。\n採用業務を|丸ごと代行。",
   steps: [
     { who: "企業", text: "採用条件を伝える", owner: "company" },
-    { who: "当社", text: "求人制作・広告運用・応募者対応・面接調整", owner: "us" },
+    { who: SERVICE_NAME, text: "求人制作・広告運用・応募者対応・面接調整", owner: "us" },
     { who: "企業", text: "面接・採用判断", owner: "company" },
   ],
   /** 建設版の採用レスキュー（/kensetsu）と同じFV画像。見出し・料金は画像に焼き込み済み */
@@ -70,7 +70,7 @@ export const HERO = {
 
 /* ─── 採用コスト比較 ─── */
 export const COST = {
-  title: "職人1人の採用に、|100万円以上|かけていませんか？",
+  title: "1人の採用に、|平均約100万円|かかっています",
   lead: "リクルート就職みらい研究所の『就職白書2020』では、2019年度の中途採用1人あたりの平均採用コストは103.3万円と報告されています。",
   survey: {
     name: "中途採用の平均採用コスト",
@@ -98,11 +98,7 @@ export const COST = {
       ["面接日程の調整", "当社が代行"],
     ],
   },
-  calc: [
-    ["初期費用", `${yen(PRICE.initial)}円`],
-    ["成功報酬", `${yen(EXAMPLE_FEE)}円`],
-    ["合計", `${yen(EXAMPLE_TOTAL)}円`],
-  ],
+  calc: [["成功報酬", `${yen(EXAMPLE_FEE)}円`]],
   diff: "想定年収400万円の採用なら、|サービス料金は|平均採用コストより|約54万円低い設計",
   cta: "採用コストを相談する",
   notes: [
@@ -129,19 +125,19 @@ export const WORRY = {
 
 /* ─── サービス全体図 ─── */
 export const SERVICE_FLOW = {
-  title: "その採用業務、|当社が|代わりに動きます。",
+  title: "その採用業務、|職人採用エージェントが|代わりに動きます。",
   lead: "求人を掲載して終わりではありません。応募を集め、応募者へ連絡し、面接が決まるところまで採用活動を進めます。",
   steps: [
     { text: "建設会社から|採用したい職種・|条件を確認", owner: "both" },
-    { text: "当社が|求人原稿・採用LP・|広告を制作", owner: "us" },
+    { text: "職人採用エージェントが|求人原稿・採用LP・|広告を制作", owner: "us" },
     { text: "広告を配信して|職人から|応募を獲得", owner: "us" },
-    { text: "当社が応募者へ連絡し、|仕事内容と条件を説明", owner: "us" },
-    { text: "当社が|企業と応募者の|面接日程を調整", owner: "us" },
+    { text: "職人採用エージェントが|応募者へ連絡し、|仕事内容と条件を説明", owner: "us" },
+    { text: "職人採用エージェントが|企業と応募者の|面接日程を調整", owner: "us" },
     { text: "企業が面接を行い、|採用可否を決定", owner: "company" },
   ] as { text: string; owner: "both" | "us" | "company" }[],
 } as const;
 
-export const OWNER_LABEL = { both: "企業 → 当社", us: "当社が担当", company: "企業が担当" } as const;
+export const OWNER_LABEL = { both: "企業 → 職人採用エージェント", us: "職人採用エージェントが担当", company: "企業が担当" } as const;
 
 /* ─── Before／After ─── */
 export const BEFORE_AFTER = {
@@ -151,7 +147,7 @@ export const BEFORE_AFTER = {
   },
   after: {
     title: "導入後は、|面接と採用判断に|集中",
-    usLabel: "当社が代行する業務",
+    usLabel: "職人採用エージェントが代行する業務",
     us: ["求人制作", "採用LP制作", "広告制作・運用", "応募獲得", "応募者への初期対応", "企業指定内容の説明", "面接日程調整"],
     companyLabel: "企業が行う業務",
     company: ["面接", "採用判断", "雇用条件の最終決定", "内定通知"],
