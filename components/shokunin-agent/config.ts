@@ -125,7 +125,7 @@ export const WORRY = {
 
 /* ─── サービス全体図 ─── */
 export const SERVICE_FLOW = {
-  title: "その採用業務、|職人採用エージェントが|代わりに動きます。",
+  title: "その採用業務、|職人採用エージェントが|代わりに担当します。",
   lead: "求人を掲載して終わりではありません。応募を集め、応募者へ連絡し、面接が決まるところまで採用活動を進めます。",
   steps: [
     { text: "建設会社から|採用したい職種・|条件を確認", owner: "both" },
@@ -166,7 +166,7 @@ export const SCOPE = [
   "応募状況の共有",
 ] as const;
 
-export const COMPANY_TASKS = ["募集条件の決定", "選考基準の決定", "面接", "採用可否の判断", "雇用条件の最終決定", "内定通知", "雇用契約"] as const;
+export const COMPANY_TASKS = ["面接", "雇用"] as const;
 
 export const SCOPE_NOTE = "企業による面接・採用判断へ進みます。当社が独自の判断で応募者を選別・推薦することはありません。";
 
