@@ -967,3 +967,12 @@
 .sa-lp .sa-total__value {
   color: var(--sa-blue-light);
 }
+
+/* モバイルの h1・h2 は 24px にそろえる */
+@media (max-width: 767px) {
+  .sa-lp .sa-hero__title,
+  .sa-lp .ks-head__title,
+  .sa-lp .ks-contact__title {
+    font-size: 24px;
+  }
+}
