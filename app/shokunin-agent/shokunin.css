@@ -924,18 +924,22 @@
 
 /* 特に読んでほしい語句（見出し・本文共通）。文言側は "**語句**" で指定する */
 .sa-em {
+  padding: 0 2px;
   color: var(--ks-orange-deep);
   font-weight: 900;
-  text-decoration: underline;
-  text-decoration-color: var(--ks-orange);
-  text-decoration-thickness: 0.12em;
-  text-decoration-skip-ink: none;
-  text-underline-offset: 0.2em;
+  background: linear-gradient(transparent 68%, rgba(255, 196, 0, 0.55) 68%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
-/* 墨色の背景の上では黄色にする */
-.ks-head--invert .sa-em,
-.ks-contact__title .sa-em {
-  color: #ffc400;
-  text-decoration-color: #ffc400;
+/* 見出しは「平均約100万円」と同じ色にする */
+.sa-lp :is(h1, h2, h3) .sa-em {
+  color: var(--ks-orange);
+}
+
+/* 墨色の背景の上では文字を明るくする */
+.sa-lp .ks-head--invert .sa-em,
+.sa-lp .ks-contact__title .sa-em {
+  color: #ff8a4d;
+  background: linear-gradient(transparent 68%, rgba(255, 196, 0, 0.35) 68%);
 }
