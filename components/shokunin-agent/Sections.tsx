@@ -271,7 +271,7 @@ export function Worry() {
   return (
     <section className="ks-section sa-worry" id="worry" aria-labelledby="sa-worry-title">
       <div className="sr-container">
-        <Head no="02" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<H text={WORRY.title} />} lead={WORRY.lead} />
+        <Head no="02" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<H text={WORRY.title} />} lead={<W text={WORRY.lead} />} />
         <ProblemOwnerIllustration className="sa-worry__owner" />
         <ul className="ks-problems__grid sa-worry__grid">
           {WORRY.items.map((w, i) => {
@@ -300,7 +300,7 @@ export function ServiceFlow() {
   return (
     <section className="ks-section ks-reasons" id="service" aria-labelledby="sa-flow-title">
       <div className="sr-container">
-        <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<H text={SERVICE_FLOW.title} />} lead={SERVICE_FLOW.lead} />
+        <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<H text={SERVICE_FLOW.title} />} lead={<W text={SERVICE_FLOW.lead} />} />
         <ol className="ks-intro__steps sa-flow__grid">
           {SERVICE_FLOW.steps.map((st, i) => (
             <li key={st.text} className="ks-card ks-istep">
