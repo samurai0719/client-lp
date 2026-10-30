@@ -112,7 +112,7 @@ export const COST = {
 export type WorryArt = "noApplicant" | "missedCall" | "lost" | "conflict" | "declined";
 
 export const WORRY = {
-  title: "こんな採用の悩み、|抱えていませんか？",
+  title: "こんな採用のお悩み、|抱えていませんか？",
   lead: "現場に出ながら、**求人作成、応募者対応、面接調整まで**行うのは簡単ではありません。",
   items: [
     { text: "求人を出しても|職人から|**応募が来ない**", art: "noApplicant" },
