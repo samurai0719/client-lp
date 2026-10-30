@@ -943,3 +943,27 @@
   color: #ff8a4d;
   background: linear-gradient(transparent 68%, rgba(255, 196, 0, 0.35) 68%);
 }
+
+/* pタグ内のアクセント文字は青にする（見出しはオレンジのまま） */
+.sa-lp {
+  --sa-blue: #1659e0;
+  --sa-blue-light: #8fc0ff;
+}
+
+.sa-lp p .sa-em,
+.sa-lp .sa-flow__owner.is-us,
+.sa-lp .ks-head__en,
+.sa-lp .ks-plan__zero,
+.sa-lp .ks-plan__price b {
+  color: var(--sa-blue);
+}
+
+.sa-lp .sa-flow__owner.is-us {
+  background: #e4edff;
+}
+
+.sa-lp .ks-head--invert .ks-head__en,
+.sa-lp .ks-retention__label,
+.sa-lp .sa-total__value {
+  color: var(--sa-blue-light);
+}
