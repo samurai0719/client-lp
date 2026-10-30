@@ -164,33 +164,45 @@ export function Hero() {
 
 /* ═══════════════════════ 採用コスト比較 ═══════════════════════ */
 
-function CostCard({ data, featured = false }: { data: (typeof COST)["survey"] | (typeof COST)["agent"]; featured?: boolean }) {
-  return (
-    <article className={`sa-cost-card${featured ? " is-agent" : ""}`}>
-      <h3>{data.name}</h3>
-      <p className="sa-cost-card__note">{data.note}</p>
-      <p className="sa-cost-card__big">{data.big}</p>
-      <dl>
-        {data.rows.map(([k, v]) => (
-          <div key={k}>
-            <dt>{k}</dt>
-            <dd>{v}</dd>
-          </div>
-        ))}
-      </dl>
-    </article>
-  );
-}
-
 export function Cost() {
   return (
     <section className="ks-section sa-cost" aria-labelledby="sa-cost-title">
       <div className="sr-container">
-        <Head no="01" en="COST" label="採用コストの比較" id="sa-cost-title" title={<W text={COST.title} />} lead={COST.lead} />
-        <div className="sa-cost__grid">
-          <CostCard data={COST.survey} />
-          <CostCard data={COST.agent} featured />
-        </div>
+        <Head no="01" en="COST" label="採用コストの比較" id="sa-cost-title" title={<W text={COST.title} />} lead={<W text={COST.lead} />} />
+        <table className="sa-cost__table">
+          <caption className="sr-visually-hidden">中途採用の平均採用コストと職人採用エージェントの料金の比較</caption>
+          <thead>
+            <tr>
+              <th scope="col">比較項目</th>
+              {[COST.survey, COST.agent].map((c, i) => (
+                <th key={c.big} scope="col" className={i === 1 ? "is-agent" : undefined}>
+                  <span className="sa-cost__name">
+                    <W text={c.name} />
+                  </span>
+                  <span className="sa-cost__big">{c.big}</span>
+                  <span className="sa-cost__sub">
+                    <W text={c.note} />
+                  </span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {COST.survey.rows.map(([label, v], i) => (
+              <tr key={label}>
+                <th scope="row">
+                  <W text={label} />
+                </th>
+                <td>
+                  <W text={v} />
+                </td>
+                <td className="is-agent">
+                  <W text={COST.agent.rows[i][1]} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
         <ul className="sa-cost__notes">
           {COST.notes.map((n) => (
             <li key={n}>{n}</li>

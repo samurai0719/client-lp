@@ -354,73 +354,99 @@
   background: var(--ks-paper-3);
 }
 
-.sa-cost__grid {
-  display: grid;
-  gap: 18px;
-}
-
-.sa-cost-card {
-  padding: 22px 18px;
+/* 3列の比較表。スマホでも横スクロールさせず、固定幅で折り返す */
+.sa-cost__table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
   border: 2.5px solid var(--ks-ink);
-  border-radius: 6px;
-  background: var(--ks-paper-3);
+  background: #fff;
   box-shadow: 4px 4px 0 var(--ks-orange);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
-.sa-cost-card.is-agent {
-  background: var(--sa-yellow-soft);
-}
-
-.sa-cost-card h3 {
+.sa-cost__table th,
+.sa-cost__table td {
+  padding: 11px 6px;
+  border: 1px solid var(--ks-line);
   color: var(--ks-ink);
-  font-size: 19px;
-  font-weight: 900;
-  line-height: 1.45;
-}
-
-.sa-cost-card__note {
-  margin-top: 2px;
-  color: var(--ks-mute);
   font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+  vertical-align: middle;
 }
 
-.sa-cost-card__big {
-  margin-top: 8px;
-  color: var(--ks-ink);
-  font-size: 48px;
+.sa-cost__table thead th {
+  padding-left: 3px;
+  padding-right: 3px;
+  background: var(--ks-ink);
+  color: #fff;
+  vertical-align: top;
+}
+
+.sa-cost__table thead th:first-child {
+  width: 26%;
+  vertical-align: middle;
+}
+
+.sa-cost__table tbody th {
+  background: var(--ks-paper);
+  font-weight: 900;
+}
+
+.sa-cost__table td.is-agent {
+  background: var(--ks-orange-soft);
+  font-weight: 900;
+}
+
+.sa-cost__table thead th.is-agent {
+  background: var(--ks-orange);
+}
+
+.sa-cost__name,
+.sa-cost__big,
+.sa-cost__sub {
+  display: block;
+}
+
+.sa-cost__name {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.sa-cost__big {
+  margin: 4px 0 2px;
+  font-size: clamp(18px, 5.2vw, 24px);
   font-weight: 900;
   line-height: 1.15;
-  letter-spacing: 0;
+  white-space: nowrap;
 }
 
-.sa-cost-card.is-agent .sa-cost-card__big {
-  color: var(--ks-orange-deep);
-}
-
-.sa-cost-card dl {
-  margin: 14px 0 0;
-}
-
-.sa-cost-card dl > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 9px 0;
-  border-top: 1px dashed var(--ks-line);
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.sa-cost-card dt {
-  color: var(--ks-mute);
+.sa-cost__sub {
+  font-size: 13px;
   font-weight: 700;
 }
 
-.sa-cost-card dd {
-  margin: 0;
-  color: var(--ks-ink);
-  font-weight: 900;
-  text-align: right;
+@media (min-width: 768px) {
+  .sa-cost__table {
+    box-shadow: 6px 6px 0 var(--ks-orange);
+  }
+  .sa-cost__table th,
+  .sa-cost__table td {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+  .sa-cost__name {
+    font-size: 17px;
+  }
+  .sa-cost__big {
+    font-size: clamp(36px, 4.6vw, 58px);
+  }
+  .sa-cost__sub {
+    font-size: 14px;
+  }
 }
 
 .sa-cost__notes {
@@ -468,19 +494,6 @@
 }
 
 @media (min-width: 768px) {
-  .sa-cost__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 28px;
-  }
-  .sa-cost-card {
-    padding: 24px;
-  }
-  .sa-cost-card {
-    box-shadow: 6px 6px 0 var(--ks-orange);
-  }
-  .sa-cost-card__big {
-    font-size: clamp(44px, 5.2vw, 68px);
-  }
   .sa-cost__diff {
     font-size: 32px;
   }
