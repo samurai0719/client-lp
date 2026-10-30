@@ -1,0 +1,1020 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   職人採用エージェント LP 専用スタイル
+   土台は ../saiyo-rescue/kensetsu/kensetsu.css（ks-）。黄色を足し、固有部品を sa- で書く。
+   スマホ基準で書き、768px / 900px で広げる。横スクロール・スライダーは作らない。
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.sa-lp {
+  --sa-yellow: #ffc400;
+  --sa-yellow-soft: #fff4c8;
+  --sr-header-h: 64px;
+  font-size: 16px;
+}
+
+.sa-lp .sr-btn--primary {
+  color: var(--ks-ink);
+  background: var(--sa-yellow);
+}
+
+.sa-center {
+  display: flex;
+  justify-content: center;
+}
+
+/* 影がコンテナの端で切れないよう、スマホでは右に余白を残す */
+.sa-lp .ks-card,
+.sa-lp .ks-plan,
+.sa-lp .ks-total {
+  box-shadow: 4px 4px 0 var(--ks-orange);
+}
+
+.sa-lp .sr-container {
+  padding-left: 16px;
+  padding-right: 20px;
+}
+
+@media (min-width: 768px) {
+  .sa-lp .sr-container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  .sa-lp .ks-card,
+  .sa-lp .ks-plan,
+  .sa-lp .ks-total {
+    box-shadow: 6px 6px 0 var(--ks-orange);
+  }
+}
+
+/* ── 改行位置（kensetsu.css と同じ考え方） ───────────────── */
+.sa-lp :where(.sa-hero__title, .sa-hero__body, .sa-cost__diff, .sa-pcard p, .sa-scope__title, .sa-strengths__grid h3) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* ── ヘッダー ───────────────────────────────────────── */
+.sa-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(244, 241, 234, 0.97);
+  border-bottom: 2px solid var(--ks-ink);
+}
+
+.sa-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 1280px;
+  height: var(--sr-header-h);
+  margin: 0 auto;
+  padding: 0 12px 0 16px;
+}
+
+.sa-logo {
+  display: grid;
+  margin-right: auto;
+  color: var(--ks-ink);
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.sa-logo b {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.sa-logo span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sa-nav {
+  display: none;
+}
+
+.sa-header__cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 2px solid var(--ks-ink);
+  border-radius: 8px;
+  background: var(--sa-yellow);
+  color: var(--ks-ink);
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sa-menu-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--ks-ink);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ks-ink);
+  cursor: pointer;
+}
+
+.sa-menu-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.sa-mobile-nav {
+  display: grid;
+  padding: 4px 16px 12px;
+  border-top: 1px solid var(--ks-line);
+}
+
+.sa-mobile-nav a {
+  padding: 13px 4px;
+  border-bottom: 1px dashed var(--ks-line);
+  color: var(--ks-ink);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sa-lp section[id],
+.sa-lp [id="contact"] {
+  scroll-margin-top: calc(var(--sr-header-h) + 12px);
+}
+
+@media (min-width: 1100px) {
+  .sa-lp {
+    --sr-header-h: 72px;
+  }
+  .sa-header__inner {
+    gap: 20px;
+    padding: 0 28px;
+  }
+  .sa-nav {
+    display: flex;
+    gap: 18px;
+  }
+  .sa-nav a {
+    color: var(--ks-ink);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .sa-nav a:hover {
+    color: var(--ks-orange-deep);
+  }
+  .sa-menu-btn,
+  .sa-mobile-nav {
+    display: none;
+  }
+}
+
+/* ── FV ─────────────────────────────────────────────── */
+.sa-hero {
+  overflow: hidden;
+  background: var(--ks-blueprint), var(--ks-paper);
+  border-bottom: 2px solid var(--ks-ink);
+}
+
+.sa-hero__inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.sa-hero__visual {
+  order: -1;
+  display: block;
+}
+
+.sa-hero__visual img {
+  width: 100%;
+  height: auto;
+}
+
+.sa-hero__copy {
+  padding: 20px 16px 30px;
+}
+
+.sa-hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sa-hero__tags li {
+  padding: 4px 12px;
+  background: var(--ks-ink);
+  color: var(--sa-yellow);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.sa-hero__title {
+  margin-top: 14px;
+  color: var(--ks-ink);
+  font-size: 39px;
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.sa-hero__body {
+  margin-top: 14px;
+  color: var(--ks-ink-2);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.75;
+}
+
+.sa-hero__price {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 14px;
+  margin-top: 16px;
+  padding: 11px 12px;
+  border-left: 7px solid var(--ks-orange);
+  background: var(--ks-ink);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.6;
+}
+
+.sa-hero__cta {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.sa-hero__sub {
+  color: var(--ks-ink-2);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sa-hero__copy {
+    animation: sa-rise 0.5s ease-out both;
+  }
+  @keyframes sa-rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+}
+
+@media (min-width: 900px) {
+  .sa-hero__inner {
+    flex-direction: row;
+    align-items: stretch;
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  .sa-hero__copy {
+    flex: 1 1 54%;
+    align-self: center;
+    padding: 56px 24px 56px 40px;
+  }
+  .sa-hero__visual {
+    order: 0;
+    flex: 0 0 46%;
+  }
+  .sa-hero__visual img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    /* 写真の紙の色と背景の方眼の境目が線に見えないよう、左右をぼかす */
+    mask-image: linear-gradient(to right, transparent, #000 9%, #000 97%, transparent);
+  }
+  .sa-hero__title {
+    font-size: clamp(46px, 5vw, 68px);
+  }
+  .sa-hero__body {
+    font-size: 18px;
+  }
+  .sa-hero__price {
+    gap: 0;
+    font-size: 19px;
+  }
+  .sa-hero__price span + span::before {
+    content: "｜";
+  }
+  .sa-hero__cta {
+    justify-items: start;
+  }
+  .sa-hero__sub {
+    text-align: left;
+  }
+}
+
+/* ── 採用コスト比較 ─────────────────────────────────── */
+.sa-cost {
+  background: var(--ks-paper-3);
+}
+
+.sa-cost__grid {
+  display: grid;
+  gap: 18px;
+}
+
+.sa-cost-card {
+  padding: 22px 18px;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sa-cost-card.is-agent {
+  background: var(--sa-yellow-soft);
+  border-color: var(--ks-orange);
+  box-shadow: 4px 4px 0 var(--ks-orange);
+}
+
+.sa-cost-card h3 {
+  color: var(--ks-ink);
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.sa-cost-card__note {
+  margin-top: 2px;
+  color: var(--ks-mute);
+  font-size: 14px;
+}
+
+.sa-cost-card__big {
+  margin-top: 8px;
+  color: var(--ks-ink);
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.sa-cost-card.is-agent .sa-cost-card__big {
+  color: var(--ks-orange-deep);
+}
+
+.sa-cost-card dl {
+  margin: 14px 0 0;
+}
+
+.sa-cost-card dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px dashed var(--ks-line);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.sa-cost-card dt {
+  color: var(--ks-mute);
+  font-weight: 700;
+}
+
+.sa-cost-card dd {
+  margin: 0;
+  color: var(--ks-ink);
+  font-weight: 900;
+  text-align: right;
+}
+
+.sa-cost__notes {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+  color: var(--ks-mute);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.sa-cost__calc {
+  display: grid;
+  gap: 6px;
+  max-width: 560px;
+  margin: 26px auto 0;
+}
+
+.sa-cost__calc > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1.5px solid var(--ks-ink);
+  font-weight: 700;
+}
+
+.sa-cost__calc > div:last-child {
+  background: var(--ks-ink);
+  color: var(--sa-yellow);
+  font-weight: 900;
+}
+
+.sa-cost__calc dd {
+  margin: 0;
+}
+
+.sa-cost__diff {
+  margin: 24px 0 22px;
+  color: var(--ks-ink);
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1.55;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .sa-cost__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 28px;
+  }
+  .sa-cost-card {
+    padding: 24px;
+  }
+  .sa-cost-card.is-agent {
+    box-shadow: 6px 6px 0 var(--ks-orange);
+  }
+  .sa-cost-card__big {
+    font-size: clamp(44px, 5.2vw, 68px);
+  }
+  .sa-cost__diff {
+    font-size: 32px;
+  }
+}
+
+/* ── 経営者の悩み ───────────────────────────────────── */
+.sa-problems__grid {
+  display: grid;
+  gap: 12px;
+}
+
+.sa-pcard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border: 2px solid var(--ks-ink);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sa-pcard span {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  background: var(--sa-yellow);
+  color: var(--ks-ink);
+}
+
+.sa-pcard svg {
+  width: 26px;
+  height: 26px;
+}
+
+.sa-pcard p {
+  color: var(--ks-ink);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+  .sa-problems__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* ── 解決策 ─────────────────────────────────────────── */
+.sa-solution {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--ks-ink);
+  color: #fff;
+}
+
+.sa-solution__grid {
+  display: grid;
+  gap: 16px;
+}
+
+.sa-solution__col {
+  padding: 20px 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+}
+
+.sa-solution__col.is-agent {
+  border-color: var(--sa-yellow);
+  background: var(--sa-yellow);
+  color: var(--ks-ink);
+}
+
+.sa-solution__col h3 {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.sa-solution__col ul {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.sa-solution__col li {
+  display: flex;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.sa-solution__col svg {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.sa-solution__close {
+  margin-top: 26px;
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.sa-solution__close strong {
+  color: var(--sa-yellow);
+}
+
+@media (min-width: 768px) {
+  .sa-solution__grid {
+    grid-template-columns: 1fr 1.25fr;
+    gap: 24px;
+  }
+  .sa-solution__close {
+    font-size: 21px;
+  }
+}
+
+/* ── 代行業務の範囲 ─────────────────────────────────── */
+.sa-scope {
+  background: var(--ks-paper-3);
+}
+
+.sa-scope__layout {
+  display: grid;
+  gap: 24px;
+}
+
+.sa-scope__list {
+  display: grid;
+  gap: 8px;
+}
+
+.sa-scope__list li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 2px 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 2px solid var(--ks-ink);
+  background: var(--sa-yellow-soft);
+}
+
+.sa-scope__list li.is-company {
+  background: var(--ks-ink);
+  color: #fff;
+}
+
+.sa-scope__no {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  background: var(--ks-ink);
+  color: #fff;
+  font-weight: 900;
+}
+
+.is-company .sa-scope__no {
+  background: var(--ks-orange);
+}
+
+.sa-scope__title {
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+.sa-scope__owner {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sa-scope__company {
+  padding: 20px 18px;
+  border: 2.5px solid var(--ks-ink);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sa-scope__company h3 {
+  color: var(--ks-ink);
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.sa-scope__company ul {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.sa-scope__company li {
+  display: flex;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.sa-scope__company svg {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  flex-shrink: 0;
+  color: var(--ks-orange);
+}
+
+.sa-scope__company p {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--ks-line);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@media (min-width: 900px) {
+  .sa-scope__layout {
+    grid-template-columns: 1.4fr 1fr;
+    align-items: start;
+    gap: 32px;
+  }
+  .sa-scope__list li {
+    grid-template-columns: 34px 1fr auto;
+  }
+  .sa-scope__no {
+    grid-row: auto;
+  }
+  .sa-scope__company {
+    position: sticky;
+    top: calc(var(--sr-header-h) + 16px);
+  }
+}
+
+/* ── 強み ───────────────────────────────────────────── */
+.sa-strengths__grid {
+  display: grid;
+  gap: 18px;
+}
+
+.sa-strengths__grid li {
+  padding: 20px 18px;
+}
+
+.sa-strengths__grid span {
+  display: inline-block;
+  padding: 0 10px;
+  background: var(--ks-orange);
+  color: #fff;
+  font-weight: 900;
+}
+
+.sa-strengths__grid h3 {
+  margin-top: 8px;
+  color: var(--ks-ink);
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+.sa-strengths__grid p {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.sa-trades {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.sa-trades li {
+  padding: 4px 11px;
+  border: 1.5px solid var(--ks-ink);
+  background: #fff;
+  color: var(--ks-ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sa-trades li.is-more {
+  border-color: transparent;
+  background: none;
+}
+
+@media (min-width: 768px) {
+  .sa-strengths__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sa-strengths__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── 実績 ───────────────────────────────────────────── */
+.sa-total__value {
+  margin-top: 10px;
+  color: var(--sa-yellow);
+  font-size: 72px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.sa-total__value .sr-unit {
+  margin-left: 4px;
+  color: #fff;
+  font-size: 26px;
+}
+
+.sa-total__note {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sa-results__table {
+  margin-top: 24px;
+  overflow-x: visible;
+}
+
+.sa-lp .sa-results__table .ks-table {
+  table-layout: fixed;
+}
+
+.sa-lp .sa-results__table th:first-child {
+  width: 42%;
+}
+
+.sa-lp .ks-table tr.is-construction th,
+.sa-lp .ks-table tr.is-construction td {
+  background: var(--sa-yellow-soft);
+}
+
+.sa-results__notes {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+  color: var(--ks-ink-2);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+@media (min-width: 768px) {
+  .sa-total__value {
+    font-size: 112px;
+  }
+}
+
+/* ── 他の採用方法との比較 ───────────────────────────── */
+.sa-compare__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* スマホ：見出し行を隠し、行ごとの縦型カードにする */
+.sa-compare__table thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.sa-compare__table tr {
+  display: block;
+  margin-bottom: 14px;
+  border: 2px solid var(--ks-ink);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sa-compare__table th[scope="row"] {
+  display: block;
+  padding: 10px 12px;
+  background: var(--ks-ink);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  text-align: left;
+}
+
+.sa-compare__table td {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border-top: 1px dashed var(--ks-line);
+  color: var(--ks-ink-2);
+  font-size: 15px;
+  text-align: right;
+}
+
+.sa-compare__table td::before {
+  content: attr(data-label);
+  flex-shrink: 0;
+  max-width: 50%;
+  color: var(--ks-mute);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.sa-compare__table td.is-agent {
+  background: var(--sa-yellow-soft);
+  color: var(--ks-ink);
+  font-weight: 900;
+}
+
+@media (min-width: 900px) {
+  .sa-compare__table {
+    border: 2.5px solid var(--ks-ink);
+    background: #fff;
+  }
+  .sa-compare__table thead {
+    position: static;
+    display: table-header-group;
+    width: auto;
+    height: auto;
+    clip: auto;
+  }
+  .sa-compare__table thead th {
+    padding: 14px 12px;
+    background: var(--ks-ink);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 900;
+    text-align: center;
+  }
+  .sa-compare__table thead th.is-agent {
+    background: var(--sa-yellow);
+    color: var(--ks-ink);
+  }
+  .sa-compare__table tr {
+    display: table-row;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+  .sa-compare__table th[scope="row"],
+  .sa-compare__table td {
+    display: table-cell;
+    padding: 14px 12px;
+    border-top: 1px dashed var(--ks-line);
+    vertical-align: middle;
+  }
+  .sa-compare__table th[scope="row"] {
+    width: 20%;
+    background: var(--ks-paper);
+    color: var(--ks-ink);
+    font-size: 15px;
+  }
+  .sa-compare__table td {
+    text-align: center;
+  }
+  .sa-compare__table td::before {
+    content: none;
+  }
+}
+
+/* ── 料金・流れ ─────────────────────────────────────── */
+.sa-example {
+  margin-top: 8px;
+  color: var(--ks-ink);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.6;
+}
+
+.sa-footnote {
+  margin-top: 16px;
+  color: var(--ks-mute);
+  font-size: 13px;
+  text-align: center;
+}
+
+.sa-lp .sa-step__text {
+  align-self: center;
+}
+
+/* ── 最終CTA・フォーム ──────────────────────────────── */
+.sa-final-cta {
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.sa-final-cta p {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sa-form-card {
+  margin-top: 40px;
+  padding: 28px 16px 24px;
+  border: 3px solid var(--sa-yellow);
+  border-radius: 6px;
+  background: var(--ks-paper-3);
+  color: var(--ks-ink-2);
+  text-align: left;
+}
+
+.sa-form-card h3 {
+  color: var(--ks-ink);
+  font-size: 22px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.sa-form-card > p {
+  margin-top: 4px;
+  color: var(--ks-mute);
+  font-size: 14px;
+  text-align: center;
+}
+
+.sa-field-error {
+  color: #b42318;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sa-lp .sr-field [aria-invalid="true"] {
+  border-color: #b42318;
+}
+
+.sa-consent label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--ks-ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.sa-consent input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--ks-orange);
+}
+
+.sa-consent a {
+  color: var(--ks-orange-deep);
+}
+
+.sa-lp .sr-btn--lg.sr-form__submit {
+  width: 100%;
+  max-width: none;
+}
+
+@media (min-width: 768px) {
+  .sa-form-card {
+    padding: 44px 48px 36px;
+  }
+  .sa-form-card h3 {
+    font-size: 26px;
+  }
+}

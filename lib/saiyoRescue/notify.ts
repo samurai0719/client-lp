@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { PLAN_LABEL, formatJst, isKensetsuLead, type LeadInsert } from "./leads";
+import { PLAN_LABEL, formatJst, isKensetsuLead, isShokuninLead, type LeadInsert } from "./leads";
 
 /**
  * 採用レスキュー 新規問い合わせの通知。
@@ -32,6 +32,7 @@ export function adminLeadUrl(id: string | null): string {
 
 /** 件名・本文の見出し。建設業LP経由は一目で分かるよう別の見出しにする */
 function brand(n: LeadNotice): string {
+  if (isShokuninLead(n.row)) return "【職人採用エージェント】";
   return isKensetsuLead(n.row) ? "【採用レスキュー｜建設業LP】" : "【採用レスキュー】";
 }
 

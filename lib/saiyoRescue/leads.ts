@@ -105,12 +105,22 @@ export const PLAN_LABEL: Record<string, string> = {
   premium: "プレミアム（350,000円・税込・返金保証付き）",
   /** 建設業向けLP（/kensetsu）からの問い合わせ。フォームが自動で付与する（プラン選択ではなく流入LPの識別） */
   kensetsu: "建設業LP経由（初期費用89,800円・月額0円・成果報酬 想定年収の10%）",
+  /** 職人採用エージェントLP（/shokunin-agent）からの問い合わせ。フォームが自動で付与する */
+  shokunin: "職人採用エージェント経由（初期費用89,800円・月額0円・採用成功時 想定年収の10%）",
 };
 
 /** 建設業向けLP経由の問い合わせか */
 export function isKensetsuLead(r: { desired_plan: string | null }): boolean {
   return r.desired_plan === "kensetsu";
 }
+
+/** 職人採用エージェントLP経由の問い合わせか */
+export function isShokuninLead(r: { desired_plan: string | null }): boolean {
+  return r.desired_plan === "shokunin";
+}
+
+/** 都道府県を聞かないフォーム（職人採用エージェント）の prefecture に入れる値（NOT NULL 列のため） */
+export const PREFECTURE_UNANSWERED = "未回答";
 
 export const DEVICE_LABEL: Record<string, string> = {
   pc: "PC",
@@ -225,8 +235,12 @@ export function validateLead(body: Record<string, unknown>): ValidationResult {
   const phone = normalizePhone(str(body.phone, LIMIT.phone));
   const email = str(body.email, LIMIT.email);
   const job_type = str(body.jobType, LIMIT.short);
-  const prefecture = str(body.prefecture, 10);
+  const isShokunin = str(body.plan, 20) === "shokunin";
+  const prefecture = isShokunin ? PREFECTURE_UNANSWERED : str(body.prefecture, 10);
 
+  if (isShokunin && body.privacyConsent !== "on") {
+    return { ok: false, message: "個人情報保護方針への同意が必要です" };
+  }
   if (!company_name || !contact_name || !phone || !email || !job_type || !prefecture) {
     return { ok: false, message: "必須項目が入力されていません" };
   }
@@ -237,7 +251,7 @@ export function validateLead(body: Record<string, unknown>): ValidationResult {
   if (digits.length < 10 || digits.length > 11) {
     return { ok: false, message: "電話番号を正しく入力してください" };
   }
-  if (!(PREFECTURES as readonly string[]).includes(prefecture)) {
+  if (!isShokunin && !(PREFECTURES as readonly string[]).includes(prefecture)) {
     return { ok: false, message: "都道府県を選択してください" };
   }
 
