@@ -67,6 +67,11 @@ function W({ text }: { text: string }) {
   );
 }
 
+/** 見出し用。読点は使わず、その位置で改行する */
+function H({ text }: { text: string }) {
+  return <W text={text.replace(/、[|\n]?/g, "\n")} />;
+}
+
 function Cta({ location, label = CTA_MAIN }: { location: string; label?: string }) {
   return (
     <a href={CTA_HREF} className="sr-btn sr-btn--lg sr-btn--primary ks-btn" data-sr-cta={location}>
@@ -136,7 +141,7 @@ export function Hero() {
         <div className="sa-hero__copy">
           <p className="sa-hero__label">{HERO.label}</p>
           <h1 className="sa-hero__title" id="sa-hero-title">
-            <W text={HERO.title} />
+            <H text={HERO.title} />
           </h1>
           <ol className="sa-hero__steps">
             {HERO.steps.map((st, i) => (
@@ -171,7 +176,7 @@ export function Cost() {
         <Head no="01" en="COST" label="採用コストの比較" id="sa-cost-title" title={
             <>
               {COST.title.before}
-              <wbr />
+              <br />
               <span className="sa-cost__hl">{COST.title.highlight}</span>
               <wbr />
               {COST.title.after}
@@ -249,7 +254,7 @@ export function Worry() {
   return (
     <section className="ks-section sa-worry" id="worry" aria-labelledby="sa-worry-title">
       <div className="sr-container">
-        <Head no="02" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<W text={WORRY.title} />} lead={WORRY.lead} />
+        <Head no="02" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<H text={WORRY.title} />} lead={WORRY.lead} />
         <ProblemOwnerIllustration className="sa-worry__owner" />
         <ul className="ks-problems__grid sa-worry__grid">
           {WORRY.items.map((w, i) => {
@@ -261,7 +266,7 @@ export function Worry() {
                 </span>
                 <Art className="ks-pcard__art" />
                 <h3 className="ks-pcard__title">
-                  <W text={w.text} />
+                  <H text={w.text} />
                 </h3>
               </li>
             );
@@ -278,14 +283,14 @@ export function ServiceFlow() {
   return (
     <section className="ks-section ks-reasons" id="service" aria-labelledby="sa-flow-title">
       <div className="sr-container">
-        <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<W text={SERVICE_FLOW.title} />} lead={SERVICE_FLOW.lead} />
+        <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<H text={SERVICE_FLOW.title} />} lead={SERVICE_FLOW.lead} />
         <ol className="ks-intro__steps sa-flow__grid">
           {SERVICE_FLOW.steps.map((st, i) => (
             <li key={st.text} className="ks-card ks-istep">
               <span className="ks-istep__no">STEP {i + 1}</span>
               <ServiceFlowIllustration step={i + 1} className="ks-istep__art" />
               <h3 className="ks-istep__title">
-                <W text={st.text} />
+                <H text={st.text} />
               </h3>
               <p className={`sa-flow__owner is-${st.owner}`}>{OWNER_LABEL[st.owner]}</p>
             </li>
@@ -303,12 +308,12 @@ export function BeforeAfter() {
   return (
     <section className="ks-section ks-delegate" aria-labelledby="sa-ba-title">
       <div className="sr-container">
-        <Head no="04" en="BEFORE / AFTER" label="採用業務の変化" id="sa-ba-title" title={<W text="社長の仕事が、|ここまで変わります。" />} />
+        <Head no="04" en="BEFORE / AFTER" label="採用業務の変化" id="sa-ba-title" title={<H text="社長の仕事が、|ここまで変わります。" />} />
         <div className="sa-ba__grid">
           <article className="ks-card sa-ba__col">
             <p className="sa-ba__tag">Before</p>
             <h3>
-              <W text={before.title} />
+              <H text={before.title} />
             </h3>
             <BeforeAfterIllustration variant="before" className="sa-ba__art" />
             <ul className="ks-hero__trades sa-ba__list">
@@ -320,7 +325,7 @@ export function BeforeAfter() {
           <article className="ks-card sa-ba__col">
             <p className="sa-ba__tag is-after">After</p>
             <h3>
-              <W text={after.title} />
+              <H text={after.title} />
             </h3>
             <BeforeAfterIllustration variant="after" className="sa-ba__art" />
             <h4>{after.usLabel}</h4>
@@ -348,7 +353,7 @@ export function Scope() {
   return (
     <section className="ks-section ks-delegate" id="scope" aria-labelledby="sa-scope-title">
       <div className="sr-container sr-container--narrow">
-        <Head no="05" en="SCOPE" label="代行業務の範囲" id="sa-scope-title" title={<W text="担当範囲の|詳細" />} />
+        <Head no="05" en="SCOPE" label="代行業務の範囲" id="sa-scope-title" title={<H text="担当範囲の|詳細" />} />
         <div className="ks-delegate__cols">
           <div className="ks-card ks-delegate__col is-us">
             <p className="ks-delegate__who">
@@ -385,7 +390,7 @@ export function Strengths() {
   return (
     <section className="ks-section ks-strengths" aria-labelledby="sa-strengths-title">
       <div className="sr-container">
-        <Head no="06" en="STRENGTH" label="建設業特化の強み" id="sa-strengths-title" invert title={<W text={"建設業の採用は、\n職種を|理解していなければ|成功しません。"} />} />
+        <Head no="06" en="STRENGTH" label="建設業特化の強み" id="sa-strengths-title" invert title={<H text={"建設業の採用は、\n職種を|理解していなければ|成功しません。"} />} />
         <div className="ks-strengths__intro">
           <figure className="ks-strengths__photo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -406,7 +411,7 @@ export function Strengths() {
             <li key={s.title}>
               <span className="ks-strengths__no">{String(i + 1).padStart(2, "0")}</span>
               <h3>
-                <W text={s.title} />
+                <H text={s.title} />
               </h3>
               <p>{s.body}</p>
             </li>
@@ -443,7 +448,7 @@ export function Pricing() {
   return (
     <section className="ks-section ks-pricing" id="pricing" aria-labelledby="sa-pricing-title">
       <div className="sr-container sr-container--narrow">
-        <Head no="08" en="PRICE" label="料金" id="sa-pricing-title" title={<W text={"料金は、|シンプルに|3つだけ。"} />} />
+        <Head no="08" en="PRICE" label="料金" id="sa-pricing-title" title={<H text={"料金は、|シンプルに|3つだけ。"} />} />
         <div className="ks-plan">
           <div className="ks-plan__monthly">
             <p className="ks-plan__label">月額費用</p>
@@ -550,7 +555,7 @@ export function Contact() {
       <BlueprintSkyline className="ks-contact__skyline" />
       <div className="sr-container sr-container--narrow">
         <h2 id="sa-final-title" className="ks-contact__title">
-          <W text={FINAL_TITLE} />
+          <H text={FINAL_TITLE} />
         </h2>
         <CrewRelief className="ks-contact__art" />
         <PriceSummary />
