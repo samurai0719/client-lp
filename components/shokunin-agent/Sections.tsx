@@ -128,7 +128,7 @@ function PriceSummary() {
   );
 }
 
-function Head({ no, en, label, title, lead, id, invert = false }: { no: string; en: string; label: string; title: ReactNode; lead?: ReactNode; id: string; invert?: boolean }) {
+function Head({ no, en, label, title, id, invert = false }: { no: string; en: string; label: string; title: ReactNode; id: string; invert?: boolean }) {
   return (
     <header className={`ks-head${invert ? " ks-head--invert" : ""}`}>
       <p className="ks-head__label">
@@ -139,7 +139,6 @@ function Head({ no, en, label, title, lead, id, invert = false }: { no: string; 
       <h2 className="ks-head__title" id={id}>
         {title}
       </h2>
-      {lead && <p className="ks-head__lead">{lead}</p>}
     </header>
   );
 }
@@ -198,7 +197,7 @@ export function Cost() {
               <wbr />
               {COST.title.after}
             </>
-          } lead={<W text={COST.lead} />} />
+          } />
         <table className="sa-cost__table">
           <caption className="sr-visually-hidden">中途採用の平均採用コストと職人採用エージェントの料金の比較</caption>
           <thead>
@@ -271,7 +270,7 @@ export function Worry() {
   return (
     <section className="ks-section sa-worry" id="worry" aria-labelledby="sa-worry-title">
       <div className="sr-container">
-        <Head no="02" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<H text={WORRY.title} />} lead={<W text={WORRY.lead} />} />
+        <Head no="02" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<H text={WORRY.title} />} />
         <ProblemOwnerIllustration className="sa-worry__owner" />
         <ul className="ks-problems__grid sa-worry__grid">
           {WORRY.items.map((w, i) => {
@@ -300,7 +299,7 @@ export function ServiceFlow() {
   return (
     <section className="ks-section ks-reasons" id="service" aria-labelledby="sa-flow-title">
       <div className="sr-container">
-        <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<H text={SERVICE_FLOW.title} />} lead={<W text={SERVICE_FLOW.lead} />} />
+        <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<H text={SERVICE_FLOW.title} />} />
         <ol className="ks-intro__steps sa-flow__grid">
           {SERVICE_FLOW.steps.map((st, i) => (
             <li key={st.text} className="ks-card ks-istep">

@@ -71,7 +71,6 @@ export const HERO = {
 /* ─── 採用コスト比較 ─── */
 export const COST = {
   title: { before: "1人の採用に", highlight: "平均約100万円", after: "かかっています" },
-  lead: "リクルート就職みらい研究所の|『就職白書2020』では、|2019年度の中途採用|1人あたりの平均採用コストは|**103.3万円**と報告されています。",
   survey: {
     name: "中途採用の|平均採用コスト",
     note: "調査上の|平均値",
@@ -113,7 +112,6 @@ export type WorryArt = "noApplicant" | "missedCall" | "lost" | "conflict" | "dec
 
 export const WORRY = {
   title: "こんな採用のお悩み、|抱えていませんか？",
-  lead: "現場に出ながら、**求人作成、応募者対応、面接調整まで**行うのは簡単ではありません。",
   items: [
     { text: "求人を出しても|職人から|**応募が来ない**", art: "noApplicant" },
     { text: "現場に出ているため|**応募者からの電話に|対応できない**", art: "missedCall" },
@@ -126,7 +124,6 @@ export const WORRY = {
 /* ─── サービス全体図 ─── */
 export const SERVICE_FLOW = {
   title: "その採用業務、|職人採用エージェントが|**代わりに担当します。**",
-  lead: "求人を掲載して終わりではありません。応募を集め、応募者へ連絡し、**面接が決まるところまで**採用活動を進めます。",
   steps: [
     { text: "建設会社から|採用したい職種・|条件を確認", owner: "both" },
     { text: "職人採用エージェントが|**求人原稿・採用LP・|広告を制作**", owner: "us" },
