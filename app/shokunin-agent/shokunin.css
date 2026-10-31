@@ -1015,3 +1015,36 @@
 .sa-lp .sa-consent a {
   color: var(--sa-orange-text);
 }
+
+/* 全体の行間を少し広げる（数字の見せ場や1行の部品は対象外） */
+.sa-lp {
+  line-height: 1.95;
+}
+
+.sa-lp.sr-lp :is(.sa-hero__title) {
+  line-height: 1.45;
+}
+
+.sa-lp.sr-lp :is(.ks-head__title, .ks-contact__title) {
+  line-height: 1.6;
+}
+
+.sa-lp.sr-lp :is(.ks-pcard__title, .ks-istep__title) {
+  line-height: 1.65;
+}
+
+.sa-lp.sr-lp :is(.sa-cost__table th, .sa-cost__table td, .sa-cost__name, .sa-cost__sub, .ks-faq__qtext, .ks-faq__q) {
+  line-height: 1.65;
+}
+
+.sa-lp.sr-lp :is(.sa-cost__diff, .sa-example) {
+  line-height: 1.75;
+}
+
+.sa-lp.sr-lp :is(.sa-cost__calc dt, .sa-cost__calc dd, .ks-note, .sa-results__note) {
+  line-height: 1.9;
+}
+
+.sa-lp.sr-lp main :is(li, dd) {
+  line-height: 1.95;
+}
