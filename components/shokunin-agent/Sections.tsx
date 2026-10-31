@@ -8,11 +8,11 @@ import { BlueprintSkyline, CrewRelief } from "@/components/saiyo-rescue-kensetsu
 import {
   BeforeAfterIllustration,
   DeclinedProjectIllustration,
-  LostApplicantIllustration,
   MissedCallIllustration,
+  MonthlyCostIllustration,
   NoApplicantIllustration,
   ProblemOwnerIllustration,
-  ScheduleConflictIllustration,
+  QuickQuitIllustration,
   ServiceFlowIllustration,
 } from "./characters";
 import ContactForm from "./ContactForm";
@@ -261,8 +261,8 @@ export function Cost() {
 const WORRY_ARTS: Record<WorryArt, ComponentType<{ className?: string }>> = {
   noApplicant: NoApplicantIllustration,
   missedCall: MissedCallIllustration,
-  lost: LostApplicantIllustration,
-  conflict: ScheduleConflictIllustration,
+  monthlyCost: MonthlyCostIllustration,
+  quickQuit: QuickQuitIllustration,
   declined: DeclinedProjectIllustration,
 };
 

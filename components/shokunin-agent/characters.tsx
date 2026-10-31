@@ -61,31 +61,13 @@ function Scaffold({ x, y, cols, rows, cell = 32 }: { x: number; y: number; cols:
   );
 }
 
-function Calendar({ x, y, s = 1, conflict = false }: { x: number; y: number; s?: number; conflict?: boolean }) {
+function Calendar({ x, y, s = 1 }: { x: number; y: number; s?: number }) {
   return (
     <g transform={`translate(${x} ${y}) scale(${s})`}>
       <rect x={-30} y={-28} width={60} height={56} rx={4} fill="#fff" {...line} />
       <rect x={-30} y={-28} width={60} height={14} rx={4} fill={ACCENT} {...line} />
       {[0, 1, 2].map((r) =>
         [0, 1, 2, 3].map((c) => <rect key={`${r}${c}`} x={-23 + c * 12} y={-8 + r * 11} width={8} height={7} rx={1} fill={GRAY_LIGHT} />),
-      )}
-      {conflict && (
-        <>
-          <rect x={-11} y={3} width={24} height={9} rx={1.5} fill={ACCENT} {...line} strokeWidth={1.6} />
-          <rect x={-3} y={8} width={24} height={9} rx={1.5} fill={INK} />
-        </>
-      )}
-    </g>
-  );
-}
-
-function Building({ x, y, s = 1 }: { x: number; y: number; s?: number }) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${s})`}>
-      <rect x={-30} y={-62} width={60} height={62} fill="#fff" {...line} />
-      <rect x={-32} y={-68} width={64} height={7} rx={1.5} fill={ACCENT} {...line} />
-      {[0, 1].map((r) =>
-        [0, 1, 2].map((c) => <rect key={`${r}${c}`} x={-22 + c * 17} y={-52 + r * 18} width={10} height={11} fill={GRAY_LIGHT} {...line} strokeWidth={1.4} />),
       )}
     </g>
   );
@@ -181,31 +163,44 @@ export function MissedCallIllustration({ className }: P) {
   );
 }
 
-/** 3. 折り返したときには応募者が他社に決まっている */
-export function LostApplicantIllustration({ className }: P) {
+/** 円マークの硬貨 */
+function Coin({ x, y, s = 1 }: { x: number; y: number; s?: number }) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s})`}>
+      <circle r={14} fill={ACCENT} {...line} />
+      <path d="M-6 -8 L0 0 L6 -8 M0 0 L0 8 M-5 1 L5 1 M-5 5 L5 5" fill="none" stroke="#fff" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+    </g>
+  );
+}
+
+/** 3. 採用できなくても毎月の費用が出ていく */
+export function MonthlyCostIllustration({ className }: P) {
   return (
     <Svg viewBox="0 0 240 170" className={className}>
-      <Backdrop cx={72} cy={94} r={58} />
-      <Person x={68} y={68} outfit="builder" hair="side" expr="surprise" pose="phone">
-        <Phone x={10} y={46} s={0.8} content="msg" />
-      </Person>
-      <Building x={204} y={160} s={0.92} />
-      <Person x={150} y={84} scale={0.86} flip outfit="casual" hair="short" expr="happy" pose="thumbsUp" />
-      <CheckBadge x={204} y={84} />
-      <Floor y={160} />
+      <Backdrop cx={80} cy={94} r={62} />
+      <Person x={80} y={68} outfit="builder" hair="side" expr="worry" pose="headHold" />
+      <Sweat x={120} y={44} />
+      <Calendar x={186} y={62} s={1} />
+      <Coin x={150} y={118} s={0.86} />
+      <Coin x={186} y={128} />
+      <Coin x={222} y={114} s={0.86} />
+      <path d="M186 96 L186 108 M181 103 L186 109 L191 103" fill="none" {...line} />
     </Svg>
   );
 }
 
-/** 4. 面接予定表と現場予定が重なっている */
-export function ScheduleConflictIllustration({ className }: P) {
+/** 4. 採用した職人がすぐに辞めて出ていく */
+export function QuickQuitIllustration({ className }: P) {
   return (
     <Svg viewBox="0 0 240 170" className={className}>
-      <Backdrop cx={84} cy={94} r={62} />
-      <Person x={84} y={68} outfit="builder" hair="side" expr="worry" pose="headHold" />
-      <Calendar x={184} y={72} s={1.2} conflict />
-      <Cross x={218} y={36} s={0.9} />
-      <Sweat x={124} y={44} />
+      <Backdrop cx={70} cy={94} r={56} />
+      <Person x={64} y={68} outfit="builder" hair="side" expr="surprise" pose="headHold" />
+      <rect x={196} y={52} width={38} height={108} rx={2} fill="#fff" {...line} />
+      <rect x={203} y={60} width={24} height={40} fill={GRAY_LIGHT} {...line} strokeWidth={1.4} />
+      <circle cx={204} cy={112} r={3} fill={INK} />
+      <Person x={150} y={84} scale={0.86} outfit="casual" hair="short" expr="smile" pose="down" />
+      <path d="M116 36 L170 36 M163 30 L171 36 L163 42" fill="none" stroke={ACCENT} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+      <Floor y={160} />
     </Svg>
   );
 }

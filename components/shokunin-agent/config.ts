@@ -108,15 +108,15 @@ export const COST = {
 } as const;
 
 /* ─── お悩みエリア ─── */
-export type WorryArt = "noApplicant" | "missedCall" | "lost" | "conflict" | "declined";
+export type WorryArt = "noApplicant" | "missedCall" | "monthlyCost" | "quickQuit" | "declined";
 
 export const WORRY = {
   title: "こんな採用のお悩み、|抱えていませんか？",
   items: [
     { text: "求人を出しても|職人から|**応募が来ない**", art: "noApplicant" },
     { text: "現場に出ているため|**応募者からの電話に|対応できない**", art: "missedCall" },
-    { text: "折り返す頃には|応募者が|**他社へ決まっている**", art: "lost" },
-    { text: "面接の日程調整まで|**手が回らない**", art: "conflict" },
+    { text: "月額で|**費用を払っている**", art: "monthlyCost" },
+    { text: "採用しても|**すぐやめてしまう**", art: "quickQuit" },
     { text: "人手不足によって|**新しい仕事を|断っている**", art: "declined" },
   ] as { text: string; art: WorryArt }[],
 } as const;
