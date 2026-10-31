@@ -22,10 +22,7 @@ export const EXPERIENCED_TRADES = [...TRADES, NO_EXPERIENCE] as const;
 export const DESIRED_TRADES = [...TRADES, NO_PREFERENCE] as const;
 
 export const EXPERIENCE_YEARS = ["未経験", "1年未満", "1〜3年", "3〜5年", "5〜10年", "10年以上"] as const;
-export const EMPLOYMENT_STATUSES = [
-  "建設職人として在職中", "建設会社で別の仕事をしている", "別業種で在職中", "一人親方・フリーランス",
-  "離職中", "アルバイト・派遣・学生", "その他",
-] as const;
+export const EMPLOYMENT_STATUSES = ["在職中", "離職中", "その他"] as const;
 
 export const NEAR_HOME = "現在の住所周辺";
 export const UNDECIDED_AREA = "相談して決めたい";
