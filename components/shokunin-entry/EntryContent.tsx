@@ -4,7 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { Check } from "lucide-react";
 import { PREFECTURES, birthYearOptions, isValidEmail, normalizeDriverPhone, normalizePostalCode } from "@/components/driver/questions";
 import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
-import { ChoiceButton, EntryFooter, EntryHeader, NextButton, Question, QuestionHead, ServiceFlow, StepHeader } from "./parts";
+import { ChoiceButton, EntryFooter, EntryHeader, NextButton, Question, QuestionHead, StepHeader } from "./parts";
 import {
   AREA_PREFECTURES,
   CONTACT_TIMES,
@@ -305,8 +305,6 @@ function StepBody({ children }: { children: ReactNode }) {
   return <section className="se-step">{children}</section>;
 }
 
-const FV_POINTS = ["登録・利用は完全無料", "建設業に特化", "面接するかは自分で決められる"];
-
 function Hero({
   motivation,
   desiredTiming,
@@ -332,39 +330,16 @@ function Hero({
     <section>
       <EntryHeader />
       <div className="se-hero">
-        {/* eslint-disable-next-line @next/next/no-img-element -- 画像全体を4:3で崩さず見せるFV。遅延読み込みしない */}
-        <img src="/images/shokunin-entry/hero.webp" alt="建設現場で腕を組み、笑顔で上を見る職人" width={1200} height={900} fetchPriority="high" decoding="async" />
-        <div className="se-hero__copy">
-          <h1>
-            <span className="se-hero__small">建設職人の</span>
-            <span className="se-hero__main">転職に強い</span>
-          </h1>
-          <p>
-            経験を活かして、
-            <br />
-            今より良い条件の会社へ。
-          </p>
-        </div>
-      </div>
-      <ul className="se-points">
-        {FV_POINTS.map((p) => (
-          <li key={p}>
-            <Check aria-hidden="true" strokeWidth={3.4} />
-            {p}
-          </li>
-        ))}
-      </ul>
-
-      <div className="se-about">
-        <h2>企業から選ばれる、職人の転職サービス</h2>
-        <p>
-          職種・経験・資格・希望条件を無料登録。あなたの匿名プロフィールを見た建設会社が面接を希望した場合、adofyが企業の採用担当としてご連絡します。仕事内容と条件を確認してから、面接を受けるか自分で決められます。
-        </p>
-        <ul className="se-safe">
-          <li>登録しただけで現在の勤務先に知られることはありません</li>
-          <li>氏名・電話番号などの個人情報を、本人の同意なく求人企業へ公開しません</li>
-        </ul>
-        <ServiceFlow />
+        {/* eslint-disable-next-line @next/next/no-img-element -- 画像全体を崩さず見せるFV。遅延読み込みしない */}
+        <img
+          src="/images/shokunin-entry/hero-v2.webp"
+          alt="職人の転職に強い。完全無料、建設業特化、在職中OK。累計利用実績2,465件（他業種を含む自社集計）"
+          width={1200}
+          height={675}
+          fetchPriority="high"
+          decoding="async"
+        />
+        <h1 className="se-sr">建設職人の転職に強い</h1>
       </div>
 
       <div className="se-step se-step--first">

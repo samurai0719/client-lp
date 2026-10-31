@@ -155,33 +155,3 @@ export function NextButton({ onClick, error, label = "次へ進む" }: { onClick
     </div>
   );
 }
-
-const ICONS = [
-  <path key="0" d="M8 4h8v3H8zM6 5.5H4.5V21h15V5.5H18M8 12h8M8 16h5" />,
-  <path key="1" d="M3 5h18v14H3zM12 15a2.5 2.5 0 1 0 0-.01M7 19c.6-2.2 2.6-3 5-3s4.4.8 5 3" />,
-  <path key="2" d="M6 3h3l1.5 5-2 1.5a12 12 0 0 0 6 6l1.5-2 5 1.5v3c0 1-.8 2-2 2C10 20 4 13 4 5c0-1.2 1-2 2-2z" />,
-  <path key="3" d="M4 12l5 5L20 6" />,
-];
-
-const FLOW = ["職種・経験・希望条件を登録", "企業が匿名プロフィールを確認", "面接希望が届いた場合にadofyから連絡", "条件を確認して面接するか決定"];
-
-/** サービスの流れ（4つの小さなアイコン） */
-export function ServiceFlow() {
-  return (
-    <ol className="se-flow" aria-label="サービスの流れ">
-      {FLOW.map((t, i) => (
-        <li key={t}>
-          <span className="se-flow__icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              {ICONS[i]}
-            </svg>
-          </span>
-          <span className="se-flow__text">
-            <b>{i + 1}</b>
-            {t}
-          </span>
-        </li>
-      ))}
-    </ol>
-  );
-}

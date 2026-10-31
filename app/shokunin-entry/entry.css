@@ -51,64 +51,9 @@
 .se-header__name em { color: var(--se-orange-text); font-style: normal; }
 .se-header__sub { display: block; font-size: 10.5px; font-weight: 700; color: var(--se-mute); }
 
-/* ファーストビュー。画像は4:3のまま、左の余白にコピーを重ねる */
-.se-hero { position: relative; aspect-ratio: 4 / 3; container-type: inline-size; background: var(--se-paper-2); overflow: hidden; }
+/* ファーストビュー。画像は比率を保って全体を見せる（コピーは画像内） */
+.se-hero { aspect-ratio: 16 / 9; background: var(--se-paper-2); }
 .se-hero img { display: block; width: 100%; height: auto; }
-.se-hero__copy { position: absolute; left: 4.5cqw; top: 10cqw; width: 52cqw; }
-.se-hero h1 { font-weight: 900; line-height: 1.1; color: var(--se-ink); }
-.se-hero__small { display: block; font-size: 8.4cqw; letter-spacing: 0.02em; }
-.se-hero__main {
-  display: inline-block;
-  margin: 2.2cqw 0 0 -1cqw;
-  padding: 1.6cqw 3.2cqw 1.8cqw;
-  font-size: 9.2cqw;
-  white-space: nowrap;
-  color: #fff;
-  background: var(--se-orange);
-  transform: skewX(-6deg);
-}
-.se-hero p { margin-top: 3.6cqw; font-size: 3.8cqw; font-weight: 800; line-height: 1.5; color: var(--se-ink); }
-
-.se-points { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--se-ink); }
-.se-points li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  min-height: 44px;
-  padding: 5px 4px;
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1.3;
-  color: #fff;
-  word-break: keep-all;
-}
-.se-points li + li { border-left: 1px solid rgba(255, 255, 255, 0.22); }
-.se-points svg { width: 13px; height: 13px; flex: none; color: var(--se-orange-text); }
-
-/* サービス説明（質問の前に短く） */
-.se-about { padding: 14px 16px 12px; background: var(--se-paper-2); border-bottom: 1px solid var(--se-line); }
-.se-about h2 { font-size: 17px; font-weight: 900; line-height: 1.4; color: var(--se-ink); text-align: center; }
-.se-about > p { margin-top: 7px; font-size: 12.5px; line-height: 1.65; }
-.se-safe { margin-top: 8px; display: grid; gap: 3px; }
-.se-safe li { position: relative; padding-left: 15px; font-size: 11.5px; font-weight: 700; line-height: 1.45; }
-.se-safe li::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 3px;
-  width: 6px;
-  height: 9px;
-  border: solid var(--se-orange);
-  border-width: 0 2px 2px 0;
-  transform: rotate(40deg);
-}
-.se-flow { margin-top: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-.se-flow li { min-width: 0; text-align: center; }
-.se-flow__icon { display: grid; place-items: center; width: 32px; height: 32px; margin: 0 auto 4px; background: var(--se-ink); color: #fff; }
-.se-flow svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.se-flow__text { display: block; font-size: 10px; font-weight: 700; line-height: 1.35; }
-.se-flow__text b { margin-right: 2px; color: var(--se-orange-deep); }
 
 /* 質問 */
 .se-step { padding: 22px 18px 30px; display: flex; flex-direction: column; gap: 34px; animation: se-in 0.28s ease-out; }

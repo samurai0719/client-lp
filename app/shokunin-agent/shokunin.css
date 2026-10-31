@@ -1072,10 +1072,10 @@
   box-shadow: 0 2px 0 var(--sa-cta-deep);
 }
 
-/* 太字（強調語句）は下線を太くし、影を付ける */
+/* 太字（強調語句）は下線を太い薄赤にし、影を付ける */
 .sa-lp .sa-em,
 .sa-lp .sa-cost__hl {
-  background: linear-gradient(transparent 52%, rgba(255, 196, 0, 0.6) 52%);
+  background: linear-gradient(transparent 52%, rgba(255, 110, 110, 0.5) 52%);
   text-shadow: 2px 2px 0 rgba(28, 27, 25, 0.32);
 }
 
@@ -1086,5 +1086,5 @@
 
 .sa-lp .ks-head--invert .sa-em,
 .sa-lp .ks-contact__title .sa-em {
-  background: linear-gradient(transparent 52%, rgba(255, 196, 0, 0.42) 52%);
+  background: linear-gradient(transparent 52%, rgba(255, 130, 130, 0.42) 52%);
 }
