@@ -1,0 +1,301 @@
+/* 建設職人の無料登録LP。配色は企業向けLP（/shokunin-agent）、幅と操作感はドラテク求職者LPに合わせる */
+.se-lp {
+  --se-orange: #ec5a1f;
+  --se-orange-deep: #c4430f;
+  --se-orange-soft: #fbe2d3;
+  --se-orange-text: #f6863c;
+  --se-ink: #1c1b19;
+  --se-ink-2: #2b2926;
+  --se-mute: #6b6559;
+  --se-line: #d8cfbf;
+  --se-paper: #f4f1ea;
+  --se-paper-2: #fbf9f4;
+  --se-grid: rgba(28, 27, 25, 0.06);
+  --se-stripe: repeating-linear-gradient(-45deg, var(--se-orange) 0 14px, var(--se-ink) 14px 28px);
+
+  color: var(--se-ink-2);
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+.se-lp *,
+.se-lp *::before,
+.se-lp *::after { box-sizing: border-box; }
+:where(.se-lp) :where(h1, h2, p, ul, ol, dl, dd) { margin: 0; padding: 0; }
+:where(.se-lp) :where(ul, ol) { list-style: none; }
+.se-lp button { font: inherit; }
+
+.se-shell {
+  min-height: 100vh;
+  overflow-x: clip;
+  background:
+    linear-gradient(var(--se-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--se-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--se-paper);
+}
+.se-card {
+  width: 100%;
+  max-width: 520px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 0 60px rgba(28, 27, 25, 0.1);
+}
+
+/* ヘッダー */
+.se-header { background: #fff; border-bottom: 3px solid var(--se-ink); }
+.se-header__logo { display: flex; align-items: center; gap: 8px; padding: 7px 14px; color: var(--se-ink); text-decoration: none; }
+.se-header__logo > svg { width: 24px; height: 24px; flex: none; color: var(--se-orange); }
+.se-header__text { display: block; min-width: 0; line-height: 1.25; }
+.se-header__name { display: block; font-size: 16px; font-weight: 900; }
+.se-header__name em { color: var(--se-orange-text); font-style: normal; }
+.se-header__sub { display: block; font-size: 10.5px; font-weight: 700; color: var(--se-mute); }
+
+/* ファーストビュー。画像は4:3のまま、左の余白にコピーを重ねる */
+.se-hero { position: relative; aspect-ratio: 4 / 3; container-type: inline-size; background: var(--se-paper-2); overflow: hidden; }
+.se-hero img { display: block; width: 100%; height: auto; }
+.se-hero__copy { position: absolute; left: 4.5cqw; top: 10cqw; width: 52cqw; }
+.se-hero h1 { font-weight: 900; line-height: 1.1; color: var(--se-ink); }
+.se-hero__small { display: block; font-size: 8.4cqw; letter-spacing: 0.02em; }
+.se-hero__main {
+  display: inline-block;
+  margin: 2.2cqw 0 0 -1cqw;
+  padding: 1.6cqw 3.2cqw 1.8cqw;
+  font-size: 9.2cqw;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--se-orange);
+  transform: skewX(-6deg);
+}
+.se-hero p { margin-top: 3.6cqw; font-size: 3.8cqw; font-weight: 800; line-height: 1.5; color: var(--se-ink); }
+
+.se-points { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--se-ink); }
+.se-points li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 44px;
+  padding: 5px 4px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #fff;
+  word-break: keep-all;
+}
+.se-points li + li { border-left: 1px solid rgba(255, 255, 255, 0.22); }
+.se-points svg { width: 13px; height: 13px; flex: none; color: var(--se-orange-text); }
+
+/* サービス説明（質問の前に短く） */
+.se-about { padding: 14px 16px 12px; background: var(--se-paper-2); border-bottom: 1px solid var(--se-line); }
+.se-about h2 { font-size: 17px; font-weight: 900; line-height: 1.4; color: var(--se-ink); text-align: center; }
+.se-about > p { margin-top: 7px; font-size: 12.5px; line-height: 1.65; }
+.se-safe { margin-top: 8px; display: grid; gap: 3px; }
+.se-safe li { position: relative; padding-left: 15px; font-size: 11.5px; font-weight: 700; line-height: 1.45; }
+.se-safe li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 3px;
+  width: 6px;
+  height: 9px;
+  border: solid var(--se-orange);
+  border-width: 0 2px 2px 0;
+  transform: rotate(40deg);
+}
+.se-flow { margin-top: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.se-flow li { min-width: 0; text-align: center; }
+.se-flow__icon { display: grid; place-items: center; width: 32px; height: 32px; margin: 0 auto 4px; background: var(--se-ink); color: #fff; }
+.se-flow svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.se-flow__text { display: block; font-size: 10px; font-weight: 700; line-height: 1.35; }
+.se-flow__text b { margin-right: 2px; color: var(--se-orange-deep); }
+
+/* 質問 */
+.se-step { padding: 22px 18px 30px; display: flex; flex-direction: column; gap: 34px; animation: se-in 0.28s ease-out; }
+.se-step--first { gap: 0; padding-top: 16px; animation: none; }
+.se-q--next { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--se-line); }
+.se-anchor { scroll-margin-top: 66px; }
+.se-q__head { text-align: center; margin-bottom: 14px; }
+.se-q__no { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: var(--se-orange-deep); }
+.se-q__head h2 { margin-top: 2px; font-size: 18px; font-weight: 900; line-height: 1.4; color: var(--se-ink); text-wrap: balance; }
+.se-q__hint { margin-top: 4px; font-size: 12px; color: var(--se-mute); }
+.se-q__badge { width: fit-content; margin: -6px auto 12px; padding: 2px 12px; font-size: 11px; font-weight: 800; color: var(--se-orange-deep); background: var(--se-orange-soft); }
+
+.se-feelings { display: grid; gap: 10px; max-width: 380px; margin: 0 auto; }
+.se-feeling {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 20px;
+  border: 2px solid var(--se-ink);
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 900;
+  color: #fff;
+  background: var(--se-ink);
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(28, 27, 25, 0.25);
+  transition: transform 0.14s, box-shadow 0.14s, background-color 0.14s;
+}
+.se-feeling.is-primary { border-color: var(--se-orange); background: var(--se-orange); box-shadow: 0 4px 0 var(--se-orange-deep); }
+.se-feeling.is-on { outline: 3px solid var(--se-orange-soft); outline-offset: 2px; transform: scale(1.015); }
+.se-feeling:active { transform: scale(0.98); }
+
+.se-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.se-choice {
+  min-height: 56px;
+  padding: 8px 8px;
+  border: 2px solid var(--se-line);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--se-ink);
+  background: #fff;
+  cursor: pointer;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  transition: transform 0.14s, box-shadow 0.14s, background-color 0.14s, border-color 0.14s, color 0.14s;
+}
+.se-choice.is-wide { grid-column: 1 / -1; }
+.se-choice.is-on { color: #fff; background: var(--se-orange); border-color: var(--se-orange); box-shadow: 0 3px 0 var(--se-orange-deep); transform: scale(1.02); }
+.se-choice:active { transform: scale(0.97); }
+@media (hover: hover) {
+  .se-choice:not(.is-on):hover { border-color: var(--se-ink); background: var(--se-paper-2); }
+  .se-feeling:hover,
+  .se-btn:not(:disabled):hover { filter: brightness(1.06); }
+}
+.se-lp button:focus-visible,
+.se-lp a:focus-visible,
+.se-lp input:focus-visible,
+.se-lp select:focus-visible,
+.se-lp textarea:focus-visible { outline: 3px solid var(--se-orange); outline-offset: 2px; }
+
+/* 進捗 */
+.se-progress { position: sticky; top: 0; z-index: 20; padding: 7px 14px 9px; background: #fff; border-bottom: 1px solid var(--se-line); }
+.se-progress__top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 28px; }
+.se-progress__back { justify-self: start; margin-left: -6px; padding: 3px 8px; border: 0; background: none; font-size: 13px; font-weight: 800; color: var(--se-ink); cursor: pointer; }
+.se-progress__back span { margin-right: 3px; font-size: 16px; line-height: 1; }
+.se-progress__count { font-size: 12px; font-weight: 800; color: var(--se-mute); }
+.se-progress__count b { font-size: 16px; color: var(--se-orange-deep); }
+.se-progress__left { justify-self: end; font-size: 12px; font-weight: 800; color: var(--se-orange-deep); }
+.se-progress__bar { height: 7px; margin-top: 4px; background: #ece6da; overflow: hidden; }
+.se-progress__bar span { display: block; height: 100%; background: var(--se-orange); transition: width 0.45s ease-out; }
+
+/* 住所 */
+.se-postal { display: block; max-width: 380px; margin: 0 auto; }
+.se-postal input { text-align: center; font-weight: 800; }
+.se-postal input::placeholder { font-size: 14px; font-weight: 500; }
+.se-postal__state { min-height: 24px; margin-top: 6px; text-align: center; font-size: 13px; color: var(--se-mute); }
+.se-postal__state .is-found { font-weight: 800; color: var(--se-ink); }
+.se-postal__state .is-warn { font-weight: 700; color: var(--se-orange-deep); }
+.se-postal__switch { text-align: center; }
+.se-postal__switch button { border: 0; background: none; font-size: 13px; font-weight: 800; color: var(--se-ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.se-prefs { margin-top: 16px; padding: 14px 12px; background: var(--se-paper); }
+.se-prefs p { margin-bottom: 10px; text-align: center; font-size: 13px; font-weight: 800; }
+.se-prefs small { font-weight: 500; color: var(--se-mute); }
+.se-choices--3 { grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.se-choices--3 .se-choice { min-height: 46px; padding: 6px 2px; font-size: 13px; }
+
+/* フォーム */
+.se-form { display: grid; gap: 16px; margin-top: -18px; }
+.se-field { display: block; }
+.se-field__label { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 14px; font-weight: 800; color: var(--se-ink); }
+.se-field__label em,
+.se-consent em { padding: 1px 6px; font-size: 10.5px; font-weight: 800; font-style: normal; color: #fff; background: var(--se-orange); }
+.se-field__label em.is-opt { color: var(--se-mute); background: #ece6da; }
+.se-lp input[type="text"],
+.se-lp input[type="tel"],
+.se-lp input[type="email"],
+.se-lp select,
+.se-lp textarea {
+  display: block;
+  width: 100%;
+  padding: 13px 12px;
+  border: 2px solid var(--se-line);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--se-ink);
+  background: #fff;
+}
+.se-lp textarea { resize: vertical; }
+.se-lp input::placeholder,
+.se-lp textarea::placeholder { color: #a79f90; }
+.se-field__error { display: block; margin-top: 5px; font-size: 13px; font-weight: 700; color: #c0260f; }
+.se-consent { padding: 13px 12px; background: var(--se-paper); }
+.se-consent label { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+.se-consent input { width: 22px; height: 22px; flex: none; accent-color: var(--se-orange); }
+.se-consent a { color: var(--se-ink); text-underline-offset: 3px; }
+.se-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.se-free { text-align: center; font-size: 14px; font-weight: 800; color: var(--se-ink); }
+.se-form .se-free { margin-bottom: -8px; }
+
+.se-next { width: 100%; max-width: 380px; margin: 0 auto; }
+.se-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 20px;
+  border: 0;
+  border-radius: 6px;
+  font-size: 17px;
+  font-weight: 900;
+  color: #fff;
+  background: var(--se-orange);
+  box-shadow: 0 4px 0 var(--se-orange-deep);
+  cursor: pointer;
+  transition: transform 0.14s, box-shadow 0.14s;
+}
+.se-btn:active { transform: translateY(2px) scale(0.99); box-shadow: 0 2px 0 var(--se-orange-deep); }
+.se-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.se-alert { margin-bottom: 10px; padding: 9px 12px; font-size: 13px; font-weight: 700; line-height: 1.5; color: #a81f0a; background: #fdecea; border-left: 4px solid #c0260f; }
+.se-form .se-alert { margin-bottom: 0; }
+
+/* 完了 */
+.se-done { align-items: center; gap: 14px; padding-top: 38px; text-align: center; }
+.se-done__icon { display: grid; place-items: center; width: 60px; height: 60px; color: #fff; background: var(--se-orange); }
+.se-done__icon svg { width: 34px; height: 34px; }
+.se-done h2 { font-size: 22px; font-weight: 900; color: var(--se-ink); }
+.se-done p { font-size: 15px; line-height: 1.8; text-align: left; }
+.se-done .se-done__note { padding: 12px 14px; font-size: 13px; background: var(--se-paper); }
+
+/* フッター */
+.se-footer { padding: 26px 16px 28px; text-align: center; font-size: 12px; color: #d8cfbf; background: var(--se-ink); border-top: 6px solid transparent; border-image: var(--se-stripe) 6; }
+.se-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; }
+.se-footer a { color: #fff; }
+.se-footer__company { display: inline-block; margin: 16px 0 14px; padding: 9px 14px; border: 1px solid rgba(255, 255, 255, 0.45); font-weight: 700; text-decoration: none; }
+
+/* 規約 */
+.se-legal { padding: 26px 18px 34px; font-size: 14px; line-height: 1.8; }
+.se-legal h1 { font-size: 21px; font-weight: 900; color: var(--se-ink); }
+.se-legal > p { margin-top: 10px; }
+.se-legal section { margin-top: 24px; }
+.se-legal h2 { font-size: 15px; font-weight: 900; color: var(--se-ink); }
+.se-legal section p { margin-top: 6px; }
+.se-legal section ul { margin-top: 6px; }
+.se-legal li { position: relative; padding-left: 1em; }
+.se-legal li::before { content: "・"; position: absolute; left: 0; }
+.se-legal__date { font-size: 12px; color: var(--se-mute); }
+.se-operator { margin-top: 18px; border-top: 1px solid var(--se-line); }
+.se-operator div { display: grid; grid-template-columns: 7em 1fr; gap: 8px; padding: 10px 2px; border-bottom: 1px solid var(--se-line); }
+.se-operator dt { font-weight: 800; color: var(--se-ink); }
+.se-operator dd { min-width: 0; overflow-wrap: anywhere; }
+
+.se-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@keyframes se-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .se-lp *,
+  .se-lp *::before,
+  .se-lp *::after { animation: none !important; transition: none !important; }
+  .se-choice.is-on,
+  .se-feeling.is-on { transform: none; }
+}
