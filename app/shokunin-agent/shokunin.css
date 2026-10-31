@@ -1048,3 +1048,43 @@
 .sa-lp.sr-lp main :is(li, dd) {
   line-height: 1.95;
 }
+
+/* CTAは緑（ボタンだけ。アクセントのオレンジは変えない） */
+.sa-lp {
+  --sa-cta: #12a150;
+  --sa-cta-deep: #0b7a3b;
+}
+
+.sa-lp .sa-header__cta,
+.sa-lp .sr-btn--primary,
+.sa-lp .sr-btn--primary:hover,
+.sa-lp .sr-btn--primary:active {
+  background: var(--sa-cta);
+  border-color: var(--sa-cta-deep);
+  color: #fff;
+}
+
+.sa-lp .sr-btn--primary {
+  box-shadow: 0 6px 0 var(--sa-cta-deep);
+}
+
+.sa-lp .sr-btn--primary:active {
+  box-shadow: 0 2px 0 var(--sa-cta-deep);
+}
+
+/* 太字（強調語句）は下線を太くし、影を付ける */
+.sa-lp .sa-em,
+.sa-lp .sa-cost__hl {
+  background: linear-gradient(transparent 52%, rgba(255, 196, 0, 0.6) 52%);
+  text-shadow: 2px 2px 0 rgba(28, 27, 25, 0.32);
+}
+
+.sa-lp :is(h1, h2) .sa-em,
+.sa-lp :is(h1, h2) .sa-cost__hl {
+  text-shadow: 3px 3px 0 rgba(28, 27, 25, 0.38);
+}
+
+.sa-lp .ks-head--invert .sa-em,
+.sa-lp .ks-contact__title .sa-em {
+  background: linear-gradient(transparent 52%, rgba(255, 196, 0, 0.42) 52%);
+}
