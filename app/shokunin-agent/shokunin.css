@@ -989,6 +989,13 @@
   -webkit-text-stroke-width: 2.4px;
 }
 
+/* h1・h2 の強調文字はアウトラインを太くし、影を付ける（h3 はカード内の小見出しなので変えない） */
+.sa-lp :is(h1, h2) .sa-em,
+.sa-lp :is(h1, h2) .sa-cost__hl {
+  -webkit-text-stroke-width: 4.5px;
+  text-shadow: 3px 3px 0 rgba(28, 27, 25, 0.38);
+}
+
 /* 配色の調整：青字は水色に、オレンジの文字だけ少し薄くする（ボタン・枠・影は変えない） */
 .sa-lp {
   --sa-orange-text: #f6863c;
