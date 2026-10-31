@@ -99,6 +99,7 @@
   line-height: 1.35;
   color: var(--se-ink);
   background: #fff;
+  box-shadow: 0 4px 0 rgba(28, 27, 25, 0.25);
   cursor: pointer;
   word-break: keep-all;
   overflow-wrap: anywhere;
