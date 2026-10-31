@@ -1060,7 +1060,7 @@
 .sa-lp .sr-btn--primary:hover,
 .sa-lp .sr-btn--primary:active {
   background: var(--sa-cta);
-  border-color: var(--sa-cta-deep);
+  border-color: var(--sa-cta);
   color: #fff;
 }
 
