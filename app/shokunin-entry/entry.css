@@ -103,6 +103,7 @@
   cursor: pointer;
   word-break: keep-all;
   overflow-wrap: anywhere;
+  text-wrap: balance;
   transition: transform 0.14s, box-shadow 0.14s, background-color 0.14s, border-color 0.14s, color 0.14s;
 }
 .se-choice.is-wide { grid-column: 1 / -1; }
