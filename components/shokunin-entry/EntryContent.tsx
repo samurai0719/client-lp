@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { PREFECTURES, birthYearOptions, isValidEmail, normalizeDriverPhone, normalizePostalCode } from "@/components/driver/questions";
-import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
+import { fireShokuninEntryLead } from "@/lib/analytics/shokuninEntryPixel";
 import { ChoiceButton, EntryFooter, EntryHeader, NextButton, Question, QuestionHead, StepHeader } from "./parts";
 import {
   AREA_PREFECTURES,
@@ -89,7 +89,7 @@ function fireLeadOnce() {
   } catch {
     // 保存できない環境でも、1回の送信につき1回は送る
   }
-  fireAdofyLead("shokunin-entry");
+  fireShokuninEntryLead();
 }
 
 export default function EntryContent() {

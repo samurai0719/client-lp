@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import EntryContent from "@/components/shokunin-entry/EntryContent";
+import EntryPixel from "@/components/shokunin-entry/EntryPixel";
 
 const URL_BASE = "https://saiyo.adofy-site.com";
 const TITLE = "建設職人の転職・仕事探し｜職人採用エージェント";
@@ -32,7 +32,7 @@ export const viewport: Viewport = {
 export default function ShokuninEntryPage() {
   return (
     <>
-      <AdofyMetaPixel />
+      <EntryPixel />
       <EntryContent />
     </>
   );
