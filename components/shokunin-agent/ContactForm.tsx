@@ -6,7 +6,7 @@ import { ArrowRight, LoaderCircle } from "lucide-react";
 import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
 import { fireShokuninAgentLead } from "@/lib/analytics/shokuninAgentPixel";
 import { loadAttribution } from "@/lib/saiyoRescue/attribution";
-import { CTA_MAIN, FORM_ERROR, FORM_HIRES, FORM_JOBS, FORM_PLACEHOLDER } from "./config";
+import { FORM_ERROR, FORM_HIRES, FORM_JOBS, FORM_PLACEHOLDER } from "./config";
 
 type Errors = Partial<Record<"company" | "name" | "phone" | "email" | "jobType" | "privacyConsent", string>>;
 
@@ -163,7 +163,7 @@ export default function ContactForm() {
           </>
         ) : (
           <>
-            <span>{CTA_MAIN}</span>
+            <span>無料で相談する</span>
             <ArrowRight className="sr-btn__arrow" aria-hidden="true" strokeWidth={2.6} />
           </>
         )}
