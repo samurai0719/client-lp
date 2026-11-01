@@ -1,7 +1,7 @@
 import Script from "next/script";
 import { SHOKUNIN_ENTRY_PIXEL_ID } from "@/lib/analytics/shokuninEntryPixel";
 
-/** /shokunin-entry 専用のMeta Pixel。PageView は他のPixelへ混ざらないよう trackSingle で送る */
+/** 職人採用エージェントのMeta Pixel（/shokunin-entry・/shokunin-agent）。PageView は他のPixelへ混ざらないよう trackSingle で送る */
 export default function EntryPixel() {
   return (
     <>
