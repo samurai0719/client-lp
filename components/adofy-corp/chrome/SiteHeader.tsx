@@ -53,6 +53,7 @@ export default function SiteHeader() {
       {isHome ? (
         // トップはFVの中にロゴとメニューを置くため、右上の固定ボタンだけ出す
         <div className="ax-tiles">
+          <a href="#service">サービス</a>
           <a href="/contact">無料相談</a>
           <button
             type="button"

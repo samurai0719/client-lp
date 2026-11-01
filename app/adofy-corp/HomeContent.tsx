@@ -11,7 +11,7 @@ import "./home-editorial.css";
 
 /**
  * adofy コーポレートサイトのトップページ（https://adofy-site.com/）。
- * FVの写真の切り欠きは下の clipPath（SVG）で作る。座標は 840×770 の枠が基準（PCのみ）。
+ * 写真の斜め楕円は下の clipPath（SVG）で作る。
  * 右上の固定ボタンとメニューは components/adofy-corp/chrome/SiteHeader.tsx。
  * 「動きを減らす」設定では、演出を止めて最初からすべて表示する。
  */
@@ -20,31 +20,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const notoSans = Noto_Sans_JP({ subsets: ["latin"], weight: ["300", "400", "500"], preload: false, variable: "--ax-ff-ja" });
 const sora = Sora({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--ax-ff-en" });
-
-type Point = readonly [number, number];
-
-// 多角形の角を丸めたSVGパスを作る（凸角・凹角どちらも同じ半径で丸まる）
-function roundedPath(points: readonly Point[], radius: number): string {
-  const n = points.length;
-  return (
-    points
-      .map((p, i) => {
-        const prev = points[(i + n - 1) % n];
-        const next = points[(i + 1) % n];
-        const toward = (q: Point) => {
-          const len = Math.hypot(q[0] - p[0], q[1] - p[1]);
-          const r = Math.min(radius, len / 2);
-          return [p[0] + ((q[0] - p[0]) / len) * r, p[1] + ((q[1] - p[1]) / len) * r];
-        };
-        const a = toward(prev);
-        const b = toward(next);
-        return `${i === 0 ? "M" : "L"}${a[0]} ${a[1]}Q${p[0]} ${p[1]} ${b[0]} ${b[1]}`;
-      })
-      .join("") + "Z"
-  );
-}
-
-const CLIP_PC = [[0, 0], [840, 0], [840, 640], [690, 640], [690, 770], [0, 770]] as const;
 
 const HERO_NAV = [
   { href: "#about", label: "adofyについて" },
@@ -101,7 +76,13 @@ const WORKS: Work[] = [
   { img: "/images/adofy/case-01-takanaga.webp", tag: "建設・外構", title: "高長建設様", body: "コーポレートサイト制作・集客設計", href: "https://www.takanagakensetu.com/", external: true },
   { img: "/images/adofy/ad-02-mynavi-pharmacist.webp", tag: "人材・薬剤師", title: "マイナビ薬剤師", body: "広告運用 × 診断LP制作", href: "/works/mynavi-pharmacist" },
   { img: "/images/adofy/ad-01-rizap-golf.webp", tag: "スクール", title: "RIZAP GOLF", body: "広告運用 × 記事LP制作", href: "/works/rizap-golf" },
-  { img: "/images/adofy/case-02-paintnet.webp", tag: "外壁塗装", title: "Paint Net様", body: "集客ページ制作・問い合わせ導線設計" },
+];
+
+// 動画は各広告の最初の5秒だけを切り出した音声なしの短尺（public/videos/adofy-corp）
+const VIDEO_ADS = [
+  { key: "premium", title: "ホームページ制作の広告" },
+  { key: "chat", title: "無料デザインの広告" },
+  { key: "saiyo", title: "採用レスキューの広告" },
 ];
 
 const STATS = [
@@ -167,6 +148,8 @@ export default function HomeContent() {
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
+      el.querySelectorAll("video").forEach((v) => v.pause());
+      el.classList.add("is-static");
       return;
     }
 
@@ -190,14 +173,14 @@ export default function HomeContent() {
     <div ref={root} className={`ax ${notoSans.variable} ${sora.variable}`}>
       <svg width="0" height="0" className="ax-defs" aria-hidden="true">
         <defs>
-          <clipPath id="ax-clip-pc" clipPathUnits="objectBoundingBox">
-            <path transform={`scale(${1 / 840} ${1 / 770})`} d={roundedPath(CLIP_PC, 14)} />
+          <clipPath id="ax-clip-leaf" clipPathUnits="objectBoundingBox">
+            <ellipse cx="0.5" cy="0.5" rx="0.35" ry="0.58" transform="rotate(42 0.5 0.5)" />
           </clipPath>
         </defs>
       </svg>
 
       <div className="ax-blocks" aria-hidden="true">
-        {Array.from({ length: 4 }, (_, i) => (
+        {Array.from({ length: 6 }, (_, i) => (
           <span key={i} className={`ax-block ax-block--${i + 1}`} />
         ))}
       </div>
@@ -221,8 +204,12 @@ export default function HomeContent() {
                 </ul>
               </nav>
               <h1 className="ax-hero__title" id="ax-hero-title">
-                <span>成果から逆算する、</span>
-                <span>Webマーケティング。</span>
+                <span>
+                  <em>成果</em>から<em>逆算</em>する、
+                </span>
+                <span>
+                  <em>Web</em>マーケティング。
+                </span>
               </h1>
               <p className="ax-hero__lead">広告運用・LP制作・採用支援まで。数字を見ながら、問い合わせと応募につながる仕組みをつくります。</p>
               <a href="/contact" className="ax-btn">
@@ -241,10 +228,6 @@ export default function HomeContent() {
                   <img src="/images/adofy-corp/hero-team.webp" alt="ノートパソコンを囲んで打ち合わせをするチーム" fetchPriority="high" />
                 </picture>
               </div>
-              <p className="ax-hero__stat">
-                <b lang="en">100</b>社以上
-                <small>採用・集客の支援実績</small>
-              </p>
             </div>
           </div>
         </section>
@@ -254,11 +237,20 @@ export default function HomeContent() {
           <div className="ax-wrap">
             <SectionLabel en="About" ja="adofyについて" />
             <div className="ax-about__grid">
-              <h2 className="ax-h2 ax-h2--thin" id="ax-about-title" data-fade>
-                成果から逆算する、
-                <br />
-                次世代のWebパートナー
-              </h2>
+              <div>
+                <h2 className="ax-h2 ax-h2--thin" id="ax-about-title" data-fade>
+                  成果から逆算する、
+                  <br />
+                  次世代のWebパートナー
+                </h2>
+                <div className="ax-about__photo" data-fade>
+                  <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
+                    <ellipse cx="50" cy="50" rx="30" ry="56" transform="rotate(42 50 50)" stroke="currentColor" strokeWidth="0.3" />
+                  </svg>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/adofy/photo-planning.webp" alt="打ち合わせで企画を練る様子" loading="lazy" />
+                </div>
+              </div>
               <div className="ax-about__body">
                 {ABOUT_TEXT.map((lines) => (
                   <p key={lines[0]} data-fade>
@@ -278,12 +270,17 @@ export default function HomeContent() {
           </div>
         </section>
 
-        {/* ── 写真 ── */}
-        <div className="ax-wrap ax-photos">
-          {PHOTOS.slice(0, 3).map((p) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={p.src} src={p.src} alt={p.alt} loading="lazy" data-fade />
-          ))}
+        {/* ── 写真の帯 ── */}
+        <div className="ax-photos" aria-hidden="true">
+          <div className="ax-photos__track">
+            {[0, 1].map((k) => (
+              <div key={k}>
+                {PHOTOS.map((p) => (
+                  <img key={p.src} src={p.src} alt="" loading="lazy" />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* ── Service ── */}
@@ -386,6 +383,27 @@ export default function HomeContent() {
                       </h3>
                       <p>{w.body}</p>
                     </WorkLink>
+                  </li>
+                ))}
+              </ul>
+
+              <h3 className="ax-videos__title" data-fade>
+                動画広告
+              </h3>
+              <ul className="ax-videos">
+                {VIDEO_ADS.map((v) => (
+                  <li key={v.key} data-fade>
+                    <video
+                      src={`/videos/adofy-corp/ad-${v.key}.mp4`}
+                      poster={`/videos/adofy-corp/ad-${v.key}.jpg`}
+                      aria-label={v.title}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                    />
+                    <p>{v.title}</p>
                   </li>
                 ))}
               </ul>
