@@ -10,7 +10,7 @@
   --ax-lime: #ffd27a;
   --ax-slate: #4e6f86;
   --ax-panel: rgba(255, 255, 255, 0.11);
-  --ax-r: 12px;
+  --ax-r: 16px;
   --ax-u: calc((100vw - 40px) / 1400);
   position: relative;
   overflow-x: clip;
@@ -186,7 +186,7 @@
   display: grid;
   place-items: center;
   height: 75px;
-  border-radius: 5px;
+  border-radius: 12px;
   background: #4cc4e6;
   color: #263b50;
   text-decoration: none;
@@ -206,7 +206,7 @@
   gap: 5px;
   height: 40px;
   border: 0;
-  border-radius: 5px;
+  border-radius: 12px;
   background: rgba(107, 139, 158, 0.72);
   backdrop-filter: blur(6px);
   cursor: pointer;
@@ -285,7 +285,7 @@
   min-height: 60px;
   margin-top: 40px;
   padding: 5px 5px 5px 20px;
-  border-radius: 5px;
+  border-radius: 12px;
   background: var(--ax-ink);
   color: #fff !important;
   font-weight: 500;
@@ -295,7 +295,7 @@
   place-items: center;
   width: 50px;
   height: 50px;
-  border-radius: 4px;
+  border-radius: 9px;
   background: rgba(255, 255, 255, 0.12);
   transition: background 0.25s;
 }
@@ -339,14 +339,16 @@
 .ax-pill {
   display: inline-block;
   padding: 1px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid transparent;
+  background: var(--ax-mint);
+  color: var(--ax-ink);
   border-radius: 99px;
   font-size: 12px;
   line-height: 1.6;
 }
 .ax-pill--dark {
   border-color: rgba(38, 59, 80, 0.2);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 /* タブ状の見出し：地色の変わり目に重ねる */
@@ -390,12 +392,12 @@
 }
 .ax-photos__track > div {
   display: flex;
-  gap: 40px;
-  padding-right: 40px;
+  gap: 24px;
+  padding-right: 24px;
 }
 .ax-photos img {
-  width: 368px;
-  height: 368px;
+  width: 340px;
+  height: 340px;
   border-radius: var(--ax-r);
 }
 .ax-photos img.is-wide {
@@ -420,40 +422,56 @@
 .ax-intro p {
   margin-block: 28px 40px;
 }
-.ax-orbs {
-  position: relative;
-  aspect-ratio: 3 / 2;
+.ax-flow {
   max-width: 700px;
-  margin-left: auto;
   width: 100%;
+  margin-left: auto;
+  padding: 18px 36px;
   border-radius: var(--ax-r);
   background: var(--ax-panel);
 }
-.ax-orbs svg {
-  position: absolute;
-  inset: 0;
-  color: rgba(255, 255, 255, 0.5);
+.ax-flow li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-block: 18px;
 }
-.ax-orb {
+/* 番号同士を縦の線でつなぐ */
+.ax-flow li + li::before {
+  content: "";
   position: absolute;
+  left: 23px;
+  top: -18px;
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.5);
+}
+.ax-flow span {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 38%;
-  aspect-ratio: 1;
+  flex: none;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  font-size: clamp(18px, 1.6vw, 24px);
-  letter-spacing: 0.14em;
-}
-.ax-orb--a {
-  left: 9%;
-  top: 11%;
-  background: radial-gradient(circle at 75% 15%, #ffe2a8, transparent 48%), radial-gradient(circle at 30% 85%, #a9cdf4, transparent 50%), #4cc4e6;
+  background: var(--ax-mint);
   color: var(--ax-ink);
+  font-size: 14px;
+  font-weight: 600;
 }
-.ax-orb--b {
-  right: 6%;
-  bottom: 9%;
-  background: radial-gradient(circle at 80% 22%, #ffd27a, transparent 42%), radial-gradient(circle at 20% 30%, #2a2f55, transparent 55%), #1270c9;
+.ax-flow li:last-child span {
+  background: var(--ax-lime);
+}
+.ax-flow h3 {
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.ax-intro .ax-flow p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
 }
 .ax-panel {
   display: grid;
@@ -542,6 +560,7 @@
 .ax-feature:hover img,
 .ax-workitem:hover img {
   scale: 1.02;
+  box-shadow: 0 14px 30px rgba(38, 59, 80, 0.16);
 }
 .ax-feature .ax-pill {
   margin-top: 36px;
@@ -680,6 +699,7 @@
 }
 .ax-stats li {
   padding: 26px 28px;
+  border-top: 3px solid var(--ax-lime);
   border-radius: var(--ax-r);
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(10px);
@@ -775,7 +795,7 @@
   margin-top: 60px;
   padding: 20px;
   border-radius: var(--ax-r);
-  background: rgba(107, 139, 158, 0.65);
+  background: linear-gradient(110deg, #bfe6f5, #fbe9c6);
 }
 .ax-cta__btn {
   display: flex;
@@ -886,9 +906,6 @@
   .ax-contact__head,
   .ax-strength__grid {
     grid-template-columns: 1fr;
-  }
-  .ax-orbs {
-    margin: 0 auto;
   }
   .ax-panel {
     grid-template-columns: 1fr;

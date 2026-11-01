@@ -73,6 +73,13 @@ const ABOUT_TEXT = [
   ["制作して終わりにせず、", "改善まで伴走します。"],
 ];
 
+const FLOW = [
+  { title: "広告", body: "訴求を決めて配信する" },
+  { title: "LP・ホームページ", body: "問い合わせ・応募までの導線をつくる" },
+  { title: "数値分析", body: "配信結果とページの動きを見る" },
+  { title: "改善", body: "デザイン・構成・コピーを見直す" },
+];
+
 const MARKETING_ITEMS = [
   { title: "成果報酬型広告運用", body: "訴求・LP・クリエイティブまで改善しながら、広告費に対して成果が残る運用を目指します。" },
   { title: "LP・ホームページ制作", body: "広告から問い合わせ・応募までの導線を設計したLPと、信頼感を伝えるホームページを制作します。" },
@@ -305,13 +312,17 @@ export default function HomeContent() {
                     事業内容を見る
                   </ArrowLink>
                 </div>
-                <div className="ax-orbs" aria-hidden="true" data-fade>
-                  <svg viewBox="0 0 600 400" fill="none">
-                    <ellipse cx="300" cy="200" rx="285" ry="135" transform="rotate(-20 300 200)" stroke="currentColor" />
-                  </svg>
-                  <span className="ax-orb ax-orb--a">集客</span>
-                  <span className="ax-orb ax-orb--b">採用</span>
-                </div>
+                <ol className="ax-flow" data-fade>
+                  {FLOW.map((f, i) => (
+                    <li key={f.title}>
+                      <span lang="en">{String(i + 1).padStart(2, "0")}</span>
+                      <div>
+                        <h3>{f.title}</h3>
+                        <p>{f.body}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
               </div>
 
               <article className="ax-panel" data-fade>
@@ -379,10 +390,10 @@ export default function HomeContent() {
                   </h3>
                 </WorkLink>
                 <ul className="ax-worklist">
-                  {WORKS.slice(1).map((w) => (
+                  {WORKS.slice(1).map((w, i) => (
                     <li key={w.title} data-fade>
                       <WorkLink work={w} className="ax-workitem">
-                        <span className="ax-workitem__side" lang="en" aria-hidden="true">( Case )</span>
+                        <span className="ax-workitem__side" lang="en" aria-hidden="true">Case {String(i + 2).padStart(2, "0")}</span>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={w.img} alt={`${w.title}の実績`} loading="lazy" />
                         <div>
