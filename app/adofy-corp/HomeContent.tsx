@@ -11,8 +11,7 @@ import "./home-editorial.css";
 
 /**
  * adofy コーポレートサイトのトップページ（https://adofy-site.com/）。
- * FVの写真は「成果から逆算する」を表す右肩上がりの棒グラフで切り抜く（下の clipPath）。
- * 座標は PC=1400×770 / SP=350×280 の枠が基準。
+ * FVは「成果から逆算する」を表す右肩上がりのグラフ。棒と折れ線の座標は 1400×770 の枠が基準（PCのみ）。
  * 右上の固定ボタンとメニューは components/adofy-corp/chrome/SiteHeader.tsx。
  * 「動きを減らす」設定では、演出を止めて最初からすべて表示する。
  */
@@ -22,22 +21,13 @@ gsap.registerPlugin(ScrollTrigger);
 const notoSans = Noto_Sans_JP({ subsets: ["latin"], weight: ["300", "400", "500"], preload: false, variable: "--ax-ff-ja" });
 const sora = Sora({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--ax-ff-en" });
 
-type Point = readonly [number, number];
-
-// 棒グラフの棒（x, 高さ）を角丸の四角形のSVGパスにする
-function barsPath(bars: readonly Point[], width: number, frameHeight: number, r: number): string {
-  return bars
-    .map(([x, h]) => {
-      const top = frameHeight - h;
-      const right = x + width;
-      return `M${x + r} ${top}H${right - r}Q${right} ${top} ${right} ${top + r}V${frameHeight - r}Q${right} ${frameHeight} ${right - r} ${frameHeight}H${x + r}Q${x} ${frameHeight} ${x} ${frameHeight - r}V${top + r}Q${x} ${top} ${x + r} ${top}Z`;
-    })
-    .join("");
-}
-
-const BARS_PC = [[0, 200], [283, 290], [566, 400], [849, 560], [1132, 770]] as const;
-const BARS_SP = [[0, 90], [72.5, 130], [145, 175], [217.5, 225], [290, 280]] as const;
-const BAR_LABELS = ["広告", "LP", "問い合わせ", "応募", "成果"];
+const HERO_BARS = [
+  { label: "広告", x: 0, height: 150 },
+  { label: "LP", x: 195, height: 230 },
+  { label: "問い合わせ", x: 390, height: 310 },
+  { label: "応募", x: 585, height: 400 },
+];
+const HERO_LINE = "90,620 285,540 480,460 675,370 812,130";
 
 const HERO_NAV = [
   { href: "#about", label: "adofyについて" },
@@ -172,7 +162,10 @@ export default function HomeContent() {
     }
 
     const ctx = gsap.context(() => {
-      gsap.from(".ax-hero__media img", { scale: 1.08, duration: 1.8, ease: "expo.out" });
+      gsap.from(".ax-hero__bars li", { scaleY: 0, transformOrigin: "bottom", duration: 0.9, ease: "expo.out", stagger: 0.12, delay: 0.2 });
+      gsap.from(".ax-hero__media", { clipPath: "inset(100% 0 0 0 round 16px)", duration: 1.2, ease: "expo.inOut", delay: 0.5 });
+      gsap.from(".ax-hero__line polyline", { strokeDashoffset: 1, duration: 1.4, ease: "power2.inOut", delay: 0.5 });
+      gsap.from(".ax-hero__line circle", { scale: 0, transformOrigin: "center", duration: 0.5, ease: "back.out(3)", delay: 1.8 });
       gsap.from(".ax-hero__title > span", { y: 28, opacity: 0, duration: 1.1, ease: "power3.out", stagger: 0.16, delay: 0.25 });
       gsap.from(".ax-hero__nav li", { x: -14, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.06, delay: 0.5 });
 
@@ -186,16 +179,11 @@ export default function HomeContent() {
 
   return (
     <div ref={root} className={`ax ${notoSans.variable} ${sora.variable}`}>
-      <svg width="0" height="0" className="ax-defs" aria-hidden="true">
-        <defs>
-          <clipPath id="ax-clip-pc" clipPathUnits="objectBoundingBox">
-            <path transform={`scale(${1 / 1400} ${1 / 770})`} d={barsPath(BARS_PC, 268, 770, 14)} />
-          </clipPath>
-          <clipPath id="ax-clip-sp" clipPathUnits="objectBoundingBox">
-            <path transform={`scale(${1 / 350} ${1 / 280})`} d={barsPath(BARS_SP, 60, 280, 8)} />
-          </clipPath>
-        </defs>
-      </svg>
+      <div className="ax-bgbars" aria-hidden="true">
+        {Array.from({ length: 12 }, (_, i) => (
+          <span key={i} style={{ "--i": i } as React.CSSProperties} />
+        ))}
+      </div>
 
       <main>
         {/* ── FV ── */}
@@ -236,12 +224,23 @@ export default function HomeContent() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/images/adofy-corp/hero-team.webp" alt="ノートパソコンを囲んで打ち合わせをするチーム" fetchPriority="high" />
                 </picture>
+                <p className="ax-hero__goal">成果</p>
               </div>
               <ol className="ax-hero__bars" aria-label="成果までの流れ">
-                {BAR_LABELS.map((l) => (
-                  <li key={l}>{l}</li>
+                {HERO_BARS.map((b, i) => (
+                  <li
+                    key={b.label}
+                    style={{ "--x": `${(b.x / 1400) * 100}%`, "--h": `${(b.height / 770) * 100}%` } as React.CSSProperties}
+                  >
+                    <span lang="en">0{i + 1}</span>
+                    {b.label}
+                  </li>
                 ))}
               </ol>
+              <svg className="ax-hero__line" viewBox="0 0 1400 770" aria-hidden="true">
+                <polyline points={HERO_LINE} pathLength="1" />
+                <circle cx="812" cy="130" r="7" />
+              </svg>
             </div>
           </div>
         </section>
