@@ -23,7 +23,8 @@ import {
 import { SITE } from "@/components/shokunin-agent/config";
 import AttributionCapture from "@/components/saiyo-rescue/AttributionCapture";
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
-import EntryPixel from "@/components/shokunin-entry/EntryPixel";
+import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
+import { SHOKUNIN_AGENT_PIXEL_ID } from "@/lib/analytics/shokuninAgentPixel";
 
 // 日本語グリフは unicode-range ごとに分割配信されるため、プリロードは latin のみ
 const gothic = Noto_Sans_JP({
@@ -65,7 +66,7 @@ export default function ShokuninAgentPage() {
         dangerouslySetInnerHTML={{ __html: "<style>.sr-count{opacity:1!important;transform:none!important}</style>" }}
       />
       <AdofyMetaPixel />
-      <EntryPixel />
+      <SingleMetaPixel id={SHOKUNIN_AGENT_PIXEL_ID} />
       <AttributionCapture />
       <Header />
       <main>

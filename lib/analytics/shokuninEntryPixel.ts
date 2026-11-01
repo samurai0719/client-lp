@@ -1,10 +1,9 @@
-// 職人採用エージェントのMeta Pixel設定（求職者LP /shokunin-entry と企業向けLP /shokunin-agent で使う）。
-// app/layout.tsx が別のPixelを init しているため、trackSingle でこのPixelにだけ送る。
-// Lead は「APIが新規登録の保存成功を返した後」に呼ぶ（呼び出し側で1回に制御する）。
+// 求職者LP（/shokunin-entry）のMeta Pixel。求職者用のIDを受け取ったらここに入れる（空の間は何も読み込まず、Lead も送らない）。
+// 企業向けのPixelと混ぜないこと。
 
-export const SHOKUNIN_ENTRY_PIXEL_ID = "1176745290758605";
+export const SHOKUNIN_ENTRY_PIXEL_ID: string = "";
 
 export function fireShokuninEntryLead(): void {
-  if (typeof window === "undefined" || typeof window.fbq !== "function") return;
+  if (!SHOKUNIN_ENTRY_PIXEL_ID || typeof window === "undefined" || typeof window.fbq !== "function") return;
   window.fbq("trackSingle", SHOKUNIN_ENTRY_PIXEL_ID, "Lead");
 }

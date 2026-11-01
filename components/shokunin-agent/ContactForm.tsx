@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { useRouter } from "next/navigation";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
-import { fireShokuninEntryLead } from "@/lib/analytics/shokuninEntryPixel";
+import { fireShokuninAgentLead } from "@/lib/analytics/shokuninAgentPixel";
 import { loadAttribution } from "@/lib/saiyoRescue/attribution";
 import { CTA_MAIN, FORM_ERROR, FORM_HIRES, FORM_JOBS, FORM_PLACEHOLDER } from "./config";
 
@@ -73,7 +73,7 @@ export default function ContactForm() {
 
       // Lead は API 成功時のここだけで送る（サンクスページでは送らない）
       fireAdofyLead("shokunin-agent");
-      fireShokuninEntryLead();
+      fireShokuninAgentLead();
       router.push("/shokunin-agent/thanks");
     } catch (err) {
       setError(err instanceof Error ? err.message : FORM_ERROR);

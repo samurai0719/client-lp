@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { CircleCheck } from "lucide-react";
 import "../../saiyo-rescue/saiyo-rescue.css";
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
-import EntryPixel from "@/components/shokunin-entry/EntryPixel";
+import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
+import { SHOKUNIN_AGENT_PIXEL_ID } from "@/lib/analytics/shokuninAgentPixel";
 import { OPERATOR } from "@/components/saiyo-rescue/config";
 import { SERVICE_NAME } from "@/components/shokunin-agent/config";
 
@@ -19,7 +20,7 @@ export default function ShokuninAgentThanksPage() {
   return (
     <div className="sr-lp sr-thanks">
       <AdofyMetaPixel />
-      <EntryPixel />
+      <SingleMetaPixel id={SHOKUNIN_AGENT_PIXEL_ID} />
       <main className="sr-thanks__main">
         <div className="sr-thanks__card">
           <CircleCheck aria-hidden="true" className="sr-thanks__icon" />
