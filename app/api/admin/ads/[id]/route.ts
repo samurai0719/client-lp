@@ -8,9 +8,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const supabase = await createClient();
   if (!await requireAdmin(supabase)) return unauthorizedResponse();
 
-  const body = await request.json();
+  const { date, platform, campaign_name, amount, memo } = await request.json();
+  const updateData = Object.fromEntries(
+    Object.entries({ date, platform, campaign_name, amount, memo }).filter(([, v]) => v !== undefined)
+  );
+
   const db = createAdminClient();
-  const { error } = await db.from("ad_expenses").update({ ...body, updated_at: new Date().toISOString() }).eq("id", id);
+  const { error } = await db.from("ad_expenses").update({ ...updateData, updated_at: new Date().toISOString() }).eq("id", id);
   if (error) return NextResponse.json({ error: "更新に失敗しました" }, { status: 500 });
   return NextResponse.json({ success: true });
 }

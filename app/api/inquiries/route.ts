@@ -9,32 +9,10 @@ import {
 } from "@/lib/crm/customers";
 import { parseJsonOrMultipart } from "@/lib/http/parseRequestBody";
 import { uploadLeadImages } from "@/lib/storage/leadImages";
-
-// 簡易レート制限（メモリ内、サーバー再起動でリセット）
-const ipMap = new Map<string, { count: number; resetAt: number }>();
-const phoneMap = new Map<string, number>();
-
-function checkRateLimit(ip: string, phone: string): boolean {
-  const now = Date.now();
-  const ipEntry = ipMap.get(ip);
-  if (ipEntry) {
-    if (now < ipEntry.resetAt && ipEntry.count >= 5) return false;
-    if (now >= ipEntry.resetAt) ipMap.set(ip, { count: 1, resetAt: now + 3600000 });
-    else ipMap.set(ip, { ...ipEntry, count: ipEntry.count + 1 });
-  } else {
-    ipMap.set(ip, { count: 1, resetAt: now + 3600000 });
-  }
-
-  const lastPhone = phoneMap.get(phone);
-  if (lastPhone && now - lastPhone < 5 * 60000) return false;
-  phoneMap.set(phone, now);
-  return true;
-}
+import { checkRateLimit, getClientIp } from "@/lib/security/rateLimit";
+import { isReasonablePayload, isValidEmail } from "@/lib/security/publicForm";
 
 export async function POST(request: NextRequest) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-
   let body: Record<string, unknown>;
   let files: File[];
   try {
@@ -48,17 +26,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true });
   }
 
+  if (!isReasonablePayload(body)) {
+    return NextResponse.json({ error: "入力内容が正しくありません" }, { status: 400 });
+  }
+
   const {
     name, phone, email, postalCode, prefecture, city, address,
     workTypes, designStyle, inquiryMessage,
-    originalImagePaths, generatedImagePaths,
     utmSource, utmMedium, utmCampaign, utmContent, utmTerm,
     fbclid, gclid, ttclid, landingPage, referrer, deviceType,
   } = body as {
     name: string; phone: string; email?: string; postalCode?: string;
     prefecture?: string; city?: string; address?: string;
     workTypes: string[]; designStyle?: string; inquiryMessage?: string;
-    originalImagePaths?: string[]; generatedImagePaths?: string[];
     utmSource?: string; utmMedium?: string; utmCampaign?: string;
     utmContent?: string; utmTerm?: string;
     fbclid?: string; gclid?: string; ttclid?: string;
@@ -72,7 +52,7 @@ export async function POST(request: NextRequest) {
   if (!phone?.trim()) {
     return NextResponse.json({ error: "電話番号が必須です" }, { status: 400 });
   }
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (email && !isValidEmail(email)) {
     return NextResponse.json({ error: "メールアドレスが不正です" }, { status: 400 });
   }
   if (!Array.isArray(workTypes)) {
@@ -84,7 +64,10 @@ export async function POST(request: NextRequest) {
 
   const phoneNormalized = normalizePhone(phone);
 
-  if (!checkRateLimit(ip, phoneNormalized)) {
+  const withinLimit =
+    (await checkRateLimit("inquiries-ip", getClientIp(request), 5, 3600)).allowed &&
+    (await checkRateLimit("inquiries-phone", phoneNormalized, 1, 300)).allowed;
+  if (!withinLimit) {
     return NextResponse.json({ error: "送信制限に達しました。しばらく待ってから再度お試しください。" }, { status: 429 });
   }
 
@@ -170,16 +153,6 @@ export async function POST(request: NextRequest) {
     device_type: deviceType ?? null,
     user_agent: request.headers.get("user-agent") ?? null,
   });
-
-  // 画像紐付け（AIシミュレーターの生成画像パスがあれば従来どおり記録）
-  const imageInserts: Array<{
-    lead_id: string; image_type: string; storage_path: string;
-  }> = [];
-  (originalImagePaths ?? []).forEach((p) => imageInserts.push({ lead_id: leadId, image_type: "original", storage_path: p }));
-  (generatedImagePaths ?? []).forEach((p) => imageInserts.push({ lead_id: leadId, image_type: "generated", storage_path: p }));
-  if (imageInserts.length > 0) {
-    await adminClient.from("lead_images").insert(imageInserts);
-  }
 
   // フォームに添付された写真をアップロード
   if (files.length > 0) {

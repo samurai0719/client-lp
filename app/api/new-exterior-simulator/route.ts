@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI, { toFile } from "openai";
+import { checkRateLimit, getClientIp } from "@/lib/security/rateLimit";
 import type { ImageEditParams } from "openai/resources/images";
 
 // 新築外構LP（/new-exterior）専用のシミュレーターAPI。
@@ -7,25 +8,8 @@ import type { ImageEditParams } from "openai/resources/images";
 // 「新築住宅＋外構」の完成イメージをセットで生成できる。
 
 // ─── Rate limiting ─────────────────────────────────────────────────
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const MAX_PER_WINDOW = 3;
-const WINDOW_MS = 60 * 60 * 1000;
-
-function getClientIp(req: NextRequest): string {
-  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-}
-
-function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return { allowed: true, remaining: MAX_PER_WINDOW - 1 };
-  }
-  if (entry.count >= MAX_PER_WINDOW) return { allowed: false, remaining: 0 };
-  entry.count++;
-  return { allowed: true, remaining: MAX_PER_WINDOW - entry.count };
-}
+const WINDOW_SECONDS = 60 * 60;
 
 // ─── Validation allowlists ─────────────────────────────────────────
 const ALLOWED_WORK_TYPES = new Set([
@@ -163,8 +147,7 @@ ${styleSection}選択された時間帯：${timeLabel}
 
 // ─── Route handler ────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
-  const ip = getClientIp(req);
-  const { allowed, remaining } = checkRateLimit(ip);
+  const { allowed, remaining } = await checkRateLimit("new-exterior-simulator", getClientIp(req), MAX_PER_WINDOW, WINDOW_SECONDS);
   if (!allowed) {
     return NextResponse.json(
       { error: "生成回数の上限（1時間に3回）に達しました。しばらくしてから再度お試しください。" },

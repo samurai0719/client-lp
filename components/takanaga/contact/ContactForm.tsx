@@ -98,6 +98,7 @@ export default function ContactForm() {
       budget: (data.get("budget") as string | null)?.trim() || undefined,
       message: (data.get("message") as string).trim(),
       privacyAgreed: true as const,
+      website: (data.get("website") as string | null) ?? "",
     };
 
     try {
@@ -130,6 +131,8 @@ export default function ContactForm() {
     <section className="py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-(--tkn-bg)">
       <div className="mx-auto max-w-2xl">
         <form onSubmit={handleSubmit} noValidate aria-label="お問い合わせフォーム">
+          {/* ボット対策（人には見えない項目） */}
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
           <div className="space-y-6">
             <div>
               <label className="tkn-label" htmlFor="name">

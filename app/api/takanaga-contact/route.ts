@@ -10,6 +10,8 @@ import {
 } from "@/lib/crm/customers";
 import { parseJsonOrMultipart } from "@/lib/http/parseRequestBody";
 import { uploadLeadImages } from "@/lib/storage/leadImages";
+import { checkRateLimit, getClientIp } from "@/lib/security/rateLimit";
+import { isReasonablePayload, isValidEmail } from "@/lib/security/publicForm";
 
 const WORK_TYPE_MAP: Record<string, string> = {
   parking: "駐車場リフォーム",
@@ -206,11 +208,30 @@ async function notifyCrmWebhook(data: TakanagaContactInput): Promise<void> {
 
 export async function POST(req: Request) {
   try {
-    const { body, files } = await parseJsonOrMultipart<TakanagaContactInput>(req);
+    if (!(await checkRateLimit("takanaga-contact", getClientIp(req), 5, 3600)).allowed) {
+      return NextResponse.json({ error: "送信回数の上限に達しました。しばらくしてから再度お試しください。" }, { status: 429 });
+    }
+
+    const { body, files } = await parseJsonOrMultipart<TakanagaContactInput & { website?: string }>(req);
+
+    // honeypot（人には見えない項目。入力があればボットとして保存せず成功を返す）
+    if (body.website) {
+      return NextResponse.json({ success: true });
+    }
+
+    if (!isReasonablePayload(body) || !Array.isArray(body.desiredWork)) {
+      return NextResponse.json({ error: "入力内容が正しくありません" }, { status: 400 });
+    }
 
     // 基本バリデーション
     if (!body.name || !body.phone || !body.email || !body.prefecture || !body.city) {
       return NextResponse.json({ error: "必須項目が不足しています" }, { status: 400 });
+    }
+    if (!isValidEmail(body.email)) {
+      return NextResponse.json({ error: "メールアドレスの形式が正しくありません" }, { status: 400 });
+    }
+    if (body.name.length > 100) {
+      return NextResponse.json({ error: "お名前が長すぎます" }, { status: 400 });
     }
     if (!body.privacyAgreed) {
       return NextResponse.json({ error: "プライバシーポリシーへの同意が必要です" }, { status: 400 });

@@ -7,6 +7,8 @@ import {
   findRecentDuplicateLead,
   nameMismatchNote,
 } from "@/lib/crm/customers";
+import { checkRateLimit, getClientIp } from "@/lib/security/rateLimit";
+import { isReasonablePayload } from "@/lib/security/publicForm";
 import {
   budgetOptions,
   paymentMethodOptions,
@@ -89,7 +91,14 @@ const CONSTRUCTION_TYPE_MAP: Record<string, string> = {
 
 export async function POST(req: Request) {
   try {
+    if (!(await checkRateLimit("gaikou-contact", getClientIp(req), 5, 3600)).allowed) {
+      return NextResponse.json({ error: "送信回数の上限に達しました。しばらくしてから再度お試しください。" }, { status: 429 });
+    }
+
     const { body, files } = await parseJsonOrMultipart<Record<string, unknown>>(req);
+    if (!isReasonablePayload(body)) {
+      return NextResponse.json({ error: "入力内容が正しくありません" }, { status: 400 });
+    }
     // worries/budget/paymentMethod は旧4〜8問フォーマットの互換用（新UIでは送信されない）
     const { answers, utm, estimate } = body as {
       answers: {

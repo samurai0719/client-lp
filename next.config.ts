@@ -83,6 +83,31 @@ const adofyPaths = [
   { public: "articles", internal: "adofy-corp/articles" },
 ];
 
+// セキュリティヘッダー。CSPは計測タグ（Meta Pixel・Ptengine・LP Insight）のインラインスクリプトを
+// 止めないよう、埋め込み・フォーム送信先など壊れにくい項目だけに絞っている。
+const baseSecurityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+];
+const takanagaSecurityHeaders = [
+  ...baseSecurityHeaders,
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  {
+    key: "Content-Security-Policy",
+    value: "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests",
+  },
+];
+const adminSecurityHeaders = [
+  ...baseSecurityHeaders,
+  { key: "X-Frame-Options", value: "DENY" },
+  {
+    key: "Content-Security-Policy",
+    value: "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests",
+  },
+  { key: "X-Robots-Tag", value: "noindex, nofollow" },
+];
+
 const nextConfig: NextConfig = {
   /*
     public/ をサーバー関数のバンドルから除外する。
@@ -112,6 +137,22 @@ const nextConfig: NextConfig = {
         pathname: "/media/**",
       },
     ],
+  },
+  async headers() {
+    return [
+      ...takanagaHosts.map((host) => ({
+        source: "/:path*",
+        has: [{ type: "host" as const, value: host }],
+        headers: takanagaSecurityHeaders,
+      })),
+      // 後に書いたものが優先されるため、管理画面はホスト共通設定より後に置く
+      { source: "/admin/:path*", headers: adminSecurityHeaders },
+      { source: "/admin", headers: adminSecurityHeaders },
+      {
+        source: "/api/admin/:path*",
+        headers: [...adminSecurityHeaders, { key: "Cache-Control", value: "no-store" }],
+      },
+    ];
   },
   async redirects() {
     // 旧URL → 新URL の301リダイレクト（takanagakensetu.com のみ）

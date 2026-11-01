@@ -6,6 +6,8 @@ import {
   findRecentDuplicateLead,
   nameMismatchNote,
 } from "@/lib/crm/customers";
+import { checkRateLimit, getClientIp } from "@/lib/security/rateLimit";
+import { isReasonablePayload } from "@/lib/security/publicForm";
 import {
   budgetOptions,
   parkingCountOptions,
@@ -49,7 +51,14 @@ const REGION_PREFECTURE: Record<string, string> = {
 
 export async function POST(req: Request) {
   try {
+    if (!(await checkRateLimit("new-exterior-contact", getClientIp(req), 5, 3600)).allowed) {
+      return NextResponse.json({ error: "送信回数の上限に達しました。しばらくしてから再度お試しください。" }, { status: 429 });
+    }
+
     const body = await req.json();
+    if (!isReasonablePayload(body)) {
+      return NextResponse.json({ error: "入力内容が正しくありません" }, { status: 400 });
+    }
     const { answers, utm, simulatorEstimate } = body as {
       lpType?: string;
       answers: {

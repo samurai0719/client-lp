@@ -4,6 +4,16 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin, unauthorizedResponse } from "@/lib/auth/adminCheck";
 import { LEAD_STATUS_LABELS } from "@/lib/types/crm";
 
+// 公開フォーム由来の値がExcelで数式として実行されないよう、先頭に ' を付けて文字列化する
+// （+81… の電話番号は数字のみなので対象外）
+function csvCell(value: unknown): string {
+  let text = String(value);
+  if (/^[=@\t\r]/.test(text) || (/^[+-]/.test(text) && !/^[+-]?[\d\s()-]+$/.test(text))) {
+    text = `'${text}`;
+  }
+  return `"${text.replace(/"/g, '""')}"`;
+}
+
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
   const admin = await requireAdmin(supabase);
@@ -69,7 +79,7 @@ export async function GET(request: NextRequest) {
     l.attribution?.utm_source ?? l.source ?? "",
     l.attribution?.utm_campaign ?? "",
     l.attribution?.utm_content ?? "",
-  ].map((v) => `"${String(v).replace(/"/g, '""')}"`));
+  ].map(csvCell));
 
   const csv = BOM + [headers.map((h) => `"${h}"`).join(","), ...rows.map((r) => r.join(","))].join("\r\n");
   const date = new Date().toISOString().slice(0, 10);
