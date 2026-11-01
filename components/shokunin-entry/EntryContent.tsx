@@ -45,14 +45,11 @@ type MultiKey = "experiencedTrades" | "desiredTrades";
 
 const EXCLUSIVE: Record<MultiKey, string> = { experiencedTrades: NO_EXPERIENCE, desiredTrades: NO_PREFERENCE };
 
-/** 1ページに2問あるステップの、最初の質問のキー（答えたら2問目へ自動でスクロールする） */
+/** 1ページに2問あるステップの、最初の質問のキー（答えたら2問目へ自動でスクロールする。複数選択の質問は続けて選べるようスクロールしない） */
 const FIRST_QUESTION: Partial<Record<Step, keyof EntryAnswers>> = {
-  2: "experiencedTrades",
-  3: "desiredTrades",
   5: "topPriority",
 };
 
-const MULTI_SCROLL_DELAY = 450;
 const SINGLE_SCROLL_DELAY = 30;
 
 const MISSING_MESSAGE: Record<number, string> = {
@@ -160,9 +157,6 @@ export default function EntryContent() {
     else if (value === only) next = [value];
     else next = [...current.filter((v) => v !== only), value];
     setAnswers((prev) => ({ ...prev, [key]: next }));
-    if (FIRST_QUESTION[step] === key && next.includes(value)) {
-      scrollToSecond(value === only ? SINGLE_SCROLL_DELAY : MULTI_SCROLL_DELAY);
-    }
   };
 
   const tryNext = () => {
