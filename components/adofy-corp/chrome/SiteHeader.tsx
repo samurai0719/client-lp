@@ -54,7 +54,11 @@ export default function SiteHeader() {
         // トップはFVの中にロゴとメニューを置くため、右上の固定ボタンだけ出す
         <div className="ax-tiles">
           <a href="#service">サービス</a>
-          <a href="/contact">無料相談</a>
+          <a href="/contact">
+            無料
+            <br />
+            相談
+          </a>
           <button
             type="button"
             aria-label={menu ? "メニューを閉じる" : "メニューを開く"}
