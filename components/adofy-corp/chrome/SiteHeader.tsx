@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import "@/app/adofy-corp/home.css";
+import "@/app/adofy-corp/home-editorial.css";
 
 /**
  * adofy コーポレートサイト共通のヘッダー（全ページ）。
@@ -49,38 +50,60 @@ export default function SiteHeader() {
 
   return (
     <div className="ah ah-chrome">
-      <header className={`ah-header${scrolled || !isHome ? " is-scrolled" : ""}`}>
-        <Link href="/" className="ah-logo" aria-label="adofy トップへ">
-          <span className="ah-logo__mark">ad</span>
-          <span className="ah-logo__text">
-            adofy<small>Creative Marketing Company</small>
-          </span>
-        </Link>
-        <nav className="ah-nav" aria-label="メニュー">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href}>
-              {n.label}
-            </a>
-          ))}
-          <a href="/contact" className="ah-nav__cta">
-            お問い合わせ
+      {isHome ? (
+        // トップはFVの中にロゴとメニューを置くため、右上の固定ボタンだけ出す
+        <div className="ax-tiles">
+          <a href="#service">サービス</a>
+          <a href="/contact">
+            無料
+            <br />
+            相談
           </a>
-        </nav>
-        <button
-          type="button"
-          className={`ah-burger${menu ? " is-open" : ""}`}
-          aria-label={menu ? "メニューを閉じる" : "メニューを開く"}
-          aria-expanded={menu}
-          aria-controls="ah-drawer"
-          onClick={() => setMenu((v) => !v)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
-      </header>
+          <button
+            type="button"
+            aria-label={menu ? "メニューを閉じる" : "メニューを開く"}
+            aria-expanded={menu}
+            aria-controls="ah-drawer"
+            onClick={() => setMenu((v) => !v)}
+          >
+            <span />
+            <span />
+          </button>
+        </div>
+      ) : (
+        <header className={`ah-header${scrolled || !isHome ? " is-scrolled" : ""}`}>
+          <Link href="/" className="ah-logo" aria-label="adofy トップへ">
+            <span className="ah-logo__mark">ad</span>
+            <span className="ah-logo__text">
+              adofy<small>Creative Marketing Company</small>
+            </span>
+          </Link>
+          <nav className="ah-nav" aria-label="メニュー">
+            {NAV.map((n) => (
+              <a key={n.href} href={n.href}>
+                {n.label}
+              </a>
+            ))}
+            <a href="/contact" className="ah-nav__cta">
+              お問い合わせ
+            </a>
+          </nav>
+          <button
+            type="button"
+            className={`ah-burger${menu ? " is-open" : ""}`}
+            aria-label={menu ? "メニューを閉じる" : "メニューを開く"}
+            aria-expanded={menu}
+            aria-controls="ah-drawer"
+            onClick={() => setMenu((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </header>
+      )}
 
-      <div id="ah-drawer" className={`ah-drawer${menu ? " is-open" : ""}`} aria-hidden={!menu} inert={!menu}>
+      <div id="ah-drawer" className={`ah-drawer${isHome ? " is-home" : ""}${menu ? " is-open" : ""}`} aria-hidden={!menu} inert={!menu}>
         <nav aria-label="スマホメニュー">
           {NAV.map((n, i) => (
             <a key={n.href} href={n.href} onClick={() => setMenu(false)} style={{ transitionDelay: `${0.05 * i + 0.1}s` }}>
