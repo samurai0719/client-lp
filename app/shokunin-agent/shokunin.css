@@ -1115,8 +1115,64 @@
   }
 }
 
-/* 幅の狭いスマホではヘッダーのメニューが画面外へ出ないよう詰める */
-@media (max-width: 374px) {
+/* ヘッダーの電話。ハンバーガーメニューのある画面は電話マークだけ、PCは番号を出す */
+.sa-lp .sa-header__tel {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  color: var(--ks-ink);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sa-lp .sa-header__tel svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sa-lp .sa-header__call {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-left: auto;
+  border-radius: 8px;
+  background: var(--sa-cta);
+  color: #fff;
+}
+
+.sa-lp .sa-header__call svg {
+  width: 22px;
+  height: 22px;
+}
+
+.sa-lp .sa-header__call + .sa-menu-btn {
+  flex: none;
+  margin-left: 0;
+}
+
+@media (max-width: 1099px) {
+  .sa-lp .sa-header__cta {
+    display: none;
+  }
+}
+
+@media (min-width: 1100px) {
+  .sa-lp .sa-header__tel {
+    display: inline-flex;
+  }
+
+  .sa-lp .sa-header__call {
+    display: none;
+  }
+}
+
+/* 幅の狭いスマホではロゴを小さくして、メニューが画面外へ出ないようにする */
+@media (max-width: 359px) {
   .sa-lp .sa-logo {
     gap: 4px;
     font-size: 14px;
@@ -1128,78 +1184,8 @@
   }
 
   .sa-lp .sa-header__inner {
-    gap: 6px;
-    padding-right: 8px;
-    padding-left: 8px;
-  }
-
-  .sa-lp .sa-header__cta {
-    min-height: 44px;
-    padding: 0 8px;
-    font-size: 13px;
-  }
-}
-
-/* ヘッダーの電話番号。PCはボタンの横、狭い画面は横に収まらないのでロゴ行の下に帯で出す */
-.sa-lp .sa-header__tel,
-.sa-lp .sa-header__telbar {
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.sa-lp .sa-header__tel svg,
-.sa-lp .sa-header__telbar svg {
-  width: 16px;
-  height: 16px;
-}
-
-.sa-lp .sa-header__tel {
-  display: none;
-  color: var(--ks-ink);
-  font-size: 18px;
-}
-
-.sa-lp .sa-header__telbar {
-  display: flex;
-  min-height: 34px;
-  background: var(--ks-ink);
-  color: #fff;
-  font-size: 16px;
-}
-
-/* 帯の分だけ、ページ内リンクの止まる位置を下げる */
-.sa-lp [id] {
-  scroll-margin-top: calc(var(--sr-header-h) + 46px);
-}
-
-@media (min-width: 1024px) {
-  .sa-lp .sa-header__tel {
-    display: inline-flex;
-  }
-
-  .sa-lp .sa-header__telbar {
-    display: none;
-  }
-
-  .sa-lp [id] {
-    scroll-margin-top: calc(var(--sr-header-h) + 12px);
-  }
-}
-
-/* 375px前後でハンバーガーメニューが潰れないようにする */
-@media (min-width: 375px) and (max-width: 420px) {
-  .sa-lp .sa-header__inner {
     gap: 8px;
     padding-right: 8px;
-    padding-left: 10px;
-  }
-
-  .sa-lp .sa-header__cta {
-    padding: 0 10px;
+    padding-left: 8px;
   }
 }

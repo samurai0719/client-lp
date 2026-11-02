@@ -4,14 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, HardHat, Menu, Phone, X } from "lucide-react";
 import { CTA_HREF, CTA_MAIN, NAV, PHONE, SERVICE_NAME } from "./config";
 
-function TelLink({ className }: { className: string }) {
-  return (
-    <a href={`tel:${PHONE.replace(/-/g, "")}`} className={className} data-sr-cta="header-tel">
-      <Phone aria-hidden="true" strokeWidth={2.6} />
-      {PHONE}
-    </a>
-  );
-}
+const TEL_HREF = `tel:${PHONE.replace(/-/g, "")}`;
 
 /** ヘッダー。スマホではハンバーガーメニューに畳む */
 export function Header() {
@@ -33,9 +26,15 @@ export function Header() {
             </a>
           ))}
         </nav>
-        <TelLink className="sa-header__tel" />
+        <a href={TEL_HREF} className="sa-header__tel" data-sr-cta="header-tel">
+          <Phone aria-hidden="true" strokeWidth={2.6} />
+          {PHONE}
+        </a>
         <a href={CTA_HREF} className="sa-header__cta" data-sr-cta="header">
           無料相談
+        </a>
+        <a href={TEL_HREF} className="sa-header__call" aria-label={`電話する ${PHONE}`} data-sr-cta="header-call">
+          <Phone aria-hidden="true" strokeWidth={2.4} />
         </a>
         <button
           type="button"
@@ -48,7 +47,6 @@ export function Header() {
           {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
         </button>
       </div>
-      <TelLink className="sa-header__telbar" />
       {open && (
         <nav className="sa-mobile-nav" id="sa-mobile-nav" aria-label="ページ内（スマホ）">
           {NAV.map((n) => (
