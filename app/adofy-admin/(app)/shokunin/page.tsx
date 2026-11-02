@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import AdofyAdminShell from "@/components/adofy-admin/AdofyAdminShell";
+import ShokuninNav from "@/components/shokunin-admin/ShokuninNav";
 import { getAuthorizedLeadsDb } from "@/lib/saiyoRescue/adminAccess";
 import { formatJst } from "@/lib/saiyoRescue/leads";
 import { SHOKUNIN_STATUSES, SHOKUNIN_STATUS_LABEL, SHOKUNIN_STATUS_STYLE, ageOf, type ShokuninRow } from "@/lib/shokuninCandidates/admin";
@@ -37,6 +38,7 @@ export default async function ShokuninPage({ searchParams }: { searchParams: Pro
   return (
     <AdofyAdminShell>
       <div className="p-4 sm:p-6">
+        <ShokuninNav current="candidates" />
         <h1 className="mb-4 text-xl font-bold text-slate-900">職人登録</h1>
 
         {error && <p className="mb-4 rounded-lg bg-rose-50 p-3 text-sm text-rose-700">職人の表を読み込めませんでした（migration 019 の適用を確認してください）。</p>}

@@ -75,7 +75,7 @@ export default function LeadDetail({ lead: initial, assignees }: { lead: LeadRow
 
   return (
     <div className="pb-28 lg:pb-6">
-      <Link href="/adofy-admin/saiyo-rescue/leads" className="mb-3 inline-flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-slate-800">
+      <Link href={lead.desired_plan === "shokunin" ? "/adofy-admin/shokunin/companies" : "/adofy-admin/saiyo-rescue/leads"} className="mb-3 inline-flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-slate-800">
         <ArrowLeft className="h-4 w-4" />
         問い合わせ一覧へ
       </Link>
