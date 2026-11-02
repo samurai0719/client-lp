@@ -19,9 +19,9 @@ export const SERVICE_NAME = "職人採用エージェント";
 export const SITE = {
   origin: "https://saiyo.adofy-site.com",
   path: "/shokunin-agent",
-  title: "職人採用エージェント｜建設業特化の採用代行｜adofy",
+  title: "職人採用エージェント｜建設業・職人の採用代行｜月額0円",
   description:
-    "職人採用エージェントは、建設会社の求人制作、採用LP、広告運用、応募者対応、面接調整までを代行する建設業特化型の採用代行サービスです。初期費用89,800円、月額0円。",
+    "建設会社の職人採用を代行。鳶・足場・塗装・大工・電気工事などの求人制作、採用LP、広告運用、応募者対応、面接日程の調整までまとめて対応します。初期費用89,800円・月額0円・成功報酬は採用1人につき一律20万円。",
   ogImage: "/images/shokunin-agent/og.png",
 } as const;
 

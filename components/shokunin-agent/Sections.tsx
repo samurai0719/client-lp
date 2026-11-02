@@ -657,6 +657,9 @@ export function Footer() {
           </a>
           （代表 {OPERATOR.representative}）
         </p>
+        <p className="sr-footer__op">
+          <a href="/shokunin-entry">転職したい職人の方はこちら（無料登録）</a>
+        </p>
         <div className="sr-footer__legal">
           {LEGAL.map((l) => (
             <details key={l.id} id={`legal-${l.id}`} className="sr-legal">

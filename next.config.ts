@@ -51,6 +51,8 @@ const adofyLpHosts = ["lp.adofy-site.com"];
 //     /kensetsu        → /saiyo-rescue/kensetsu   （建設業向けLP）
 //     /kensetsu/thanks → /saiyo-rescue/kensetsu/thanks
 //     /kensetsu/profiles → /saiyo-rescue/kensetsu/profiles（建設業の匿名プロフィール一覧）
+//     /robots.txt  → /saiyo-rescue/robots.txt
+//     /sitemap.xml → /saiyo-rescue/sitemap.xml
 // ─────────────────────────────────────────────────────────────────────────────
 const saiyoHosts = ["saiyo.adofy-site.com"];
 
@@ -391,6 +393,10 @@ const nextConfig: NextConfig = {
         ]),
 
         // ── scout.adofy-site.com（候補者プロフィール検索LP） ─────────────
+        ...saiyoHosts.flatMap((host) => [
+          { source: "/robots.txt", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/robots.txt" },
+          { source: "/sitemap.xml", has: [{ type: "host" as const, value: host }], destination: "/saiyo-rescue/sitemap.xml" },
+        ]),
         ...scoutHosts.flatMap((host) => [
           { source: "/robots.txt", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/robots.txt" },
           { source: "/sitemap.xml", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/sitemap.xml" },

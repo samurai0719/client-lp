@@ -21,6 +21,7 @@ import {
   Worry,
 } from "@/components/shokunin-agent/Sections";
 import { SITE } from "@/components/shokunin-agent/config";
+import StructuredData from "@/components/shokunin-agent/StructuredData";
 import AttributionCapture from "@/components/saiyo-rescue/AttributionCapture";
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
@@ -65,6 +66,7 @@ export default function ShokuninAgentPage() {
       <noscript
         dangerouslySetInnerHTML={{ __html: "<style>.sr-count{opacity:1!important;transform:none!important}</style>" }}
       />
+      <StructuredData />
       <AdofyMetaPixel />
       <SingleMetaPixel id={SHOKUNIN_AGENT_PIXEL_ID} />
       <AttributionCapture />
