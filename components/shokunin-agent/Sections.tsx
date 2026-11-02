@@ -25,7 +25,7 @@ import {
   CTA_MAIN,
   CTA_WAITING,
   CTA_SUB,
-  EXAMPLE_FEE,
+  SUCCESS_FEE_MAN,
   FAQS,
   FINAL_TITLE,
   FLOW,
@@ -124,9 +124,9 @@ function PriceSummary() {
       <div>
         <dt>採用成功時</dt>
         <dd>
-          <small>想定年収の</small>
-          <b>{PRICE.rate}</b>
-          <span>%</span>
+          <small>一律</small>
+          <b>{SUCCESS_FEE_MAN}</b>
+          <span>万円</span>
         </dd>
       </div>
     </dl>
@@ -242,7 +242,7 @@ export function Cost() {
             <li key={n}>{n}</li>
           ))}
         </ul>
-        <dl className="sa-cost__calc" aria-label="想定年収400万円の場合の計算例">
+        <dl className="sa-cost__calc" aria-label="1人採用した場合の計算例">
           {COST.calc.map(([k, v]) => (
             <div key={k}>
               <dt>{k}</dt>
@@ -493,15 +493,15 @@ export function Pricing() {
             <div className="ks-plan__row">
               <p className="ks-plan__label">採用成功報酬</p>
               <p className="ks-plan__price">
-                <small>想定年収の</small>
-                <b>{PRICE.rate}</b>
-                <span>%</span>
+                <small>1人につき一律</small>
+                <b>{SUCCESS_FEE_MAN}</b>
+                <span>万円</span>
               </p>
             </div>
           </div>
           <div className="ks-plan__example">
             <p className="ks-plan__example-title">計算例</p>
-            <p className="sa-example">想定年収400万円の場合、採用成功報酬は{yen(EXAMPLE_FEE / 10000)}万円</p>
+            <p className="sa-example">2人採用した場合、採用成功報酬は{yen((PRICE.successFee * 2) / 10000)}万円</p>
           </div>
           <div className="ks-plan__cta">
             <Cta location="pricing" label="自社の場合の料金を相談する" />
@@ -636,7 +636,7 @@ const LEGAL: { id: string; title: string; items: { term: string; desc: string; h
       { term: "所在地", desc: `${OPERATOR.area}　※詳細はご請求があれば遅滞なく開示します` },
       { term: "電話番号", desc: PHONE, href: `tel:${PHONE.replace(/-/g, "")}` },
       { term: "メールアドレス", desc: OPERATOR.email, href: `mailto:${OPERATOR.email}` },
-      { term: "販売価格", desc: `初期費用 ${yen(PRICE.initial)}円 / 月額費用 ${PRICE.monthly}円 / 採用成功報酬 想定年収の${PRICE.rate}%` },
+      { term: "販売価格", desc: `初期費用 ${yen(PRICE.initial)}円 / 月額費用 ${PRICE.monthly}円 / 採用成功報酬 1人につき一律${yen(PRICE.successFee)}円` },
       { term: "支払時期・支払方法", desc: PREPARING },
       { term: "役務の提供時期", desc: PREPARING },
       { term: "返金について", desc: PREPARING },

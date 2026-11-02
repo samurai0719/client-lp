@@ -44,13 +44,15 @@ export const NAV = [
 ] as const;
 
 /* ─── 料金（このLPの唯一の価格ソース） ─── */
-export const PRICE = { initial: 89800, monthly: 0, rate: 10 } as const;
-export const EXAMPLE_INCOME = 4_000_000;
-export const EXAMPLE_FEE = (EXAMPLE_INCOME * PRICE.rate) / 100;
-export const EXAMPLE_TOTAL = PRICE.initial + EXAMPLE_FEE;
+/** 成功報酬は採用1人につき一律（年収・職種によらない） */
+export const PRICE = { initial: 89800, monthly: 0, successFee: 200_000 } as const;
 export const yen = (n: number) => n.toLocaleString("ja-JP");
+/** 200000 → "20" （万円表記用） */
+export const SUCCESS_FEE_MAN = yen(PRICE.successFee / 10000);
+/** 1人採用したときの総額（初期費用＋成功報酬） */
+export const EXAMPLE_TOTAL = PRICE.initial + PRICE.successFee;
 
-export const PRICE_LINE = [`初期費用${yen(PRICE.initial)}円`, `月額${PRICE.monthly}円`, `採用成功時は想定年収の${PRICE.rate}%`] as const;
+export const PRICE_LINE = [`初期費用${yen(PRICE.initial)}円`, `月額${PRICE.monthly}円`, `採用成功時は1人につき一律${SUCCESS_FEE_MAN}万円`] as const;
 export const PRICE_FOOTNOTE = "詳細な料金条件は、ご契約前に書面でご案内します。";
 
 /* ─── FV ─── */
@@ -64,9 +66,9 @@ export const HERO = {
   ],
   /** 建設版の採用レスキュー（/kensetsu）と同じFV画像。見出し・料金は画像に焼き込み済み */
   image: {
-    pc: { src: "/images/saiyo-rescue/kensetsu/hero-pc.webp", w: 1672, h: 941 },
-    sp: { src: "/images/saiyo-rescue/kensetsu/hero-sp.webp", w: 941, h: 1672 },
-    alt: "建設業に特化した採用支援。人が足りずに、仕事を断っていませんか？職人・現場スタッフの応募獲得を支援。月額費用0円、初期費用89,800円、成果報酬は想定年収の10%。",
+    pc: { src: "/images/shokunin-agent/hero-pc.webp", w: 1672, h: 941 },
+    sp: { src: "/images/shokunin-agent/hero-sp.webp", w: 941, h: 1672 },
+    alt: "建設業に特化した採用支援。人が足りずに、仕事を断っていませんか？職人・現場スタッフの応募獲得を支援。月額費用0円、初期費用89,800円、成果報酬は一律20万円。",
   },
 } as const;
 
@@ -81,7 +83,7 @@ export const COST = {
       ["採用コスト", "103.3万円"],
       ["月額費用", "採用方法に|よって発生"],
       ["成功報酬", "―"],
-      ["想定年収|400万円の場合", "103.3万円"],
+      ["1人|採用した場合", "103.3万円"],
       ["応募者対応", "自社対応を|含む"],
       ["面接日程の|調整", "自社対応を|含む"],
     ],
@@ -93,19 +95,19 @@ export const COST = {
     rows: [
       ["採用コスト", `初期費用|${yen(PRICE.initial)}円|＋成功報酬`],
       ["月額費用", "0円"],
-      ["成功報酬", `想定年収の${PRICE.rate}%`],
-      ["想定年収|400万円の場合", `${yen(EXAMPLE_FEE / 10000)}万円`],
+      ["成功報酬", `1人につき|一律${SUCCESS_FEE_MAN}万円`],
+      ["1人|採用した場合", `${yen(EXAMPLE_TOTAL)}円`],
       ["応募者対応", "当社が|代行"],
       ["面接日程の|調整", "当社が|代行"],
     ],
   },
-  calc: [["成功報酬", `${yen(EXAMPLE_FEE)}円`]],
-  diff: "想定年収400万円の採用なら、|サービス料金は|平均採用コストより|**約54万円低い設計**",
+  calc: [["成功報酬（1人）", `${yen(PRICE.successFee)}円`]],
+  diff: "1人採用した場合、|サービス料金は|平均採用コストより|**約74万円低い設計**",
   cta: "採用コストを相談する",
   notes: [
     "出典：株式会社リクルート 就職みらい研究所『就職白書2020』。103.3万円は2019年度の中途採用1人あたりの平均採用コストであり、リクルートが提供する特定サービスの料金ではありません。",
     // 指定文の「広告費などの実費は含んでいません」は、広告費の負担条件を確認できるまで掲載しない
-    "約54万円の差は、想定年収400万円で採用した場合の成功報酬40万円に初期費用89,800円を足した489,800円との計算例です。広告費の扱いは、無料相談時に個別にご案内します。実際の費用は採用条件によって異なります。",
+    "約74万円の差は、1人採用した場合の成功報酬20万円に初期費用89,800円を足した289,800円との計算例です。広告費の扱いは、無料相談時に個別にご案内します。実際の費用は採用条件によって異なります。",
   ],
 } as const;
 
@@ -218,7 +220,7 @@ export const FLOW = [
 export const FAQS: { q: string; a: string[] }[] = [
   {
     q: "本当に月額費用はかかりませんか？",
-    a: [`はい。**月額費用は0円**です。料金は、初期費用${yen(PRICE.initial)}円と、採用成功時の成功報酬（想定年収の${PRICE.rate}%）です。${PRICE_FOOTNOTE}`],
+    a: [`はい。**月額費用は0円**です。料金は、初期費用${yen(PRICE.initial)}円と、採用成功時の成功報酬（1人につき一律${SUCCESS_FEE_MAN}万円）です。${PRICE_FOOTNOTE}`],
   },
   { q: "どのような職種に対応していますか？", a: [`${TRADES.join("、")}などの職種に対応しています。`] },
   {
