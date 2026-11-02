@@ -23,6 +23,7 @@ import {
   CREW_IMAGE,
   CTA_HREF,
   CTA_MAIN,
+  CTA_WAITING,
   CTA_SUB,
   EXAMPLE_FEE,
   FAQS,
@@ -92,10 +93,13 @@ function H({ text }: { text: string }) {
 
 function Cta({ location, label = CTA_MAIN }: { location: string; label?: string }) {
   return (
-    <a href={CTA_HREF} className="sr-btn sr-btn--lg sr-btn--primary ks-btn" data-sr-cta={location}>
-      <span>{label}</span>
-      <ArrowRight className="sr-btn__arrow" aria-hidden="true" strokeWidth={2.6} />
-    </a>
+    <div className="sa-cta-wrap">
+      <p className="sa-waiting">{CTA_WAITING}</p>
+      <a href={CTA_HREF} className="sr-btn sr-btn--lg sr-btn--primary ks-btn" data-sr-cta={location}>
+        <span>{label}</span>
+        <ArrowRight className="sr-btn__arrow" aria-hidden="true" strokeWidth={2.6} />
+      </a>
+    </div>
   );
 }
 

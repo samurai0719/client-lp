@@ -6,7 +6,7 @@ import { ArrowRight, LoaderCircle } from "lucide-react";
 import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
 import { fireShokuninAgentLead } from "@/lib/analytics/shokuninAgentPixel";
 import { loadAttribution } from "@/lib/saiyoRescue/attribution";
-import { FORM_ERROR, FORM_HIRES, FORM_JOBS, FORM_PLACEHOLDER } from "./config";
+import { CTA_WAITING, FORM_ERROR, FORM_HIRES, FORM_JOBS, FORM_PLACEHOLDER } from "./config";
 
 type Errors = Partial<Record<"company" | "name" | "phone" | "email" | "jobType" | "privacyConsent", string>>;
 
@@ -155,6 +155,7 @@ export default function ContactForm() {
         </p>
       )}
 
+      <p className="sa-waiting">{CTA_WAITING}</p>
       <button type="submit" className="sr-btn sr-btn--lg sr-btn--primary sr-form__submit ks-btn" disabled={sending}>
         {sending ? (
           <>

@@ -27,6 +27,7 @@ export const SITE = {
 
 export const CTA_HREF = "#contact";
 export const PHONE = "090-2342-7385";
+export const CTA_WAITING = "転職したい職人が待機中";
 export const CTA_MAIN = "無料で採用について相談する";
 export const CTA_SUB = "相談しただけで料金が発生することはありません";
 

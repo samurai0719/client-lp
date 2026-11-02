@@ -1189,3 +1189,52 @@
     padding-left: 8px;
   }
 }
+
+/* CTA上の「待機中」。赤文字を光らせながら点滅させる（1秒に3回を超えない速さ） */
+.sa-cta-wrap {
+  width: 100%;
+  text-align: center;
+}
+
+.sa-lp .sa-waiting {
+  margin: 0 0 8px;
+  color: #e60012;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.4;
+  text-align: center;
+  animation: sa-waiting-flash 1.2s ease-in-out infinite;
+}
+
+@keyframes sa-waiting-flash {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(255, 40, 40, 0.75);
+  }
+  50% {
+    opacity: 0.25;
+    text-shadow: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .sa-lp .sa-waiting {
+    font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-lp .sa-waiting {
+    animation: none;
+  }
+}
+
+/* 黒背景の上は明るい赤にする */
+.sa-lp .sa-final-cta .sa-waiting {
+  color: #ff5a5a;
+}
+
+.sa-lp .sr-form .sa-waiting {
+  margin-bottom: -6px;
+}
