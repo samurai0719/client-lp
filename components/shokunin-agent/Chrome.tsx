@@ -1,8 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, HardHat, Menu, X } from "lucide-react";
-import { CTA_HREF, CTA_MAIN, NAV, SERVICE_NAME } from "./config";
+import { ArrowRight, HardHat, Menu, Phone, X } from "lucide-react";
+import { CTA_HREF, CTA_MAIN, NAV, PHONE, SERVICE_NAME } from "./config";
+
+function TelLink({ className }: { className: string }) {
+  return (
+    <a href={`tel:${PHONE.replace(/-/g, "")}`} className={className} data-sr-cta="header-tel">
+      <Phone aria-hidden="true" strokeWidth={2.6} />
+      {PHONE}
+    </a>
+  );
+}
 
 /** ヘッダー。スマホではハンバーガーメニューに畳む */
 export function Header() {
@@ -24,6 +33,7 @@ export function Header() {
             </a>
           ))}
         </nav>
+        <TelLink className="sa-header__tel" />
         <a href={CTA_HREF} className="sa-header__cta" data-sr-cta="header">
           無料相談
         </a>
@@ -38,6 +48,7 @@ export function Header() {
           {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
         </button>
       </div>
+      <TelLink className="sa-header__telbar" />
       {open && (
         <nav className="sa-mobile-nav" id="sa-mobile-nav" aria-label="ページ内（スマホ）">
           {NAV.map((n) => (

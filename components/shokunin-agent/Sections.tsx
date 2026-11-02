@@ -31,6 +31,7 @@ import {
   HERO,
   OWNER_LABEL,
   PRICE,
+  PHONE,
   PRICE_FOOTNOTE,
   PRICE_LINE,
   RESULTS_NOTES,
@@ -587,7 +588,6 @@ export function Contact() {
         </div>
         <div className="sa-form-card" id="contact">
           <h3>{CTA_MAIN}</h3>
-          <p>電話ではなく、このフォームからご相談いただけます。</p>
           <ContactForm />
         </div>
       </div>
@@ -630,7 +630,7 @@ const LEGAL: { id: string; title: string; items: { term: string; desc: string; h
       { term: "販売事業者", desc: OPERATOR.name },
       { term: "運営統括責任者", desc: OPERATOR.representative },
       { term: "所在地", desc: `${OPERATOR.area}　※詳細はご請求があれば遅滞なく開示します` },
-      { term: "電話番号", desc: "ご請求があれば遅滞なく開示します" },
+      { term: "電話番号", desc: PHONE, href: `tel:${PHONE.replace(/-/g, "")}` },
       { term: "メールアドレス", desc: OPERATOR.email, href: `mailto:${OPERATOR.email}` },
       { term: "販売価格", desc: `初期費用 ${yen(PRICE.initial)}円 / 月額費用 ${PRICE.monthly}円 / 採用成功報酬 想定年収の${PRICE.rate}%` },
       { term: "支払時期・支払方法", desc: PREPARING },
