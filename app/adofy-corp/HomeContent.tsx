@@ -11,7 +11,7 @@ import "./home-editorial.css";
 
 /**
  * adofy コーポレートサイトのトップページ（https://adofy-site.com/）。
- * FVは「成果から逆算する」を表す右肩上がりのグラフ。棒と折れ線の座標は 1400×770 の枠が基準（PCのみ）。
+ * FVの階段状の切り抜きは下の clipPath（SVG）で作る。座標は PC=1400×770 / SP=350×530 の枠が基準。
  * 右上の固定ボタンとメニューは components/adofy-corp/chrome/SiteHeader.tsx。
  * 「動きを減らす」設定では、演出を止めて最初からすべて表示する。
  */
@@ -21,13 +21,36 @@ gsap.registerPlugin(ScrollTrigger);
 const notoSans = Noto_Sans_JP({ subsets: ["latin"], weight: ["300", "400", "500"], preload: false, variable: "--ax-ff-ja" });
 const sora = Sora({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--ax-ff-en" });
 
-const HERO_BARS = [
-  { label: "広告", x: 0, height: 150 },
-  { label: "LP", x: 195, height: 230 },
-  { label: "問い合わせ", x: 390, height: 310 },
-  { label: "応募", x: 585, height: 400 },
-];
-const HERO_LINE = "90,620 285,540 480,460 675,370 812,130";
+type Point = readonly [number, number];
+
+// 多角形の角を丸めたSVGパスを作る（凸角・凹角どちらも同じ半径で丸まる）
+function roundedPath(points: readonly Point[], radius: number): string {
+  const n = points.length;
+  return (
+    points
+      .map((p, i) => {
+        const prev = points[(i + n - 1) % n];
+        const next = points[(i + 1) % n];
+        const toward = (q: Point) => {
+          const len = Math.hypot(q[0] - p[0], q[1] - p[1]);
+          const r = Math.min(radius, len / 2);
+          return [p[0] + ((q[0] - p[0]) / len) * r, p[1] + ((q[1] - p[1]) / len) * r];
+        };
+        const a = toward(prev);
+        const b = toward(next);
+        return `${i === 0 ? "M" : "L"}${a[0]} ${a[1]}Q${p[0]} ${p[1]} ${b[0]} ${b[1]}`;
+      })
+      .join("") + "Z"
+  );
+}
+
+const CLIP_PC = [
+  [430, 0], [1220, 0], [1220, 145], [1400, 145], [1400, 620], [1250, 620], [1250, 770], [80, 770],
+  [80, 690], [0, 690], [0, 322], [160, 322], [160, 160], [240, 160], [240, 80], [430, 80],
+] as const;
+const CLIP_SP = [
+  [0, 142], [64, 142], [64, 76], [350, 76], [350, 500], [320, 500], [320, 530], [0, 530],
+] as const;
 
 const HERO_NAV = [
   { href: "#about", label: "adofyについて" },
@@ -38,10 +61,10 @@ const HERO_NAV = [
 ];
 
 const PHOTOS = [
-  { src: "/images/adofy/photo-consulting.webp", alt: "オンラインで打ち合わせをする様子" },
-  { src: "/images/adofy/photo-production.webp", alt: "ホームページを制作する様子" },
-  { src: "/images/adofy/photo-planning.webp", alt: "打ち合わせで企画を練る様子" },
-  { src: "/images/adofy-corp/hero-team.webp", alt: "ノートパソコンを囲んで打ち合わせをするチーム" },
+  { src: "/images/adofy/photo-consulting.webp", alt: "オンラインで打ち合わせをする様子", wide: true },
+  { src: "/images/adofy/photo-production.webp", alt: "ホームページを制作する様子", wide: false },
+  { src: "/images/adofy/photo-planning.webp", alt: "打ち合わせで企画を練る様子", wide: true },
+  { src: "/images/adofy-corp/hero-team.webp", alt: "ノートパソコンを囲んで打ち合わせをするチーム", wide: false },
 ];
 
 const ABOUT_TEXT = [
@@ -162,15 +185,15 @@ export default function HomeContent() {
     }
 
     const ctx = gsap.context(() => {
-      gsap.from(".ax-hero__bars li", { scaleY: 0, transformOrigin: "bottom", duration: 0.9, ease: "expo.out", stagger: 0.12, delay: 0.2 });
-      gsap.from(".ax-hero__media", { clipPath: "inset(100% 0 0 0 round 16px)", duration: 1.2, ease: "expo.inOut", delay: 0.5 });
-      gsap.from(".ax-hero__line polyline", { strokeDashoffset: 1, duration: 1.4, ease: "power2.inOut", delay: 0.5 });
-      gsap.from(".ax-hero__line circle", { scale: 0, transformOrigin: "center", duration: 0.5, ease: "back.out(3)", delay: 1.8 });
+      gsap.from(".ax-hero__media img", { scale: 1.08, duration: 1.8, ease: "expo.out" });
       gsap.from(".ax-hero__title > span", { y: 28, opacity: 0, duration: 1.1, ease: "power3.out", stagger: 0.16, delay: 0.25 });
       gsap.from(".ax-hero__nav li", { x: -14, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.06, delay: 0.5 });
 
       gsap.utils.toArray<HTMLElement>("[data-fade]").forEach((n) => {
         gsap.from(n, { y: 28, opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: n, start: "top 88%", once: true } });
+      });
+      gsap.utils.toArray<HTMLElement>(".ax-block").forEach((b, i) => {
+        gsap.to(b, { y: (i % 2 === 0 ? -1 : 1) * (70 + i * 16), ease: "none", scrollTrigger: { trigger: el, start: "top top", end: "bottom bottom", scrub: 1 } });
       });
     }, el);
 
@@ -179,9 +202,20 @@ export default function HomeContent() {
 
   return (
     <div ref={root} className={`ax ${notoSans.variable} ${sora.variable}`}>
-      <div className="ax-bgbars" aria-hidden="true">
-        {Array.from({ length: 12 }, (_, i) => (
-          <span key={i} style={{ "--i": i } as React.CSSProperties} />
+      <svg width="0" height="0" className="ax-defs" aria-hidden="true">
+        <defs>
+          <clipPath id="ax-clip-pc" clipPathUnits="objectBoundingBox">
+            <path transform={`scale(${1 / 1400} ${1 / 770})`} d={roundedPath(CLIP_PC, 12)} />
+          </clipPath>
+          <clipPath id="ax-clip-sp" clipPathUnits="objectBoundingBox">
+            <path transform={`scale(${1 / 350} ${1 / 530})`} d={roundedPath(CLIP_SP, 9)} />
+          </clipPath>
+        </defs>
+      </svg>
+
+      <div className="ax-blocks" aria-hidden="true">
+        {Array.from({ length: 7 }, (_, i) => (
+          <span key={i} className={`ax-block ax-block--${i + 1}`} />
         ))}
       </div>
 
@@ -189,59 +223,31 @@ export default function HomeContent() {
         {/* ── FV ── */}
         <section className="ax-hero" id="hero" aria-labelledby="ax-hero-title">
           <div className="ax-hero__frame">
-            <div className="ax-hero__copy">
-              <div className="ax-hero__top">
-                <Link href="/" className="ax-logo" aria-label="adofy トップへ">
-                  <b lang="en">adofy</b>
-                  <small>岐阜発・全国対応</small>
-                </Link>
-                <nav className="ax-hero__nav" aria-label="ページ内メニュー">
-                  <ul>
-                    {HERO_NAV.map((n) => (
-                      <li key={n.href}>
-                        <a href={n.href}>{n.label}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              </div>
+            <div className="ax-hero__media">
+              <picture>
+                <source media="(max-width: 639px)" srcSet="/images/adofy-corp/hero-team-sp.webp" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/adofy-corp/hero-team.webp" alt="ノートパソコンを囲んで打ち合わせをするチーム" fetchPriority="high" />
+              </picture>
               <h1 className="ax-hero__title" id="ax-hero-title">
                 <span>成果から逆算する、</span>
                 <span>Webマーケティング。</span>
               </h1>
-              <p className="ax-hero__lead">広告運用・LP制作・採用支援まで。数字を見ながら、問い合わせと応募につながる仕組みをつくります。</p>
-              <a href="/contact" className="ax-btn">
-                無料で相談する
-                <span aria-hidden="true">
-                  <ArrowRight />
-                </span>
-              </a>
             </div>
-            <div className="ax-hero__chart">
-              <div className="ax-hero__media">
-                <picture>
-                  <source media="(max-width: 639px)" srcSet="/images/adofy-corp/hero-team-sp.webp" />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/adofy-corp/hero-team.webp" alt="ノートパソコンを囲んで打ち合わせをするチーム" fetchPriority="high" />
-                </picture>
-                <p className="ax-hero__goal">成果</p>
-              </div>
-              <ol className="ax-hero__bars" aria-label="成果までの流れ">
-                {HERO_BARS.map((b, i) => (
-                  <li
-                    key={b.label}
-                    style={{ "--x": `${(b.x / 1400) * 100}%`, "--h": `${(b.height / 770) * 100}%` } as React.CSSProperties}
-                  >
-                    <span lang="en">0{i + 1}</span>
-                    {b.label}
+
+            <Link href="/" className="ax-logo" aria-label="adofy トップへ">
+              <b lang="en">adofy</b>
+              <small>岐阜発・全国対応</small>
+            </Link>
+            <nav className="ax-hero__nav" aria-label="ページ内メニュー">
+              <ul>
+                {HERO_NAV.map((n) => (
+                  <li key={n.href}>
+                    <a href={n.href}>{n.label}</a>
                   </li>
                 ))}
-              </ol>
-              <svg className="ax-hero__line" viewBox="0 0 1400 770" aria-hidden="true">
-                <polyline points={HERO_LINE} pathLength="1" />
-                <circle cx="812" cy="130" r="7" />
-              </svg>
-            </div>
+              </ul>
+            </nav>
           </div>
         </section>
 
@@ -274,12 +280,17 @@ export default function HomeContent() {
           </div>
         </section>
 
-        {/* ── 写真（右肩上がりに並べる） ── */}
-        <div className="ax-wrap ax-photos">
-          {PHOTOS.slice(0, 3).map((p) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={p.src} src={p.src} alt={p.alt} loading="lazy" data-fade />
-          ))}
+        {/* ── 写真の帯 ── */}
+        <div className="ax-photos" aria-hidden="true">
+          <div className="ax-photos__track">
+            {[0, 1].map((k) => (
+              <div key={k}>
+                {PHOTOS.map((p) => (
+                  <img key={p.src} src={p.src} alt="" loading="lazy" className={p.wide ? "is-wide" : undefined} />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* ── Service ── */}
@@ -364,27 +375,40 @@ export default function HomeContent() {
           </div>
           <div className="ax-works__inner">
             <div className="ax-wrap">
-              <h2 className="ax-h2" id="ax-works-title" data-fade>
-                数字を追い続けた、
-                <br />
+              <h2 className="ax-visually-hidden" id="ax-works-title">
                 支援の実績
               </h2>
-              <ul className="ax-works__grid">
-                {WORKS.map((w) => (
-                  <li key={w.title} data-fade>
-                    <WorkLink work={w} className="ax-workcard">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={w.img} alt={`${w.title}の実績`} loading="lazy" />
-                      <span className="ax-pill ax-pill--dark">{w.tag}</span>
-                      <h3>
-                        {w.title}
-                        {w.href && <ArrowRight aria-hidden="true" />}
-                      </h3>
-                      <p>{w.body}</p>
-                    </WorkLink>
-                  </li>
-                ))}
-              </ul>
+              <div className="ax-works__grid">
+                <WorkLink work={WORKS[0]} className="ax-feature">
+                  <p className="ax-feature__en" lang="en" aria-hidden="true">Selected Works</p>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={WORKS[0].img} alt={`${WORKS[0].title}の実績`} loading="lazy" data-fade />
+                  <span className="ax-pill ax-pill--dark">{WORKS[0].tag}</span>
+                  <h3>
+                    {WORKS[0].title}｜{WORKS[0].body}
+                    <ArrowRight aria-hidden="true" />
+                  </h3>
+                </WorkLink>
+                <ul className="ax-worklist">
+                  {WORKS.slice(1).map((w, i) => (
+                    <li key={w.title} data-fade>
+                      <WorkLink work={w} className="ax-workitem">
+                        <span className="ax-workitem__side" lang="en" aria-hidden="true">Case {String(i + 2).padStart(2, "0")}</span>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={w.img} alt={`${w.title}の実績`} loading="lazy" />
+                        <div>
+                          <span className="ax-pill ax-pill--dark">{w.tag}</span>
+                          <h3>
+                            {w.title}
+                            {w.href && <ArrowRight aria-hidden="true" />}
+                          </h3>
+                          <p>{w.body}</p>
+                        </div>
+                      </WorkLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <h3 className="ax-videos__title" data-fade>
                 動画広告
