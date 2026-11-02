@@ -118,7 +118,7 @@ export async function POST(req: Request) {
       "■ 流入元",
       ...(attributionLines.length ? attributionLines : ["  （記録なし）"]),
       "",
-      "保存先：Supabase shokunin_candidates（企業には非公開）",
+      "管理画面：https://www.adofy-site.com/adofy-admin/shokunin",
     ]).catch((err) => console.error("[shokunin-entry] notify failed:", err));
 
     return NextResponse.json({ success: true, isNew });
