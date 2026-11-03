@@ -64,9 +64,9 @@ export const HERO = {
   ],
   /** 建設版の採用レスキュー（/kensetsu）と同じFV画像。見出し・料金は画像に焼き込み済み */
   image: {
-    pc: { src: "/images/shokunin-agent/hero-pc.webp", w: 1672, h: 941 },
+    pc: { src: "/images/shokunin-agent/hero-pc.webp", w: 1671, h: 941 },
     sp: { src: "/images/shokunin-agent/hero-sp.webp", w: 941, h: 1672 },
-    alt: "建設業に特化した採用支援。人が足りずに、仕事を断っていませんか？職人・現場スタッフの応募獲得を支援。月額費用69,800円、何人採用しても追加費用なしの採用し放題。",
+    alt: "建設業に特化した採用支援。人が足りずに、仕事を断っていませんか？職人・現場スタッフの応募獲得を支援。月額69,800円で採用し放題。",
   },
 } as const;
 

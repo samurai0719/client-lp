@@ -1523,3 +1523,88 @@
 .sa-lp .ks-psum .ks-psum__main dd b {
   font-size: 44px;
 }
+
+/* 追従CTAを廃止したので、スマホでもチャットの起動ボタンは画面の右下に置く */
+.sa-chat-fab {
+  bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .sa-chat-fab {
+    bottom: 24px;
+  }
+}
+
+/* 運営側のアイコンと「入力中」の点 */
+.sa-chat__row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.sa-chat__row.is-me {
+  justify-content: flex-end;
+}
+
+.sa-chat__row .sa-chat__msg {
+  max-width: calc(100% - 52px);
+}
+
+.sa-chat__avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--ks-ink);
+  border-radius: 50%;
+  background: var(--ks-orange);
+  color: #fff;
+}
+
+.sa-chat__avatar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sa-chat__typing {
+  display: inline-flex;
+  gap: 5px;
+  padding: 14px 16px;
+}
+
+.sa-chat__typing span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #9a958c;
+  animation: sa-typing 1s infinite ease-in-out;
+}
+
+.sa-chat__typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.sa-chat__typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes sa-typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-chat__typing span {
+    animation: none;
+    opacity: 0.6;
+  }
+}

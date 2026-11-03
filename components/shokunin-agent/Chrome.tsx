@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, HardHat, Menu, MessageCircle, X } from "lucide-react";
+import { HardHat, Menu, MessageCircle, X } from "lucide-react";
 import { openChat } from "./ChatConsult";
-import { CTA_HREF, CTA_MAIN, NAV, SERVICE_NAME } from "./config";
+import { CTA_HREF, NAV, SERVICE_NAME } from "./config";
 
 /** ヘッダー。スマホではハンバーガーメニューに畳む */
 export function Header() {
@@ -56,36 +56,6 @@ export function Header() {
         </nav>
       )}
     </header>
-  );
-}
-
-/**
- * スマホ下部の固定CTA（PCでは非表示）。
- * FVのCTA・相談フォーム・フッターが見えている間は隠し、ボタンの二重表示や入力欄・フッターへの重なりを防ぐ。
- */
-export function StickyCta() {
-  const [hidden, setHidden] = useState(true);
-
-  useEffect(() => {
-    const targets = [".sa-hero__cta", "#contact", ".sr-footer"]
-      .map((s) => document.querySelector(s))
-      .filter((el): el is Element => el !== null);
-    const seen = new Map<Element, boolean>();
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) seen.set(e.target, e.isIntersecting);
-      setHidden([...seen.values()].some(Boolean));
-    });
-    targets.forEach((t) => io.observe(t));
-    return () => io.disconnect();
-  }, []);
-
-  return (
-    <div className={`sr-sticky${hidden ? " is-hidden" : ""}`} aria-hidden={hidden}>
-      <a href={CTA_HREF} className="sr-btn sr-btn--lg sr-btn--primary sr-sticky__btn ks-btn" data-sr-cta="sticky" tabIndex={hidden ? -1 : 0}>
-        <span>{CTA_MAIN}</span>
-        <ArrowRight className="sr-btn__arrow" aria-hidden="true" strokeWidth={2.6} />
-      </a>
-    </div>
   );
 }
 
