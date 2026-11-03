@@ -36,7 +36,7 @@ export function EntryFooter() {
         <a href="/shokunin-entry/operator">運営者情報</a>
       </nav>
       <a className="se-footer__company" href="/shokunin-agent">
-        職人を採用したい企業の方はこちら
+        職人を採用したい企業の方はこちら（職人採用エージェント）
       </a>
       <p>© 2026 adofy All Rights Reserved.</p>
     </footer>

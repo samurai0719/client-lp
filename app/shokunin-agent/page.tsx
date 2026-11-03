@@ -42,6 +42,8 @@ export const metadata: Metadata = {
   alternates: { canonical: SITE.path },
   title: SITE.title,
   description: SITE.description,
+  applicationName: "職人採用エージェント",
+  authors: [{ name: "adofy", url: "https://adofy-site.com" }],
   openGraph: {
     type: "website",
     locale: "ja_JP",
@@ -49,10 +51,14 @@ export const metadata: Metadata = {
     url: SITE.path,
     title: SITE.title,
     description: SITE.description,
-    images: [{ url: SITE.ogImage, width: 1200, height: 630 }],
+    images: [{ url: SITE.ogImage, width: 1200, height: 630, alt: "職人採用エージェント｜月額69,800円で採用し放題" }],
   },
   twitter: { card: "summary_large_image", title: SITE.title, description: SITE.description, images: [SITE.ogImage] },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
 };
 
 export const viewport: Viewport = {

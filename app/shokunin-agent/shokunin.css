@@ -1625,3 +1625,12 @@
   width: 42px;
   height: 42px;
 }
+
+/* h1 の先頭にサービス名（指名検索で「職人採用エージェント」の公式ページと分かるように） */
+.sa-hero__brand {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ks-orange);
+  font-size: 0.62em;
+  letter-spacing: 0.04em;
+}

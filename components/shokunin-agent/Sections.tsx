@@ -160,6 +160,7 @@ export function Hero() {
         <div className="sa-hero__copy">
           <p className="sa-hero__label">{HERO.label}</p>
           <h1 className="sa-hero__title" id="sa-hero-title">
+            <span className="sa-hero__brand">{SERVICE_NAME}</span>
             <H text={HERO.title} />
           </h1>
           <ol className="sa-hero__steps">
@@ -451,7 +452,7 @@ export function Results() {
   return (
     <section className="ks-section ks-results" id="results" aria-labelledby="sa-results-title">
       <div className="sr-container">
-        <Head no="01" en="RESULTS" label="採用支援実績" id="sa-results-title" title="応募獲得実績" />
+        <Head no="01" en="RESULTS" label="採用支援実績" id="sa-results-title" title={<H text={`${SERVICE_NAME}の|応募獲得実績`} />} />
         <div className="ks-total">
           <p className="ks-total__cat">合計応募獲得数</p>
           <p className="sa-total__value">

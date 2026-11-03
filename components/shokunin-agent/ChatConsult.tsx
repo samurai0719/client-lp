@@ -38,7 +38,7 @@ const STEPS: Step[] = [
   { key: "name", ask: "ご担当者のお名前を教えてください。", input: { type: "text", placeholder: "例）山田 太郎", autoComplete: "name" } },
   {
     key: "phone",
-    ask: "電話番号を教えてください。お電話を希望されない場合、こちらからはかけません。",
+    ask: "電話番号を教えてください（必須）。ご相談内容の確認のため、ご連絡することがあります。",
     input: { type: "tel", placeholder: "例）090-1234-5678", autoComplete: "tel" },
     check: (v) => {
       const n = toHalf(v).replace(/\D/g, "").length;
@@ -208,7 +208,7 @@ export default function ChatConsult() {
             <MessageCircle aria-hidden="true" strokeWidth={2.4} />
             <p>
               チャットで無料相談
-              <small>電話はかかってきません（ご希望の方のみ）</small>
+              <small>1分で完了・相談無料</small>
             </p>
             <button type="button" onClick={() => setOpen(false)} aria-label="チャットを閉じる">
               <X aria-hidden="true" />
