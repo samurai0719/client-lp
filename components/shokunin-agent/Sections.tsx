@@ -25,11 +25,11 @@ import {
   CTA_MAIN,
   CTA_WAITING,
   CTA_SUB,
-  SUCCESS_FEE_MAN,
   FAQS,
   FINAL_TITLE,
   FLOW,
   HERO,
+  MONTHLY,
   OWNER_LABEL,
   PRICE,
   PHONE,
@@ -43,6 +43,7 @@ import {
   SERVICE_NAME,
   STRENGTHS,
   TRADES,
+  UNLIMITED,
   WORRY,
   yen,
   type WorryArt,
@@ -110,23 +111,20 @@ function PriceSummary() {
       <div className="ks-psum__main">
         <dt>月額費用</dt>
         <dd>
-          <b>{PRICE.monthly}</b>
+          <b>{yen(PRICE.monthly)}</b>
           <span>円</span>
         </dd>
       </div>
       <div>
-        <dt>初期費用</dt>
+        <dt>採用人数</dt>
         <dd>
-          <b>{yen(PRICE.initial)}</b>
-          <span>円</span>
+          <b>{UNLIMITED}</b>
         </dd>
       </div>
       <div>
-        <dt>採用成功時</dt>
+        <dt>採用時の追加料金</dt>
         <dd>
-          <small>一律</small>
-          <b>{SUCCESS_FEE_MAN}</b>
-          <span>万円</span>
+          <b>なし</b>
         </dd>
       </div>
     </dl>
@@ -194,7 +192,7 @@ export function Cost() {
   return (
     <section className="ks-section sa-cost" aria-labelledby="sa-cost-title">
       <div className="sr-container">
-        <Head no="01" en="COST" label="採用コストの比較" id="sa-cost-title" title={
+        <Head no="02" en="COST" label="採用コストの比較" id="sa-cost-title" title={
             <>
               {COST.title.before}
               <br />
@@ -242,7 +240,7 @@ export function Cost() {
             <li key={n}>{n}</li>
           ))}
         </ul>
-        <dl className="sa-cost__calc" aria-label="1人採用した場合の計算例">
+        <dl className="sa-cost__calc" aria-label="計算例">
           {COST.calc.map(([k, v]) => (
             <div key={k}>
               <dt>{k}</dt>
@@ -275,7 +273,7 @@ export function Worry() {
   return (
     <section className="ks-section sa-worry" id="worry" aria-labelledby="sa-worry-title">
       <div className="sr-container">
-        <Head no="02" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<H text={WORRY.title} />} />
+        <Head no="03" en="PROBLEM" label="よくあるお悩み" id="sa-worry-title" title={<H text={WORRY.title} />} />
         <ProblemOwnerIllustration className="sa-worry__owner" />
         <ul className="ks-problems__grid sa-worry__grid">
           {WORRY.items.map((w, i) => {
@@ -304,7 +302,7 @@ export function ServiceFlow() {
   return (
     <section className="ks-section ks-reasons" id="service" aria-labelledby="sa-flow-title">
       <div className="sr-container">
-        <Head no="03" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<H text={SERVICE_FLOW.title} />} />
+        <Head no="04" en="SERVICE" label="サービスの仕組み" id="sa-flow-title" title={<H text={SERVICE_FLOW.title} />} />
         <ol className="ks-intro__steps sa-flow__grid">
           {SERVICE_FLOW.steps.map((st, i) => (
             <li key={st.text} className="ks-card ks-istep">
@@ -329,7 +327,7 @@ export function BeforeAfter() {
   return (
     <section className="ks-section ks-delegate" aria-labelledby="sa-ba-title">
       <div className="sr-container">
-        <Head no="04" en="BEFORE / AFTER" label="採用業務の変化" id="sa-ba-title" title={<H text="社長の仕事が、|**ここまで変わります。**" />} />
+        <Head no="05" en="BEFORE / AFTER" label="採用業務の変化" id="sa-ba-title" title={<H text="社長の仕事が、|**ここまで変わります。**" />} />
         <div className="sa-ba__grid">
           <article className="ks-card sa-ba__col">
             <p className="sa-ba__tag">Before</p>
@@ -374,7 +372,7 @@ export function Scope() {
   return (
     <section className="ks-section ks-delegate" id="scope" aria-labelledby="sa-scope-title">
       <div className="sr-container sr-container--narrow">
-        <Head no="05" en="SCOPE" label="代行業務の範囲" id="sa-scope-title" title={<H text="担当範囲の|詳細" />} />
+        <Head no="06" en="SCOPE" label="代行業務の範囲" id="sa-scope-title" title={<H text="担当範囲の|詳細" />} />
         <div className="ks-delegate__cols">
           <div className="ks-card ks-delegate__col is-us">
             <p className="ks-delegate__who">
@@ -413,7 +411,7 @@ export function Strengths() {
   return (
     <section className="ks-section ks-strengths" aria-labelledby="sa-strengths-title">
       <div className="sr-container">
-        <Head no="06" en="STRENGTH" label="建設業特化の強み" id="sa-strengths-title" invert title={<H text={"建設業の採用は、\n**職種を|理解していなければ**|成功しません。"} />} />
+        <Head no="07" en="STRENGTH" label="建設業特化の強み" id="sa-strengths-title" invert title={<H text={"建設業の採用は、\n**職種を|理解していなければ**|成功しません。"} />} />
         <div className="ks-strengths__intro">
           <figure className="ks-strengths__photo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -453,7 +451,7 @@ export function Results() {
   return (
     <section className="ks-section ks-results" id="results" aria-labelledby="sa-results-title">
       <div className="sr-container">
-        <Head no="07" en="RESULTS" label="採用支援実績" id="sa-results-title" title="応募獲得実績" />
+        <Head no="01" en="RESULTS" label="採用支援実績" id="sa-results-title" title="応募獲得実績" />
         <div className="ks-total">
           <p className="ks-total__cat">合計応募獲得数</p>
           <p className="sa-total__value">
@@ -473,35 +471,32 @@ export function Pricing() {
   return (
     <section className="ks-section ks-pricing" id="pricing" aria-labelledby="sa-pricing-title">
       <div className="sr-container sr-container--narrow">
-        <Head no="08" en="PRICE" label="料金" id="sa-pricing-title" title={<H text={"料金は、|シンプルに|**3つだけ。**"} />} />
+        <Head no="08" en="PRICE" label="料金" id="sa-pricing-title" title={<H text={`料金は${MONTHLY}。\n**何人採用しても|${UNLIMITED}。**`} />} />
         <div className="ks-plan">
           <div className="ks-plan__monthly">
             <p className="ks-plan__label">月額費用</p>
             <p className="ks-plan__zero">
-              <b>{PRICE.monthly}</b>
+              <b>{yen(PRICE.monthly)}</b>
               <span>円</span>
             </p>
           </div>
           <div className="ks-plan__rows">
             <div className="ks-plan__row">
-              <p className="ks-plan__label">初期費用</p>
+              <p className="ks-plan__label">採用人数</p>
               <p className="ks-plan__price">
-                <b>{yen(PRICE.initial)}</b>
-                <span>円</span>
+                <b>{UNLIMITED}</b>
               </p>
             </div>
             <div className="ks-plan__row">
-              <p className="ks-plan__label">採用成功報酬</p>
+              <p className="ks-plan__label">採用時の追加料金</p>
               <p className="ks-plan__price">
-                <small>1人につき一律</small>
-                <b>{SUCCESS_FEE_MAN}</b>
-                <span>万円</span>
+                <b>なし</b>
               </p>
             </div>
           </div>
           <div className="ks-plan__example">
             <p className="ks-plan__example-title">計算例</p>
-            <p className="sa-example">2人採用した場合、採用成功報酬は{yen((PRICE.successFee * 2) / 10000)}万円</p>
+            <p className="sa-example">3人採用しても、料金は{MONTHLY}のまま</p>
           </div>
           <div className="ks-plan__cta">
             <Cta location="pricing" label="自社の場合の料金を相談する" />
@@ -636,7 +631,7 @@ const LEGAL: { id: string; title: string; items: { term: string; desc: string; h
       { term: "所在地", desc: `${OPERATOR.area}　※詳細はご請求があれば遅滞なく開示します` },
       { term: "電話番号", desc: PHONE, href: `tel:${PHONE.replace(/-/g, "")}` },
       { term: "メールアドレス", desc: OPERATOR.email, href: `mailto:${OPERATOR.email}` },
-      { term: "販売価格", desc: `初期費用 ${yen(PRICE.initial)}円 / 月額費用 ${PRICE.monthly}円 / 採用成功報酬 1人につき一律${yen(PRICE.successFee)}円` },
+      { term: "販売価格", desc: `${MONTHLY}（採用人数による追加料金なし）` },
       { term: "支払時期・支払方法", desc: PREPARING },
       { term: "役務の提供時期", desc: PREPARING },
       { term: "返金について", desc: PREPARING },

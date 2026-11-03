@@ -1,5 +1,5 @@
 import { OPERATOR } from "@/components/saiyo-rescue/config";
-import { FAQS, PHONE, PRICE, SERVICE_NAME, SITE } from "./config";
+import { FAQS, PRICE, SERVICE_NAME, SITE } from "./config";
 
 const plain = (s: string) => s.replace(/\*\*/g, "").replace(/\|/g, "");
 
@@ -15,7 +15,6 @@ export default function StructuredData() {
         name: OPERATOR.name,
         url: OPERATOR.siteUrl,
         email: OPERATOR.email,
-        telephone: `+81-${PHONE.replace(/^0/, "")}`,
       },
       {
         "@type": "Service",
@@ -28,9 +27,13 @@ export default function StructuredData() {
         audience: { "@type": "BusinessAudience", audienceType: "建設会社・工務店・専門工事会社" },
         provider: { "@id": `${OPERATOR.siteUrl}#organization` },
         offers: [
-          { "@type": "Offer", name: "初期費用", price: PRICE.initial, priceCurrency: "JPY" },
-          { "@type": "Offer", name: "月額費用", price: PRICE.monthly, priceCurrency: "JPY" },
-          { "@type": "Offer", name: "採用成功報酬（1人あたり）", price: PRICE.successFee, priceCurrency: "JPY" },
+          {
+            "@type": "Offer",
+            name: "月額プラン（採用し放題）",
+            price: PRICE.monthly,
+            priceCurrency: "JPY",
+            priceSpecification: { "@type": "UnitPriceSpecification", price: PRICE.monthly, priceCurrency: "JPY", unitCode: "MON" },
+          },
         ],
       },
       {

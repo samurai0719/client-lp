@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, HardHat, Menu, Phone, X } from "lucide-react";
-import { CTA_HREF, CTA_MAIN, NAV, PHONE, SERVICE_NAME } from "./config";
-
-const TEL_HREF = `tel:${PHONE.replace(/-/g, "")}`;
+import { ArrowRight, HardHat, Menu, MessageCircle, X } from "lucide-react";
+import { openChat } from "./ChatConsult";
+import { CTA_HREF, CTA_MAIN, NAV, SERVICE_NAME } from "./config";
 
 /** ヘッダー。スマホではハンバーガーメニューに畳む */
 export function Header() {
@@ -26,16 +25,16 @@ export function Header() {
             </a>
           ))}
         </nav>
-        <a href={TEL_HREF} className="sa-header__tel" data-sr-cta="header-tel">
-          <Phone aria-hidden="true" strokeWidth={2.6} />
-          {PHONE}
-        </a>
+        <button type="button" className="sa-header__tel" onClick={openChat} data-sr-cta="header-chat">
+          <MessageCircle aria-hidden="true" strokeWidth={2.6} />
+          チャットで相談
+        </button>
         <a href={CTA_HREF} className="sa-header__cta" data-sr-cta="header">
           無料相談
         </a>
-        <a href={TEL_HREF} className="sa-header__call" aria-label={`電話する ${PHONE}`} data-sr-cta="header-call">
-          <Phone aria-hidden="true" strokeWidth={2.4} />
-        </a>
+        <button type="button" className="sa-header__call" onClick={openChat} aria-label="チャットで相談する" data-sr-cta="header-chat-icon">
+          <MessageCircle aria-hidden="true" strokeWidth={2.4} />
+        </button>
         <button
           type="button"
           className="sa-menu-btn"

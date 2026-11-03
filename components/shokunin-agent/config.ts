@@ -7,8 +7,8 @@
  *   「職人採用エージェント」はサービス名としてだけ使う
  * ・応募者の選考、採用可否、雇用条件の最終決定、内定通知は必ず依頼企業が行う
  * ・紹介・推薦・選定・マッチング、応募や採用の保証に当たる表現は使わない
- * ・税区分、広告費の扱い、成功報酬が発生する正確な時点、支払期限、早期退職時の返金条件は
- *   未確定。内容を書かず、UNDECIDED の定型文に留める
+ * ・料金は月額69,800円のみ（初期費用・成果報酬は書かない）。採用人数による追加料金はない
+ * ・税区分、広告費の扱い、支払期限、契約期間、解約条件は未確定。内容を書かず、UNDECIDED の定型文に留める
  * ・実績は応募獲得実績として出し、採用人数に置き換えない
  *
  * 見出しなどの "|" は改行してよい位置（<wbr>）、"\n" は必ず改行する位置。
@@ -19,9 +19,9 @@ export const SERVICE_NAME = "職人採用エージェント";
 export const SITE = {
   origin: "https://saiyo.adofy-site.com",
   path: "/shokunin-agent",
-  title: "職人採用エージェント｜建設業・職人の採用代行｜月額0円",
+  title: "職人採用エージェント｜建設業・職人の採用代行｜月額69,800円で採用し放題",
   description:
-    "建設会社の職人採用を代行。鳶・足場・塗装・大工・電気工事などの求人制作、採用LP、広告運用、応募者対応、面接日程の調整までまとめて対応します。初期費用89,800円・月額0円・成功報酬は採用1人につき一律20万円。",
+    "建設会社の職人採用を代行。鳶・足場・塗装・大工・電気工事などの求人制作、採用LP、広告運用、応募者対応、面接日程の調整までまとめて対応します。月額69,800円で、何人採用しても追加費用なしの採用し放題。",
   ogImage: "/images/shokunin-agent/og.png",
 } as const;
 
@@ -35,24 +35,22 @@ export const CTA_SUB = "相談しただけで料金が発生することはあ�
 export const UNDECIDED = "無料相談時に採用条件を確認したうえで個別にご案内します。";
 
 export const NAV = [
+  { href: "#results", label: "実績" },
   { href: "#service", label: "サービスの仕組み" },
   { href: "#scope", label: "代行内容" },
   { href: "#pricing", label: "料金" },
-  { href: "#results", label: "実績" },
   { href: "#flow", label: "ご利用の流れ" },
   { href: "#faq", label: "よくある質問" },
 ] as const;
 
 /* ─── 料金（このLPの唯一の価格ソース） ─── */
-/** 成功報酬は採用1人につき一律（年収・職種によらない） */
-export const PRICE = { initial: 89800, monthly: 0, successFee: 200_000 } as const;
+/** 月額のサブスクのみ。何人採用しても月額は変わらない */
+export const PRICE = { monthly: 69_800 } as const;
 export const yen = (n: number) => n.toLocaleString("ja-JP");
-/** 200000 → "20" （万円表記用） */
-export const SUCCESS_FEE_MAN = yen(PRICE.successFee / 10000);
-/** 1人採用したときの総額（初期費用＋成功報酬） */
-export const EXAMPLE_TOTAL = PRICE.initial + PRICE.successFee;
+export const MONTHLY = `月額${yen(PRICE.monthly)}円`;
+export const UNLIMITED = "採用し放題";
 
-export const PRICE_LINE = [`初期費用${yen(PRICE.initial)}円`, `月額${PRICE.monthly}円`, `採用成功時は1人につき一律${SUCCESS_FEE_MAN}万円`] as const;
+export const PRICE_LINE = [MONTHLY, `何人採用しても${UNLIMITED}`] as const;
 export const PRICE_FOOTNOTE = "詳細な料金条件は、ご契約前に書面でご案内します。";
 
 /* ─── FV ─── */
@@ -68,7 +66,7 @@ export const HERO = {
   image: {
     pc: { src: "/images/shokunin-agent/hero-pc.webp", w: 1672, h: 941 },
     sp: { src: "/images/shokunin-agent/hero-sp.webp", w: 941, h: 1672 },
-    alt: "建設業に特化した採用支援。人が足りずに、仕事を断っていませんか？職人・現場スタッフの応募獲得を支援。月額費用0円、初期費用89,800円、成果報酬は一律20万円。",
+    alt: "建設業に特化した採用支援。人が足りずに、仕事を断っていませんか？職人・現場スタッフの応募獲得を支援。月額費用69,800円、何人採用しても追加費用なしの採用し放題。",
   },
 } as const;
 
@@ -90,24 +88,24 @@ export const COST = {
   },
   agent: {
     name: "職人採用|エージェント",
-    note: "初期費用（採用成功時は|別途、成功報酬）",
-    big: `${yen(PRICE.initial)}円`,
+    note: "月額のみ（何人採用しても|追加費用なし）",
+    big: `月${yen(PRICE.monthly)}円`,
     rows: [
-      ["採用コスト", `初期費用|${yen(PRICE.initial)}円|＋成功報酬`],
-      ["月額費用", "0円"],
-      ["成功報酬", `1人につき|一律${SUCCESS_FEE_MAN}万円`],
-      ["1人|採用した場合", `${yen(EXAMPLE_TOTAL)}円`],
+      ["採用コスト", `月額|${yen(PRICE.monthly)}円`],
+      ["月額費用", `${yen(PRICE.monthly)}円`],
+      ["成功報酬", "なし"],
+      ["1人|採用した場合", `月額|${yen(PRICE.monthly)}円の|まま`],
       ["応募者対応", "当社が|代行"],
       ["面接日程の|調整", "当社が|代行"],
     ],
   },
-  calc: [["成功報酬（1人）", `${yen(PRICE.successFee)}円`]],
-  diff: "1人採用した場合、|サービス料金は|平均採用コストより|**約74万円低い設計**",
+  calc: [["3人採用した場合", `${MONTHLY}のまま`]],
+  diff: `何人採用しても、|**${MONTHLY}で|${UNLIMITED}**`,
   cta: "採用コストを相談する",
   notes: [
     "出典：株式会社リクルート 就職みらい研究所『就職白書2020』。103.3万円は2019年度の中途採用1人あたりの平均採用コストであり、リクルートが提供する特定サービスの料金ではありません。",
     // 指定文の「広告費などの実費は含んでいません」は、広告費の負担条件を確認できるまで掲載しない
-    "約74万円の差は、1人採用した場合の成功報酬20万円に初期費用89,800円を足した289,800円との計算例です。広告費の扱いは、無料相談時に個別にご案内します。実際の費用は採用条件によって異なります。",
+    `職人採用エージェントの料金は月額${yen(PRICE.monthly)}円で、採用人数による追加料金はありません。広告費の扱いは、無料相談時に個別にご案内します。`,
   ],
 } as const;
 
@@ -119,7 +117,7 @@ export const WORRY = {
   items: [
     { text: "求人を出しても|職人から|**応募が来ない**", art: "noApplicant" },
     { text: "現場に出ているため|**応募者からの電話に|対応できない**", art: "missedCall" },
-    { text: "月額で|**費用を払っている**", art: "monthlyCost" },
+    { text: "採用するたびに|**高い成功報酬が|かかる**", art: "monthlyCost" },
     { text: "採用しても|**すぐやめてしまう**", art: "quickQuit" },
     { text: "人手不足によって|**新しい仕事を|断っている**", art: "declined" },
   ] as { text: string; art: WorryArt }[],
@@ -209,7 +207,7 @@ export const RESULTS_NOTES = [
 export const FLOW = [
   "無料相談",
   "採用条件のヒアリング",
-  "契約・初期費用の支払い",
+  "ご契約",
   "採用LP・求人広告の制作",
   "広告配信・応募者対応開始",
   "面接",
@@ -219,8 +217,8 @@ export const FLOW = [
 /* ─── よくある質問 ─── */
 export const FAQS: { q: string; a: string[] }[] = [
   {
-    q: "本当に月額費用はかかりませんか？",
-    a: [`はい。**月額費用は0円**です。料金は、初期費用${yen(PRICE.initial)}円と、採用成功時の成功報酬（1人につき一律${SUCCESS_FEE_MAN}万円）です。${PRICE_FOOTNOTE}`],
+    q: "料金はいくらですか？",
+    a: [`**${MONTHLY}**です。何人採用しても、採用人数による追加料金はかかりません。${PRICE_FOOTNOTE}`],
   },
   { q: "どのような職種に対応していますか？", a: [`${TRADES.join("、")}などの職種に対応しています。`] },
   {
@@ -232,7 +230,7 @@ export const FAQS: { q: string; a: string[] }[] = [
     a: ["**依頼企業が決めます。**応募者の選考、採用可否、雇用条件の最終決定、内定通知は、必ず依頼企業に行っていただきます。"],
   },
   { q: "求人原稿や採用ページも作ってもらえますか？", a: ["はい。求人原稿と採用LPの制作も代行します。"] },
-  { q: "採用できなかった場合、成果報酬はかかりますか？", a: [`成功報酬は、採用成功時にかかる料金です。発生の条件は、${UNDECIDED}`] },
+  { q: "採用が決まったら、追加の料金はかかりますか？", a: [`かかりません。成果報酬はなく、**何人採用しても${MONTHLY}のまま**です。`] },
   { q: "広告費は料金に含まれますか？", a: [UNDECIDED] },
   { q: "対応可能な地域を教えてください", a: [UNDECIDED] },
   { q: "契約期間はありますか？", a: [UNDECIDED] },
