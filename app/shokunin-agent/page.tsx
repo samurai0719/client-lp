@@ -59,6 +59,8 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
+  // Google Search Console（saiyo.adofy-site.com）の所有権確認
+  verification: { google: "V3FtsnpfZEnsEv-8u0R4iWlXinrsIozyFVCM2oTOXpg" },
 };
 
 export const viewport: Viewport = {

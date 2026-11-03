@@ -42,6 +42,8 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: SITE.title, description: SITE.description, images: [HERO_IMAGE.pc] },
   robots: { index: true, follow: true },
+  // Google Search Console（saiyo.adofy-site.com）の所有権確認
+  verification: { google: "V3FtsnpfZEnsEv-8u0R4iWlXinrsIozyFVCM2oTOXpg" },
 };
 
 export const viewport: Viewport = {
