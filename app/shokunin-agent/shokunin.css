@@ -1608,3 +1608,20 @@
     opacity: 0.6;
   }
 }
+
+/* 運営側のアイコンは女性キャラクターの画像 */
+.sa-chat__avatar {
+  overflow: hidden;
+  background: #fbe3e1;
+}
+
+.sa-chat__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sa-chat__avatar {
+  width: 42px;
+  height: 42px;
+}

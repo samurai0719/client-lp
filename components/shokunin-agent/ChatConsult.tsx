@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { HardHat, LoaderCircle, MessageCircle, Send, X } from "lucide-react";
+import { LoaderCircle, MessageCircle, Send, X } from "lucide-react";
 import { fireAdofyLead } from "@/lib/analytics/adofyPixel";
 import { fireShokuninAgentLead } from "@/lib/analytics/shokuninAgentPixel";
 import { loadAttribution } from "@/lib/saiyoRescue/attribution";
@@ -63,7 +63,8 @@ const TYPING_MS = 1100;
 function BotAvatar() {
   return (
     <span className="sa-chat__avatar" aria-hidden="true">
-      <HardHat strokeWidth={2.4} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/shokunin-agent/operator.webp" width={96} height={96} alt="" />
     </span>
   );
 }
