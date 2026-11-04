@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import {
-  CONTACT_TIMES,
   answersToLabeled,
   isValidEmail,
   normalizeDriverPhone,
@@ -35,7 +34,6 @@ export async function POST(req: Request) {
     const rawPhone = text(body.phone, 40);
     const email = text(body.email, 200).toLowerCase();
     const comment = text(body.comment, 2000);
-    const contactTime = CONTACT_TIMES.includes(body.contactTime as (typeof CONTACT_TIMES)[number]) ? (body.contactTime as string) : '';
     const yearNow = new Date().getFullYear();
     const birthYearNum = Number(body.birthYear);
     const birthYear = Number.isInteger(birthYearNum) && birthYearNum >= yearNow - 90 && birthYearNum <= yearNow - 15 ? birthYearNum : null;
@@ -63,7 +61,7 @@ export async function POST(req: Request) {
       referrer: attr(a.referrer),
     };
 
-    const db = await saveDriverRegistration({ name, phone, email, birthYear, contactTime, comment, answers, attribution });
+    const db = await saveDriverRegistration({ name, phone, email, birthYear, comment, answers, attribution });
 
     const now = new Date().toLocaleString('ja-JP', {
       timeZone: 'Asia/Tokyo',
@@ -100,7 +98,6 @@ export async function POST(req: Request) {
       `生まれ年       ：${birthYear ? `${birthYear}年` : '未回答'}`,
       `電話番号       ：${phone}`,
       `メールアドレス ：${email || 'なし'}`,
-      `連絡希望時間帯 ：${contactTime || '指定なし'}`,
       `ご希望・ご質問 ：${comment || 'なし'}`,
       '',
       '━━━━━━━━━━━━━━━━━━━━━━━━',

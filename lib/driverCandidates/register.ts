@@ -19,7 +19,6 @@ export type DriverRegistration = {
   /** 空なら未入力 */
   email: string;
   birthYear: number | null;
-  contactTime: string;
   comment: string;
   answers: DriverAnswers;
   attribution: { utmSource: string | null; utmCampaign: string | null; landingPage: string | null };
@@ -39,7 +38,6 @@ export function registrationToRow(r: DriverRegistration) {
   const a = r.answers;
   const labeled: Record<string, string> = Object.fromEntries(answersToLabeled(a));
   if (r.birthYear) labeled["生まれ年"] = `${r.birthYear}年`;
-  if (r.contactTime) labeled["連絡希望時間帯"] = r.contactTime;
 
   // 希望勤務地：都道府県まで選んでいればそれ、「現在の住所周辺」ならお住まいの都道府県
   const desiredPrefecture = a.desiredPrefecture || (a.desiredArea === "現在の住所周辺" ? a.currentPrefecture : "") || null;

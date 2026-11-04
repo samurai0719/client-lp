@@ -68,7 +68,6 @@ export const PRIORITIES = [
   '特に決めていない',
 ] as const;
 export const DESIRED_SALARIES = ['300万円未満', '300〜400万円', '400〜500万円', '500〜600万円', '600万円以上', 'まだ決めていない'] as const;
-export const CONTACT_TIMES = ['いつでも', '平日 午前（9〜12時）', '平日 午後（12〜17時）', '平日 夕方以降（17〜20時）', '土日・祝日'] as const;
 
 /** 選ぶと他の選択を外す選択肢（複数選択の質問） */
 export const EXCLUSIVE_CHOICES = {
@@ -136,11 +135,10 @@ export type DriverContact = {
   birthYear: string;
   phone: string;
   email: string;
-  contactTime: string;
   comment: string;
 };
 
-export const EMPTY_CONTACT: DriverContact = { name: '', birthYear: '', phone: '', email: '', contactTime: '', comment: '' };
+export const EMPTY_CONTACT: DriverContact = { name: '', birthYear: '', phone: '', email: '', comment: '' };
 
 /** 生まれ年の選択肢（18歳〜75歳）。年は呼び出し時点で計算する */
 export function birthYearOptions(now = new Date()): number[] {
@@ -173,6 +171,7 @@ export const ANSWER_DISPLAY_ORDER: string[] = [
   ...Object.values(ANSWER_LABELS).slice(0, 6),
   '生まれ年',
   ...Object.values(ANSWER_LABELS).slice(6),
+  // 以前のフォーム（2026-11-04 まで）にあった項目。過去の登録者の表示用
   '連絡希望時間帯',
   // 以前の診断（2026-10-28 まで）にあった質問。過去の登録者の表示用
   '運転経験のある車両',

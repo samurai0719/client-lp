@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import {
-  CONTACT_TIMES,
   birthYearOptions,
   isValidEmail,
   normalizeDriverPhone,
@@ -125,17 +124,6 @@ export default function RegisterSection({ contact, onChange, onSubmit }: Registe
             placeholder="example@example.com"
             className={inputCls}
           />
-        </Field>
-
-        <Field label="連絡を希望する時間帯">
-          <select value={contact.contactTime} onChange={(e) => onChange({ contactTime: e.target.value })} className={inputCls}>
-            <option value="">選択してください</option>
-            {CONTACT_TIMES.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
         </Field>
 
         <Field label="ご希望・ご質問">
