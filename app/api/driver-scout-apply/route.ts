@@ -122,8 +122,6 @@ function extrasText(v: ScoutApplyValues): string {
     ...(v.candidateNo ? [`面接を希望する候補者：No.${v.candidateNo}`] : []),
     ...(v.questions ? [`求職者に聞いてほしいこと：\n${v.questions}`] : []),
     `所在地（市区町村）：${v.city}`,
-    `求める免許：${v.licenses.join("、")}`,
-    `採用希望時期：${v.hiringTiming}`,
   ].join("\n");
 }
 
@@ -139,8 +137,6 @@ async function save(v: ScoutApplyValues, tracking: Record<string, string | null>
     phone: v.phone,
     email: v.email,
     prefecture: v.prefecture,
-    job_types: v.jobTypes,
-    hiring_count: v.hiringCount,
     consented_at: new Date().toISOString(),
     status: "new",
     ...tracking,
@@ -150,8 +146,6 @@ async function save(v: ScoutApplyValues, tracking: Record<string, string | null>
     ...base,
     inquiry_type: SCOUT_INQUIRY_TYPE,
     address_city: v.city,
-    licenses: v.licenses,
-    hiring_timing: v.hiringTiming,
     message: extrasText(v),
   });
   if (!error) return true;
@@ -185,10 +179,6 @@ async function notify(v: ScoutApplyValues, tracking: Record<string, string | nul
     `電話番号：${v.phone}`,
     `メールアドレス：${v.email}`,
     `所在地：${v.prefecture}${v.city}`,
-    `採用したい職種：${v.jobTypes.join("、")}`,
-    `求める免許：${v.licenses.join("、")}`,
-    `採用予定人数：${v.hiringCount}`,
-    `採用希望時期：${v.hiringTiming}`,
     `求職者に聞いてほしいこと：${v.questions ? `\n${v.questions}` : "（記入なし）"}`,
     "",
     `流入元：${tracking.utm_source ?? tracking.referrer ?? "直接アクセス"}`,

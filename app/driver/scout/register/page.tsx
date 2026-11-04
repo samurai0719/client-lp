@@ -41,7 +41,7 @@ export default async function ScoutRegisterPage({ searchParams }: { searchParams
             lead={
               isRequest
                 ? "ドラテクが求職者に連絡し、面接の希望と御社が確認したい内容を聞いたうえで、面接の日程を調整します。登録は無料です。"
-                : "会社情報と採用したい条件をご入力ください。登録は無料です。費用が発生するのは採用決定時の成功報酬（想定年収の10％）だけです。"
+                : "会社情報をご入力ください。登録は無料です。費用が発生するのは採用決定時の成功報酬（想定年収の10％）だけです。"
             }
           />
           {isRequest ? <InterviewRequestForm candidateNo={no} /> : <ApplyForm />}

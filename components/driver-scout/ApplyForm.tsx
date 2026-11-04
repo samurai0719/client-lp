@@ -7,10 +7,6 @@ import { PATHS } from "@/config/driver-company";
 import { loadUtm } from "@/lib/utm/storage";
 import {
   PREFECTURES,
-  SCOUT_HIRING_COUNTS,
-  SCOUT_HIRING_TIMINGS,
-  SCOUT_JOB_TYPES,
-  SCOUT_LICENSES,
   QUESTIONS_MAX,
   validateScoutApply,
   type ScoutApplyErrors,
@@ -29,10 +25,6 @@ type Values = {
   email: string;
   prefecture: string;
   city: string;
-  jobTypes: string[];
-  licenses: string[];
-  hiringCount: string;
-  hiringTiming: string;
   questions: string;
   privacyAgreed: boolean;
 };
@@ -44,10 +36,6 @@ const INITIAL: Values = {
   email: "",
   prefecture: "愛知県",
   city: "",
-  jobTypes: [],
-  licenses: [],
-  hiringCount: "",
-  hiringTiming: "",
   questions: "",
   privacyAgreed: false,
 };
@@ -93,9 +81,6 @@ export default function ApplyForm({ candidateNo }: { candidateNo?: string } = {}
       return n;
     });
   };
-
-  const toggle = (key: "jobTypes" | "licenses", item: string) =>
-    set(key, v[key].includes(item) ? v[key].filter((x) => x !== item) : [...v[key], item]);
 
   const focusFirstError = (errs: ScoutApplyErrors) => {
     const first = Object.keys(errs)[0];
@@ -244,33 +229,6 @@ export default function ApplyForm({ candidateNo }: { candidateNo?: string } = {}
           </div>
         </fieldset>
 
-        <fieldset className="ds-form__group">
-          <legend>採用したい条件</legend>
-          <Chips id="jobTypes" label="採用したい職種（複数選択可）" options={SCOUT_JOB_TYPES} selected={v.jobTypes} onToggle={(o) => toggle("jobTypes", o)} error={err("jobTypes")} />
-          <Chips id="licenses" label="求める免許（複数選択可）" options={SCOUT_LICENSES} selected={v.licenses} onToggle={(o) => toggle("licenses", o)} error={err("licenses")} />
-          <div className="ds-form__row">
-            <Field id="hiringCount" label="採用予定人数" error={err("hiringCount")}>
-              <select id="ds-f-hiringCount" className={INPUT} value={v.hiringCount} onChange={(e) => set("hiringCount", e.target.value)} {...aria("hiringCount")}>
-                <option value="">選択してください</option>
-                {SCOUT_HIRING_COUNTS.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
-            </Field>
-            <Field id="hiringTiming" label="採用希望時期" error={err("hiringTiming")}>
-              <select id="ds-f-hiringTiming" className={INPUT} value={v.hiringTiming} onChange={(e) => set("hiringTiming", e.target.value)} {...aria("hiringTiming")}>
-                <option value="">選択してください</option>
-                {SCOUT_HIRING_TIMINGS.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
-            </Field>
-          </div>
-        </fieldset>
 
         <div className="ds-form__field">
           <label className="ds-form__label" htmlFor="ds-f-questions">
@@ -344,43 +302,6 @@ function Field({ id, label, error, children }: { id: string; label: string; erro
         <em className="ds-req">必須</em>
       </label>
       {children}
-      {error}
-    </div>
-  );
-}
-
-function Chips({
-  id,
-  label,
-  options,
-  selected,
-  onToggle,
-  error,
-}: {
-  id: string;
-  label: string;
-  options: readonly string[];
-  selected: string[];
-  onToggle: (o: string) => void;
-  error: React.ReactNode;
-}) {
-  return (
-    <div className="ds-form__field">
-      <p className="ds-form__label" id={`ds-l-${id}`}>
-        {label}
-        <em className="ds-req">必須</em>
-      </p>
-      <div className="ds-chipset" role="group" aria-labelledby={`ds-l-${id}`} id={`ds-f-${id}`} tabIndex={-1}>
-        {options.map((o) => {
-          const on = selected.includes(o);
-          return (
-            <label key={o} className={`ds-chip${on ? " is-on" : ""}`}>
-              <input type="checkbox" checked={on} onChange={() => onToggle(o)} />
-              {o}
-            </label>
-          );
-        })}
-      </div>
       {error}
     </div>
   );

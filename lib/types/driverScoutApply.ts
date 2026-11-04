@@ -4,7 +4,8 @@
  * クライアントとサーバーで同じ定義を使い、選択肢のズレを防ぐ。
  *
  * 保存先は既存の driver_company_inquiries（migration 007）。
- * 所在地の市区町村・免許・採用希望時期・申込み種別は migration 014 で追加する列に入れる。
+ * 所在地の市区町村・申込み種別は migration 014 で追加した列に入れる。
+ * 採用したい条件（職種・免許・人数・時期）はフォームから外したため保存しない（列は残してある）。
  * エラーメッセージには入力値も内部情報も載せない。
  */
 import { PREFECTURES } from "./driverCompanyInquiry";
@@ -18,35 +19,6 @@ export const QUESTIONS_MAX = 1000;
 
 export const SCOUT_INQUIRY_TYPE = "profile_search";
 
-export const SCOUT_JOB_TYPES = [
-  "大型トラック",
-  "中型トラック",
-  "4t",
-  "2t・小型",
-  "トレーラー",
-  "ダンプ",
-  "ルート配送",
-  "長距離",
-  "地場配送",
-  "軽貨物・宅配",
-  "その他",
-] as const;
-
-export const SCOUT_LICENSES = [
-  "普通（AT限定可）",
-  "普通（MT）",
-  "準中型",
-  "中型",
-  "大型",
-  "けん引",
-  "フォークリフト",
-  "不問",
-] as const;
-
-export const SCOUT_HIRING_COUNTS = ["1名", "2〜3名", "4〜5名", "6名以上", "未定"] as const;
-
-export const SCOUT_HIRING_TIMINGS = ["すぐにでも", "1か月以内", "3か月以内", "半年以内", "時期は未定"] as const;
-
 export type ScoutApplyInput = {
   companyName?: string;
   contactName?: string;
@@ -54,10 +26,6 @@ export type ScoutApplyInput = {
   email?: string;
   prefecture?: string;
   city?: string;
-  jobTypes?: string[];
-  licenses?: string[];
-  hiringCount?: string;
-  hiringTiming?: string;
   privacyAgreed?: boolean;
   /** 匿名プロフィールから来たときの候補者番号（任意） */
   candidateNo?: string;
@@ -79,10 +47,6 @@ export type ScoutApplyValues = {
   email: string;
   prefecture: string;
   city: string;
-  jobTypes: string[];
-  licenses: string[];
-  hiringCount: string;
-  hiringTiming: string;
   /** 連絡先の開示を依頼された候補者番号。一覧から来ていなければ null */
   candidateNo: string | null;
   /** 求職者に聞いてほしいこと（任意。未入力なら null） */
@@ -127,11 +91,6 @@ function pick(v: unknown, allowed: readonly string[]): string | null {
   return typeof v === "string" && allowed.includes(v) ? v : null;
 }
 
-function pickMany(v: unknown, allowed: readonly string[]): string[] {
-  if (!Array.isArray(v)) return [];
-  return Array.from(new Set(v.filter((x): x is string => typeof x === "string" && allowed.includes(x))));
-}
-
 /**
  * 入力全体を検証する。クライアント（表示用）とサーバー（受付判定）の両方で使う。
  * 信用できるのはサーバー側の結果だけ。
@@ -149,10 +108,6 @@ export function validateScoutApply(
   const email = normalizeEmail(body.email);
   const prefecture = pick(body.prefecture, PREFECTURES);
   const city = str(body.city, 200);
-  const jobTypes = pickMany(body.jobTypes, SCOUT_JOB_TYPES);
-  const licenses = pickMany(body.licenses, SCOUT_LICENSES);
-  const hiringCount = pick(body.hiringCount, SCOUT_HIRING_COUNTS);
-  const hiringTiming = pick(body.hiringTiming, SCOUT_HIRING_TIMINGS);
 
   if (!companyName) errors.companyName = "会社名をご入力ください。";
   if (!contactName) errors.contactName = "担当者名をご入力ください。";
@@ -162,10 +117,6 @@ export function validateScoutApply(
   else if (!email) errors.email = "メールアドレスの形式をご確認ください。";
   if (!prefecture) errors.prefecture = "都道府県をお選びください。";
   if (!city) errors.city = "市区町村をご入力ください。";
-  if (jobTypes.length === 0) errors.jobTypes = "採用したい職種を1つ以上お選びください。";
-  if (licenses.length === 0) errors.licenses = "求める免許を1つ以上お選びください。";
-  if (!hiringCount) errors.hiringCount = "採用予定人数をお選びください。";
-  if (!hiringTiming) errors.hiringTiming = "採用希望時期をお選びください。";
   if (body.privacyAgreed !== true) errors.privacyAgreed = "個人情報保護方針への同意が必要です。";
 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
@@ -178,10 +129,6 @@ export function validateScoutApply(
       email: email!,
       prefecture: prefecture!,
       city: city!,
-      jobTypes,
-      licenses,
-      hiringCount: hiringCount!,
-      hiringTiming: hiringTiming!,
       candidateNo: typeof body.candidateNo === "string" && CANDIDATE_NO_PATTERN.test(body.candidateNo) ? body.candidateNo : null,
       questions: strMultiline(body.questions, QUESTIONS_MAX),
     },
