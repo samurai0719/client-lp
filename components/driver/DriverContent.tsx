@@ -7,6 +7,7 @@ import QuestionCard, { StepSection } from './QuestionCard';
 import LicenseQuestion from './LicenseQuestion';
 import LocationStep, { NextButton } from './LocationStep';
 import RegisterSection, { RegisterComplete } from './RegisterSection';
+import { fireDoratechSeekerLead } from '@/lib/analytics/doratechSeekerPixel';
 import {
   DESIRED_JOB_TYPES,
   DESIRED_SALARIES,
@@ -183,6 +184,7 @@ export default function DriverContent() {
       throw new Error(data.error ?? '');
     }
     setDone(true);
+    fireDoratechSeekerLead();
     window.history.replaceState({ ...window.history.state, driverStep: TOTAL_STEPS }, '');
   };
 

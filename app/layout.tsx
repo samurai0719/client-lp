@@ -29,8 +29,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {/* Meta Pixel — PageView only */}
+        {/* Meta Pixel — PageView only。ドラテク求職者ページでは読み込まない（専用Pixelだけにする） */}
         <Script id="meta-pixel" strategy="afterInteractive">{`
+          var h=location.hostname,p=location.pathname;
+          var seeker=(h==='driver.taxidriver-beginner.com'&&!/^\/company(\/|$)/.test(p))||
+            (/^\/driver(\/|$)/.test(p)&&!/^\/driver\/(company|scout)(\/|$)/.test(p));
+          if(!seeker){
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -41,6 +45,7 @@ export default function RootLayout({
           'https://connect.facebook.net/en_US/fbevents.js');
           fbq('init','818193851340214');
           fbq('track','PageView');
+          }
         `}</Script>
         <noscript>
           {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -6,7 +6,7 @@ import { trackEvent } from "@/lib/analytics/track";
  * ドラテク 企業向けLP（/company）の計測。
  *
  * ・GA4 / GTM: lib/analytics/track.ts を通す（未導入の環境では何もしない）
- * ・Meta Pixel: app/driver/layout.tsx が初期化している ドラテク用 Pixel にだけ送る。
+ * ・Meta Pixel: app/driver/company/layout.tsx 等が初期化している ドラテク用 Pixel にだけ送る。
  *   fbq('trackCustom') だと初期化済みの全Pixel（ルートレイアウトの別Pixelを含む）へ
  *   一斉送信されてしまうため、Pixel IDを指定する trackSingleCustom を使う。
  * ・PageView は既存のレイアウトが発火済み。ここでは重ねて送らない。
@@ -14,8 +14,8 @@ import { trackEvent } from "@/lib/analytics/track";
  * パラメータには個人情報を一切入れないこと（会社名・担当者名・電話・メール等）。
  */
 
-/** app/driver/layout.tsx で init しているドラテクの Pixel ID */
-const DORATECH_PIXEL_ID = "1419823599748987";
+/** app/driver/company/layout.tsx・app/driver/scout/layout.tsx で init しているドラテク企業向けの Pixel ID */
+export const DORATECH_PIXEL_ID = "1419823599748987";
 
 export type CompanyEvent =
   | "company_lp_view"

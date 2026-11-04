@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import DriverContent from '@/components/driver/DriverContent';
+import SingleMetaPixel from '@/components/analytics/SingleMetaPixel';
+import { DORATECH_SEEKER_PIXEL_ID } from '@/lib/analytics/doratechSeekerPixel';
 
 const SITE_NAME = 'ドラテク';
 const SITE_URL = 'https://driver.taxidriver-beginner.com/';
@@ -59,6 +61,7 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
+      <SingleMetaPixel id={DORATECH_SEEKER_PIXEL_ID} />
       <DriverContent />
     </>
   );

@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import SingleMetaPixel from '@/components/analytics/SingleMetaPixel';
+import { DORATECH_SEEKER_PIXEL_ID } from '@/lib/analytics/doratechSeekerPixel';
 import { OPERATOR } from '@/config/driver-company';
 
 export type SeekerClause = { heading: string; body: (string | string[])[] };
@@ -27,6 +29,7 @@ export default function SeekerLegalPage({
 
   return (
     <div className="min-h-screen bg-slate-100">
+      <SingleMetaPixel id={DORATECH_SEEKER_PIXEL_ID} />
       <div className="max-w-[520px] mx-auto bg-white min-h-screen shadow-[0_0_60px_rgba(30,64,175,0.08)]">
         <header className="bg-gradient-to-r from-blue-800 to-blue-600 text-white">
           <Link href="/driver" className="px-4 py-2.5 flex items-center gap-3">

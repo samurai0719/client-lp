@@ -25,7 +25,7 @@ import { OPERATOR, PRICING, REFUND_TIERS, SERVICE } from "@/config/driver-compan
  *   next.config.ts のホスト条件付き rewrite で公開URLを /company に合わせている。
  *   canonical も公開URLを指す。
  *
- * 計測タグ（Meta Pixel / Ptengine）は app/driver/layout.tsx から引き継ぐ。
+ * 計測タグは Meta Pixel を app/driver/company/layout.tsx、Ptengine を app/driver/layout.tsx から引き継ぐ。
  * 求職者向けページ（/driver）には手を入れていない。
  *
  * デザイン・情報設計は採用レスキューLP（/saiyo-rescue）に合わせている。
