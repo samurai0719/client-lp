@@ -3,8 +3,7 @@ import { LICENSES } from './questions';
 
 /**
  * 免許の選択肢と画像。表示順と保存する値は questions.ts の LICENSES に合わせる。
- * 画像未用意の免許（けん引・フォークリフト・第二種・その他）は ChoiceButton のプレースホルダー表示。
- * 画像を用意したら imageSrc: '/images/driver/license-towing.png' のように追加してください。
+ * 画像がない免許は ChoiceButton のプレースホルダー表示になる。
  */
 const LICENSE_IMAGES: Partial<Record<(typeof LICENSES)[number], Omit<Choice, 'label'>>> = {
   '普通免許（AT）': { imageSrc: 'https://static.wixstatic.com/media/5ebda9_1b40937d390f4c40bd3b01f9c487bec1~mv2.png' },
@@ -14,6 +13,10 @@ const LICENSE_IMAGES: Partial<Record<(typeof LICENSES)[number], Omit<Choice, 'la
   中型8t限定: { imageSrc: 'https://static.wixstatic.com/media/5ebda9_92dbd8da3a9c4f88be9f8561b4cdaa8e~mv2.png' },
   中型免許: { imageSrc: 'https://static.wixstatic.com/media/5ebda9_9c78e2426c274f158dbe958336166be8~mv2.png' },
   大型免許: { imageSrc: 'https://static.wixstatic.com/media/5ebda9_e0bebf481ece4a009278382a9eff777f~mv2.png' },
+  けん引免許: { imageSrc: '/images/driver/license-towing.png' },
+  フォークリフト: { imageSrc: '/images/driver/license-forklift.png' },
+  第二種免許: { imageSrc: '/images/driver/license-second-class.png' },
+  その他: { imageSrc: '/images/driver/license-other.png' },
 };
 
 const LICENSE_CHOICES: Choice[] = LICENSES.map((label) => ({ label, ...LICENSE_IMAGES[label] }));
