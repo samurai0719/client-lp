@@ -63,6 +63,16 @@ export function registrationToRow(r: DriverRegistration) {
   };
 }
 
+/**
+ * 新規登録時の状態。匿名プロフィールに必要な項目（年代・希望勤務地・免許・経験）がそろっていれば
+ * そのまま公開中（waiting）にして一覧へ出す。足りなければ確認待ち（pending）にして運営が補う。
+ * 条件は管理画面で公開中にするときのチェック（lib/driverCandidates/admin.ts）と合わせる。
+ */
+function initialStatus(row: ReturnType<typeof registrationToRow>): "waiting" | "pending" {
+  const ready = Boolean(row.age_band && row.desired_prefecture && row.licenses.length > 0 && row.experience);
+  return ready ? "waiting" : "pending";
+}
+
 export async function saveDriverRegistration(r: DriverRegistration): Promise<{ saved: boolean; existing?: boolean }> {
   if (!isSupabaseAdminConfigured()) return { saved: false };
 
@@ -84,7 +94,7 @@ export async function saveDriverRegistration(r: DriverRegistration): Promise<{ s
       console.error("[driver-register] candidate update failed:", error.code, error.message);
     }
 
-    const { error } = await db.from("driver_candidates").insert({ ...row, status: "pending", source: "driver_lp" });
+    const { error } = await db.from("driver_candidates").insert({ ...row, status: initialStatus(row), source: "driver_lp" });
     if (error) {
       console.error("[driver-register] candidate insert failed:", error.code, error.message);
       return { saved: false };
