@@ -116,6 +116,7 @@ function list(v: unknown): string[] {
 /**
  * 管理画面からの入力を driver_candidates の列に変換する（サーバー側で使う）。
  * 公開中（waiting）にするのは、企業に見せる匿名プロフィールが最低限そろっているときだけ。
+ * 希望勤務地は都道府県か地域（関東など）のどちらかがあればよい（LPから登録した人は全員公開中で入るため）。
  */
 export function candidateValuesToRow(
   body: Partial<Record<keyof CandidateValues, unknown>>,
@@ -154,7 +155,7 @@ export function candidateValuesToRow(
   if (status === "waiting") {
     const missing = [
       !row.age_band && "年代",
-      !row.desired_prefecture && "希望勤務地（都道府県）",
+      !row.desired_prefecture && !row.desired_area && "希望勤務地",
       row.licenses.length === 0 && "免許",
       !row.experience && "経験",
     ].filter(Boolean);
