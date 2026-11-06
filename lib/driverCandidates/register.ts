@@ -39,8 +39,9 @@ export function registrationToRow(r: DriverRegistration) {
   const labeled: Record<string, string> = Object.fromEntries(answersToLabeled(a));
   if (r.birthYear) labeled["生まれ年"] = `${r.birthYear}年`;
 
-  // 希望勤務地：都道府県まで選んでいればそれ、「現在の住所周辺」ならお住まいの都道府県
-  const desiredPrefecture = a.desiredPrefecture || (a.desiredArea === "現在の住所周辺" ? a.currentPrefecture : "") || null;
+  // 希望勤務地：都道府県まで選んでいればそれ。「現在の住所周辺」「相談して決めたい」ならお住まいの都道府県
+  const nearHome = a.desiredArea === "現在の住所周辺" || a.desiredArea === "相談して決めたい";
+  const desiredPrefecture = a.desiredPrefecture || (nearHome ? a.currentPrefecture : "") || null;
   const experience = a.driverExperience ? `ドライバー経験 ${a.driverExperience}` : null;
 
   return {
