@@ -58,8 +58,8 @@ export async function listAnonymousProfiles(): Promise<AnonymousProfile[] | null
     return (data as Row[]).map((r) => ({
       no: candidateNo(r.id),
       ageBand: r.age_band,
-      // 希望勤務地は都道府県名だけを出す（「中部、北陸」などの地域名は出さない）
-      area: r.desired_prefecture || null,
+      // 希望勤務地は都道府県名だけを出す（「中部、北陸」などの地域名は出さない）。「相談して決めたい」だけは残す
+      area: [r.desired_prefecture, r.desired_area === "相談して決めたい" ? r.desired_area : null].filter(Boolean).join(" ") || null,
       salaryBand: r.desired_salary_band,
       licenses: r.licenses ?? [],
       experience: r.experience,
