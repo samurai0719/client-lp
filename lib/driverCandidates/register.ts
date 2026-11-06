@@ -24,13 +24,17 @@ export type DriverRegistration = {
   attribution: { utmSource: string | null; utmCampaign: string | null; landingPage: string | null };
 };
 
-/** 生まれ年 → 年代（企業に見せる匿名プロフィールには年齢そのものを出さない） */
+/**
+ * 生まれ年 → 年代（企業に見せる匿名プロフィールには年齢そのものを出さない）。
+ * 20〜60代は「30代前半（30〜34歳）」「30代後半（35〜39歳）」のように前半・後半まで出す。
+ * 値の一覧は lib/driverCandidates/admin.ts の AGE_BANDS と合わせる。
+ */
 export function ageBandFromBirthYear(birthYear: number | null, now = new Date()): string | null {
   if (!birthYear) return null;
   const age = now.getFullYear() - birthYear;
   if (age < 20) return "10代";
-  if (age >= 60) return "60代以上";
-  return `${Math.floor(age / 10) * 10}代`;
+  if (age >= 70) return "70代以上";
+  return `${Math.floor(age / 10) * 10}代${age % 10 < 5 ? "前半" : "後半"}`;
 }
 
 /** 登録内容 → driver_candidates の列 */

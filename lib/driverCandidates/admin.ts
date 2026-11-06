@@ -29,7 +29,11 @@ export const CANDIDATE_STATUS_STYLE: Record<CandidateStatus, string> = {
   withdrawn: "bg-slate-100 text-slate-500",
 };
 
-export const AGE_BANDS = ["10代", "20代", "30代", "40代", "50代", "60代以上"] as const;
+export const AGE_BANDS = [
+  "10代",
+  ...[20, 30, 40, 50, 60].flatMap((d) => [`${d}代前半`, `${d}代後半`]),
+  "70代以上",
+] as const;
 export const CHANGE_TIMINGS = ["すぐにでも", "1か月以内", "3か月以内", "半年以内", "良いところがあれば"] as const;
 
 export const SOURCE_LABEL: Record<string, string> = {
