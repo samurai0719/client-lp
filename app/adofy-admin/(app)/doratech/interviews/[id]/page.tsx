@@ -9,6 +9,7 @@ import { REQUEST_STATUS_STYLE } from "@/lib/driverScout/adminStyle";
 import { statusUrl, type RequestRow } from "@/lib/driverScout/requestsDb";
 import RequestEditor from "./RequestEditor";
 import OutcomeEditor from "./OutcomeEditor";
+import { feeRateForAgeBand } from "@/lib/driverCandidates/fee";
 import DoratechNav from "@/components/doratech-admin/DoratechNav";
 import { MIGRATION_017_MESSAGE } from "@/lib/driverCandidates/admin";
 
@@ -129,6 +130,7 @@ export default async function InterviewRequestDetail({ params }: { params: Promi
 
           <OutcomeEditor
             id={r.id}
+            feeRate={feeRateForAgeBand(c?.age_band)}
             disabled={"outcome" in r ? undefined : MIGRATION_017_MESSAGE}
             initial={{
               outcome: r.outcome ?? "",

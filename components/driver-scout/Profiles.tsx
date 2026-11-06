@@ -3,6 +3,7 @@ import type { AnonymousProfile } from "@/lib/driverCandidates/profiles";
 import { HIDDEN_FIELDS, SAMPLE_PROFILE } from "./content";
 import { Breakable } from "../driver-company/lp/ui";
 import { DiscloseButton } from "./ui";
+import { feeLabelForAgeBand } from "@/lib/driverCandidates/fee";
 
 /**
  * 匿名プロフィールのカード一覧（/driver/scout/profiles）。
@@ -14,6 +15,7 @@ const dateFmt = new Intl.DateTimeFormat("ja-JP", { timeZone: "Asia/Tokyo", month
 export function ProfileCard({ p }: { p: AnonymousProfile }) {
   const rows: [string, string | null][] = [
     ["年齢", p.ageBand],
+    ["採用時の成功報酬", feeLabelForAgeBand(p.ageBand)],
     ["希望勤務地", p.area],
     ["希望年収帯", p.salaryBand],
     ["免許・資格", p.licenses.join("・") || null],

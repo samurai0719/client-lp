@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FEE_RATE } from "@/lib/driverCandidates/admin";
+import { FEE_RATE as DEFAULT_FEE_RATE } from "@/lib/driverCandidates/admin";
 
 type Values = {
   outcome: string;
@@ -17,9 +17,20 @@ type Values = {
 
 /**
  * 採用結果と成功報酬（請求・入金）の記録。企業へのメールは送らない。
- * 成功報酬は「想定年収 × 10%」を自動計算の目安として出し、金額は手で直せる。
+ * 成功報酬は「想定年収 × 料率（50代以上は5%、それ以外は10%）」を自動計算の目安として出し、金額は手で直せる。
  */
-export default function OutcomeEditor({ id, initial, disabled }: { id: string; initial: Values; disabled?: string }) {
+export default function OutcomeEditor({
+  id,
+  initial,
+  disabled,
+  feeRate: FEE_RATE = DEFAULT_FEE_RATE,
+}: {
+  id: string;
+  initial: Values;
+  disabled?: string;
+  /** 求職者の年代で決まる料率（lib/driverCandidates/fee.ts） */
+  feeRate?: number;
+}) {
   const router = useRouter();
   const [v, setV] = useState(initial);
   const [saving, setSaving] = useState(false);
@@ -88,7 +99,7 @@ export default function OutcomeEditor({ id, initial, disabled }: { id: string; i
                   className={input}
                   value={v.annualSalary}
                   onChange={(e) => {
-                    // 成功報酬が空か、前の年収から自動計算した額のままなら、新しい年収の10%に合わせる
+                    // 成功報酬が空か、前の年収から自動計算した額のままなら、新しい年収×料率に合わせる
                     const next = Number(e.target.value.replace(/[,，円\s]/g, ""));
                     const nextFee = Number.isFinite(next) && next > 0 ? String(Math.round(next * FEE_RATE)) : "";
                     setV((p) => ({

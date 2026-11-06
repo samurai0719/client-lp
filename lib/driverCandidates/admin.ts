@@ -226,8 +226,8 @@ export type CompanyInquiryRow = {
 
 // ── 採用結果・成功報酬 ────────────────────────────────────────
 
-/** 成功報酬の料率（scout LP の「採用決定時 想定年収の10%」） */
-export const FEE_RATE = 0.1;
+/** 成功報酬の料率（50代以上は5％の割引あり。判定は fee.ts） */
+export { FEE_RATE, feeRateForAgeBand } from "./fee";
 
 export const OUTCOME_LABEL: Record<string, string> = {
   hired: "採用決定",
