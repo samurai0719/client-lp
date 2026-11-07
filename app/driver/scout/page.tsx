@@ -52,8 +52,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#0a1f4e" };
 
 // 「○人のドライバーが待機中」の人数を最新に保つため、ページを最大60秒ごとに作り直す（ISR）。
-// 求職者が増えても、1分以内にLPの人数へ反映される。
-export const revalidate = 60;
+// 開くたびにデータベースから最新の求職者を読む（キャッシュすると古い人数・一覧が出ることがあるため）
+export const dynamic = "force-dynamic";
 
 export default async function DriverScoutPage() {
   const waiting = await getWaitingDriverCount();

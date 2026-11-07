@@ -50,8 +50,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#0a1f4e" };
 
-// 新しく登録された求職者を1分以内に反映する（ISR）
-export const revalidate = 60;
+// 開くたびにデータベースから最新の求職者を読む（キャッシュすると古い人数・一覧が出ることがあるため）
+export const dynamic = "force-dynamic";
 
 export default async function DriverScoutDirectProfilesPage() {
   const profiles = await listAnonymousProfiles();

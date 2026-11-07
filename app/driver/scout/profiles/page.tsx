@@ -35,8 +35,8 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false },
 };
 
-// 新しく登録された求職者を1分以内に一覧へ反映する（ISR）
-export const revalidate = 60;
+// 開くたびにデータベースから最新の求職者を読む（キャッシュすると古い人数・一覧が出ることがあるため）
+export const dynamic = "force-dynamic";
 
 export default async function ScoutProfilesPage() {
   const profiles = await listAnonymousProfiles();
