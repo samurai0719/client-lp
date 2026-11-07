@@ -12,13 +12,24 @@ import { useWaitingCount, WaitingLine } from "./waiting";
  * CTA。文言は「無料で求職者情報を見てみる」だけ。押すと匿名プロフィール一覧（/profiles）へ進む。
  * クリック時に company_cta_click（form=scout）を送る。
  */
-export function ScoutCta({ location, size = "lg", note = true }: { location: string; size?: "lg" | "sm"; note?: boolean }) {
+export function ScoutCta({
+  location,
+  size = "lg",
+  note = true,
+  href = CTA_HREF,
+}: {
+  location: string;
+  size?: "lg" | "sm";
+  note?: boolean;
+  /** 行き先。一覧を同じページに載せるLPではページ内リンク（#profiles）にする */
+  href?: string;
+}) {
   return (
     <div className={`ds-cta${size === "sm" ? " ds-cta--sm" : ""}`}>
       {size === "lg" && <WaitingLine />}
       <p className="ds-cta__operator">元ドライバーが運営するドライバー転職サービス</p>
       <a
-        href={CTA_HREF}
+        href={href}
         className={`dt-btn dt-btn--${size}`}
         onClick={() => trackCompany("company_cta_click", { cta_location: `scout_${location}` })}
       >

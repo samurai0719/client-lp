@@ -192,7 +192,7 @@ function SectionHead({
 /* ═══════════════════════ 1. ファーストビュー ═══════════════════════ */
 
 /** PC・スマホそれぞれの既存FV画像を、そのまま表示する。 */
-export function Hero() {
+export function Hero({ ctaHref }: { ctaHref?: string } = {}) {
   return (
     <section className="ds-hero" id="top" aria-labelledby="ds-hero-title">
       <h1 className="dt-visually-hidden" id="ds-hero-title">
@@ -213,7 +213,7 @@ export function Hero() {
       </picture>
       <div className="ds-hero__below">
         <PriceStrip />
-        <div className="ds-hero__cta"><ScoutCta location="hero" /></div>
+        <div className="ds-hero__cta"><ScoutCta location="hero" href={ctaHref} /></div>
       </div>
     </section>
   );

@@ -69,6 +69,7 @@ const doratechHosts = ["doratech.adofy-site.com"];
 // ドライバー採用サービス 候補者プロフィール検索（scout.adofy-site.com）
 //   /            → /driver/scout              （LP。proxy.ts で書き換え）
 //   /profiles    → /driver/scout/profiles     （匿名プロフィール一覧）
+//   /drivers     → /driver/scout/drivers      （一覧をいきなり見せる1ページLP）
 //   /register    → /driver/scout/register     （無料登録）
 //   /requests/:token → /driver/scout/requests/:token（企業向けの面接希望の受付状況）
 //   /robots.txt  → /driver/scout/robots.txt
@@ -299,6 +300,7 @@ const nextConfig: NextConfig = {
         { source: "/driver/scout", has: [{ type: "host" as const, value: host }], destination: "/", statusCode: 301 as const },
         { source: "/driver/scout/profiles", has: [{ type: "host" as const, value: host }], destination: "/profiles", statusCode: 301 as const },
         { source: "/driver/scout/register", has: [{ type: "host" as const, value: host }], destination: "/register", statusCode: 301 as const },
+        { source: "/driver/scout/drivers", has: [{ type: "host" as const, value: host }], destination: "/drivers", statusCode: 301 as const },
       ]),
       // ドラテク 企業向け（doratech.adofy-site.com）
       ...doratechHosts.flatMap((host) => [
@@ -401,6 +403,7 @@ const nextConfig: NextConfig = {
           { source: "/robots.txt", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/robots.txt" },
           { source: "/sitemap.xml", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/sitemap.xml" },
           { source: "/profiles", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/profiles" },
+          { source: "/drivers", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/drivers" },
           { source: "/register", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/register" },
           { source: "/requests/:token", has: [{ type: "host" as const, value: host }], destination: "/driver/scout/requests/:token" },
         ]),

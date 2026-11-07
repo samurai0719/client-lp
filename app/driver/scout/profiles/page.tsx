@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Breakable, SectionHead } from "@/components/driver-company/lp/ui";
 import InterviewModal from "@/components/driver-scout/InterviewModal";
-import { ProfileCard, SampleProfileCard } from "@/components/driver-scout/Profiles";
+import ProfilesSection from "@/components/driver-scout/ProfilesSection";
 import ScoutShell from "@/components/driver-scout/Shell";
 import { SCOUT_PATHS, SERVICE_NAME } from "@/components/driver-scout/content";
 import { OG_IMAGE, SITE_URL } from "@/components/driver-scout/seo";
-import { WaitingLine } from "@/components/driver-scout/waiting";
 import { listAnonymousProfiles } from "@/lib/driverCandidates/profiles";
 import "../scout-saiyo.css";
 
@@ -46,42 +44,7 @@ export default async function ScoutProfilesPage() {
 
   return (
     <ScoutShell waiting={waiting} event="company_profiles_view" headerCta={false}>
-      <section className="dt-section ds-profiles" aria-labelledby="ds-profiles-title">
-        <div className="dt-container">
-          <SectionHead
-            eyebrow="PROFILES"
-            id="ds-profiles-title"
-            title={<Breakable text="ドライバー求職者の|匿名プロフィール" />}
-            lead="個人を特定できる情報は表示していません。面接したい方がいれば「この方と面接を希望する」から無料登録できます。ご契約後、ドラテクが求職者に連絡し、面接の日程を調整します。"
-          />
-          <div className="ds-profiles__count">
-            <WaitingLine />
-          </div>
-
-          {profiles === null ? (
-            <p className="ds-profiles__empty" role="alert">
-              ただいまプロフィールを表示できません。時間をおいて、もう一度お試しください。
-            </p>
-          ) : profiles.length === 0 ? (
-            <>
-              <p className="ds-profiles__empty">
-                現在、公開中のプロフィールはありません。新しい登録があり次第、ここに表示されます。
-                <br />
-                下は、プロフィールがどのように表示されるかの架空の例です。
-              </p>
-              <div className="ds-profiles__grid ds-profiles__grid--sample">
-                <SampleProfileCard />
-              </div>
-            </>
-          ) : (
-            <div className="ds-profiles__grid">
-              {profiles.map((p) => (
-                <ProfileCard key={p.no} p={p} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <ProfilesSection profiles={profiles} />
       <InterviewModal />
     </ScoutShell>
   );
