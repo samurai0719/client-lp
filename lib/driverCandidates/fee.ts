@@ -14,8 +14,3 @@ export function isSeniorDiscount(ageBand: string | null | undefined): boolean {
 export function feeRateForAgeBand(ageBand: string | null | undefined): number {
   return isSeniorDiscount(ageBand) ? SENIOR_FEE_RATE : FEE_RATE;
 }
-
-/** 匿名プロフィールに出す成功報酬の表記 */
-export function feeLabelForAgeBand(ageBand: string | null | undefined): string {
-  return isSeniorDiscount(ageBand) ? "想定年収の5％（50代以上 割引対象）" : "想定年収の10％";
-}

@@ -1403,6 +1403,108 @@ select.ds-input {
   font-weight: 900;
 }
 
+/* ── 匿名プロフィールカード：要約・免許タグ・成功報酬 ── */
+.ds-pcard__head > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.ds-pcard__date {
+  flex: none;
+  align-self: flex-start;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ds-pcard__summary {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  background: var(--ds-gold-soft);
+}
+
+.ds-pcard__keys {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ds-pcard__keys > div {
+  padding: 10px 8px;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+}
+
+.ds-pcard__keys dt,
+.ds-pcard__label {
+  color: var(--dt-mute);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ds-pcard__keys dd {
+  margin-top: 2px;
+  color: var(--dt-navy);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.ds-pcard__licenses ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.ds-pcard__licenses li {
+  padding: 4px 10px;
+  border: 1.5px solid var(--ds-gold);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ds-gold);
+  font-size: 13.5px;
+  font-weight: 900;
+}
+
+.ds-pcard__fee {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 0;
+  padding: 12px 16px;
+  border-top: 1px solid var(--dt-line);
+  color: var(--dt-navy);
+  font-size: 14px;
+}
+
+.ds-pcard__fee span {
+  color: var(--dt-mute);
+  font-weight: 700;
+}
+
+.ds-pcard__fee b {
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.ds-pcard__fee em {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #e11d48;
+  color: #fff;
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ds-pcard__fee.is-discount b {
+  color: #e11d48;
+}
+
 .ds-disclose {
   display: grid;
   gap: 12px;

@@ -3,7 +3,7 @@ import type { AnonymousProfile } from "@/lib/driverCandidates/profiles";
 import { HIDDEN_FIELDS, SAMPLE_PROFILE } from "./content";
 import { Breakable } from "../driver-company/lp/ui";
 import { DiscloseButton } from "./ui";
-import { feeLabelForAgeBand } from "@/lib/driverCandidates/fee";
+import { isSeniorDiscount } from "@/lib/driverCandidates/fee";
 
 /**
  * 匿名プロフィールのカード一覧（/driver/scout/profiles）。
@@ -12,17 +12,17 @@ import { feeLabelForAgeBand } from "@/lib/driverCandidates/fee";
 
 const dateFmt = new Intl.DateTimeFormat("ja-JP", { timeZone: "Asia/Tokyo", month: "numeric", day: "numeric" });
 
+/** 「ドライバー経験 1〜3年」→「1〜3年」（ラベルと重複する前置きを外す） */
+function shortExperience(v: string | null): string | null {
+  return v ? v.replace(/^ドライバー経験\s*/, "") : null;
+}
+
 export function ProfileCard({ p }: { p: AnonymousProfile }) {
-  const rows: [string, string | null][] = [
-    ["年齢", p.ageBand],
-    ["採用時の成功報酬", feeLabelForAgeBand(p.ageBand)],
-    ["希望勤務地", p.area],
-    ["希望年収帯", p.salaryBand],
-    ["免許・資格", p.licenses.join("・") || null],
-    ["運転経験", p.experience],
+  const senior = isSeniorDiscount(p.ageBand);
+  const wants: [string, string | null][] = [
+    ["希望年収", p.salaryBand],
     ["希望職種", p.jobTypes.join("・") || null],
-    ["転職希望時期", p.changeTiming],
-    ["更新日", dateFmt.format(new Date(p.updatedAt))],
+    ["転職時期", p.changeTiming],
   ];
   return (
     <article className="ds-pcard" aria-labelledby={`ds-pc-${p.no}`}>
@@ -36,10 +36,45 @@ export function ProfileCard({ p }: { p: AnonymousProfile }) {
           </h2>
           <p className="ds-pcard__tag">連絡を待っています</p>
         </div>
+        <p className="ds-pcard__date">更新 {dateFmt.format(new Date(p.updatedAt))}</p>
       </header>
 
+      {/* ひと目で分かる要約：年代・希望勤務地・運転経験 */}
+      <div className="ds-pcard__summary">
+        <dl className="ds-pcard__keys">
+          {p.ageBand && (
+            <div>
+              <dt>年齢</dt>
+              <dd>{p.ageBand}</dd>
+            </div>
+          )}
+          {p.area && (
+            <div>
+              <dt>希望勤務地</dt>
+              <dd>{p.area}</dd>
+            </div>
+          )}
+          {p.experience && (
+            <div>
+              <dt>運転経験</dt>
+              <dd>{shortExperience(p.experience)}</dd>
+            </div>
+          )}
+        </dl>
+        {p.licenses.length > 0 && (
+          <div className="ds-pcard__licenses">
+            <p className="ds-pcard__label">免許・資格</p>
+            <ul>
+              {p.licenses.map((l) => (
+                <li key={l}>{l}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
       <dl className="ds-pcard__rows">
-        {rows
+        {wants
           .filter((r): r is [string, string] => Boolean(r[1]))
           .map(([k, v]) => (
             <div key={k}>
@@ -49,18 +84,16 @@ export function ProfileCard({ p }: { p: AnonymousProfile }) {
           ))}
       </dl>
 
+      <p className={`ds-pcard__fee${senior ? " is-discount" : ""}`}>
+        <span>採用時の成功報酬</span>
+        <b>想定年収の{senior ? "5" : "10"}％</b>
+        {senior && <em>50代以上 割引</em>}
+      </p>
+
       <div className="ds-disclose">
-        <dl className="ds-disclose__masked" aria-label="非公開の情報">
-          {HIDDEN_FIELDS.map((f) => (
-            <div key={f}>
-              <dt>{f}</dt>
-              <dd aria-hidden="true">●●●●●●</dd>
-            </div>
-          ))}
-        </dl>
         <p className="ds-disclose__lock">
           <Lock aria-hidden="true" />
-          氏名・連絡先は表示されません。本人の同意なく企業に開示することはありません。
+          {HIDDEN_FIELDS.join("・")}は非公開です。本人の同意なく企業に開示することはありません。
         </p>
         <p className="ds-disclose__note">
           <Headset aria-hidden="true" />
