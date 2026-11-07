@@ -32,8 +32,8 @@ export default function RootLayout({
         {/* Meta Pixel — PageView only。ドラテク求職者ページでは読み込まない（専用Pixelだけにする） */}
         <Script id="meta-pixel" strategy="afterInteractive">{`
           var h=location.hostname,p=location.pathname;
-          var seeker=(h==='driver.taxidriver-beginner.com'&&!/^\/company(\/|$)/.test(p))||
-            (/^\/driver(\/|$)/.test(p)&&!/^\/driver\/(company|scout)(\/|$)/.test(p));
+          var seeker=(h==='driver.taxidriver-beginner.com'&&p!=='/company'&&p.indexOf('/company/')!==0)||
+            ((p==='/driver'||p.indexOf('/driver/')===0)&&p.indexOf('/driver/company')!==0&&p.indexOf('/driver/scout')!==0);
           if(!seeker){
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
