@@ -1,6 +1,7 @@
 "use client";
 
 import { trackEvent } from "@/lib/analytics/track";
+import { DORATECH_DIRECT_PIXEL_ID, isDoratechDirectPage } from "@/lib/analytics/doratechDirectPixel";
 
 /**
  * ドラテク 企業向けLP（/company）の計測。
@@ -51,7 +52,9 @@ export function trackCompany(
 
   try {
     if (typeof window.fbq === "function") {
-      window.fbq("trackSingleCustom", DORATECH_PIXEL_ID, event, params);
+      // /drivers のLPはそのページ専用のPixelにだけ送る
+      const pixelId = isDoratechDirectPage(window.location.pathname) ? DORATECH_DIRECT_PIXEL_ID : DORATECH_PIXEL_ID;
+      window.fbq("trackSingleCustom", pixelId, event, params);
     }
   } catch {
     // 計測失敗は握りつぶし、ユーザー操作を妨げない

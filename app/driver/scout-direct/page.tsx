@@ -7,15 +7,19 @@ import ScoutShell from "@/components/driver-scout/Shell";
 import { SERVICE_NAME } from "@/components/driver-scout/content";
 import { OG_IMAGE, SITE_URL } from "@/components/driver-scout/seo";
 import { listAnonymousProfiles } from "@/lib/driverCandidates/profiles";
+import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
+import { DORATECH_DIRECT_PIXEL_ID } from "@/lib/analytics/doratechDirectPixel";
 // FV・説明の見た目はLP（/driver/scout/page.tsx）と同じCSSをそろえる
-import "../scout-motion.css";
-import "../scout-saiyo.css";
-import "../scout-fv-theme.css";
-import "../scout-editorial.css";
-import "../scout-logistics-editorial.css";
+import "../scout/scout-motion.css";
+import "../scout/scout-saiyo.css";
+import "../scout/scout-fv-theme.css";
+import "../scout/scout-editorial.css";
+import "../scout/scout-logistics-editorial.css";
 
 /**
  * 匿名プロフィールをいきなり見せる1ページ完結LP（公開URL https://scout.adofy-site.com/drivers ）。
+ * 物理ルートは /driver/scout-direct。/driver/scout 配下に置くと企業向けの別Pixel（scout/layout.tsx）まで
+ * 読み込まれるため、配下から外して専用Pixel（3711341419004077）だけを動かしている。
  * 構成：ファーストビュー（企業向けLPと同じ）→ 匿名プロフィール一覧 → ドラテクの軽い説明。
  * FVのボタンはページ内の一覧（#profiles）へ移動する。
  * 一覧で「この方と面接を希望する」を押すと、ライトボックスで面接希望の依頼へ進む（/profiles と同じ）。
@@ -55,6 +59,7 @@ export default async function DriverScoutDirectProfilesPage() {
 
   return (
     <ScoutShell waiting={waiting} event="company_profiles_view" home headerCta={false}>
+      <SingleMetaPixel id={DORATECH_DIRECT_PIXEL_ID} />
       <Hero ctaHref="#profiles" />
       <ProfilesSection profiles={profiles} />
       <Intro />

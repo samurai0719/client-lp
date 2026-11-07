@@ -5,7 +5,7 @@ import { WaitingLine } from "./waiting";
 
 /**
  * 匿名プロフィール一覧のセクション。一覧ページ（/profiles）と、
- * 一覧をいきなり見せる1ページLP（/drivers）の両方で使う。
+ * 一覧をいきなり見せる1ページLP（/drivers、物理ルート /driver/scout-direct）の両方で使う。
  * profiles が null のときは取得失敗、0件のときは架空の表示例を出す。
  */
 export default function ProfilesSection({ profiles }: { profiles: AnonymousProfile[] | null }) {
