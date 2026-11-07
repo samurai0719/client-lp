@@ -16,7 +16,7 @@ import { DORATECH_DIRECT_PIXEL_ID, isDoratechDirectPage } from "@/lib/analytics/
  */
 
 /** app/driver/company/layout.tsx・app/driver/scout/layout.tsx で init しているドラテク企業向けの Pixel ID */
-export const DORATECH_PIXEL_ID = "1419823599748987";
+import { DORATECH_PIXEL_ID } from "@/lib/analytics/doratechCompanyPixel";
 
 export type CompanyEvent =
   | "company_lp_view"
@@ -39,6 +39,10 @@ type FbqFn = (...args: unknown[]) => void;
 declare global {
   interface Window {
     fbq?: FbqFn;
+    /** SingleMetaPixel が初期化を終えたPixel ID */
+    __metaPixelReady?: Record<string, boolean>;
+    /** 初期化前に送ろうとしたイベント（初期化後に SingleMetaPixel が送る） */
+    __metaPixelPending?: Record<string, unknown[][]>;
   }
 }
 
@@ -51,10 +55,15 @@ export function trackCompany(
   trackEvent(event, params);
 
   try {
-    if (typeof window.fbq === "function") {
-      // /drivers のLPはそのページ専用のPixelにだけ送る
-      const pixelId = isDoratechDirectPage(window.location.pathname) ? DORATECH_DIRECT_PIXEL_ID : DORATECH_PIXEL_ID;
-      window.fbq("trackSingleCustom", pixelId, event, params);
+    // /drivers のLPはそのページ専用のPixelにだけ送る
+    const pixelId = isDoratechDirectPage(window.location.pathname) ? DORATECH_DIRECT_PIXEL_ID : DORATECH_PIXEL_ID;
+    const args: unknown[] = ["trackSingleCustom", pixelId, event, params];
+    if (window.__metaPixelReady?.[pixelId] && typeof window.fbq === "function") {
+      window.fbq(...args);
+    } else {
+      // Pixelの初期化（afterInteractive）より先に呼ばれたときは溜めておき、初期化後に送る
+      const pending = (window.__metaPixelPending ??= {});
+      (pending[pixelId] ??= []).push(args);
     }
   } catch {
     // 計測失敗は握りつぶし、ユーザー操作を妨げない

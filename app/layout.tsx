@@ -29,11 +29,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {/* Meta Pixel — PageView only。ドラテク求職者ページでは読み込まない（専用Pixelだけにする） */}
+        {/* Meta Pixel — PageView only。ドラテク求職者ページと /drivers のLPでは読み込まない（専用Pixelだけにする） */}
         <Script id="meta-pixel" strategy="afterInteractive">{`
           var h=location.hostname,p=location.pathname;
           var seeker=(h==='driver.taxidriver-beginner.com'&&p!=='/company'&&p.indexOf('/company/')!==0)||
-            ((p==='/driver'||p.indexOf('/driver/')===0)&&p.indexOf('/driver/company')!==0&&p.indexOf('/driver/scout')!==0);
+            ((p==='/driver'||p.indexOf('/driver/')===0)&&p.indexOf('/driver/company')!==0&&p.indexOf('/driver/scout/')!==0&&p!=='/driver/scout');
+          // scout.adofy-site.com/drivers（物理ルート /driver/scout-direct）も専用Pixelだけにする
+          if((h==='scout.adofy-site.com'||h==='scout.localhost')&&p==='/drivers')seeker=true;
           if(!seeker){
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
