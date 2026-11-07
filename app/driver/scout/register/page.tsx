@@ -19,7 +19,7 @@ import "../scout-saiyo.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: `無料登録（企業登録）｜${SERVICE_NAME} ドライバー採用サービス`,
-  description: "匿名プロフィールの候補者との面接を希望するための、運送会社さま向けの無料登録フォームです。",
+  description: "プロフィールの候補者との面接を希望するための、運送会社さま向けの無料登録フォームです。",
   alternates: { canonical: SCOUT_PATHS.register },
   // フォームだけのページなので検索結果には出さない（リンクはたどってよい）
   robots: { index: false, follow: true },

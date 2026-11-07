@@ -162,7 +162,7 @@ export default function ApplyForm({ candidateNo }: { candidateNo?: string } = {}
           サービス説明・企業確認・ご契約のあと、ドラテクが求職者に貴社の情報と仕事内容をお伝えし、面接のご希望とご指定の確認事項をお聞きしたうえで、日程を調整します。
         </p>
         <a href={SCOUT_PATHS.profiles} className="ds-form__back">
-          匿名プロフィール一覧に戻る
+          プロフィール一覧に戻る
         </a>
       </div>
     );

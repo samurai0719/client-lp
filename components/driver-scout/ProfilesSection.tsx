@@ -15,7 +15,7 @@ export default function ProfilesSection({ profiles }: { profiles: AnonymousProfi
         <SectionHead
           eyebrow="PROFILES"
           id="ds-profiles-title"
-          title={<Breakable text="ドライバー求職者の|匿名プロフィール" />}
+          title={<Breakable text="ドライバー求職者の|プロフィール" />}
           lead="個人を特定できる情報は表示していません。面接したい方がいれば「この方と面接を希望する」から無料登録できます。ご契約後、ドラテクが求職者に連絡し、面接の日程を調整します。"
         />
         <div className="ds-profiles__count">

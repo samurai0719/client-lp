@@ -26,9 +26,9 @@ import "../scout/scout-logistics-editorial.css";
  * 広告の着地ページ用のため、検索結果には出さない（noindex）。
  */
 
-const TITLE = `ドライバー求職者の匿名プロフィール｜愛知の運送会社向け｜${SERVICE_NAME}`;
+const TITLE = `ドライバー求職者のプロフィール｜愛知の運送会社向け｜${SERVICE_NAME}`;
 const DESCRIPTION =
-  "愛知県で働きたいトラックドライバー希望者の匿名プロフィールを、登録なしですぐに確認できます。面接したい人を選ぶと、ドラテクが連絡と面接の日程調整を行います。";
+  "愛知県で働きたいトラックドライバー希望者のプロフィールを、登録なしですぐに確認できます。面接したい人を選ぶと、ドラテクが連絡と面接の日程調整を行います。";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

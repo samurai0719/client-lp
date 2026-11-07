@@ -149,7 +149,7 @@ export default async function RequestStatusPage({ params }: { params: Promise<{ 
             費用が発生するのは、ご契約のうえ採用が決定したときの成功報酬だけです。内容の変更・取り下げは、受付メールへの返信でお知らせください。
           </p>
           <p className="ds-small">
-            <a href={SCOUT_PATHS.profiles}>匿名プロフィール一覧へ</a>
+            <a href={SCOUT_PATHS.profiles}>プロフィール一覧へ</a>
           </p>
         </div>
       </section>
