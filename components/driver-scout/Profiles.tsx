@@ -10,8 +10,6 @@ import { isSeniorDiscount } from "@/lib/driverCandidates/fee";
  * 個人を特定できる情報はデータとして受け取っていない。伏せ字の欄は見た目だけのダミー。
  */
 
-const dateFmt = new Intl.DateTimeFormat("ja-JP", { timeZone: "Asia/Tokyo", month: "numeric", day: "numeric" });
-
 /** 「ドライバー経験 1〜3年」→「1〜3年」（ラベルと重複する前置きを外す） */
 function shortExperience(v: string | null): string | null {
   return v ? v.replace(/^ドライバー経験\s*/, "") : null;
@@ -36,7 +34,6 @@ export function ProfileCard({ p }: { p: AnonymousProfile }) {
           </h2>
           <p className="ds-pcard__tag">連絡を待っています</p>
         </div>
-        <p className="ds-pcard__date">更新 {dateFmt.format(new Date(p.updatedAt))}</p>
       </header>
 
       {/* ひと目で分かる要約：年代・希望勤務地・運転経験 */}

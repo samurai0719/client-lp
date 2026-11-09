@@ -1409,14 +1409,6 @@ select.ds-input {
   min-width: 0;
 }
 
-.ds-pcard__date {
-  flex: none;
-  align-self: flex-start;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .ds-pcard__summary {
   display: grid;
   gap: 14px;
