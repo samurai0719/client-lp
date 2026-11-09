@@ -50,7 +50,7 @@ export default function InterviewModal() {
     >
       <div className="ds-modal__head">
         <p className="ds-modal__title" id="ds-modal-title">
-          {candidate ? `候補者 No.${candidate} との面接を希望する` : "この方と面接を希望する（表示例）"}
+          {candidate ? `候補者 No.${candidate} との面接を希望する` : "無料でこの方について問い合わせする（表示例）"}
         </p>
         <button type="button" className="ds-modal__close" onClick={close} aria-label="閉じる">
           <X aria-hidden="true" />
@@ -69,7 +69,7 @@ export default function InterviewModal() {
             <p className="ds-modal__lead">
               このカードは表示例（架空の求職者）のため、この方への面接のご依頼はお受けできません。
               <br />
-              先に会社情報を無料でご登録いただけます。実際の求職者が公開されたら、その方のカードの「この方と面接を希望する」からご依頼ください。
+              先に会社情報を無料でご登録いただけます。実際の求職者が公開されたら、その方のカードの「無料でこの方について問い合わせする」からご依頼ください。
             </p>
             <ApplyForm key={formKey} />
           </>
