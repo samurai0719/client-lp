@@ -3,7 +3,7 @@
  * 質問の選択肢とサーバー側バリデーション。クライアントとサーバーで同じ定義を使う。
  *
  * 保存先は既存の driver_company_inquiries（inquiry_type = 'consultation'）。
- * 人数・時期・勤務地は既存の列（hiring_count / hiring_timing / prefecture / address_city）に、
+ * 人数・時期・勤務地（都道府県のみ）は既存の列（hiring_count / hiring_timing / prefecture）に、
  * 採用状況と気になる料金プランは message 列にまとめて入れる。
  * エラーメッセージには入力値も内部情報も載せない。
  */
@@ -24,7 +24,6 @@ export type ConsultAnswers = {
   hiringCount: string;
   hiringTiming: string;
   prefecture: string;
-  city: string;
   plan: string;
 };
 
@@ -82,14 +81,12 @@ export function validateConsult(
   const hiringCount = pick(body.hiringCount, HIRING_COUNTS);
   const hiringTiming = pick(body.hiringTiming, HIRING_TIMINGS);
   const prefecture = pick(body.prefecture, PREFECTURES);
-  const city = str(body.city, 200);
   const plan = pick(body.plan, PLAN_INTERESTS);
 
   if (!hiringStatus) errors.hiringStatus = "現在の採用状況をお選びください。";
   if (!hiringCount) errors.hiringCount = "採用したい人数をお選びください。";
   if (!hiringTiming) errors.hiringTiming = "採用したい時期をお選びください。";
   if (!prefecture) errors.prefecture = "都道府県をお選びください。";
-  if (!city) errors.city = "市区町村をご入力ください。";
   if (!plan) errors.plan = "気になる料金プランをお選びください。";
 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
@@ -100,7 +97,6 @@ export function validateConsult(
       hiringCount: hiringCount!,
       hiringTiming: hiringTiming!,
       prefecture: prefecture!,
-      city: city!,
       plan: plan!,
       companyName: str(body.companyName, 200)!,
       contactName: str(body.contactName, 100)!,

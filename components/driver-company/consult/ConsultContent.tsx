@@ -23,7 +23,7 @@ import {
  *
  * ・質問は1ページに上から順に追加表示する（答えると次の質問が下に出て、そこへ自動スクロール）
  * ・回答済みの質問は残り、押し直せば回答を変えられる
- * ・勤務地（STEP 4）は「次へ」で確定する。都道府県を変えたら市区町村と確定を取り消す（別の県の市区町村が残らないように）
+ * ・勤務地（STEP 4）は都道府県だけ。選んだら次の質問へ進む
  * ・料金は「成果報酬と月額を選べる」ことだけを伝え、金額・料率は載せない
  * ・送信は /api/driver-company-consult。保存か通知のどちらかが成功したときだけ完了画面を出す
  */
@@ -32,12 +32,12 @@ const TOTAL_STEPS = 6;
 
 const FV_IMAGE = "/images/driver/company/consult-fv.webp";
 
-const EMPTY_ANSWERS: ConsultAnswers = { hiringStatus: "", hiringCount: "", hiringTiming: "", prefecture: "", city: "", plan: "" };
+const EMPTY_ANSWERS: ConsultAnswers = { hiringStatus: "", hiringCount: "", hiringTiming: "", prefecture: "", plan: "" };
 const EMPTY_CONTACT: ConsultContact = { companyName: "", contactName: "", phone: "", email: "" };
 
 /** 回答済みのステップ数（= いま答える STEP は done + 1）。前のステップが未回答なら、その先は数えない */
-function answeredSteps(a: ConsultAnswers, locationDone: boolean): number {
-  const done = [!!a.hiringStatus, !!a.hiringCount, !!a.hiringTiming, locationDone, !!a.plan];
+function answeredSteps(a: ConsultAnswers): number {
+  const done = [!!a.hiringStatus, !!a.hiringCount, !!a.hiringTiming, !!a.prefecture, !!a.plan];
   const firstOpen = done.indexOf(false);
   return firstOpen === -1 ? done.length : firstOpen;
 }
@@ -254,8 +254,6 @@ function Complete({ contact }: { contact: ConsultContact }) {
 
 export default function ConsultContent() {
   const [answers, setAnswers] = useState<ConsultAnswers>(EMPTY_ANSWERS);
-  const [locationDone, setLocationDone] = useState(false);
-  const [locationError, setLocationError] = useState<string | null>(null);
   const [contact, setContact] = useState<ConsultContact>(EMPTY_CONTACT);
   const [agreed, setAgreed] = useState(false);
   const [errors, setErrors] = useState<ConsultErrors>({});
@@ -267,7 +265,7 @@ export default function ConsultContent() {
   const doneRef = useRef<HTMLDivElement>(null);
   const pendingScroll = useRef<number | null>(null);
 
-  const answered = answeredSteps(answers, locationDone);
+  const answered = answeredSteps(answers);
   const current = Math.min(answered + 1, TOTAL_STEPS);
 
   useEffect(() => {
@@ -299,32 +297,10 @@ export default function ConsultContent() {
     }
   };
 
-  const choose = (key: "hiringStatus" | "hiringCount" | "hiringTiming" | "plan", step: number) => (value: string) => {
+  const choose = (key: "hiringStatus" | "hiringCount" | "hiringTiming" | "prefecture" | "plan", step: number) => (value: string) => {
     const next = { ...answers, [key]: value };
     setAnswers(next);
-    advanceFrom(step, answeredSteps(next, locationDone));
-  };
-
-  const changePrefecture = (value: string) => {
-    // 県を変えたら、前の県の市区町村は残さない
-    setAnswers((prev) => (prev.prefecture === value ? prev : { ...prev, prefecture: value, city: "" }));
-    if (value !== answers.prefecture) setLocationDone(false);
-    setLocationError(null);
-  };
-
-  const changeCity = (value: string) => {
-    setAnswers((prev) => ({ ...prev, city: value }));
-    setLocationError(null);
-    // 確定後に市区町村を空にしたら、未回答に戻す
-    if (!value.trim()) setLocationDone(false);
-  };
-
-  const confirmLocation = () => {
-    if (!answers.prefecture) return setLocationError("都道府県を選んでください");
-    if (!answers.city.trim()) return setLocationError("市区町村を入力してください");
-    setLocationError(null);
-    setLocationDone(true);
-    advanceFrom(4, answeredSteps(answers, true));
+    advanceFrom(step, answeredSteps(next));
   };
 
   const setField = (key: keyof ConsultContact) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -445,61 +421,25 @@ export default function ConsultContent() {
               )}
 
               {answered >= 3 && (
-                <StepBlock step={4} title="採用予定の勤務地は？" hint="都道府県を選び、市区町村を入力してください">
-                  <div className="flex flex-col gap-4">
-                    <div>
-                      <label htmlFor="consult-prefecture" className="mb-1.5 block text-sm font-bold text-slate-700">
-                        都道府県
-                      </label>
-                      <select
-                        id="consult-prefecture"
-                        value={answers.prefecture}
-                        onChange={(e) => changePrefecture(e.target.value)}
-                        className={`${inputCls} appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%2364748b%22 stroke-width=%222%22 fill=%22none%22/></svg>')] bg-[length:12px_8px] bg-[right_1rem_center] bg-no-repeat pr-10`}
-                      >
-                        <option value="">選択してください</option>
-                        {PREFECTURES.map((p) => (
-                          <option key={p} value={p}>
-                            {p}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="consult-city" className="mb-1.5 block text-sm font-bold text-slate-700">
-                        市区町村
-                      </label>
-                      <input
-                        id="consult-city"
-                        type="text"
-                        value={answers.city}
-                        onChange={(e) => changeCity(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && !e.nativeEvent.isComposing) {
-                            e.preventDefault();
-                            confirmLocation();
-                          }
-                        }}
-                        placeholder="例：名古屋市港区"
-                        autoComplete="address-level2"
-                        className={inputCls}
-                      />
-                    </div>
-                    {locationError && (
-                      <p className="text-center text-xs font-bold text-red-600" role="alert">
-                        {locationError}
-                      </p>
-                    )}
-                    {!locationDone && (
-                      <button
-                        type="button"
-                        onClick={confirmLocation}
-                        className="mx-auto w-full max-w-[360px] rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 py-4 text-base font-extrabold text-white shadow-[0_6px_22px_rgba(29,78,216,0.38)] transition-all duration-150 hover:from-blue-500 hover:to-blue-700 active:scale-[0.97]"
-                      >
-                        次へ進む →
-                      </button>
-                    )}
-                  </div>
+                <StepBlock step={4} title="採用予定の勤務地は？" hint="都道府県を選んでください">
+                  <label htmlFor="consult-prefecture" className="sr-only">
+                    都道府県
+                  </label>
+                  <select
+                    id="consult-prefecture"
+                    value={answers.prefecture}
+                    onChange={(e) => e.target.value && choose("prefecture", 4)(e.target.value)}
+                    className={`${inputCls} appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%2364748b%22 stroke-width=%222%22 fill=%22none%22/></svg>')] bg-[length:12px_8px] bg-[right_1rem_center] bg-no-repeat pr-10`}
+                  >
+                    <option value="" disabled>
+                      都道府県を選択してください
+                    </option>
+                    {PREFECTURES.map((p) => (
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
+                    ))}
+                  </select>
                 </StepBlock>
               )}
 
@@ -507,8 +447,6 @@ export default function ConsultContent() {
                 <StepBlock step={5} title="気になる料金プランは？">
                   <p className="mb-4 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-center text-[13px] font-bold leading-relaxed text-blue-800">
                     成果報酬と月額、2つのプランから選べます。
-                    <br />
-                    詳しい料金はオンライン面談でご案内します。
                   </p>
                   <Choices list={PLAN_INTERESTS} value={answers.plan} onSelect={choose("plan", 5)} />
                 </StepBlock>

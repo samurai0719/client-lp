@@ -120,7 +120,7 @@ function summary(v: ConsultValues): string {
     `現在の採用状況：${v.hiringStatus}`,
     `採用したい人数：${v.hiringCount}`,
     `採用したい時期：${v.hiringTiming}`,
-    `採用予定の勤務地：${v.prefecture}${v.city}`,
+    `採用予定の勤務地：${v.prefecture}`,
     `気になる料金プラン：${v.plan}`,
   ].join("\n");
 }
@@ -136,7 +136,6 @@ async function save(v: ConsultValues, tracking: Record<string, string | null>): 
     phone: v.phone,
     email: v.email,
     prefecture: v.prefecture,
-    address_city: v.city,
     hiring_count: v.hiringCount,
     hiring_timing: v.hiringTiming,
     inquiry_type: CONSULT_INQUIRY_TYPE,
