@@ -67,36 +67,25 @@ function TopHeader() {
 }
 
 /**
- * ファーストビュー。写真は文字なしで生成し、コピーはHTMLで重ねる（日本語を確実に読めるように）。
- * 文字サイズは画像幅に対する割合（cqw）で指定し、PCの520px幅でもスマホでも同じ見え方にする。
+ * ファーストビュー。画像は運営者が作成したもの（キャッチコピー・実績バッジは画像に入っている）。
+ * 画像に無い料金プランの一文だけ、画像の下に帯で出す。h1 は画像内のキャッチと同じ文言を読み上げ・検索用に持たせる。
  */
 function FirstView() {
   return (
-    <div className="relative w-full bg-gradient-to-b from-sky-300 to-blue-700 [container-type:inline-size] [font-family:'Hiragino_Sans','Noto_Sans_JP','Noto_Sans_CJK_JP','Yu_Gothic',sans-serif]">
+    <div className="w-full bg-blue-800">
+      <h1 className="sr-only">売上を上げるための採用を。20〜30代のドライバーを採用したい運送会社へ</h1>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={FV_IMAGE}
-        alt="トラックの前に立つ若手ドライバー"
-        width={1075}
-        height={1440}
+        alt="売上を上げるための採用を。20〜30代のドライバーを採用したい運送会社へ。累計応募者数2,000人以上、元大型ドライバーが運営"
+        width={1448}
+        height={1086}
         className="block w-full h-auto"
         fetchPriority="high"
       />
-      <div className="absolute inset-x-0 top-0 px-[6cqw] pt-[7cqw] text-center">
-        <p className="inline-block rounded-full bg-white/95 whitespace-nowrap px-[4cqw] py-[1.6cqw] text-[3.75cqw] font-bold text-blue-800 shadow-[0_3px_12px_rgba(15,40,100,0.25)]">
-          20〜30代のドライバーを採用したい運送会社へ
-        </p>
-        <h1 className="mt-[4.5cqw] text-[10.4cqw] font-black leading-[1.18] tracking-tight text-white [text-shadow:0_2px_0_#1e3a8a,0_4px_18px_rgba(15,40,100,0.55)]">
-          売上を上げる
-          <br />
-          ための採用を。
-        </h1>
-      </div>
-      <div className="absolute inset-x-0 bottom-[4cqw] flex justify-center px-[5cqw]">
-        <p className="rounded-[2.5cqw] border-[0.6cqw] border-white bg-gradient-to-r from-blue-700 to-blue-600 whitespace-nowrap px-[5cqw] py-[2.6cqw] text-center text-[4.6cqw] font-black leading-tight text-white shadow-[0_6px_20px_rgba(15,40,100,0.45)]">
-          成果報酬・月額、<span className="text-amber-300">選べる2つのプラン</span>
-        </p>
-      </div>
+      <p className="bg-gradient-to-r from-blue-800 to-blue-600 px-4 py-3 text-center text-[17px] min-[400px]:text-[19px] font-black leading-tight text-white">
+        成果報酬・月額、<span className="text-amber-300">選べる2つのプラン</span>
+      </p>
     </div>
   );
 }

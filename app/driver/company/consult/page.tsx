@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "ドラテク",
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ url: "/images/driver/company/consult-fv.webp", width: 1075, height: 1440, alt: "ドラテク" }],
+    images: [{ url: "/images/driver/company/consult-fv.webp", width: 1448, height: 1086, alt: "ドラテク" }],
   },
   formatDetection: { telephone: false },
 };
