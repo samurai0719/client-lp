@@ -43,7 +43,7 @@ const TOTAL_STEPS = 7;
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
-const FV_IMAGE = "/images/driver/company/consult-fv.webp";
+const FV_IMAGE = "/images/driver/company/consult-fv-v2.webp";
 
 const EMPTY_ANSWERS: ConsultAnswers = {
   hiringStatus: "",
