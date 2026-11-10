@@ -297,6 +297,17 @@ export default function DriverContent() {
 
           {/* フッター */}
           <footer className="text-center py-10 text-xs text-slate-400 border-t border-slate-100 mt-4">
+            {/* 運送会社向けの入口。企業向けの無料オンライン相談LP（driver.taxidriver-beginner.com/company）へ */}
+            <a
+              href="https://driver.taxidriver-beginner.com/company"
+              className="mx-auto mb-6 flex w-[calc(100%-2.5rem)] max-w-[360px] items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-slate-600 transition hover:border-blue-300 hover:bg-blue-50"
+            >
+              <span>
+                <span className="block text-sm font-bold text-slate-700">運送会社様はこちら</span>
+                <span className="mt-0.5 block text-[11px] text-slate-500">ドライバー採用の無料オンライン相談</span>
+              </span>
+              <span aria-hidden="true" className="text-base text-slate-400">›</span>
+            </a>
             <p className="mb-2 flex justify-center gap-4">
               <a href="/driver/terms" className="hover:text-slate-600">利用規約</a>
               <a href="/driver/privacy" className="hover:text-slate-600">個人情報の取り扱い</a>
