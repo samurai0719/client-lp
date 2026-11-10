@@ -6,9 +6,11 @@ interface StepHeaderProps {
   onBack?: () => void;
   /** 登録完了後: 全ステップを完了表示にする */
   completed?: boolean;
+  /** 完了時の表示（省略時は「登録完了」。企業向けの相談LPでは「申込み完了」） */
+  completedLabel?: string;
 }
 
-export default function StepHeader({ currentStep, totalSteps, onBack, completed = false }: StepHeaderProps) {
+export default function StepHeader({ currentStep, totalSteps, onBack, completed = false, completedLabel = '登録完了' }: StepHeaderProps) {
   const pct = completed ? 100 : Math.round((currentStep / totalSteps) * 100);
   const remaining = totalSteps - currentStep;
 
@@ -88,7 +90,7 @@ export default function StepHeader({ currentStep, totalSteps, onBack, completed 
           })}
           <span className="ml-auto pl-1 whitespace-nowrap text-[11px] text-slate-400">
             {completed ? (
-              <span className="font-semibold text-blue-500">登録完了</span>
+              <span className="font-semibold text-blue-500">{completedLabel}</span>
             ) : remaining > 0 ? (
               <>
                 あと <span className="font-semibold text-blue-500">{remaining}</span> ステップ

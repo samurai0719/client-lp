@@ -4,7 +4,7 @@
  *
  * 保存先は既存の driver_company_inquiries（inquiry_type = 'consultation'）。
  * 人数・時期・勤務地（都道府県のみ）は既存の列（hiring_count / hiring_timing / prefecture）に、
- * 採用状況と気になる料金プランは message 列にまとめて入れる。
+ * 採用状況・採用したい人材・気になる料金プランは message 列にまとめて入れる。
  * エラーメッセージには入力値も内部情報も載せない。
  */
 import { PREFECTURES } from "./driverCompanyInquiry";
@@ -16,12 +16,26 @@ export const CONSULT_INQUIRY_TYPE = "consultation";
 
 export const HIRING_STATUSES = ["すぐにドライバーを採用したい", "今後の採用に向けて情報収集したい"] as const;
 export const HIRING_COUNTS = ["1人", "2〜3人", "4人以上", "まだ決めていない"] as const;
+/** STEP 3「どのような人材を採用したいですか？」（複数選択） */
+export const TALENT_TYPES = [
+  "20〜30代の若手ドライバー",
+  "即戦力の経験者",
+  "未経験でも育成できる人材",
+  "中型免許を持っている人材",
+  "大型免許を持っている人材",
+  "けん引免許を持っている人材",
+  "人柄や意欲を重視したい",
+  "相談して決めたい",
+] as const;
+/** これを選んだら他は外す（他を選んだらこれを外す） */
+export const TALENT_EXCLUSIVE = "相談して決めたい";
 export const HIRING_TIMINGS = ["できるだけ早く", "1か月以内", "3か月以内", "良い人がいれば"] as const;
 export const PLAN_INTERESTS = ["成果報酬プラン", "月額プラン", "相談して決めたい"] as const;
 
 export type ConsultAnswers = {
   hiringStatus: string;
   hiringCount: string;
+  talentTypes: string[];
   hiringTiming: string;
   prefecture: string;
   plan: string;
@@ -79,12 +93,16 @@ export function validateConsult(
   const errors: ConsultErrors = validateContact(body);
   const hiringStatus = pick(body.hiringStatus, HIRING_STATUSES);
   const hiringCount = pick(body.hiringCount, HIRING_COUNTS);
+  const talentTypes = Array.isArray(body.talentTypes)
+    ? [...new Set(body.talentTypes.filter((t): t is string => typeof t === "string" && (TALENT_TYPES as readonly string[]).includes(t)))]
+    : [];
   const hiringTiming = pick(body.hiringTiming, HIRING_TIMINGS);
   const prefecture = pick(body.prefecture, PREFECTURES);
   const plan = pick(body.plan, PLAN_INTERESTS);
 
   if (!hiringStatus) errors.hiringStatus = "現在の採用状況をお選びください。";
   if (!hiringCount) errors.hiringCount = "採用したい人数をお選びください。";
+  if (talentTypes.length === 0) errors.talentTypes = "採用したい人材をお選びください。";
   if (!hiringTiming) errors.hiringTiming = "採用したい時期をお選びください。";
   if (!prefecture) errors.prefecture = "都道府県をお選びください。";
   if (!plan) errors.plan = "気になる料金プランをお選びください。";
@@ -95,6 +113,7 @@ export function validateConsult(
     values: {
       hiringStatus: hiringStatus!,
       hiringCount: hiringCount!,
+      talentTypes,
       hiringTiming: hiringTiming!,
       prefecture: prefecture!,
       plan: plan!,

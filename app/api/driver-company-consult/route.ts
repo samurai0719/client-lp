@@ -119,6 +119,7 @@ function summary(v: ConsultValues): string {
     "【無料オンライン相談の申込み】",
     `現在の採用状況：${v.hiringStatus}`,
     `採用したい人数：${v.hiringCount}`,
+    `採用したい人材：${v.talentTypes.join("、")}`,
     `採用したい時期：${v.hiringTiming}`,
     `採用予定の勤務地：${v.prefecture}`,
     `気になる料金プラン：${v.plan}`,
