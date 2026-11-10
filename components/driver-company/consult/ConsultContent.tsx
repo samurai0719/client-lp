@@ -824,7 +824,7 @@ export default function ConsultContent() {
                         />
                         <span>
                           <a
-                            href="privacy"
+                            href="https://doratech.adofy-site.com/privacy"
                             target="_blank"
                             rel="noopener"
                             className="font-bold text-blue-700 underline"
@@ -870,10 +870,10 @@ export default function ConsultContent() {
 
           <footer className="mt-4 border-t border-slate-100 py-10 text-center text-xs text-slate-400">
             <p className="mb-2 flex justify-center gap-4">
-              <a href="terms" className="hover:text-slate-600">
+              <a href="https://doratech.adofy-site.com/terms" className="hover:text-slate-600">
                 利用規約
               </a>
-              <a href="privacy" className="hover:text-slate-600">
+              <a href="https://doratech.adofy-site.com/privacy" className="hover:text-slate-600">
                 個人情報の取り扱い
               </a>
             </p>

@@ -4,7 +4,7 @@ import ConsultContent from "@/components/driver-company/consult/ConsultContent";
 /**
  * ドラテク 企業向け「無料オンライン相談」LP。
  *
- * 公開URL … https://doratech.adofy-site.com/consult
+ * 公開URL … https://driver.taxidriver-beginner.com/company と https://doratech.adofy-site.com/consult（同じページ）
  * 物理ルート … /driver/company/consult（next.config.ts の doratechSubpages で書き換え）
  *
  * 求職者向けLP（driver.taxidriver-beginner.com）と同じ「FV画像＋選択式の質問に答えて進む」形式。

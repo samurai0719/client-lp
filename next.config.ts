@@ -63,7 +63,7 @@ const saiyoHosts = ["saiyo.adofy-site.com"];
 //     /consult         → /driver/company/consult   （質問に答えて無料オンライン相談を申し込むLP）
 //     /register など   → /driver/company/register  （求人登録・認証・規約）
 //     /admin           → /adofy-admin/doratech     （管理画面。adofy管理者のみ）
-//   driver.taxidriver-beginner.com/company でも同じLPが開ける。
+//   driver.taxidriver-beginner.com/company は質問形式の /consult と同じLP（縦長LPではない）。
 // ─────────────────────────────────────────────────────────────────────────────
 const doratechHosts = ["doratech.adofy-site.com"];
 
@@ -326,6 +326,12 @@ const nextConfig: NextConfig = {
         destination: "/company",
         statusCode: 301,
       },
+      {
+        source: "/driver/company/consult",
+        has: [{ type: "host" as const, value: "driver.taxidriver-beginner.com" }],
+        destination: "/company",
+        statusCode: 301 as const,
+      },
 ];
   },
   async rewrites() {
@@ -380,10 +386,11 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
           destination: "/driver",
         },
+        // /company は質問形式の「無料オンライン相談」LP（2026-11-10 切替。縦長LPは doratech.adofy-site.com/ に残る）
         {
           source: "/company",
           has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
-          destination: "/driver/company",
+          destination: "/driver/company/consult",
         },
 
         // ── saiyo.adofy-site.com（採用レスキュー） ─────────────────────
