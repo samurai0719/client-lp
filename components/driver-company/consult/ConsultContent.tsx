@@ -10,6 +10,7 @@ import {
 } from "react";
 import ChoiceButton from "@/components/driver/ChoiceButton";
 import StepHeader from "@/components/driver/StepHeader";
+import ExitProfiles, { type ExitProfilesData } from "./ExitProfiles";
 import { trackCompany } from "@/components/driver-company/track";
 import { DORATECH_PIXEL_ID } from "@/lib/analytics/doratechCompanyPixel";
 import { captureUtm, loadUtm } from "@/lib/utm/storage";
@@ -403,6 +404,11 @@ export default function ConsultContent() {
   const [done, setDone] = useState(false);
   const [honeypot, setHoneypot] = useState("");
   const startedAt = useRef(0);
+  /** ブラウザの「戻る」で出す求職者プロフィールのライトボックス（1回の訪問で1回だけ） */
+  const [exitData, setExitData] = useState<ExitProfilesData | null>(null);
+  const [showExit, setShowExit] = useState(false);
+  const exitDataRef = useRef<ExitProfilesData | null>(null);
+  const exitShownRef = useRef(false);
   /** popstate から最新の回答を見るため（ブラウザの進むで未回答のステップへ飛ばないように） */
   const answersRef = useRef(answers);
 
@@ -414,19 +420,62 @@ export default function ConsultContent() {
     startedAt.current = Date.now();
     captureUtm();
     trackCompany("company_lp_view", { page: "consult" });
-    window.history.replaceState(
-      { ...window.history.state, consultStep: 1 },
-      "",
-    );
+    /*
+     * 離脱時のプロフィール表示のため、着地した履歴の上にもう1つ履歴を積む。
+     *   [着地（consultGuard）] → [STEP 1（consultStep: 1）] → [STEP 2] …
+     * STEP 1 で「戻る」を押すと consultGuard に戻るので、そこで1回だけライトボックスを出し、
+     * STEP 1 の履歴を積み直してページに留まる。2回目以降の「戻る」はそのまま前のページへ戻る。
+     */
+    window.history.replaceState({ ...window.history.state, consultGuard: true, consultStep: undefined }, "");
+    window.history.pushState({ ...window.history.state, consultGuard: undefined, consultStep: 1 }, "");
+
+    // 見せるプロフィールを先に取っておく（取れない・0件なら、戻るはそのまま前のページへ）
+    const timer = window.setTimeout(() => {
+      fetch("/api/driver-profiles", { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d: ExitProfilesData | null) => {
+          if (d && Array.isArray(d.profiles) && d.profiles.length > 0) {
+            exitDataRef.current = d;
+            setExitData(d);
+          }
+        })
+        .catch(() => {});
+    }, 800);
+
     // ブラウザの戻る/進むでもステップを移動する（回答は state に残っているので消えない）
     const onPop = (e: PopStateEvent) => {
-      const s = (e.state as { consultStep?: number } | null)?.consultStep ?? 1;
+      const st = e.state as { consultStep?: number; consultGuard?: boolean } | null;
+      if (st?.consultGuard) {
+        if (!exitShownRef.current && exitDataRef.current) {
+          exitShownRef.current = true;
+          window.history.pushState({ ...window.history.state, consultGuard: undefined, consultStep: 1 }, "");
+          setStepError(null);
+          setStep(1);
+          setShowExit(true);
+          trackCompany("company_exit_profiles_view", { page: "consult" });
+        } else {
+          // もう見せた・見せるものがない → 本当に前のページへ戻る
+          window.history.back();
+        }
+        return;
+      }
+      const s = st?.consultStep ?? 1;
       const max = answeredSteps(answersRef.current) + 1;
       setStepError(null);
       setStep(Math.max(1, Math.min(s, max, TOTAL_STEPS)) as Step);
     };
     window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("popstate", onPop);
+    };
+  }, []);
+
+  const closeExit = useCallback(() => setShowExit(false), []);
+  /** 「このページを離れる」。STEP 1 の履歴と着地の履歴を飛ばして前のページへ */
+  const leavePage = useCallback(() => {
+    setShowExit(false);
+    window.history.go(-2);
   }, []);
 
   /*
@@ -557,6 +606,7 @@ export default function ConsultContent() {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-slate-100">
+      {showExit && exitData && <ExitProfiles data={exitData} onContinue={closeExit} onLeave={leavePage} />}
       <div className="mx-auto min-h-screen max-w-[520px] bg-white shadow-[0_0_60px_rgba(30,64,175,0.08)]">
         {step === 1 && !done && <TopHeader />}
         {(step >= 2 || done) && (

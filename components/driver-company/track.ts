@@ -31,6 +31,8 @@ export type CompanyEvent =
   | "company_form_start"
   /** STEPを進めるたび（step番号をパラメータで送る） */
   | "company_form_step"
+  /** 無料オンライン相談LPで「戻る」を押し、求職者プロフィールのライトボックスを見せた */
+  | "company_exit_profiles_view"
   /** 登録が成功した時点で1回 */
   | "company_form_submit";
 
