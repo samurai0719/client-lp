@@ -60,6 +60,7 @@ const saiyoHosts = ["saiyo.adofy-site.com"];
 // ドラテク 企業向けLP（adofy ドメイン）
 //   doratech.adofy-site.com
 //     /                → /driver/company           （LP。proxy.ts で書き換え）
+//     /consult         → /driver/company/consult   （質問に答えて無料オンライン相談を申し込むLP）
 //     /register など   → /driver/company/register  （求人登録・認証・規約）
 //     /admin           → /adofy-admin/doratech     （管理画面。adofy管理者のみ）
 //   driver.taxidriver-beginner.com/company でも同じLPが開ける。
@@ -76,7 +77,7 @@ const doratechHosts = ["doratech.adofy-site.com"];
 //   /sitemap.xml → /driver/scout/sitemap.xml
 // scout.localhost はローカル確認用（http://scout.localhost:3123/ で本番と同じURLの形で開ける）
 const scoutHosts = ["scout.adofy-site.com", "scout.localhost"];
-const doratechSubpages = ["register", "verify", "terms", "refund-policy", "privacy"];
+const doratechSubpages = ["consult", "register", "verify", "terms", "refund-policy", "privacy"];
 
 // コーポレートサイトのサブページ（public: 公開URL / internal: appルート）
 const adofyPaths = [

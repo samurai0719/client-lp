@@ -197,6 +197,7 @@ export const INQUIRY_TYPE_LABEL: Record<string, string> = {
   profile_search: "求職者検索の申込み",
   job_posting: "求人掲載の問い合わせ",
   interview_request: "面接希望から登録",
+  consultation: "無料オンライン相談の申込み",
 };
 
 export type CompanyInquiryRow = {
