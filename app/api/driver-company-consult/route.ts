@@ -10,7 +10,7 @@ import {
 } from "@/lib/types/driverCompanyConsult";
 
 /**
- * ドラテク 企業向け「無料オンライン相談」の申込み受付API（/driver/company/consult から呼ばれる）。
+ * ドラテク 企業向け「無料オンライン相談」の申込み受付API（/driver/consult から呼ばれる）。
  *
  * /api/driver-scout-apply と同じ作り：
  *   ・ブラウザから Supabase へ直接書き込ませず、このAPIが service role キーで保存する

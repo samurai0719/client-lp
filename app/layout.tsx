@@ -36,6 +36,8 @@ export default function RootLayout({
             ((p==='/driver'||p.indexOf('/driver/')===0)&&p.indexOf('/driver/company')!==0&&p.indexOf('/driver/scout/')!==0&&p!=='/driver/scout');
           // scout.adofy-site.com/drivers（物理ルート /driver/scout-direct）も専用Pixelだけにする
           if((h==='scout.adofy-site.com'||h==='scout.localhost')&&p==='/drivers')seeker=true;
+          // 無料オンライン相談LP（driver.taxidriver-beginner.com/company・doratech.adofy-site.com/consult、物理ルート /driver/consult）も専用Pixel 3711 だけ
+          if((h==='driver.taxidriver-beginner.com'&&p==='/company')||(h==='doratech.adofy-site.com'&&p==='/consult'))seeker=true;
           if(!seeker){
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

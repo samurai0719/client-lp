@@ -58,7 +58,7 @@ export function trackCompany(
 
   try {
     // /drivers のLPはそのページ専用のPixelにだけ送る
-    const pixelId = isDoratechDirectPage(window.location.pathname) ? DORATECH_DIRECT_PIXEL_ID : DORATECH_PIXEL_ID;
+    const pixelId = isDoratechDirectPage(window.location.pathname, window.location.hostname) ? DORATECH_DIRECT_PIXEL_ID : DORATECH_PIXEL_ID;
     const args: unknown[] = ["trackSingleCustom", pixelId, event, params];
     if (window.__metaPixelReady?.[pixelId] && typeof window.fbq === "function") {
       window.fbq(...args);

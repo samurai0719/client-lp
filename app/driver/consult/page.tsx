@@ -1,15 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import ConsultContent from "@/components/driver-company/consult/ConsultContent";
+import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
+import { DORATECH_DIRECT_PIXEL_ID } from "@/lib/analytics/doratechDirectPixel";
 
 /**
  * ドラテク 企業向け「無料オンライン相談」LP。
  *
  * 公開URL … https://driver.taxidriver-beginner.com/company と https://doratech.adofy-site.com/consult（同じページ）
- * 物理ルート … /driver/company/consult（next.config.ts の doratechSubpages で書き換え）
+ * 物理ルート … /driver/consult（next.config.ts の rewrite で書き換え）
  *
  * 求職者向けLP（driver.taxidriver-beginner.com）と同じ「FV画像＋選択式の質問に答えて進む」形式。
  * 縦長の説明LP（/driver/company）とは別ページで、既存のLPには手を入れていない。
- * Meta Pixel は app/driver/company/layout.tsx の企業向けPixelを引き継ぐ。
+ * Meta Pixel は専用の 3711341419004077 だけ（/driver/company 配下に置くと企業向けの 1419 も読み込まれるため配下から外した）。
+ * 共通Pixel 818 は app/layout.tsx でこのページを除外している。
  * 広告の着地ページ用のため、検索結果には出さない（noindex）。
  */
 
@@ -38,5 +41,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#1e40af" };
 
 export default function DriverCompanyConsultPage() {
-  return <ConsultContent />;
+  return (
+    <>
+      <SingleMetaPixel id={DORATECH_DIRECT_PIXEL_ID} />
+      <ConsultContent />
+    </>
+  );
 }

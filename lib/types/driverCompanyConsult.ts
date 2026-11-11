@@ -1,5 +1,5 @@
 /**
- * ドラテク 企業向け「無料オンライン相談」LP（/driver/company/consult）の
+ * ドラテク 企業向け「無料オンライン相談」LP（/driver/consult）の
  * 質問の選択肢とサーバー側バリデーション。クライアントとサーバーで同じ定義を使う。
  *
  * 保存先は既存の driver_company_inquiries（inquiry_type = 'consultation'）。

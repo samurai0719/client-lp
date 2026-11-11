@@ -60,7 +60,7 @@ const saiyoHosts = ["saiyo.adofy-site.com"];
 // ドラテク 企業向けLP（adofy ドメイン）
 //   doratech.adofy-site.com
 //     /                → /driver/company           （LP。proxy.ts で書き換え）
-//     /consult         → /driver/company/consult   （質問に答えて無料オンライン相談を申し込むLP）
+//     /consult         → /driver/consult           （質問に答えて無料オンライン相談を申し込むLP。専用Pixel 3711 のため /driver/company 配下の外）
 //     /register など   → /driver/company/register  （求人登録・認証・規約）
 //     /admin           → /adofy-admin/doratech     （管理画面。adofy管理者のみ）
 //   driver.taxidriver-beginner.com/company は質問形式の /consult と同じLP（縦長LPではない）。
@@ -77,7 +77,7 @@ const doratechHosts = ["doratech.adofy-site.com"];
 //   /sitemap.xml → /driver/scout/sitemap.xml
 // scout.localhost はローカル確認用（http://scout.localhost:3123/ で本番と同じURLの形で開ける）
 const scoutHosts = ["scout.adofy-site.com", "scout.localhost"];
-const doratechSubpages = ["consult", "register", "verify", "terms", "refund-policy", "privacy"];
+const doratechSubpages = ["register", "verify", "terms", "refund-policy", "privacy"];
 
 // コーポレートサイトのサブページ（public: 公開URL / internal: appルート）
 const adofyPaths = [
@@ -327,7 +327,7 @@ const nextConfig: NextConfig = {
         statusCode: 301,
       },
       {
-        source: "/driver/company/consult",
+        source: "/driver/consult",
         has: [{ type: "host" as const, value: "driver.taxidriver-beginner.com" }],
         destination: "/company",
         statusCode: 301 as const,
@@ -390,7 +390,7 @@ const nextConfig: NextConfig = {
         {
           source: "/company",
           has: [{ type: "host", value: "driver.taxidriver-beginner.com" }],
-          destination: "/driver/company/consult",
+          destination: "/driver/consult",
         },
 
         // ── saiyo.adofy-site.com（採用レスキュー） ─────────────────────
@@ -418,6 +418,11 @@ const nextConfig: NextConfig = {
 
         // ── doratech.adofy-site.com（ドラテク 企業向け） ────────────────
         // ルート(/)は proxy.ts で処理する
+        ...doratechHosts.map((host) => ({
+          source: "/consult",
+          has: [{ type: "host" as const, value: host }],
+          destination: "/driver/consult",
+        })),
         ...doratechHosts.flatMap((host) =>
           doratechSubpages.map((page) => ({
             source: `/${page}`,

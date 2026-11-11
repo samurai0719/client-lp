@@ -12,7 +12,7 @@ import ChoiceButton from "@/components/driver/ChoiceButton";
 import StepHeader from "@/components/driver/StepHeader";
 import ExitProfiles, { type ExitProfilesData } from "./ExitProfiles";
 import { trackCompany } from "@/components/driver-company/track";
-import { DORATECH_PIXEL_ID } from "@/lib/analytics/doratechCompanyPixel";
+import { DORATECH_DIRECT_PIXEL_ID } from "@/lib/analytics/doratechDirectPixel";
 import { captureUtm, loadUtm } from "@/lib/utm/storage";
 import {
   HIRING_COUNTS,
@@ -587,7 +587,7 @@ export default function ConsultContent() {
       setDone(true);
       trackCompany("company_form_submit", { page: "consult" });
       try {
-        window.fbq?.("trackSingle", DORATECH_PIXEL_ID, "Lead", {
+        window.fbq?.("trackSingle", DORATECH_DIRECT_PIXEL_ID, "Lead", {
           content_name: "consult",
         });
       } catch {
