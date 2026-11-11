@@ -907,7 +907,7 @@ export default function ConsultContent() {
                     >
                       {sending
                         ? "送信しています…"
-                        : "無料オンライン相談を申し込む"}
+                        : "無料で採用について相談する"}
                     </button>
                     <p className="text-center text-[11px] leading-relaxed text-slate-400">
                       送信後、担当者からご連絡し、面談の日程を決めます。
