@@ -96,6 +96,15 @@ export default function HeroSection({ motivation, desiredTiming, onMotivation, o
               ドライバー求人・転職サービス
             </p>
           </div>
+          {/* 運送会社向けの入口（企業向けの無料オンライン相談LPへ） */}
+          <a
+            href="https://driver.taxidriver-beginner.com/company"
+            className="ml-auto shrink-0 rounded-full bg-gradient-to-b from-orange-400 to-orange-500 px-3 py-2 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#c2410c,0_4px_10px_rgba(0,0,0,0.2)] transition active:translate-y-[2px] active:shadow-[0_1px_0_#c2410c] min-[400px]:px-4 min-[400px]:text-[12px]"
+          >
+            運送会社様は
+            <br className="min-[440px]:hidden" />
+            こちら ›
+          </a>
         </div>
       </header>
 
