@@ -5,7 +5,7 @@ import { siteMeta } from "@/config/nurse-ranking";
 const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}/nurse-ranking/privacy` : undefined;
 
 export const metadata: Metadata = {
-  title: "プライバシーポリシー｜看護師転職サイトおすすめランキング",
+  title: "プライバシーポリシー｜看護師転職 比較ナビ",
   description: "当サイトの個人情報の取り扱い、Cookieの利用、外部サービスへのリンクについて説明します。",
   alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
 };
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
     <LegalPageShell title="プライバシーポリシー">
       <section>
         <p>
-          本サイト「看護師転職サイトおすすめランキング」（以下「当サイト」）は、掲載する転職支援サービスへの導線となる
+          本サイト「看護師転職 比較ナビ」（以下「当サイト」）は、掲載する転職支援サービスへの導線となる
           比較・紹介サイトです。当サイト自体はお申し込みフォームを持たず、個人情報の入力は各サービスの公式サイト上で
           行われます。
         </p>

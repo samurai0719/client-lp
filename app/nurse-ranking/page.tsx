@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
 import Header from "@/components/nurse-ranking/Header";
-import HeroSection from "@/components/nurse-ranking/HeroSection";
-import AdBannerSlot from "@/components/nurse-ranking/AdBannerSlot";
-import ComparisonSection from "@/components/nurse-ranking/ComparisonSection";
-import RankCard from "@/components/nurse-ranking/RankCard";
-import TypeRecommendationSection from "@/components/nurse-ranking/TypeRecommendationSection";
-import HowToChooseSection from "@/components/nurse-ranking/HowToChooseSection";
-import FlowSection from "@/components/nurse-ranking/FlowSection";
-import FaqSection from "@/components/nurse-ranking/FaqSection";
-import RankingBasisSection from "@/components/nurse-ranking/RankingBasisSection";
 import Footer from "@/components/nurse-ranking/Footer";
-import StickyMobileCta from "@/components/nurse-ranking/StickyMobileCta";
-import { services, siteMeta, adBanners, faqs } from "@/config/nurse-ranking";
+import ComparisonTabs from "@/components/nurse-ranking/ComparisonTabs";
+import WorkStyleSection from "@/components/nurse-ranking/WorkStyleSection";
+import RankCard from "@/components/nurse-ranking/RankCard";
+import FaqSection from "@/components/nurse-ranking/FaqSection";
+import { SectionTitle } from "@/components/nurse-ranking/ui";
+import { faqs, rankingNote, services, siteMeta } from "@/config/nurse-ranking";
 
-const PAGE_TITLE = "看護師転職サイトおすすめランキング3選｜特徴を比較";
+/**
+ * 看護師転職サイト おすすめランキング（/nurse-ranking）
+ *
+ * 構成：ヘッダー → FV画像 → タブ付き比較表 → 希望する働き方から確認 → ランキング詳細（1〜3位）
+ *       → 比較するメリット → よくある質問 → 再比較表 → フッター
+ * 比較表・詳細カード・FAQ はすべて config/nurse-ranking.ts の共通データから表示する。
+ */
+
+const PAGE_TITLE = `看護師転職サイトおすすめランキング｜厳選3社を比較｜${siteMeta.siteName}`;
 const PAGE_DESCRIPTION =
-  "看護師向け転職サービスを、求人の探しやすさやサポート内容、連絡手段から比較。レバウェル看護・ナース専科 転職・ナースではたらこの特徴をまとめて紹介します。";
+  "看護師向け転職サイト3社（レバウェル看護・ナース専科 転職・看護roo!転職）の特徴、相談方法、転職サポートを公式情報をもとに比較。希望する働き方ごとの相談のポイントも紹介します。";
 
 const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}/nurse-ranking` : undefined;
 
@@ -23,123 +26,109 @@ export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
-  openGraph: {
-    title: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    images: [siteMeta.ogImage],
-    type: "website",
-  },
+  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, images: [siteMeta.ogImage], type: "website" },
 };
 
+function formatDate(iso: string) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${y}年${m}月${d}日`;
+}
+
 export default function NurseRankingPage() {
-  const itemListJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: services.map((s) => ({
-      "@type": "ListItem",
-      position: s.rank,
-      name: s.name,
-      url: s.officialReferenceUrl,
-    })),
-  };
-
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "トップ", item: canonicalUrl ?? "/nurse-ranking" },
-      { "@type": "ListItem", position: 2, name: "看護師転職サイトおすすめランキング" },
-    ],
-  };
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-      "@type": "Question",
-      name: f.question,
-      acceptedAnswer: { "@type": "Answer", text: f.answer },
-    })),
-  };
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: services.map((s) => ({ "@type": "ListItem", position: s.rank, name: s.name, url: s.officialUrl })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
+    },
+  ];
 
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+    <div className="min-h-screen bg-[#fff6f9] text-slate-900">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <Header />
 
-      <div className="bg-white text-slate-900">
-        <Header />
-        <StickyMobileCta />
+      <main className="mx-auto max-w-[860px] bg-white shadow-[0_0_40px_rgba(232,67,122,0.06)]">
+        {/* ファーストビュー（文字は画像に入っているので重ねない） */}
+        <h1 className="sr-only">看護師 転職サイト おすすめランキング 厳選3社を比較</h1>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/nurse-ranking/hero.jpg"
+          width={1586}
+          height={992}
+          alt="あなたに合う転職先探しに 看護師転職サイトおすすめランキング 厳選3社を比較"
+          className="block h-auto w-full"
+          fetchPriority="high"
+        />
 
-        <main className="pb-24 sm:pb-0">
-          <HeroSection />
-
-          <div className="px-4 pt-8 sm:px-6">
-            <div className="mx-auto max-w-[1100px]">
-              <AdBannerSlot
-                banner={adBanners.top}
-                slotLabel="広告バナー枠A"
-                sizeLabelDesktop="推奨 728×90"
-                sizeLabelMobile="推奨 320×100"
-                heightClassMobile="h-[100px]"
-                heightClassDesktop="lg:h-[90px]"
-              />
-            </div>
+        {/* タブ付き比較表（上部） */}
+        <section aria-labelledby="compare-top-title" className="px-3 pb-6 pt-4 min-[400px]:px-4">
+          <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+            <h2 id="compare-top-title" className="text-[17px] font-black text-slate-900">
+              <span className="text-[#e8437a]">おすすめ3社</span>をひと目で比較
+            </h2>
+            <p className="text-[11px] text-slate-500">
+              更新日：<time dateTime={siteMeta.contentUpdatedAt}>{formatDate(siteMeta.contentUpdatedAt)}</time>
+            </p>
           </div>
+          <ComparisonTabs caption="おすすめ3社の比較表" />
+          <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
+            ※{rankingNote}各社の情報は公式サイトの記載をもとにしています（{formatDate(siteMeta.contentUpdatedAt)}確認）。最新の情報は各社の公式サイトでご確認ください。「公式サイト」ボタンを押すと外部サイトへ移動します。
+          </p>
+        </section>
 
-          <div className="mx-auto max-w-[1100px] px-4 py-10 sm:px-6 lg:grid lg:grid-cols-[1fr_300px] lg:items-start lg:gap-8 lg:py-14">
-            <div className="lg:min-w-0">
-              <ComparisonSection />
+        <div className="h-2 bg-[#fff1f5]" aria-hidden="true" />
 
-              <section id="ranking" className="bg-white px-0 py-12 sm:py-16" aria-labelledby="ranking-heading">
-                <div className="mb-8 text-center">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-teal-600">Ranking</span>
-                  <h2 id="ranking-heading" className="mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
-                    1位〜3位 サービス詳細
-                  </h2>
-                </div>
-                <div className="space-y-6">
-                  {services.map((s) => (
-                    <RankCard key={s.name} service={s} />
-                  ))}
-                </div>
-              </section>
+        <WorkStyleSection />
 
-              <div className="py-2">
-                <AdBannerSlot
-                  banner={adBanners.middle}
-                  slotLabel="広告バナー枠B"
-                  sizeLabelDesktop="推奨 728×90 / 970×250"
-                  sizeLabelMobile="推奨 320×100 / 300×250"
-                  heightClassMobile="h-[100px]"
-                  heightClassDesktop="lg:h-[120px]"
-                />
-              </div>
-            </div>
+        <div className="h-2 bg-[#fff1f5]" aria-hidden="true" />
 
-            {/* PC右サイドバー広告枠C */}
-            <aside className="hidden lg:sticky lg:top-24 lg:block">
-              <AdBannerSlot
-                banner={adBanners.sidebar}
-                slotLabel="広告バナー枠C"
-                sizeLabelDesktop="推奨 300×250"
-                heightClassMobile="h-[250px]"
-                heightClassDesktop="lg:h-[250px]"
-                hideOnMobile
-              />
-            </aside>
+        {/* ランキング詳細 */}
+        <section aria-labelledby="ranking-title" className="px-3 py-8 min-[400px]:px-4">
+          <SectionTitle id="ranking-title" sub={rankingNote}>
+            看護師転職サイト おすすめランキング
+          </SectionTitle>
+          <div className="space-y-6">
+            {services.map((s) => (
+              <RankCard key={s.id} s={s} />
+            ))}
           </div>
+        </section>
 
-          <TypeRecommendationSection />
-          <HowToChooseSection />
-          <FlowSection />
-          <FaqSection />
-          <RankingBasisSection />
-        </main>
+        <div className="h-2 bg-[#fff1f5]" aria-hidden="true" />
 
-        <Footer />
-      </div>
-    </>
+        {/* 複数サービスを比較するメリット */}
+        <section aria-labelledby="merit-title" className="px-4 py-8">
+          <SectionTitle id="merit-title">複数のサービスを比較するメリット</SectionTitle>
+          <p className="rounded-2xl border border-[#f7c9d8] bg-[#fff6f9] p-4 text-[14px] leading-relaxed text-slate-700">
+            紹介される求人や担当者との相性には違いがあるため、
+            <mark className="bg-[linear-gradient(transparent_55%,#fff176_55%)] font-bold text-inherit">気になるサービスを比較して選びましょう</mark>
+            。相談方法（電話・LINE）やサポート内容も、サービスごとに異なります。
+          </p>
+        </section>
+
+        <div className="h-2 bg-[#fff1f5]" aria-hidden="true" />
+
+        <FaqSection />
+
+        <div className="h-2 bg-[#fff1f5]" aria-hidden="true" />
+
+        {/* おすすめ3社の再比較表（上部とは独立したタブ） */}
+        <section aria-labelledby="compare-bottom-title" className="px-3 py-8 min-[400px]:px-4">
+          <SectionTitle id="compare-bottom-title">おすすめ3社をもう一度比較</SectionTitle>
+          <ComparisonTabs caption="おすすめ3社の再比較表" />
+          <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
+            ※{rankingNote}「公式サイト」ボタンを押すと外部サイトへ移動します。
+          </p>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

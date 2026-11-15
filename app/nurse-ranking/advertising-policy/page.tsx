@@ -5,7 +5,7 @@ import { siteMeta } from "@/config/nurse-ranking";
 const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}/nurse-ranking/advertising-policy` : undefined;
 
 export const metadata: Metadata = {
-  title: "広告掲載ポリシー｜看護師転職サイトおすすめランキング",
+  title: "広告掲載ポリシー｜看護師転職 比較ナビ",
   description: "当サイトにおけるアフィリエイト広告の利用状況と、広告掲載に関する方針について説明します。",
   alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
 };

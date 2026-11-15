@@ -14,8 +14,8 @@ const companyInfo = {
 };
 
 export const metadata: Metadata = {
-  title: "運営者情報｜看護師転職サイトおすすめランキング",
-  description: "看護師転職サイトおすすめランキングの運営者情報です。",
+  title: "運営者情報｜看護師転職 比較ナビ",
+  description: "看護師転職 比較ナビの運営者情報です。",
   alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
 };
 
@@ -29,7 +29,7 @@ export default function CompanyPage() {
               <th scope="row" className="w-32 py-3 pr-4 text-left align-top font-semibold text-slate-500">
                 サイト名
               </th>
-              <td className="py-3">看護師転職サイトおすすめランキング</td>
+              <td className="py-3">看護師転職 比較ナビ</td>
             </tr>
             <tr className="border-b border-slate-100">
               <th scope="row" className="w-32 py-3 pr-4 text-left align-top font-semibold text-slate-500">
@@ -49,7 +49,7 @@ export default function CompanyPage() {
               </th>
               <td className="py-3 text-amber-700">{companyInfo.address}</td>
             </tr>
-            <tr className="border-b border-slate-100">
+            <tr id="contact" className="scroll-mt-4 border-b border-slate-100">
               <th scope="row" className="w-32 py-3 pr-4 text-left align-top font-semibold text-slate-500">
                 連絡先
               </th>

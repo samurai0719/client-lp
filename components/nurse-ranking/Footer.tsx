@@ -1,16 +1,27 @@
 import Link from "next/link";
+import { siteMeta } from "@/config/nurse-ranking";
+
+const LINKS = [
+  { href: "/nurse-ranking/company", label: "運営者情報" },
+  { href: "/nurse-ranking/privacy", label: "プライバシーポリシー" },
+  { href: "/nurse-ranking/advertising-policy", label: "広告掲載方針" },
+  { href: "/nurse-ranking/ranking-policy", label: "掲載順位について" },
+  // お問い合わせ窓口は運営者情報ページの連絡先を案内する
+  { href: "/nurse-ranking/company#contact", label: "お問い合わせ" },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 px-4 py-10 text-center text-slate-400 sm:px-6">
-      <p className="text-sm font-semibold text-white">看護師転職サイトおすすめランキング</p>
-      <nav className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs" aria-label="法務ページ">
-        <Link href="/nurse-ranking/ranking-policy" className="hover:text-white">ランキング・編集方針</Link>
-        <Link href="/nurse-ranking/advertising-policy" className="hover:text-white">広告掲載ポリシー</Link>
-        <Link href="/nurse-ranking/privacy" className="hover:text-white">プライバシーポリシー</Link>
-        <Link href="/nurse-ranking/company" className="hover:text-white">運営者情報</Link>
+    <footer className="border-t border-[#f7c9d8] bg-[#fff6f9] px-4 py-8 text-center">
+      <p className="text-[14px] font-black text-slate-800">{siteMeta.siteName}</p>
+      <nav className="mx-auto mt-4 flex max-w-[640px] flex-wrap justify-center gap-x-4 gap-y-2.5 text-[12px] text-slate-600" aria-label="サイト情報">
+        {LINKS.map((l) => (
+          <Link key={l.label} href={l.href} className="underline-offset-2 hover:text-[#e8437a] hover:underline">
+            {l.label}
+          </Link>
+        ))}
       </nav>
-      <p className="mt-6 text-[11px] text-slate-500">© 2026 看護師転職サイトおすすめランキング</p>
+      <p className="mt-5 text-[11px] text-slate-400">© 2026 {siteMeta.siteName}</p>
     </footer>
   );
 }
