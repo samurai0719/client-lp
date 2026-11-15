@@ -1,8 +1,8 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
-import { linkOf, services, tableNotes, type Service } from "@/config/nurse-ranking";
-import { RankBadge, Rich } from "./ui";
+import { linkOf, services as defaultServices, tableNotes, type Service } from "@/config/nurse-ranking";
+import { ExternalIcon, RankBadge, Rich } from "./ui";
 
 /**
  * タブ付き比較表（サービスを縦に並べる形式）。上部と下部の2か所で使い、タブはそれぞれ独立して動く。
@@ -96,8 +96,45 @@ function LineIcon() {
   );
 }
 
-/** 「詳細を見る」（ページ内のランキング詳細カードへ） */
-function DetailButton({ s }: { s: Service }) {
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 7l9 6 9-6" />
+    </svg>
+  );
+}
+
+function FaceIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+      <circle cx="8" cy="8" r="3" />
+      <circle cx="16" cy="8" r="3" />
+      <path d="M2 19c0-3 2.7-5 6-5s6 2 6 5zM12.5 14.3c1-.2 2.2-.3 3.5-.3 3.3 0 6 2 6 5h-7" />
+    </svg>
+  );
+}
+
+/** 「詳細を見る」（ページ内のランキング詳細カードへ）／ action="official" のときは「公式サイト」（外部） */
+function DetailButton({ s, action, href }: { s: Service; action: "detail" | "official"; href: string }) {
+  if (action === "official") {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="nofollow sponsored noopener"
+        aria-label={`${s.name}の公式サイト（外部サイト）へ`}
+        className="flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
+      >
+        <span>
+          公式
+          <br className="min-[640px]:hidden" />
+          サイト
+        </span>
+        <ExternalIcon className="mt-0.5 h-2.5 w-2.5 min-[640px]:h-3 min-[640px]:w-3" />
+      </a>
+    );
+  }
   return (
     <a
       href={`#rank-${s.rank}`}
@@ -116,14 +153,14 @@ function DetailButton({ s }: { s: Service }) {
 }
 
 /** 転職サイト名のセル：王冠・サービス名・公式サイトへのリンク */
-function NameCell({ s }: { s: Service }) {
+function NameCell({ s, href }: { s: Service; href: string }) {
   return (
     <div className="flex flex-col items-center text-center">
       {s.rank === 1 && <span className="mb-1 rounded-sm bg-[#e7b416] px-1.5 py-0.5 text-[10px] font-black leading-none text-white">おすすめ</span>}
       <RankBadge rank={s.rank} />
       <span className="mt-1 text-[11.5px] font-black leading-tight text-slate-900 [word-break:keep-all] min-[400px]:text-[12.5px] min-[640px]:text-[16px]">{s.name}</span>
       <a
-        href={linkOf(s)}
+        href={href}
         target="_blank"
         rel="nofollow sponsored noopener"
         className="mt-1 text-[11px] text-[#2a6fd6] underline underline-offset-2 min-[640px]:text-[12px]"
@@ -138,22 +175,44 @@ function NameCell({ s }: { s: Service }) {
 const cell = "border border-[#f3c6d6] px-1.5 py-3 align-middle min-[640px]:px-3 min-[640px]:py-4";
 const head = "border border-[#f3c6d6] bg-[#fff1f5] px-1 py-2 text-center text-[11px] font-bold text-[#a8335f] min-[640px]:text-[13px]";
 
-function Row({ s, children }: { s: Service; children: ReactNode }) {
+function Row({ s, children, action, href }: { s: Service; children: ReactNode; action: "detail" | "official"; href: string }) {
   const first = s.rank === 1;
   return (
     <tr className={first ? "bg-[#fffbe6] outline outline-[3px] -outline-offset-[3px] outline-[#e7b416]" : ""}>
       <th scope="row" className={`${cell} !px-0.5 font-normal min-[640px]:!px-3`}>
-        <NameCell s={s} />
+        <NameCell s={s} href={href} />
       </th>
       {children}
       <td className={cell}>
-        <DetailButton s={s} />
+        <DetailButton s={s} action={action} href={href} />
       </td>
     </tr>
   );
 }
 
-export default function ComparisonTabs({ caption }: { caption: string }) {
+export default function ComparisonTabs({
+  caption,
+  list,
+  notes = tableNotes,
+  links,
+  action = "detail",
+  tabLabels,
+}: {
+  caption: string;
+  /** LPごとの広告リンク（サービスid → URL）。無いサービスは設定ファイルの広告リンク→公式トップ */
+  links?: Record<string, string>;
+  /** 最終列のボタン："detail"=ページ内の詳細へ／"official"=公式サイトへ */
+  action?: "detail" | "official";
+  /** タブ名の上書き（例：取扱求人） */
+  tabLabels?: Partial<Record<TabKey, string>>;
+  /** 掲載する会社（省略時はランキングページの3社） */
+  list?: Service[];
+  /** 表の下の注記（省略時はランキングページ用） */
+  notes?: string[];
+}) {
+  const services = list ?? defaultServices;
+  const hrefOf = (s: Service) => links?.[s.id] ?? linkOf(s);
+  const lastHead = action === "official" ? "公式サイト" : "詳細";
   const [tab, setTab] = useState<TabKey>("overall");
   const uid = useId();
 
@@ -177,7 +236,7 @@ export default function ComparisonTabs({ caption }: { caption: string }) {
                   : "bg-gradient-to-b from-[#f7a8c4] to-[#e8437a] py-2.5 text-white shadow-[inset_0_-2px_0_rgba(0,0,0,0.08)] hover:brightness-105 min-[640px]:py-3.5"
               }`}
             >
-              {t.label}
+              {tabLabels?.[t.key] ?? t.label}
               {active && (
                 <span className="absolute bottom-1 left-1/2 h-0 w-0 -translate-x-1/2 border-x-[6px] border-t-[6px] border-x-transparent border-t-[#e8437a]" aria-hidden="true" />
               )}
@@ -189,7 +248,7 @@ export default function ComparisonTabs({ caption }: { caption: string }) {
       <div id={`${uid}-panel`} role="tabpanel" aria-labelledby={`${uid}-tab-${tab}`} className="overflow-x-auto bg-white px-0 pb-1 pt-3 min-[640px]:px-4 min-[640px]:pt-5">
         <table className="w-full min-w-[351px] table-fixed border-collapse text-left">
           <caption className="sr-only">
-            {caption}（{TABS.find((t) => t.key === tab)?.label}）
+            {caption}（{tabLabels?.[tab] ?? TABS.find((t) => t.key === tab)?.label}）
           </caption>
 
           {tab === "overall" && (
@@ -207,12 +266,12 @@ export default function ComparisonTabs({ caption }: { caption: string }) {
                   <th scope="col" className={`${head} whitespace-nowrap !px-0 text-[10px]`}>オススメ度</th>
                   <th scope="col" className={head}>求人数</th>
                   <th scope="col" className={head}>特徴</th>
-                  <th scope="col" className={head}>詳細</th>
+                  <th scope="col" className={head}>{lastHead}</th>
                 </tr>
               </thead>
               <tbody>
                 {services.map((s) => (
-                  <Row key={s.id} s={s}>
+                  <Row key={s.id} s={s} action={action} href={hrefOf(s)}>
                     <td className={`${cell} text-center`}>
                       <Stars value={s.rating} />
                       <span className="sr-only">オススメ度 5点中{s.rating}点（当サイト独自の評価）</span>
@@ -221,8 +280,8 @@ export default function ComparisonTabs({ caption }: { caption: string }) {
                       </p>
                     </td>
                     <td className={`${cell} text-center`}>
-                      <DoubleCircle />
-                      <p className="mt-1 text-[11px] font-bold leading-tight text-slate-800 min-[640px]:text-[15px]">
+                      {s.jobCount.mark !== false && <DoubleCircle />}
+                      <p className={`mt-1 font-bold leading-tight min-[640px]:text-[15px] ${s.jobCount.mark === false ? "text-[11px] text-slate-500" : "text-[11px] text-slate-800"}`}>
                         {s.jobCount.value}
                         <span className="align-top text-[9px] font-normal text-slate-400">{s.jobCount.note}</span>
                       </p>
@@ -249,12 +308,12 @@ export default function ComparisonTabs({ caption }: { caption: string }) {
                   <th scope="col" className={head}>転職<br className="min-[640px]:hidden" />サイト名</th>
                   <th scope="col" className={head}>求人職種</th>
                   <th scope="col" className={head}>勤務形態</th>
-                  <th scope="col" className={head}>詳細</th>
+                  <th scope="col" className={head}>{lastHead}</th>
                 </tr>
               </thead>
               <tbody>
                 {services.map((s) => (
-                  <Row key={s.id} s={s}>
+                  <Row key={s.id} s={s} action={action} href={hrefOf(s)}>
                     <td className={cell}>
                       <ul className="space-y-1">
                         {s.jobTypes.map((j) => (
@@ -294,12 +353,12 @@ export default function ComparisonTabs({ caption }: { caption: string }) {
                   <th scope="col" className={head}>転職<br className="min-[640px]:hidden" />サイト名</th>
                   <th scope="col" className={head}>対応エリア</th>
                   <th scope="col" className={head}>相談方法</th>
-                  <th scope="col" className={head}>詳細</th>
+                  <th scope="col" className={head}>{lastHead}</th>
                 </tr>
               </thead>
               <tbody>
                 {services.map((s) => (
-                  <Row key={s.id} s={s}>
+                  <Row key={s.id} s={s} action={action} href={hrefOf(s)}>
                     <td className={`${cell} text-center`}>
                       <DoubleCircle />
                       <p className="mt-1 text-[13px] font-bold text-slate-800 min-[640px]:text-[16px]">{s.area}</p>
@@ -310,10 +369,10 @@ export default function ComparisonTabs({ caption }: { caption: string }) {
                           <li
                             key={m}
                             className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-bold text-white min-[640px]:text-[14px] ${
-                              m === "LINE" ? "bg-[#06c755]" : "bg-[#e8437a]"
+                              { LINE: "bg-[#06c755]", 電話: "bg-[#e8437a]", メール: "bg-[#3d8bd9]", 対面: "bg-[#8e6ac8]" }[m]
                             }`}
                           >
-                            {m === "LINE" ? <LineIcon /> : <PhoneIcon />}
+                            {m === "LINE" ? <LineIcon /> : m === "電話" ? <PhoneIcon /> : m === "メール" ? <MailIcon /> : <FaceIcon />}
                             {m}
                           </li>
                         ))}
@@ -327,7 +386,7 @@ export default function ComparisonTabs({ caption }: { caption: string }) {
         </table>
       </div>
       <div className="mt-2 space-y-0.5 text-[10.5px] leading-relaxed text-slate-500 min-[640px]:text-[11px]">
-        {tableNotes.map((n) => (
+        {notes.map((n) => (
           <p key={n}>{n}</p>
         ))}
       </div>

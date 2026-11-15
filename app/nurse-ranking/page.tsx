@@ -18,7 +18,7 @@ import { faqs, rankingNote, services, siteMeta } from "@/config/nurse-ranking";
 
 const PAGE_TITLE = `看護師転職サイトおすすめランキング｜厳選3社を比較｜${siteMeta.siteName}`;
 const PAGE_DESCRIPTION =
-  "看護師向け転職サイト3社（レバウェル看護・ナース専科 転職・看護roo!転職）の特徴、相談方法、転職サポートを公式情報をもとに比較。希望する働き方ごとの相談のポイントも紹介します。";
+  "看護師向け転職サイト3社（レバウェル看護・看護師ワーカー・ナースではたらこ）の特徴、相談方法、転職サポートを公式情報をもとに比較。希望する働き方ごとの相談のポイントも紹介します。";
 
 const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}/nurse-ranking` : undefined;
 

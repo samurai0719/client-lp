@@ -84,9 +84,23 @@ export function ServiceName({ s, compact = false }: { s: Service; compact?: bool
  * 公式サイトへのボタン。外部サイトへ移動することを明示する。
  * size="sm" は比較表用（「公式サイト」）、"lg" は詳細カード用（「〇〇の公式サイトを見る」＋補足）。
  */
-export function OfficialButton({ s, size = "lg", children }: { s: Service; size?: "sm" | "lg"; children?: ReactNode }) {
+export function OfficialButton({
+  s,
+  size = "lg",
+  children,
+  href,
+  sub = "＼ 無料で転職相談 ／",
+}: {
+  s: Service;
+  size?: "sm" | "lg";
+  children?: ReactNode;
+  /** 遷移先を上書きする（LPごとの広告リンク）。省略時は設定ファイルの広告リンク→公式トップ */
+  href?: string;
+  /** ボタン上段の小さい文言 */
+  sub?: string;
+}) {
   const common = {
-    href: linkOf(s),
+    href: href ?? linkOf(s),
     target: "_blank",
     rel: "nofollow sponsored noopener",
     "data-service": s.id,
@@ -112,12 +126,14 @@ export function OfficialButton({ s, size = "lg", children }: { s: Service; size?
         className="group flex min-h-[58px] w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-5 py-3 text-[15px] font-black text-white shadow-[0_4px_0_#16793a,0_8px_18px_rgba(30,158,70,0.25)] transition hover:brightness-105 active:translate-y-[3px] active:shadow-[0_1px_0_#16793a] min-[400px]:text-[16px]"
       >
         <span className="flex flex-col leading-tight">
-          <span className="text-[11px] font-bold text-white/90">＼ 無料で転職相談 ／</span>
+          <span className="text-[11px] font-bold text-white/90">{sub}</span>
           <span>{children ?? `${s.name}の公式サイトを見る`}</span>
         </span>
         <ExternalIcon className="h-4 w-4 shrink-0 transition group-hover:translate-x-0.5" />
       </a>
-      <p className="mt-1.5 text-[11px] text-slate-500">外部サイト（{s.name} 公式サイト）へ移動します</p>
+      <p className="mt-1.5 text-[11px] text-slate-500">
+        <b className="font-bold text-slate-700">{s.name}</b> 公式サイトへ（外部サイトに移動します）
+      </p>
     </div>
   );
 }

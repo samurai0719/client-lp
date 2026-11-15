@@ -24,7 +24,8 @@ const RIBBON = {
   3: "bg-gradient-to-r from-[#b8784a] to-[#d99a62]",
 } as const;
 
-export default function RankCard({ s }: { s: Service }) {
+export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; href?: string; ctaLabel?: string; ctaSub?: string }) {
+  const link = href ?? s.affiliateUrl ?? s.officialUrl;
   const [tab, setTab] = useState<"basic" | "support">("basic");
   const uid = useId();
   const rows = tab === "basic" ? s.basicInfo : s.supportInfo;
@@ -52,7 +53,7 @@ export default function RankCard({ s }: { s: Service }) {
 
         {/* ② 正規の広告素材。無いサービスはロゴを作らず文字で表示する */}
         {s.adImage ? (
-          <a href={s.affiliateUrl ?? s.officialUrl} target="_blank" rel="nofollow sponsored noopener" className="relative mx-auto block w-full max-w-[300px]">
+          <a href={link} target="_blank" rel="nofollow sponsored noopener" className="relative mx-auto block w-full max-w-[300px]">
             <span className="absolute left-1 top-1 rounded bg-black/55 px-1 text-[9px] font-bold leading-[14px] text-white">広告</span>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={s.adImage.src} width={s.adImage.width} height={s.adImage.height} alt={s.adImage.alt} className="block h-auto w-full rounded-lg border border-slate-200" loading="lazy" />
@@ -81,7 +82,9 @@ export default function RankCard({ s }: { s: Service }) {
 
         {/* ③ CTA */}
         <div className="mt-4">
-          <OfficialButton s={s} />
+          <OfficialButton s={s} href={href} sub={ctaSub}>
+            {ctaLabel}
+          </OfficialButton>
         </div>
 
         {/* ④ 基本情報／サポート内容 */}
@@ -198,7 +201,9 @@ export default function RankCard({ s }: { s: Service }) {
 
         {/* ⑦ CTA */}
         <div className="mt-5">
-          <OfficialButton s={s} />
+          <OfficialButton s={s} href={href} sub={ctaSub}>
+            {ctaLabel}
+          </OfficialButton>
         </div>
 
         {/* ⑧ 出典・数値の注記 */}
