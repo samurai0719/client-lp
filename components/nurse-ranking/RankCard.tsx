@@ -159,6 +159,43 @@ export default function RankCard({ s }: { s: Service }) {
           </ul>
         </section>
 
+        {/* 口コミ（公式サイト掲載の利用者の声を原文のまま引用） */}
+        {s.reviews.length > 0 && (
+          <section className="mt-5" aria-label={`${s.name}の口コミ`}>
+            <h4 className="mb-2 flex items-center gap-1.5 text-[15px] font-black text-slate-900">
+              <span className="h-4 w-1 rounded-full bg-[#e8437a]" aria-hidden="true" />
+              {s.name}の口コミ
+              <span className="text-[11px] font-bold text-slate-500">（公式サイト掲載）</span>
+            </h4>
+            <ul className="space-y-2.5">
+              {s.reviews.map((r) => (
+                <li key={r.profile} className="flex gap-2.5">
+                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fde3ec] text-[#e8437a]" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M4 20.5c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5z" />
+                    </svg>
+                  </span>
+                  <figure className="relative min-w-0 flex-1 rounded-xl border border-[#f7d5e1] bg-white px-3 py-2.5 before:absolute before:-left-[6px] before:top-3.5 before:h-3 before:w-3 before:rotate-45 before:border-b before:border-l before:border-[#f7d5e1] before:bg-white">
+                    <figcaption className="relative text-[11px] font-bold text-[#c2386a]">{r.profile}</figcaption>
+                    <blockquote cite={s.reviewSource.url} className="relative mt-1 text-[13px] leading-relaxed text-slate-700">
+                      「{r.text}」
+                    </blockquote>
+                    {r.detail && <p className="relative mt-1.5 rounded bg-[#fff6f9] px-2 py-1 text-[11px] leading-snug text-slate-600">{r.detail}</p>}
+                  </figure>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
+              出典：
+              <a href={s.reviewSource.url} target="_blank" rel="noopener" className="text-[#2a6fd6] underline underline-offset-2">
+                {s.reviewSource.label}
+              </a>
+              （2026年11月15日確認）。{s.reviewSource.note}
+            </p>
+          </section>
+        )}
+
         {/* ⑦ CTA */}
         <div className="mt-5">
           <OfficialButton s={s} />
