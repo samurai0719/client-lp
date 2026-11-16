@@ -14,9 +14,12 @@ export default function WorkStyleSection() {
 
   return (
     <section aria-labelledby="workstyle-title" className="px-4 py-8">
-      <SectionTitle id="workstyle-title" sub="選ぶと、転職相談のときに確認したいポイントが表示されます">
-        どんな働き方を希望していますか？
-      </SectionTitle>
+      <SectionTitle
+        id="workstyle-title"
+        lines={["どんな働き方を", "希望していますか？"]}
+        highlight={["働き方"]}
+        sub="選ぶと、転職相談のときに確認したいポイントが表示されます"
+      />
       <div className="grid grid-cols-2 gap-2 min-[640px]:grid-cols-4" role="group" aria-label="希望する働き方">
         {workStyles.map((w) => {
           const on = w.id === active;

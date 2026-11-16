@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { linkOf, type Service } from "@/config/nurse-ranking";
+import { destinationName, linkOf, type Service } from "@/config/nurse-ranking";
+import SvgHeading from "@/components/nurse-shukyu3/SvgHeading";
 
 /**
  * 看護師転職ランキングの共通部品。
@@ -90,6 +91,7 @@ export function OfficialButton({
   children,
   href,
   sub = "＼ 無料で転職相談 ／",
+  big = false,
 }: {
   s: Service;
   size?: "sm" | "lg";
@@ -98,6 +100,8 @@ export function OfficialButton({
   href?: string;
   /** ボタン上段の小さい文言 */
   sub?: string;
+  /** ひと回り大きいボタンにする（ランキングページの詳細カード用） */
+  big?: boolean;
 }) {
   const common = {
     href: href ?? linkOf(s),
@@ -109,8 +113,8 @@ export function OfficialButton({
     return (
       <a
         {...common}
-        aria-label={`${s.name}の公式サイト（外部サイト）へ`}
-        className="inline-flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1.5 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a]"
+        aria-label={`${destinationName(s, common.href)}の公式サイト（外部サイト）へ`}
+        className="nr-shine inline-flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1.5 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a]"
       >
         公式
         <br />
@@ -119,20 +123,27 @@ export function OfficialButton({
       </a>
     );
   }
+  const label = children ?? `${s.name}の公式サイトを見る`;
+  const labelLen = typeof label === "string" ? label.length : 0;
   return (
-    <div className="mx-auto w-full max-w-[460px] text-center">
+    <div className={`mx-auto w-full text-center ${big ? "max-w-[520px]" : "max-w-[460px]"}`}>
       <a
         {...common}
-        className="group flex min-h-[58px] w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-5 py-3 text-[15px] font-black text-white shadow-[0_4px_0_#16793a,0_8px_18px_rgba(30,158,70,0.25)] transition hover:brightness-105 active:translate-y-[3px] active:shadow-[0_1px_0_#16793a] min-[400px]:text-[16px]"
+        className={`nr-shine group flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] font-black text-white transition hover:brightness-105 active:translate-y-[3px] active:shadow-[0_1px_0_#16793a] ${
+          big
+            ? "min-h-[72px] px-7 py-3.5 text-[14px] min-[360px]:px-9 shadow-[0_5px_0_#16793a,0_10px_22px_rgba(30,158,70,0.3)] min-[360px]:text-[17px] min-[400px]:text-[19px] min-[640px]:min-h-[78px] min-[640px]:text-[21px]"
+            : "min-h-[58px] px-8 py-3 text-[13.5px] min-[360px]:px-10 shadow-[0_4px_0_#16793a,0_8px_18px_rgba(30,158,70,0.25)] min-[360px]:text-[15px] min-[400px]:text-[16px]"
+        }`}
       >
         <span className="flex flex-col leading-tight">
-          <span className="text-[11px] font-bold text-white/90">{sub}</span>
-          <span>{children ?? `${s.name}の公式サイトを見る`}</span>
+          <span className={`font-bold text-white/90 ${big ? "text-[12px] min-[640px]:text-[13px]" : "text-[11px]"}`}>{sub}</span>
+          <span className={labelLen > 16 ? "text-[13.5px] min-[400px]:text-[15px]" : ""}>{label}</span>
         </span>
-        <ExternalIcon className="h-4 w-4 shrink-0 transition group-hover:translate-x-0.5" />
+        {/* 外部リンクの矢印はボタンの右端に置く（文言は中央のまま） */}
+        <ExternalIcon className={`absolute top-1/2 -translate-y-1/2 transition group-hover:translate-x-0.5 ${big ? "right-3.5 h-5 w-5 min-[360px]:right-5" : "right-3 h-4 w-4 min-[360px]:right-4"}`} />
       </a>
       <p className="mt-1.5 text-[11px] text-slate-500">
-        <b className="font-bold text-slate-700">{s.name}</b> 公式サイトへ（外部サイトに移動します）
+        <b className="font-bold text-slate-700">{destinationName(s, common.href)}</b> 公式サイトへ（外部サイトに移動します）
       </p>
     </div>
   );
@@ -146,14 +157,15 @@ export function ExternalIcon({ className = "" }: { className?: string }) {
   );
 }
 
-/** ピンクの見出し */
-export function SectionTitle({ id, children, sub }: { id?: string; children: ReactNode; sub?: string }) {
+/**
+ * セクション見出し（h2）。文字はインラインSVGで描く（ページに <SvgHeadingDefs /> が必要）。
+ * lines で改行位置、highlight でピンクにする語を指定する。
+ */
+export function SectionTitle({ id, lines, highlight, sub }: { id?: string; lines: string[]; highlight?: string[]; sub?: string }) {
   return (
-    <div className="mb-4 text-center">
-      <h2 id={id} className="inline-block border-b-[3px] border-[#e8437a] pb-1 text-[19px] font-black leading-snug text-slate-900 min-[400px]:text-[21px]">
-        {children}
-      </h2>
-      {sub && <p className="mt-2 text-[12px] text-slate-500">{sub}</p>}
+    <div className="mb-4">
+      <SvgHeading id={id} lines={lines} highlight={highlight} size={22} />
+      {sub && <p className="mt-1.5 text-center text-[12px] text-slate-500">{sub}</p>}
     </div>
   );
 }

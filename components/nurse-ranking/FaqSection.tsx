@@ -5,7 +5,7 @@ import { SectionTitle } from "./ui";
 export default function FaqSection() {
   return (
     <section aria-labelledby="faq-title" className="px-4 py-8">
-      <SectionTitle id="faq-title">よくある質問</SectionTitle>
+      <SectionTitle id="faq-title" lines={["よくある質問"]} highlight={["質問"]} />
       <div className="space-y-2.5">
         {faqs.map((f) => (
           <details key={f.question} className="group rounded-xl border border-[#f7c9d8] bg-white open:bg-[#fff6f9]">

@@ -6,6 +6,7 @@ import WorkStyleSection from "@/components/nurse-ranking/WorkStyleSection";
 import RankCard from "@/components/nurse-ranking/RankCard";
 import FaqSection from "@/components/nurse-ranking/FaqSection";
 import { SectionTitle } from "@/components/nurse-ranking/ui";
+import SvgHeading, { SvgHeadingDefs } from "@/components/nurse-shukyu3/SvgHeading";
 import { faqs, rankingNote, services, siteMeta } from "@/config/nurse-ranking";
 
 /**
@@ -51,6 +52,7 @@ export default function NurseRankingPage() {
   return (
     <div className="min-h-screen bg-[#fff6f9] text-slate-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <SvgHeadingDefs />
       <Header />
 
       <main className="mx-auto max-w-[860px] bg-white shadow-[0_0_40px_rgba(232,67,122,0.06)]">
@@ -58,8 +60,8 @@ export default function NurseRankingPage() {
         <h1 className="sr-only">看護師 転職サイト おすすめランキング 厳選3社を比較</h1>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/nurse-ranking/hero.jpg"
-          width={1586}
+          src="/images/nurse-ranking/hero-v2.jpg"
+          width={1585}
           height={992}
           alt="あなたに合う転職先探しに 看護師転職サイトおすすめランキング 厳選3社を比較"
           className="block h-auto w-full"
@@ -69,9 +71,7 @@ export default function NurseRankingPage() {
         {/* タブ付き比較表（上部） */}
         <section aria-labelledby="compare-top-title" className="px-3 pb-6 pt-4 min-[400px]:px-4">
           <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-            <h2 id="compare-top-title" className="text-[17px] font-black text-slate-900">
-              <span className="text-[#e8437a]">おすすめ3社</span>をひと目で比較
-            </h2>
+            <SvgHeading id="compare-top-title" lines={["おすすめ3社をひと目で比較"]} highlight={["おすすめ3社"]} size={18} align="left" underline={false} />
             <p className="text-[11px] text-slate-500">
               更新日：<time dateTime={siteMeta.contentUpdatedAt}>{formatDate(siteMeta.contentUpdatedAt)}</time>
             </p>
@@ -90,12 +90,10 @@ export default function NurseRankingPage() {
 
         {/* ランキング詳細 */}
         <section aria-labelledby="ranking-title" className="px-3 py-8 min-[400px]:px-4">
-          <SectionTitle id="ranking-title" sub={rankingNote}>
-            看護師転職サイト おすすめランキング
-          </SectionTitle>
+          <SectionTitle id="ranking-title" lines={["看護師転職サイト", "おすすめランキング"]} highlight={["おすすめランキング"]} sub={rankingNote} />
           <div className="space-y-6">
             {services.map((s) => (
-              <RankCard key={s.id} s={s} />
+              <RankCard key={s.id} s={s} svgHeadings ctaBig ctaLabel="非公開求人を紹介してもらう" />
             ))}
           </div>
         </section>
@@ -104,7 +102,7 @@ export default function NurseRankingPage() {
 
         {/* 複数サービスを比較するメリット */}
         <section aria-labelledby="merit-title" className="px-4 py-8">
-          <SectionTitle id="merit-title">複数のサービスを比較するメリット</SectionTitle>
+          <SectionTitle id="merit-title" lines={["複数のサービスを", "比較するメリット"]} highlight={["メリット"]} />
           <p className="rounded-2xl border border-[#f7c9d8] bg-[#fff6f9] p-4 text-[14px] leading-relaxed text-slate-700">
             紹介される求人や担当者との相性には違いがあるため、
             <mark className="bg-[linear-gradient(transparent_55%,#fff176_55%)] font-bold text-inherit">気になるサービスを比較して選びましょう</mark>
@@ -120,7 +118,7 @@ export default function NurseRankingPage() {
 
         {/* おすすめ3社の再比較表（上部とは独立したタブ） */}
         <section aria-labelledby="compare-bottom-title" className="px-3 py-8 min-[400px]:px-4">
-          <SectionTitle id="compare-bottom-title">おすすめ3社をもう一度比較</SectionTitle>
+          <SectionTitle id="compare-bottom-title" lines={["おすすめ3社を", "もう一度比較"]} highlight={["おすすめ3社"]} />
           <ComparisonTabs caption="おすすめ3社の再比較表" />
           <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
             ※{rankingNote}「公式サイト」ボタンを押すと外部サイトへ移動します。

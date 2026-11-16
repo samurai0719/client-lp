@@ -1,9 +1,10 @@
 "use client";
 
 import { useId, useState } from "react";
-import type { Service } from "@/config/nurse-ranking";
+import { linkOf, type Service } from "@/config/nurse-ranking";
 import { OfficialButton, RankBadge, Rich } from "./ui";
 import { CheckIcon } from "./WorkStyleSection";
+import SvgHeading from "@/components/nurse-shukyu3/SvgHeading";
 
 /**
  * ランキング詳細カード（1位・2位・3位で同じ構成。タブはカードごとに独立）。
@@ -24,8 +25,24 @@ const RIBBON = {
   3: "bg-gradient-to-r from-[#b8784a] to-[#d99a62]",
 } as const;
 
-export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; href?: string; ctaLabel?: string; ctaSub?: string }) {
-  const link = href ?? s.affiliateUrl ?? s.officialUrl;
+export default function RankCard({
+  s,
+  href,
+  ctaLabel,
+  ctaSub,
+  svgHeadings = false,
+  ctaBig = false,
+}: {
+  s: Service;
+  href?: string;
+  ctaLabel?: string;
+  ctaSub?: string;
+  /** 見出し（h3・h4）をインラインSVGの文字で描く（週休3日LP用。ページに <SvgHeadingDefs /> が必要） */
+  svgHeadings?: boolean;
+  /** CTAボタンをひと回り大きくする */
+  ctaBig?: boolean;
+}) {
+  const link = href ?? linkOf(s);
   const [tab, setTab] = useState<"basic" | "support">("basic");
   const uid = useId();
   const rows = tab === "basic" ? s.basicInfo : s.supportInfo;
@@ -39,10 +56,14 @@ export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; hr
         </span>
         <div className="min-w-0">
           <p className="text-[12px] font-bold leading-none [text-shadow:0_1px_1px_rgba(0,0,0,0.25)]">第{s.rank}位</p>
-          <h3 id={`${uid}-title`} className="mt-1 text-[19px] font-black leading-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.25)]">
-            {s.name}
-            {s.sub && <span className="ml-1.5 text-[11px] font-bold opacity-95">（{s.sub}）</span>}
-          </h3>
+          {svgHeadings ? (
+            <SvgHeading as="h3" id={`${uid}-title`} lines={[s.name]} size={21} align="left" variant="ribbon" className="mt-0.5" />
+          ) : (
+            <h3 id={`${uid}-title`} className="mt-1 text-[19px] font-black leading-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.25)]">
+              {s.name}
+              {s.sub && <span className="ml-1.5 text-[11px] font-bold opacity-95">（{s.sub}）</span>}
+            </h3>
+          )}
         </div>
       </header>
 
@@ -58,9 +79,16 @@ export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; hr
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={s.adImage.src} width={s.adImage.width} height={s.adImage.height} alt={s.adImage.alt} className="block h-auto w-full rounded-lg border border-slate-200" loading="lazy" />
           </a>
-        ) : (
-          <div className="mx-auto flex w-full max-w-[300px] flex-col items-center justify-center rounded-lg border border-[#f7c9d8] bg-[#fff6f9] px-4 py-6 text-center">
-            <p className="text-[22px] font-black leading-tight text-slate-900">{s.name}</p>
+        ) : null}
+        {s.adImage && <p className="mx-auto mt-1 max-w-[300px] text-[10px] leading-snug text-slate-400">※画像内の表記は{s.name}の広告素材によるものです。</p>}
+        {!s.adImage && (
+          <div className="mx-auto flex w-full max-w-[300px] flex-col items-center justify-center rounded-lg border border-[#f7c9d8] bg-white px-4 py-5 text-center">
+            {s.logo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={s.logo.src} width={s.logo.width} height={s.logo.height} alt={s.name} className="h-auto max-h-[90px] w-full max-w-[220px] object-contain" />
+            ) : (
+              <p className="text-[22px] font-black leading-tight text-slate-900">{s.name}</p>
+            )}
             <p className="mt-1 text-[11px] text-slate-500">運営：{s.operator}</p>
           </div>
         )}
@@ -82,7 +110,7 @@ export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; hr
 
         {/* ③ CTA */}
         <div className="mt-4">
-          <OfficialButton s={s} href={href} sub={ctaSub}>
+          <OfficialButton s={s} href={href} sub={ctaSub} big={ctaBig}>
             {ctaLabel}
           </OfficialButton>
         </div>
@@ -130,10 +158,14 @@ export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; hr
 
         {/* ⑤ おすすめポイント */}
         <section className="mt-5" aria-label="おすすめポイント">
-          <h4 className="mb-2 flex items-center gap-1.5 text-[15px] font-black text-slate-900">
-            <span className="h-4 w-1 rounded-full bg-[#e8437a]" aria-hidden="true" />
-            おすすめポイント
-          </h4>
+          {svgHeadings ? (
+            <SvgHeading as="h4" lines={["おすすめポイント"]} size={16} align="left" variant="sub" className="mb-1.5 border-l-4 border-[#e8437a] pl-2" />
+          ) : (
+            <h4 className="mb-2 flex items-center gap-1.5 text-[15px] font-black text-slate-900">
+              <span className="h-4 w-1 rounded-full bg-[#e8437a]" aria-hidden="true" />
+              おすすめポイント
+            </h4>
+          )}
           <ol className="space-y-2.5">
             {s.points.map((p, i) => (
               <li key={p} className="flex gap-2 rounded-xl bg-white px-3 py-2.5 text-[14px] leading-relaxed text-slate-700 shadow-[0_0_0_1px_#f7d5e1]">
@@ -149,7 +181,11 @@ export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; hr
 
         {/* ⑥ こんな人におすすめ */}
         <section className="mt-5 rounded-xl border border-dashed border-[#f3a9c3] bg-[#fff6f9] px-3.5 py-3" aria-label="こんな人におすすめ">
-          <h4 className="mb-1.5 text-[14px] font-black text-[#c2386a]">こんな人におすすめ</h4>
+          {svgHeadings ? (
+            <SvgHeading as="h4" lines={["こんな人におすすめ"]} size={15} align="left" variant="sub" className="mb-1" />
+          ) : (
+            <h4 className="mb-1.5 text-[14px] font-black text-[#c2386a]">こんな人におすすめ</h4>
+          )}
           <ul className="space-y-1">
             {s.recommendedFor.map((r) => (
               <li key={r} className="flex gap-1.5 text-[13px] leading-relaxed text-slate-700">
@@ -165,11 +201,18 @@ export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; hr
         {/* 口コミ（公式サイト掲載の利用者の声を原文のまま引用） */}
         {s.reviews.length > 0 && (
           <section className="mt-5" aria-label={`${s.name}の口コミ`}>
-            <h4 className="mb-2 flex items-center gap-1.5 text-[15px] font-black text-slate-900">
-              <span className="h-4 w-1 rounded-full bg-[#e8437a]" aria-hidden="true" />
-              {s.name}の口コミ
-              <span className="text-[11px] font-bold text-slate-500">（公式サイト掲載）</span>
-            </h4>
+            {svgHeadings ? (
+              <div className="mb-1.5 flex flex-wrap items-center gap-x-1.5 border-l-4 border-[#e8437a] pl-2">
+                <SvgHeading as="h4" lines={[`${s.name}の口コミ`]} size={16} align="left" variant="sub" />
+                <span className="text-[11px] font-bold text-slate-500">（公式サイト掲載）</span>
+              </div>
+            ) : (
+              <h4 className="mb-2 flex items-center gap-1.5 text-[15px] font-black text-slate-900">
+                <span className="h-4 w-1 rounded-full bg-[#e8437a]" aria-hidden="true" />
+                {s.name}の口コミ
+                <span className="text-[11px] font-bold text-slate-500">（公式サイト掲載）</span>
+              </h4>
+            )}
             <ul className="space-y-2.5">
               {s.reviews.map((r) => (
                 <li key={r.profile} className="flex gap-2.5">
@@ -201,7 +244,7 @@ export default function RankCard({ s, href, ctaLabel, ctaSub }: { s: Service; hr
 
         {/* ⑦ CTA */}
         <div className="mt-5">
-          <OfficialButton s={s} href={href} sub={ctaSub}>
+          <OfficialButton s={s} href={href} sub={ctaSub} big={ctaBig}>
             {ctaLabel}
           </OfficialButton>
         </div>

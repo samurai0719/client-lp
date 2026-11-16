@@ -838,3 +838,35 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in { animation: none !important; opacity: 1; transform: none; }
 }
+
+/* ── 看護師転職ランキング／週休3日LP の緑のCTA：光の筋＋ふんわり発光 ─────────── */
+.nr-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  animation: nrGlow 2.6s ease-in-out infinite;
+}
+.nr-shine::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 34%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: translateX(-180%) skewX(-22deg);
+  animation: nrShine 2.6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes nrShine {
+  0% { transform: translateX(-180%) skewX(-22deg); }
+  55%, 100% { transform: translateX(380%) skewX(-22deg); }
+}
+@keyframes nrGlow {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(47, 191, 91, 0)); }
+  50% { filter: drop-shadow(0 0 10px rgba(47, 191, 91, 0.6)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nr-shine, .nr-shine::after { animation: none; }
+}

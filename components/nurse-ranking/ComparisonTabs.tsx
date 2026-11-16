@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type ReactNode } from "react";
-import { linkOf, services as defaultServices, tableNotes, type Service } from "@/config/nurse-ranking";
+import { destinationName, linkOf, services as defaultServices, tableNotes, type Service } from "@/config/nurse-ranking";
 import { ExternalIcon, RankBadge, Rich } from "./ui";
 
 /**
@@ -123,8 +123,8 @@ function DetailButton({ s, action, href }: { s: Service; action: "detail" | "off
         href={href}
         target="_blank"
         rel="nofollow sponsored noopener"
-        aria-label={`${s.name}の公式サイト（外部サイト）へ`}
-        className="flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
+        aria-label={`${destinationName(s, href)}の公式サイト（外部サイト）へ`}
+        className="nr-shine flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
       >
         <span>
           公式
@@ -138,7 +138,7 @@ function DetailButton({ s, action, href }: { s: Service; action: "detail" | "off
   return (
     <a
       href={`#rank-${s.rank}`}
-      className="flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:flex-row min-[640px]:gap-1 min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
+      className="nr-shine flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:flex-row min-[640px]:gap-1 min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
     >
       <span>
         詳細を
@@ -158,13 +158,18 @@ function NameCell({ s, href }: { s: Service; href: string }) {
     <div className="flex flex-col items-center text-center">
       {s.rank === 1 && <span className="mb-1 rounded-sm bg-[#e7b416] px-1.5 py-0.5 text-[10px] font-black leading-none text-white">おすすめ</span>}
       <RankBadge rank={s.rank} />
-      <span className="mt-1 text-[11.5px] font-black leading-tight text-slate-900 [word-break:keep-all] min-[400px]:text-[12.5px] min-[640px]:text-[16px]">{s.name}</span>
+      {s.logo ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={s.logo.src} width={s.logo.width} height={s.logo.height} alt={s.name} className="mt-1 h-auto max-h-[34px] w-[90%] max-w-[92px] object-contain min-[640px]:max-h-[52px] min-[640px]:max-w-[170px]" />
+      ) : (
+        <span className="mt-1 text-[11.5px] font-black leading-tight text-slate-900 [word-break:keep-all] min-[400px]:text-[12.5px] min-[640px]:text-[16px]">{s.name}</span>
+      )}
       <a
         href={href}
         target="_blank"
         rel="nofollow sponsored noopener"
         className="mt-1 text-[11px] text-[#2a6fd6] underline underline-offset-2 min-[640px]:text-[12px]"
-        aria-label={`${s.name}の公式サイト（外部サイト）へ`}
+        aria-label={`${destinationName(s, href)}の公式サイト（外部サイト）へ`}
       >
         公式サイト
       </a>

@@ -31,6 +31,8 @@ export type Service = {
   /** 読み・補足（表示名の下に小さく出す） */
   sub?: string;
   operator: string;
+  /** 正規のロゴ（手元にあるものだけ）。無いサービスは文字で表示する。ロゴは生成しない */
+  logo?: { src: string; width: number; height: number };
   /** 正規の広告素材（ASP等から提供されたもの）。無いサービスは文字で表示する。ロゴは生成しない */
   adImage?: { src: string; width: number; height: number; alt: string };
   /** 正式な広告リンク。未提供の間は null（公式トップへ遷移） */
@@ -81,13 +83,14 @@ const BASE: Service[] = [
     name: "レバウェル看護",
     sub: "旧 看護のお仕事",
     operator: "レバウェル株式会社",
+    logo: { src: "/images/nurse-ranking/logo-levwell.svg", width: 375, height: 109 },
     adImage: {
       src: "/images/nurse-ranking/levwell-300x250.png",
       width: 300,
       height: 250,
       alt: "看護師転職ならレバウェル看護 看護師求人数23万件以上（2025年9月2日時点）",
     },
-    affiliateUrl: null,
+    affiliateUrl: "https://px.a8.net/svt/ejp?a8mat=459LBM+48F16Q+2JK4+5YJRM", // = LEVWELL_AFFILIATE
     officialUrl: "https://kango-oshigoto.jp/",
     feature: "職場の雰囲気や離職率など、求人票で分かりにくい情報も確認できる",
     area: "全国",
@@ -95,7 +98,7 @@ const BASE: Service[] = [
     support: "求人紹介・書類添削・面接対策・条件交渉・入職後フォロー",
     rating: 4.8,
     jobCount: { value: "23万件以上", note: "※1" },
-    tableFeature: "**職場の内部情報に強い！**離職率や院内の雰囲気も==事前に確認==できる",
+    tableFeature: "**顧客満足度調査No.1！**職場の内部情報まで==事前に確認==できる※",
     jobTypes: ["正看護師", "准看護師", "保健師", "助産師"],
     workTypes: [
       { kind: "常", label: "常勤(夜勤有り)" },
@@ -109,12 +112,12 @@ const BASE: Service[] = [
     highlights: [
       { label: "看護師求人数", value: "23万件以上", note: "※1" },
       { label: "累計利用者数", value: "61万人突破", note: "※2" },
-      { label: "対応エリア", value: "全国", note: "" },
+      { label: "顧客満足度調査", value: "No.1", note: "※3" },
     ],
     points: [
       "**看護師求人数==23万件以上==**※1。全国の病院・クリニック・介護施設・訪問看護などの求人を紹介してもらえる",
       "**看護師長の人柄や離職率、院内の雰囲気**など、==求人票だけでは分かりにくい職場情報==を確認しながら選べる",
-      "**LINEでも相談でき**、履歴書の添削・面接対策から==給与や休日の条件交渉、退職の相談==までサポート",
+      "**看護師転職サイト顧客満足度調査で「相談のしやすさ（20代）」「連絡の取りやすさ（20〜34歳）」No.1**※3。==LINEでも相談でき==、条件交渉や退職の相談までサポート",
     ],
     recommendedFor: [
       "職場の人間関係や雰囲気を事前に知っておきたい",
@@ -125,6 +128,7 @@ const BASE: Service[] = [
       { label: "運営会社", value: "レバウェル株式会社" },
       { label: "看護師求人数", value: "23万件以上※1" },
       { label: "累計利用者数", value: "61万人突破※2" },
+      { label: "顧客満足度", value: "看護師転職サイト顧客満足度調査 No.1（相談のしやすさ／20代、連絡の取りやすさ／20〜34歳）※3" },
       { label: "対応エリア", value: "全国" },
       { label: "利用料金", value: "無料" },
     ],
@@ -157,6 +161,7 @@ const BASE: Service[] = [
     notes: [
       "※1 看護師求人数：公式サイト「利用者インタビュー」ページの記載（2025年9月2日時点／常勤・派遣求人、非公開求人を含む）。",
       "※2 累計利用者数：公式サイト「レバウェル看護とは」の記載（2024年10月末日時点）。",
+      "※3 顧客満足度調査No.1：レバウェル看護公式サイトの記載。調査方法：インターネット調査／調査期間：2024年2月7日〜2月13日／調査概要：「看護師転職サイト」を対象としたユーザー満足度調査／調査対象：男女、全国、看護師・准看護師資格保有者かつ対象看護師転職サイト利用経験者、20〜29歳107s（相談のしやすさ）、20〜34歳175s（連絡の取りやすさ）／調査実施：株式会社エクスクリエ／比較対象サービス：「看護師転職サイト」主要10サービス（専用サイトのあるサービスのみ・求人結果の表示ページは除く）。",
       "相談方法・サポート内容・利用料金は公式サイトの記載をもとにしています。",
     ],
   },
@@ -166,6 +171,13 @@ const BASE: Service[] = [
     name: "ナース専科 転職",
     sub: "旧 ナース人材バンク",
     operator: "株式会社エス・エム・エス",
+    logo: { src: "/images/nurse-ranking/logo-nurse-senka.svg", width: 423, height: 66 },
+    adImage: {
+      src: "/images/nurse-ranking/banner-nurse-senka.png",
+      width: 600,
+      height: 500,
+      alt: "ナース専科 転職 看護師転職 4年連続No.1（2026年 オリコン顧客満足度®調査 看護師転職 第1位）",
+    },
     affiliateUrl: null,
     officialUrl: "https://tenshoku.nurse-senka.com/",
     feature: "看護師専門のキャリアパートナーが、電話で希望をじっくりヒアリング",
@@ -239,6 +251,13 @@ const BASE: Service[] = [
     name: "看護roo!転職",
     sub: "カンゴルー",
     operator: "株式会社クイック",
+    logo: { src: "/images/nurse-ranking/logo-kango-roo.png", width: 610, height: 266 },
+    adImage: {
+      src: "/images/nurse-ranking/banner-kango-roo.webp",
+      width: 600,
+      height: 500,
+      alt: "看護roo!転職 累計利用者数60万人突破 登録して相談してみる！",
+    },
     affiliateUrl: null,
     officialUrl: "https://www.kango-roo.com/career/",
     feature: "自分で求人を検索しながら、アドバイザーにも相談できる",
@@ -310,6 +329,13 @@ const NURSE_WORKER: Service = {
   name: "看護師ワーカー",
   sub: "旧 医療ワーカー",
   operator: "株式会社トライトキャリア",
+  logo: { src: "/images/nurse-ranking/logo-nurse-worker.webp", width: 560, height: 149 },
+  adImage: {
+    src: "/images/nurse-ranking/banner-nurse-worker.png",
+    width: 300,
+    height: 250,
+    alt: "看護師ワーカー 転職成功者数 年間10,000人（2020年4月〜3月実績） サービスはすべて無料 人気の非公開求人をご紹介",
+  },
   affiliateUrl: null,
   officialUrl: "https://iryouworker.com/",
   feature: "給与や待遇、入退社日などの採用条件をアドバイザーが交渉してくれる",
@@ -375,6 +401,13 @@ const HATARAKO: Service = {
   id: "hatarako",
   name: "ナースではたらこ",
   operator: "ディップ株式会社",
+  logo: { src: "/images/nurse-ranking/logo-hatarako.webp", width: 254, height: 38 },
+  adImage: {
+    src: "/images/nurse-ranking/banner-hatarako.png",
+    width: 300,
+    height: 250,
+    alt: "ナースではたらこ あなたにぴったりの求人がみつかる 業界20年以上の上場企業 好条件の非公開求人多数 独自のリアルな情報が充実 まずは無料登録してみる",
+  },
   affiliateUrl: null,
   officialUrl: "https://www.hatarako.net/agent/nurse/",
   feature: "働きたい病院を「逆指名」でき、求人が出ていなくても状況を確認してもらえる",
@@ -453,7 +486,21 @@ export const services: Service[] = [byId("levwell"), NURSE_WORKER, HATARAKO];
 export const shukyu3Services: Service[] = [byId("levwell"), byId("nurse-senka"), byId("kango-roo")];
 
 /** 遷移先（正式な広告リンクが未提供なら公式トップ） */
-export const linkOf = (s: Service): string => s.affiliateUrl ?? s.officialUrl;
+/** レバウェル看護のアフィリエイトリンク（A8.net） */
+export const LEVWELL_AFFILIATE = "https://px.a8.net/svt/ejp?a8mat=459LBM+48F16Q+2JK4+5YJRM";
+
+/**
+ * 【暫定】すべてのボタン・リンクをレバウェル看護のアフィリエイトリンクに向ける。
+ * ほかの会社の正式な広告リンクが届いたら false に戻す（各社の affiliateUrl／公式トップに戻る）。
+ * true の間も、ボタン下の「〇〇 公式サイトへ」は実際の移動先（レバウェル看護）を表示する。
+ */
+export const LINK_ALL_TO_LEVWELL = true;
+
+export const linkOf = (s: Service): string => (LINK_ALL_TO_LEVWELL ? LEVWELL_AFFILIATE : s.affiliateUrl ?? s.officialUrl);
+
+/** 実際の移動先のサービス名（ボタン下の「〇〇 公式サイトへ」に使う） */
+export const destinationName = (s: Service, href: string): string =>
+  href === LEVWELL_AFFILIATE || href.includes("459LBM+48F16Q+2JK4") ? "レバウェル看護" : s.name;
 
 // ── 希望する働き方から確認（求人検索ではなく、相談時の確認ポイント） ─────────
 export const workStyles: { id: string; label: string; lead: string; points: string[] }[] = [
@@ -529,7 +576,7 @@ export const siteMeta = {
   contentUpdatedAt: CHECKED_AT,
   // TODO: 本番公開ドメインが決まり次第、正しいドメインに差し替える
   domain: null as string | null,
-  ogImage: "/images/nurse-ranking/hero.jpg",
+  ogImage: "/images/nurse-ranking/hero-v2.jpg",
 };
 
 export const rankingNote = "掲載順位は当サイトが設定したおすすめ順です。";
@@ -537,6 +584,7 @@ export const rankingNote = "掲載順位は当サイトが設定したおすす�
 /** 比較表の注記（求人数の出典は各社の notes と同じ内容を短くまとめる） */
 export const tableNotes = [
   "※オススメ度は当サイト独自の評価です（掲載順に基づくもので、利用者調査・他サイトの評価ではありません）。",
+  "※レバウェル看護の顧客満足度調査No.1：看護師転職サイトを対象としたユーザー満足度調査（インターネット調査／2024年2月7日〜13日／調査実施：株式会社エクスクリエ／主要10サービスが対象）で「相談のしやすさ（20〜29歳107s）」「連絡の取りやすさ（20〜34歳175s）」がNo.1。レバウェル看護公式サイトの記載による。",
   "※求人数：レバウェル看護は公式サイト記載の求人数（2025年9月2日時点、常勤・派遣・非公開求人を含む）、看護師ワーカーは公式サイト表示の掲載求人数（2026年11月14日更新）、ナースではたらこは公式サイトに件数の記載がないため掲載していません（いずれも2026年11月15日確認）。",
   "※求人職種・勤務形態は、各社公式サイトの求人検索条件・入職事例の表記です。",
 ];
@@ -544,6 +592,7 @@ export const tableNotes = [
 /** 週休3日LPの比較表の注記 */
 export const shukyu3TableNotes = [
   "※オススメ度は当サイト独自の評価です（掲載順に基づくもので、利用者調査・他サイトの評価ではありません）。",
+  "※レバウェル看護の顧客満足度調査No.1：看護師転職サイトを対象としたユーザー満足度調査（インターネット調査／2024年2月7日〜13日／調査実施：株式会社エクスクリエ／主要10サービスが対象）で「相談のしやすさ（20〜29歳107s）」「連絡の取りやすさ（20〜34歳175s）」がNo.1。レバウェル看護公式サイトの記載による。",
   "※求人数：レバウェル看護は公式サイト記載の求人数（2025年9月2日時点、常勤・派遣・非公開求人を含む）、ナース専科 転職は2016年4月以降の累計取り扱い求人数、看護roo!転職は公式サイト表示の取り扱い求人数（いずれも2026年11月15日確認）。",
   "※求人職種・勤務形態は、各社公式サイトの求人検索条件の表記です。",
 ];
