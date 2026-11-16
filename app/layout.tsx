@@ -38,6 +38,10 @@ export default function RootLayout({
           if((h==='scout.adofy-site.com'||h==='scout.localhost')&&p==='/drivers')seeker=true;
           // 無料オンライン相談LP（driver.taxidriver-beginner.com/company・doratech.adofy-site.com/consult、物理ルート /driver/consult）も専用Pixel 3711 だけ
           if((h==='driver.taxidriver-beginner.com'&&p==='/company')||(h==='doratech.adofy-site.com'&&p==='/consult'))seeker=true;
+          // 週休3日の看護師向けLP（/nurse-shukyu3）は既存LPから引き継いだ専用Pixel 1263924312012938 だけ
+          if(p==='/nurse-shukyu3'||p.indexOf('/nurse-shukyu3/')===0)seeker=true;
+          // www.tenshoku-gpt.com（看護師転職 比較ナビ）は全ページ Pixel 1263924312012938 だけ（各ページの SingleMetaPixel で読み込む）
+          if(h==='www.tenshoku-gpt.com'||h==='tenshoku-gpt.com')seeker=true;
           if(!seeker){
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import Header from "@/components/nurse-ranking/Header";
 import Footer from "@/components/nurse-ranking/Footer";
+import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
+import { RANKING_PIXEL_ID } from "@/config/nurse-ranking";
 
 export default function LegalPageShell({
   title,
@@ -11,6 +13,7 @@ export default function LegalPageShell({
 }) {
   return (
     <div className="bg-white text-slate-900">
+      <SingleMetaPixel id={RANKING_PIXEL_ID} />
       <Header />
       <main className="mx-auto max-w-[820px] px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">{title}</h1>
