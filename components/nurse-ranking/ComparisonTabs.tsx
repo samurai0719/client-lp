@@ -124,9 +124,9 @@ function DetailButton({ s, action, href }: { s: Service; action: "detail" | "off
         target="_blank"
         rel="nofollow sponsored noopener"
         aria-label={`${destinationName(s, href)}の公式サイト（外部サイト）へ`}
-        className="nr-shine flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
+        className="nr-shine flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-0.5 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
       >
-        <span>
+        <span className="whitespace-nowrap">
           公式
           <br className="min-[640px]:hidden" />
           サイト
@@ -138,7 +138,7 @@ function DetailButton({ s, action, href }: { s: Service; action: "detail" | "off
   return (
     <a
       href={`#rank-${s.rank}`}
-      className="nr-shine flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-1 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:flex-row min-[640px]:gap-1 min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
+      className="nr-shine flex min-h-[44px] w-full flex-col items-center justify-center rounded-lg bg-gradient-to-b from-[#2fbf5b] to-[#1e9e46] px-0.5 py-1.5 text-center text-[11px] font-black leading-tight text-white shadow-[0_3px_0_#16793a] transition active:translate-y-[2px] active:shadow-[0_1px_0_#16793a] min-[640px]:flex-row min-[640px]:gap-1 min-[640px]:rounded-full min-[640px]:py-3 min-[640px]:text-[14px]"
     >
       <span>
         詳細を
@@ -217,7 +217,15 @@ export default function ComparisonTabs({
 }) {
   const services = list ?? defaultServices;
   const hrefOf = (s: Service) => links?.[s.id] ?? linkOf(s);
-  const lastHead = action === "official" ? "公式サイト" : "詳細";
+  const lastHead = action === "official" ? (
+    <>
+      公式
+      <br className="min-[640px]:hidden" />
+      サイト
+    </>
+  ) : (
+    "詳細"
+  );
   const [tab, setTab] = useState<TabKey>("overall");
   const uid = useId();
 
@@ -263,7 +271,7 @@ export default function ComparisonTabs({
                 <col className="w-[17%]" />
                 <col className="w-[17%]" />
                 <col />
-                <col className="w-[15%]" />
+                <col className={action === "official" ? "w-[17%]" : "w-[15%]"} />
               </colgroup>
               <thead>
                 <tr>
@@ -306,7 +314,7 @@ export default function ComparisonTabs({
                 <col className="w-[25%]" />
                 <col className="w-[30%]" />
                 <col />
-                <col className="w-[15%]" />
+                <col className={action === "official" ? "w-[17%]" : "w-[15%]"} />
               </colgroup>
               <thead>
                 <tr>
@@ -351,7 +359,7 @@ export default function ComparisonTabs({
                 <col className="w-[25%]" />
                 <col />
                 <col />
-                <col className="w-[15%]" />
+                <col className={action === "official" ? "w-[17%]" : "w-[15%]"} />
               </colgroup>
               <thead>
                 <tr>

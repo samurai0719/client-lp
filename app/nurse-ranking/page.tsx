@@ -80,7 +80,7 @@ export default function NurseRankingPage() {
               更新日：<time dateTime={siteMeta.contentUpdatedAt}>{formatDate(siteMeta.contentUpdatedAt)}</time>
             </p>
           </div>
-          <ComparisonTabs caption="おすすめ3社の比較表" />
+          <ComparisonTabs caption="おすすめ3社の比較表" action="official" />
           <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
             ※{rankingNote}各社の情報は公式サイトの記載をもとにしています（{formatDate(siteMeta.contentUpdatedAt)}確認）。最新の情報は各社の公式サイトでご確認ください。「公式サイト」ボタンを押すと外部サイトへ移動します。
           </p>
@@ -123,7 +123,7 @@ export default function NurseRankingPage() {
         {/* おすすめ3社の再比較表（上部とは独立したタブ） */}
         <section aria-labelledby="compare-bottom-title" className="px-3 py-8 min-[400px]:px-4">
           <SectionTitle id="compare-bottom-title" lines={["おすすめ3社を", "もう一度比較"]} highlight={["おすすめ3社"]} />
-          <ComparisonTabs caption="おすすめ3社の再比較表" />
+          <ComparisonTabs caption="おすすめ3社の再比較表" action="official" />
           <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
             ※{rankingNote}「公式サイト」ボタンを押すと外部サイトへ移動します。
           </p>
