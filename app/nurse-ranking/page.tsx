@@ -7,7 +7,8 @@ import RankCard from "@/components/nurse-ranking/RankCard";
 import FaqSection from "@/components/nurse-ranking/FaqSection";
 import { SectionTitle } from "@/components/nurse-ranking/ui";
 import SvgHeading, { SvgHeadingDefs } from "@/components/nurse-shukyu3/SvgHeading";
-import { faqs, rankingNote, services, siteMeta } from "@/config/nurse-ranking";
+import { RANKING_PIXEL_ID, faqs, rankingNote, services, siteMeta } from "@/config/nurse-ranking";
+import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
 
 /**
  * 看護師転職サイト おすすめランキング（/nurse-ranking）
@@ -54,6 +55,7 @@ export default function NurseRankingPage() {
   return (
     <div className="min-h-screen bg-[#fff6f9] text-slate-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <SingleMetaPixel id={RANKING_PIXEL_ID} />
       <SvgHeadingDefs />
       <Header />
 

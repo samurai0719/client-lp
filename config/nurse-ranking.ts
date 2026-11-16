@@ -583,6 +583,12 @@ export const siteMeta = {
 
 export const rankingNote = "掲載順位は当サイトが設定したおすすめ順です。";
 
+/**
+ * ランキングページの Meta Pixel（www.tenshoku-gpt.com/osusumesaito-3 で Wix 時代から使っていたもの）。
+ * adofy 共通の 818193851340214（app/layout.tsx）はそのまま残し、これを追加で読み込む。
+ */
+export const RANKING_PIXEL_ID = "1263924312012938";
+
 /** 比較表の注記（求人数の出典は各社の notes と同じ内容を短くまとめる） */
 export const tableNotes = [
   "※オススメ度は当サイト独自の評価です（掲載順に基づくもので、利用者調査・他サイトの評価ではありません）。",
