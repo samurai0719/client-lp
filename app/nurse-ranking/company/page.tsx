@@ -14,6 +14,7 @@ const companyInfo = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: siteMeta.domain ? new URL(`https://${siteMeta.domain}`) : undefined,
   title: "運営者情報｜看護師転職 比較ナビ",
   description: "看護師転職 比較ナビの運営者情報です。",
   alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,

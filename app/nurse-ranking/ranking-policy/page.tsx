@@ -5,6 +5,7 @@ import { editorialBasisText, siteMeta } from "@/config/nurse-ranking";
 const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}/nurse-ranking/ranking-policy` : undefined;
 
 export const metadata: Metadata = {
+  metadataBase: siteMeta.domain ? new URL(`https://${siteMeta.domain}`) : undefined,
   title: "ランキング・編集方針｜看護師転職 比較ナビ",
   description: "当サイトの看護師転職サービスランキングにおける掲載順位の決定方針と編集ポリシーについて説明します。",
   alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,

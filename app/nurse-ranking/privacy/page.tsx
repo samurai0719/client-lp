@@ -5,6 +5,7 @@ import { siteMeta } from "@/config/nurse-ranking";
 const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}/nurse-ranking/privacy` : undefined;
 
 export const metadata: Metadata = {
+  metadataBase: siteMeta.domain ? new URL(`https://${siteMeta.domain}`) : undefined,
   title: "プライバシーポリシー｜看護師転職 比較ナビ",
   description: "当サイトの個人情報の取り扱い、Cookieの利用、外部サービスへのリンクについて説明します。",
   alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,

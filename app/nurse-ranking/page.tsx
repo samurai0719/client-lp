@@ -21,13 +21,15 @@ const PAGE_TITLE = `看護師転職サイトおすすめランキング｜厳選
 const PAGE_DESCRIPTION =
   "看護師向け転職サイト3社（レバウェル看護・看護師ワーカー・ナースではたらこ）の特徴、相談方法、転職サポートを公式情報をもとに比較。希望する働き方ごとの相談のポイントも紹介します。";
 
-const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}/nurse-ranking` : undefined;
+const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}${siteMeta.rankingPath}` : undefined;
 
 export const metadata: Metadata = {
+  // シェア画像などの絶対URLを公開ドメイン（www.tenshoku-gpt.com）で出す
+  metadataBase: siteMeta.domain ? new URL(`https://${siteMeta.domain}`) : undefined,
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
-  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, images: [siteMeta.ogImage], type: "website" },
+  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, images: [siteMeta.ogImage], type: "website", url: canonicalUrl, siteName: siteMeta.siteName, locale: "ja_JP" },
 };
 
 function formatDate(iso: string) {

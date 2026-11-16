@@ -574,8 +574,10 @@ export const faqs: { question: string; answer: string }[] = [
 export const siteMeta = {
   siteName: "看護師転職 比較ナビ",
   contentUpdatedAt: CHECKED_AT,
-  // TODO: 本番公開ドメインが決まり次第、正しいドメインに差し替える
-  domain: null as string | null,
+  // 公開ドメイン（Vercel の tenshoku-nurse-remake が /osusumesaito-3 でこのランキングページを表示している）
+  domain: "www.tenshoku-gpt.com" as string | null,
+  /** ランキングページの公開パス（www.tenshoku-gpt.com 上） */
+  rankingPath: "/osusumesaito-3",
   ogImage: "/images/nurse-ranking/hero-v2.jpg",
 };
 
