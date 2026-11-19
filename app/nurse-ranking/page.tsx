@@ -61,13 +61,13 @@ export default function NurseRankingPage() {
 
       <main className="mx-auto max-w-[860px] bg-white shadow-[0_0_40px_rgba(232,67,122,0.06)]">
         {/* ファーストビュー（文字は画像に入っているので重ねない） */}
-        <h1 className="sr-only">看護師 週休3日の求人 おすすめランキング</h1>
+        <h1 className="sr-only">看護師 週休3日の求人 おすすめランキング 厳選3社を比較</h1>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/nurse-ranking/hero-shukyu3.jpg"
-          width={1586}
+          src="/images/nurse-ranking/hero-shukyu3-3sha.jpg"
+          width={1585}
           height={992}
-          alt="週休3日で、私らしい働き方へ 看護師 週休3日の求人 おすすめランキング"
+          alt="週休3日で、私らしい働き方へ 看護師 週休3日の求人 おすすめランキング 厳選3社を比較"
           className="block h-auto w-full"
           fetchPriority="high"
         />

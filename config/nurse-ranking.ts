@@ -599,7 +599,7 @@ export const siteMeta = {
   domain: "www.tenshoku-gpt.com" as string | null,
   /** ランキングページの公開パス（www.tenshoku-gpt.com 上） */
   rankingPath: "/osusumesaito-3",
-  ogImage: "/images/nurse-ranking/hero-shukyu3.jpg",
+  ogImage: "/images/nurse-ranking/hero-shukyu3-3sha.jpg",
 };
 
 export const rankingNote = "掲載順位は当サイトが設定したおすすめ順です。";
