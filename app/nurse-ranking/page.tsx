@@ -7,7 +7,7 @@ import RankCard from "@/components/nurse-ranking/RankCard";
 import FaqSection from "@/components/nurse-ranking/FaqSection";
 import { SectionTitle } from "@/components/nurse-ranking/ui";
 import SvgHeading, { SvgHeadingDefs } from "@/components/nurse-shukyu3/SvgHeading";
-import { RANKING_PIXEL_ID, faqs, rankingNote, services, siteMeta } from "@/config/nurse-ranking";
+import { RANKING_PIXEL_ID, faqs, rankingNote, services, shukyuCheckPoints, siteMeta } from "@/config/nurse-ranking";
 import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
 
 /**
@@ -18,9 +18,9 @@ import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
  * 比較表・詳細カード・FAQ はすべて config/nurse-ranking.ts の共通データから表示する。
  */
 
-const PAGE_TITLE = `看護師転職サイトおすすめランキング｜厳選3社を比較｜${siteMeta.siteName}`;
+const PAGE_TITLE = `看護師 週休3日の求人 おすすめランキング｜週休3日を希望する看護師向け転職サイト比較｜${siteMeta.siteName}`;
 const PAGE_DESCRIPTION =
-  "看護師向け転職サイト3社（レバウェル看護・看護師ワーカー・ナースではたらこ）の特徴、相談方法、転職サポートを公式情報をもとに比較。希望する働き方ごとの相談のポイントも紹介します。";
+  "週休3日など、お休みも収入もあきらめたくない看護師さんへ。休日の希望を相談できる看護師転職サイト3社（レバウェル看護・看護師ワーカー・ナースではたらこ）を比較。週休3日の求人を選ぶときの確認ポイントも紹介します。";
 
 const canonicalUrl = siteMeta.domain ? `https://${siteMeta.domain}${siteMeta.rankingPath}` : undefined;
 
@@ -61,13 +61,13 @@ export default function NurseRankingPage() {
 
       <main className="mx-auto max-w-[860px] bg-white shadow-[0_0_40px_rgba(232,67,122,0.06)]">
         {/* ファーストビュー（文字は画像に入っているので重ねない） */}
-        <h1 className="sr-only">看護師 転職サイト おすすめランキング 厳選3社を比較</h1>
+        <h1 className="sr-only">看護師 週休3日の求人 おすすめランキング</h1>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/nurse-ranking/hero-v2.jpg"
-          width={1585}
+          src="/images/nurse-ranking/hero-shukyu3.jpg"
+          width={1586}
           height={992}
-          alt="あなたに合う転職先探しに 看護師転職サイトおすすめランキング 厳選3社を比較"
+          alt="週休3日で、私らしい働き方へ 看護師 週休3日の求人 おすすめランキング"
           className="block h-auto w-full"
           fetchPriority="high"
         />
@@ -76,9 +76,6 @@ export default function NurseRankingPage() {
         <section aria-labelledby="compare-top-title" className="px-3 pb-6 pt-4 min-[400px]:px-4">
           <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
             <SvgHeading id="compare-top-title" lines={["おすすめ3社をひと目で比較"]} highlight={["おすすめ3社"]} size={18} align="left" underline={false} />
-            <p className="text-[11px] text-slate-500">
-              更新日：<time dateTime={siteMeta.contentUpdatedAt}>{formatDate(siteMeta.contentUpdatedAt)}</time>
-            </p>
           </div>
           <ComparisonTabs caption="おすすめ3社の比較表" action="official" />
           <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
@@ -92,9 +89,35 @@ export default function NurseRankingPage() {
 
         <div className="h-2 bg-[#fff1f5]" aria-hidden="true" />
 
+        {/* 週休3日の求人を選ぶときの確認ポイント */}
+        <section aria-labelledby="shukyu-check-title" className="px-4 py-8">
+          <SectionTitle
+            id="shukyu-check-title"
+            lines={["週休3日の求人を", "選ぶときの確認ポイント"]}
+            highlight={["週休3日"]}
+            sub="休日の数だけでなく、条件全体を確認しましょう"
+          />
+          <ol className="grid gap-2.5 min-[640px]:grid-cols-2">
+            {shukyuCheckPoints.map((c, i) => (
+              <li
+                key={c.title}
+                className={`rounded-2xl border-2 p-3.5 ${i === shukyuCheckPoints.length - 1 ? "border-[#e7b416] bg-[#fffbe6] min-[640px]:col-span-2" : "border-[#f7c9d8] bg-white"}`}
+              >
+                <p className="flex items-start gap-2 text-[15px] font-black leading-snug text-slate-900">
+                  <span className="mt-0.5 shrink-0 whitespace-nowrap rounded bg-[#e8437a] px-1.5 py-0.5 text-[10px] font-black leading-none text-white">確認{i + 1}</span>
+                  {c.title}
+                </p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-slate-700">{c.body}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <div className="h-2 bg-[#fff1f5]" aria-hidden="true" />
+
         {/* ランキング詳細 */}
         <section aria-labelledby="ranking-title" className="px-3 py-8 min-[400px]:px-4">
-          <SectionTitle id="ranking-title" lines={["看護師転職サイト", "おすすめランキング"]} highlight={["おすすめランキング"]} sub={rankingNote} />
+          <SectionTitle id="ranking-title" lines={["週休3日を希望する看護師向け", "おすすめランキング"]} highlight={["おすすめランキング"]} sub={rankingNote} />
           <div className="space-y-6">
             {services.map((s) => (
               <RankCard key={s.id} s={s} svgHeadings ctaBig ctaLabel="非公開求人を紹介してもらう" />

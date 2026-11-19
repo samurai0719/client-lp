@@ -16,7 +16,7 @@ export default function WorkStyleSection() {
     <section aria-labelledby="workstyle-title" className="px-4 py-8">
       <SectionTitle
         id="workstyle-title"
-        lines={["どんな働き方を", "希望していますか？"]}
+        lines={["週休3日とあわせて", "どんな働き方を希望しますか？"]}
         highlight={["働き方"]}
         sub="選ぶと、転職相談のときに確認したいポイントが表示されます"
       />
