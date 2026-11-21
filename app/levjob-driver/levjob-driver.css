@@ -1027,3 +1027,19 @@
     font-size: 19px;
   }
 }
+
+/* CTAの文字は大きすぎたので一段小さく（ボタン自体の大きさは保つ） */
+.lj-cta__btn {
+  min-height: 76px;
+  font-size: 19px;
+}
+
+.lj-cta__btn > span[aria-hidden] {
+  font-size: 22px;
+}
+
+@media (max-width: 359px) {
+  .lj-cta__btn {
+    font-size: 16px;
+  }
+}
