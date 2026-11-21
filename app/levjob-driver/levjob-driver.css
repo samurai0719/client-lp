@@ -817,3 +817,213 @@
   gap: 6px;
   margin-top: 16px;
 }
+
+/* 質問は答えるたびに順に出すので、2問目ブロックの1画面ぶんの高さは不要。各ステップは同じ間隔で並べる */
+.lj-step2 {
+  min-height: 0;
+}
+
+.lj-step + .lj-step {
+  margin-top: 32px;
+}
+
+.lj-quiz__spacer {
+  height: 100lvh;
+}
+
+/* 記事内のレバジョブ広告バナー */
+.lj-banner {
+  display: block;
+  margin-top: 24px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(15, 42, 74, 0.18);
+}
+
+.lj-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* CTA：大きめのオレンジ。表面を光が横切る（光るボタン） */
+.lj {
+  --lj-orange: #ff7a00;
+  --lj-orange-2: #ff5200;
+  --lj-orange-deep: #c43d00;
+}
+
+.lj-cta__btn {
+  position: relative;
+  overflow: hidden;
+  min-height: 78px;
+  padding: 12px 18px;
+  background: linear-gradient(180deg, var(--lj-orange) 0%, var(--lj-orange-2) 100%);
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(120, 30, 0, 0.35);
+  box-shadow: 0 6px 0 var(--lj-orange-deep), 0 10px 22px rgba(255, 82, 0, 0.35);
+  animation: lj-pulse 2.4s ease-in-out infinite;
+}
+
+.lj-cta__btn::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -60%;
+  width: 40%;
+  height: 140%;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: skewX(-20deg);
+  animation: lj-shine 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.lj-cta__btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--lj-orange-deep);
+}
+
+@keyframes lj-shine {
+  0% {
+    left: -60%;
+  }
+  55%,
+  100% {
+    left: 130%;
+  }
+}
+
+@media (max-width: 359px) {
+  .lj-cta__btn {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lj-cta__btn::after {
+    display: none;
+  }
+}
+
+.lj-cta__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.3;
+}
+
+.lj-cta__label span {
+  white-space: nowrap;
+}
+
+.lj-cta__btn {
+  min-height: 84px;
+  font-size: 21px;
+}
+
+@media (max-width: 359px) {
+  .lj-cta__btn {
+    font-size: 18px;
+  }
+}
+
+/* 1問目に答えたら FV の1画面ぶんの高さは外し、2問目をすぐ下に続ける */
+.lj-first.is-answered {
+  min-height: 0;
+}
+
+.lj-first + .lj-quiz {
+  padding-top: 32px;
+}
+
+/* ── 折り返しの崩れ対策 ── */
+/* CTA上の限定案内：飾りの「＼」「／」は両端に固定し、文字は「限定、」の後ろでだけ折り返す */
+.lj-cta__limited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 6px 16px;
+}
+
+.lj-cta__limited::before,
+.lj-cta__limited::after {
+  content: none;
+}
+
+.lj-cta__deco {
+  flex: none;
+}
+
+.lj-cta__limited-text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.lj-cta__limited-text span {
+  white-space: nowrap;
+}
+
+/* 文節（<wbr>）の位置だけで折り返す */
+.lj-fv__lead,
+.lj-final__lead {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* その他の文章も、対応ブラウザ（Chrome・Android）では文節単位で折り返す */
+.lj :is(p, h2, h3, h4, dt, dd) {
+  word-break: auto-phrase;
+}
+
+/* お礼の見出しは「アンケートの回答」「ありがとうございます！」の2つの塊でだけ折り返す */
+.lj-result__thanks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.lj-result__thanks span {
+  white-space: nowrap;
+}
+
+/* 幅の狭いスマホでは、ボタンの文字がはみ出さないよう小さくする */
+@media (max-width: 359px) {
+  .lj-cta__btn {
+    gap: 6px;
+    padding: 12px 12px;
+    font-size: 17px;
+  }
+  .lj-cta__limited {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+/* 「›」用の .lj-cta__btn span（26px）がボタンの文字にも効いていたので、文字は親の大きさに戻す */
+.lj-cta__btn .lj-cta__label,
+.lj-cta__btn .lj-cta__label span {
+  font-size: inherit;
+}
+
+.lj-cta__btn .lj-cta__label {
+  line-height: 1.3;
+}
+
+.lj-cta__btn .lj-cta__label span {
+  line-height: inherit;
+}
+
+/* CTAの文字サイズ（ボタンの中に左右の余白を残して収まる最大の大きさ） */
+.lj-cta__btn {
+  font-size: 24px;
+}
+
+@media (max-width: 359px) {
+  .lj-cta__btn {
+    font-size: 19px;
+  }
+}

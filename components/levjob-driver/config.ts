@@ -74,7 +74,15 @@ export type QuestionId = (typeof QUESTIONS)[number]["id"];
 export type Answer = "yes" | "no";
 
 
-export const CTA_LABEL = "好条件求人を紹介してもらう";
+/** レバジョブの広告バナー（記事内。クリック先は CTA_URL と同じ） */
+export const BANNER = {
+  src: "/images/levjob-driver/banner.webp",
+  width: 600,
+  height: 500,
+  alt: "ドライバーの転職をサポート レバジョブ 無料で相談する",
+} as const;
+
+export const CTA_LABEL = "無料で好条件求人を紹介してもらう";
 export const CTA_LIMITED = "アンケートを答えていただいた方限定、特別にご案内！";
 export const CTA_SUB = "レバジョブ公式サイトへ（登録・相談は無料）";
 

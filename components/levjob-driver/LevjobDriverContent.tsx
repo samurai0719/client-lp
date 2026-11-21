@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import {
   A8_BEACON,
+  BANNER,
   CTA_LABEL,
   CTA_LIMITED,
   CTA_SUB,
@@ -33,15 +34,43 @@ function scrollToEl(el: HTMLElement | null) {
   });
 }
 
+/** CTA上の限定案内。「＼」「／」は文字と別の要素にして、折り返しても行の両端から離れないようにする */
+function Limited() {
+  const [first, second] = CTA_LIMITED.split(/(?<=限定、)/);
+  return (
+    <p className="lj-cta__limited">
+      <span className="lj-cta__deco" aria-hidden="true">
+        ＼
+      </span>
+      <span className="lj-cta__limited-text">
+        <span>{first}</span>
+        {second && <span>{second}</span>}
+      </span>
+      <span className="lj-cta__deco" aria-hidden="true">
+        ／
+      </span>
+    </p>
+  );
+}
+
+/** ボタンの文字は「無料で好条件求人を／紹介してもらう」の2行に固定して、変な位置で折り返さないようにする */
+function CtaLabel() {
+  const [first, second] = CTA_LABEL.split(/(?<=求人を)/);
+  return (
+    <span className="lj-cta__label">
+      <span>{first}</span>
+      {second && <span>{second}</span>}
+    </span>
+  );
+}
+
 function Cta({ location }: { location: string }) {
   if (!CTA_URL) {
     return (
       <div className="lj-cta">
-        <p className="lj-cta__limited">
-          {CTA_LIMITED.replace("限定、", "限定、\u200b")}
-        </p>
+        <Limited />
         <span className="lj-cta__btn is-pending" aria-disabled="true">
-          {CTA_LABEL}
+          <CtaLabel />
           <small>（リンク準備中）</small>
         </span>
       </div>
@@ -49,9 +78,7 @@ function Cta({ location }: { location: string }) {
   }
   return (
     <div className="lj-cta">
-      <p className="lj-cta__limited">
-        {CTA_LIMITED.replace("限定、", "限定、\u200b")}
-      </p>
+      <Limited />
       <a
         className="lj-cta__btn"
         href={CTA_URL}
@@ -59,7 +86,7 @@ function Cta({ location }: { location: string }) {
         rel="sponsored noopener"
         data-cta={location}
       >
-        {CTA_LABEL}
+        <CtaLabel />
         <span aria-hidden="true">›</span>
       </a>
       <p className="lj-cta__sub">{CTA_SUB}</p>
@@ -174,8 +201,8 @@ export default function LevjobDriverContent() {
       </p>
 
       {/* ── ファーストビュー：画像＋見出し＋導入文＋Q1（スマホの1画面に収める） ── */}
-      {/* FV＋1問目で1画面ぶんの高さを取り、最初の画面に2問目が入らないようにする */}
-      <div className="lj-first">
+      {/* FV＋1問目で1画面ぶんの高さを取り、フッターが最初の画面に入らないようにする */}
+      <div className={`lj-first${answers.q1 ? " is-answered" : ""}`}>
         <header className="lj-fv">
           <div className="lj-fv__visual">
             {FV_IMAGE ? (
@@ -199,8 +226,11 @@ export default function LevjobDriverContent() {
             <span>ドライバーの転職</span>簡単3問アンケート
           </h1>
           <p className="lj-fv__lead">
-            <b>簡単3問のアンケート</b>に答えていただいた方限定で、
-            <b>好条件の求人を紹介してくれる転職サイト</b>をご紹介します。
+            <b>簡単3問のアンケート</b>に<wbr />答えていただいた<wbr />方限定で、<wbr />
+            <b>
+              好条件の求人を<wbr />紹介してくれる<wbr />転職サイト
+            </b>
+            を<wbr />ご紹介します。
           </p>
         </header>
         <div className="lj-quiz lj-quiz--first">
@@ -214,29 +244,35 @@ export default function LevjobDriverContent() {
         </div>
       </div>
 
-      <section className="lj-quiz" aria-label="アンケートの続き">
-        {/* 2問目と豆知識で1画面ぶんの高さを取り、2問目を上端に送ったとき3問目が画面に入らないようにする */}
-        <div className="lj-step2">
-          <Question
-            index={2}
-            text={QUESTIONS[1].text}
-            value={answers.q2}
-            onAnswer={(a) => answer(1, a)}
-            innerRef={(el) => (qRefs.current[1] = el)}
-          />
-          <TipBox tip={TIPS.timing} />
-        </div>
-        <Question
-          index={3}
-          text={QUESTIONS[2].text}
-          value={answers.q3}
-          onAnswer={(a) => answer(2, a)}
-          innerRef={(el) => (qRefs.current[2] = el)}
-        />
-        <TipBox tip={TIPS.area} />
-        {/* 回答前でも、各質問を画面上部まで送れるだけの高さを確保する */}
-        {!done && <div className="lj-quiz__spacer" aria-hidden="true" />}
-      </section>
+      {/* 答えるたびに次の質問（と豆知識）だけを出す。先の質問を出さないので、間に空白を作らずに済む */}
+      {answers.q1 && (
+        <section className="lj-quiz" aria-label="アンケートの続き">
+          <div className="lj-step">
+            <Question
+              index={2}
+              text={QUESTIONS[1].text}
+              value={answers.q2}
+              onAnswer={(a) => answer(1, a)}
+              innerRef={(el) => (qRefs.current[1] = el)}
+            />
+            <TipBox tip={TIPS.timing} />
+          </div>
+          {answers.q2 && (
+            <div className="lj-step">
+              <Question
+                index={3}
+                text={QUESTIONS[2].text}
+                value={answers.q3}
+                onAnswer={(a) => answer(2, a)}
+                innerRef={(el) => (qRefs.current[2] = el)}
+              />
+              <TipBox tip={TIPS.area} />
+            </div>
+          )}
+          {/* 最後に出した質問を画面の上端まで送れるよう、末尾にだけ高さを足す */}
+          {!done && <div className="lj-quiz__spacer" aria-hidden="true" />}
+        </section>
+      )}
 
       {done && (
         <article
@@ -246,9 +282,8 @@ export default function LevjobDriverContent() {
         >
           <div className="lj-result">
             <p className="lj-result__thanks">
-              アンケートの回答
-              <wbr />
-              ありがとうございます！
+              <span>アンケートの回答</span>
+              <span>ありがとうございます！</span>
             </p>
             <h2 id="lj-result-title" className="lj-result__title">
               そんなあなたにおすすめの
@@ -259,6 +294,13 @@ export default function LevjobDriverContent() {
             </h2>
             <p className="lj-result__by">運営：レバレジーズ株式会社</p>
           </div>
+
+          {CTA_URL && (
+            <a className="lj-banner" href={CTA_URL} target="_blank" rel="sponsored noopener" data-cta="banner">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={BANNER.src} width={BANNER.width} height={BANNER.height} alt={BANNER.alt} loading="lazy" decoding="async" />
+            </a>
+          )}
 
           <div className="lj-body">
             <p>
@@ -306,7 +348,7 @@ export default function LevjobDriverContent() {
 
           <div className="lj-final">
             <p className="lj-final__lead">
-              まずは無料で、どんなドライバー求人があるか確認してみましょう。
+              まずは無料で、<wbr />どんなドライバー求人が<wbr />あるか<wbr />確認してみましょう。
             </p>
             <Cta location="final" />
           </div>
