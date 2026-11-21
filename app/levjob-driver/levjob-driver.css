@@ -1,0 +1,685 @@
+/* レバジョブ（ドライバー）アンケート型記事LP。スマホ幅（〜480px）を基準に、PCは中央に寄せる */
+.lj {
+  --lj-navy: #0f2a4a;
+  --lj-navy-2: #1d4a7a;
+  --lj-yellow: #ffd23f;
+  --lj-red: #e53935;
+  --lj-green: #13a454;
+  --lj-green-deep: #0c7a3d;
+  --lj-ink: #1c2430;
+  --lj-mute: #5d6878;
+  --lj-line: #dfe5ec;
+  --lj-bg: #f3f6fa;
+  max-width: 480px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: #fff;
+  color: var(--lj-ink);
+  font-family: var(--lj-font), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  box-shadow: 0 0 0 100vmax var(--lj-bg);
+  clip-path: inset(0 -100vmax);
+}
+
+.lj *,
+.lj *::before,
+.lj *::after {
+  box-sizing: border-box;
+}
+
+.lj :where(h1, h2, h3, h4, p, dl, dd, ol) {
+  margin: 0;
+}
+
+.lj :where(ol) {
+  padding: 0;
+  list-style: none;
+}
+
+.lj-pr {
+  padding: 4px 12px;
+  background: #eef1f5;
+  color: var(--lj-mute);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ── ファーストビュー ── */
+.lj-fv__visual {
+  position: relative;
+  overflow: hidden;
+  background: var(--lj-navy);
+}
+
+.lj-fv__visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.lj-fv__placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  background:
+    linear-gradient(180deg, rgba(15, 42, 74, 0) 40%, rgba(15, 42, 74, 0.85) 100%),
+    linear-gradient(135deg, #3d7cc9 0%, #9cc6f0 55%, #e9f2fb 100%);
+}
+
+.lj-fv__placeholder span {
+  font-size: 96px;
+  transform: translateY(-14%);
+}
+
+.lj-fv__title {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 40px 14px 12px;
+  background: linear-gradient(180deg, rgba(10, 25, 45, 0) 0%, rgba(10, 25, 45, 0.88) 55%);
+  color: #fff;
+  font-size: 23px;
+  font-weight: 900;
+  line-height: 1.35;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+.lj-fv__title em {
+  color: var(--lj-yellow);
+  font-style: normal;
+  font-size: 1.18em;
+}
+
+.lj-fv__tag {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 10px;
+  border-radius: 4px;
+  background: var(--lj-yellow);
+  color: var(--lj-navy);
+  font-size: 13px;
+  text-shadow: none;
+}
+
+.lj-fv__lead {
+  padding: 10px 14px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.lj-fv__lead b {
+  color: var(--lj-red);
+  background: linear-gradient(transparent 62%, #fff2a8 62%);
+}
+
+/* ── アンケート ── */
+.lj-quiz {
+  padding: 10px 12px 24px;
+}
+
+.lj-quiz__spacer {
+  height: 70dvh;
+}
+
+.lj-q {
+  padding: 12px 14px 14px;
+  border: 2px solid var(--lj-navy-2);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 0 rgba(15, 42, 74, 0.12);
+}
+
+.lj-q + .lj-q {
+  margin-top: 18px;
+}
+
+.lj-q.is-done {
+  border-color: var(--lj-line);
+  box-shadow: none;
+}
+
+.lj-q__no {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--lj-mute);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lj-q__no span {
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: var(--lj-navy);
+  color: #fff;
+  font-size: 13px;
+}
+
+.lj-q__text {
+  margin-top: 6px;
+  color: var(--lj-navy);
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.lj-q__btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.lj-q__btn {
+  position: relative;
+  min-height: 56px;
+  border: 2px solid currentColor;
+  border-radius: 12px;
+  background: #fff;
+  font: inherit;
+  font-size: 19px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 0 currentColor;
+  transition: transform 0.08s, box-shadow 0.08s, background 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lj-q__btn.is-yes {
+  color: var(--lj-red);
+}
+
+.lj-q__btn.is-no {
+  color: var(--lj-navy-2);
+}
+
+.lj-q__btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 currentColor;
+}
+
+.lj-q__btn.is-on {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.lj-q__btn.is-yes.is-on {
+  border-color: var(--lj-red);
+  background: var(--lj-red);
+  color: #fff;
+}
+
+.lj-q__btn.is-no.is-on {
+  border-color: var(--lj-navy-2);
+  background: var(--lj-navy-2);
+  color: #fff;
+}
+
+/* 片方を選んだら、選ばなかった方は薄くする */
+.lj-q.is-done .lj-q__btn:not(.is-on) {
+  opacity: 0.45;
+  box-shadow: 0 2px 0 currentColor;
+}
+
+.lj-q__check {
+  margin-right: 6px;
+}
+
+/* ── 豆知識 ── */
+.lj-tip {
+  margin-top: 18px;
+  padding: 14px 12px 16px;
+  border: 2px dashed #f0b400;
+  border-radius: 14px;
+  background: #fffbea;
+}
+
+.lj-tip__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: #f0b400;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.lj-tip__figure {
+  position: relative;
+  margin-top: 10px;
+  overflow: hidden;
+  border: 1px solid var(--lj-line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.lj-tip__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lj-tip__circle {
+  position: absolute;
+  border: 4px solid var(--lj-red);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 10px rgba(229, 57, 53, 0.45);
+  pointer-events: none;
+}
+
+.lj-tip__text {
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.lj-tip__text strong {
+  color: var(--lj-red);
+  background: linear-gradient(transparent 60%, #ffe066 60%);
+}
+
+/* ── 記事本文 ── */
+.lj-article {
+  padding: 8px 14px 28px;
+}
+
+.lj-result {
+  padding: 18px 14px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, var(--lj-navy) 0%, var(--lj-navy-2) 100%);
+  color: #fff;
+  text-align: center;
+}
+
+.lj-result__thanks {
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.lj-result__title {
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+.lj-result__title em {
+  color: var(--lj-yellow);
+  font-size: 1.5em;
+  font-style: normal;
+}
+
+.lj-result__by {
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.lj-body {
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.lj-body b {
+  color: var(--lj-navy-2);
+}
+
+.lj-cta {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.lj-cta__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--lj-green);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.3;
+  text-decoration: none;
+  box-shadow: 0 5px 0 var(--lj-green-deep);
+  animation: lj-pulse 2.2s ease-in-out infinite;
+}
+
+.lj-cta__btn span {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.lj-cta__btn.is-pending {
+  flex-direction: column;
+  gap: 0;
+  background: #9aa5b3;
+  box-shadow: 0 5px 0 #78838f;
+  animation: none;
+}
+
+.lj-cta__btn.is-pending small {
+  font-size: 12px;
+}
+
+.lj-cta__sub {
+  margin-top: 8px;
+  color: var(--lj-mute);
+  font-size: 12px;
+}
+
+@keyframes lj-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lj-cta__btn {
+    animation: none;
+  }
+}
+
+.lj-h3 {
+  margin-top: 30px;
+  padding: 8px 12px;
+  border-left: 6px solid var(--lj-navy-2);
+  background: var(--lj-bg);
+  color: var(--lj-navy);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.lj-features {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.lj-features li {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--lj-line);
+  border-radius: 12px;
+}
+
+.lj-features__no {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--lj-yellow);
+  color: var(--lj-navy);
+  font-weight: 900;
+}
+
+.lj-features h4,
+.lj-steps h4 {
+  color: var(--lj-navy);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.lj-features p,
+.lj-steps p {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.lj-steps {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.lj-steps li {
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--lj-bg);
+}
+
+.lj-steps__no {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 0 10px;
+  border-radius: 4px;
+  background: var(--lj-navy-2);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.lj-faq {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.lj-faq div {
+  padding: 12px;
+  border: 1px solid var(--lj-line);
+  border-radius: 12px;
+}
+
+.lj-faq dt {
+  color: var(--lj-navy);
+  font-weight: 900;
+}
+
+.lj-faq dt::before {
+  content: "Q. ";
+  color: var(--lj-red);
+}
+
+.lj-faq dd {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.lj-final {
+  margin-top: 30px;
+  padding: 18px 14px 20px;
+  border-radius: 14px;
+  background: #fff7d6;
+}
+
+.lj-final__lead {
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ── フッター ── */
+.lj-footer {
+  padding: 20px 14px 32px;
+  background: var(--lj-bg);
+  color: var(--lj-mute);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.lj-footer__op {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.lj-footer__op div {
+  display: flex;
+  gap: 8px;
+}
+
+.lj-footer__op dt {
+  flex: none;
+  width: 6.5em;
+  font-weight: 700;
+}
+
+.lj-footer__op dd {
+  overflow-wrap: anywhere;
+}
+
+/* 背の低いスマホ（iPhone SE など）でも、FV内に1問目の両ボタンを収める */
+@media (max-height: 700px) and (max-width: 480px) {
+  .lj-fv__visual img,
+  .lj-fv__placeholder {
+    aspect-ratio: 16 / 9;
+  }
+  .lj-fv__title {
+    font-size: 21px;
+  }
+  .lj-fv__lead {
+    font-size: 14px;
+  }
+}
+
+/* 豆知識の画像は豆知識の枠いっぱいに広げ、画像内の文字を少しでも大きく見せる */
+.lj-tip__figure {
+  margin-right: -6px;
+  margin-left: -6px;
+}
+
+/* FV画像は見出し入りの 3:2。画像の下に短い h1 を置く */
+.lj-fv__visual img {
+  aspect-ratio: 3 / 2;
+}
+
+.lj-fv__h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px 0;
+  color: var(--lj-navy);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.lj-fv__h1 span {
+  flex: none;
+  padding: 2px 9px;
+  border-radius: 4px;
+  background: var(--lj-navy);
+  color: var(--lj-yellow);
+  font-size: 13px;
+}
+
+.lj-fv__lead {
+  padding-top: 6px;
+}
+
+/* アンケート回答後のお礼とCTA上の限定案内 */
+.lj-result__thanks {
+  font-size: 20px;
+  font-weight: 900;
+  opacity: 1;
+  color: var(--lj-yellow);
+}
+
+.lj-result__title {
+  font-size: 18px;
+}
+
+.lj-cta__limited {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: #fff0f0;
+  color: var(--lj-red);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.5;
+}
+
+.lj-cta__limited::before {
+  content: "＼ ";
+}
+
+.lj-cta__limited::after {
+  content: " ／";
+}
+
+@media (max-height: 700px) and (max-width: 480px) {
+  .lj-fv__visual img {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+/* 改行は文節（<wbr>）の位置だけで行う */
+.lj-result__thanks,
+.lj-result__title,
+.lj-cta__limited {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.lj-cta__limited {
+  font-size: 14px;
+}
+
+/* 実機のブラウザはアドレスバーの分だけ画面が低いので、1問目を1行に収めてFVを詰める */
+.lj-pr {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-size: 10px;
+}
+
+.lj-q__text {
+  font-size: 17px;
+}
+
+.lj-q__btn {
+  min-height: 52px;
+}
+
+.lj-fv__lead {
+  font-size: 14px;
+}
+
+/* 2問目＋豆知識は画面いっぱいの高さ。lvh（アドレスバーが隠れた最大の高さ）基準なので、どの状態でも3問目は画面外になる */
+.lj-step2 {
+  min-height: calc(100vh - 10px);
+  min-height: calc(100lvh - 10px);
+  margin-top: 18px;
+}
+
+.lj-step2 + .lj-q {
+  margin-top: 18px;
+}
+
+/* FV＋1問目は画面いっぱいの高さ（lvh 基準）。最初の画面に2問目は入らない */
+.lj-first {
+  min-height: 100vh;
+  min-height: 100lvh;
+}
+
+.lj-quiz--first {
+  padding-bottom: 0;
+}
+
+.lj-quiz--first + .lj-quiz,
+.lj-first + .lj-quiz {
+  padding-top: 0;
+}
+
+.lj-first + .lj-quiz > .lj-step2 {
+  margin-top: 0;
+}

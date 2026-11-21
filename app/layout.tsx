@@ -40,6 +40,8 @@ export default function RootLayout({
           if((h==='driver.taxidriver-beginner.com'&&p==='/company')||(h==='doratech.adofy-site.com'&&p==='/consult'))seeker=true;
           // 週休3日の看護師向けLP（/nurse-shukyu3）は既存LPから引き継いだ専用Pixel 1263924312012938 だけ
           if(p==='/nurse-shukyu3'||p.indexOf('/nurse-shukyu3/')===0)seeker=true;
+          // レバジョブ（ドライバー）のアンケート型記事LP（/levjob-driver）は専用Pixel 1186966720393058 だけ
+          if(p==='/levjob-driver'||p.indexOf('/levjob-driver/')===0)seeker=true;
           // www.tenshoku-gpt.com（看護師転職 比較ナビ）は全ページ Pixel 1263924312012938 だけ（各ページの SingleMetaPixel で読み込む）
           if(h==='www.tenshoku-gpt.com'||h==='tenshoku-gpt.com')seeker=true;
           if(!seeker){
