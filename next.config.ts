@@ -260,8 +260,14 @@ const nextConfig: NextConfig = {
     ]);
 
     return [
-      // レバジョブ（ドライバー）記事LP：公開URLは driver.taxidriver-beginner.com/levjob-driver だけ。
+      // レバジョブ（ドライバー）の選択型LP・記事LP：公開URLは driver.taxidriver-beginner.com/levjob-select・/levjob-driver だけ。
       // 他のドメインで開かれたら公開URLへ寄せる（クエリの utm 等はそのまま引き継がれる）。ローカルとプレビューは除外
+      {
+        source: "/levjob-select",
+        missing: [{ type: "host" as const, value: "(driver\\.taxidriver-beginner\\.com|localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)" }],
+        destination: "https://driver.taxidriver-beginner.com/levjob-select",
+        statusCode: 301 as const,
+      },
       {
         source: "/levjob-driver",
         missing: [{ type: "host" as const, value: "(driver\\.taxidriver-beginner\\.com|localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)" }],
