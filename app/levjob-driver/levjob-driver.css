@@ -1043,3 +1043,43 @@
     font-size: 16px;
   }
 }
+
+/* FV下〜1問目の間隔を空ける。増えた高さは FV画像の上下をわずかに切って相殺し、1問目のボタンは最初の画面に収める */
+.lj-fv__visual img {
+  aspect-ratio: 16 / 10;
+  object-position: center 40%;
+}
+
+.lj-fv__h1 {
+  padding-top: 18px;
+}
+
+.lj-fv__lead {
+  padding-top: 10px;
+  line-height: 1.8;
+}
+
+.lj-quiz--first {
+  padding-top: 20px;
+}
+
+.lj-q {
+  padding: 18px 18px 20px;
+}
+
+.lj-q__text {
+  margin-top: 10px;
+}
+
+.lj-q__btns {
+  gap: 14px;
+  margin-top: 18px;
+}
+
+/* 画面の低いスマホ（iPhone SE など）は画像の上下をもう少し切り、間隔は保ったまま1問目を収める */
+@media (max-height: 600px) {
+  .lj-fv__visual img {
+    aspect-ratio: 2 / 1;
+    object-position: center 45%;
+  }
+}
