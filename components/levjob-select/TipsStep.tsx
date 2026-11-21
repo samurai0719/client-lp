@@ -3,7 +3,8 @@
 import { TIPS, type Tip } from '@/components/levjob-driver/config';
 
 interface TipsStepProps {
-  affiliateUrl: string;
+  /** 「次に進む」で免許の質問（4問目）へ */
+  onNext: () => void;
 }
 
 /** 豆知識1つ。登録画面の画像に、選ぶ場所を赤丸（または角丸の枠）で重ねる */
@@ -38,14 +39,13 @@ function TipCard({ tip }: { tip: Tip }) {
 }
 
 /**
- * 免許の質問のあとに出す、登録時の豆知識2つ（/levjob-driver のアンケート型LPと同じ画像・文言）と
- * 「次に進む」ボタン（A8リンク）。
+ * 在職中かの質問と免許の質問の間（3.5問目）に出す、登録時の豆知識2つ
+ * （/levjob-driver のアンケート型LPと同じ画像・文言）と「次に進む」ボタン。
  */
-export default function TipsStep({ affiliateUrl }: TipsStepProps) {
+export default function TipsStep({ onNext }: TipsStepProps) {
   return (
     <section className="px-5 py-8">
       <div className="mb-6 text-center">
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-blue-500">登録前にチェック</p>
         <h2 className="text-xl font-bold leading-snug text-slate-800">
           <span className="whitespace-nowrap">好条件の求人を紹介してもらう</span>
           <wbr />
@@ -59,17 +59,16 @@ export default function TipsStep({ affiliateUrl }: TipsStepProps) {
       </div>
 
       <div className="mx-auto mt-8 max-w-[360px]">
-        <a
-          href={affiliateUrl}
-          rel="nofollow sponsored"
-          data-cta="tips-next"
+        <button
+          type="button"
+          onClick={onNext}
           className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 px-5 py-6 text-white shadow-[0_6px_22px_rgba(29,78,216,0.38)] transition-all duration-150 hover:from-blue-500 hover:to-blue-700 active:scale-[0.97]"
         >
           <span className="text-[19px] font-extrabold tracking-tight">次に進む</span>
           <span className="text-2xl transition-transform duration-150 group-hover:translate-x-1.5" aria-hidden="true">
             →
           </span>
-        </a>
+        </button>
       </div>
     </section>
   );

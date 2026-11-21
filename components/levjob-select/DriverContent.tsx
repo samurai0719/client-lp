@@ -18,8 +18,8 @@ export default function DriverContent({ affiliateUrl }: DriverContentProps) {
    *   0 = ファーストビュー + Q1 表示
    *   1 = Q2: 正社員経験年数
    *   2 = Q3: 在職中かどうか
-   *   3 = Q4: 免許
-   *   4 = 豆知識2つ + 「次に進む」(アフィリエイトへ遷移)
+   *   3 = 豆知識2つ + 「次に進む」（Q3 と Q4 の間に入れた 3.5問目）
+   *   4 = Q4: 免許 (最終 → アフィリエイトへ遷移)
    */
   const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(0);
 
@@ -124,12 +124,12 @@ export default function DriverContent({ affiliateUrl }: DriverContentProps) {
               {/* 最終質問: 免許複数選択 → 最終CTAボタンでアフィリエイトへ遷移
                    免許区分・imageSrc は LicenseQuestion.tsx 内の LICENSE_CHOICES で管理しています。
               */}
-              {step === 3 && (
-                <LicenseQuestion stepNumber={3} onSelect={() => advance(4)} />
-              )}
+              {/* 3.5問目：登録時の豆知識2つ（/levjob-driver と同じ）。「次に進む」で免許の質問へ */}
+              {step === 3 && <TipsStep onNext={() => advance(4)} />}
 
-              {/* 免許を選んだら、登録時の豆知識2つ（/levjob-driver と同じ）と「次に進む」（A8リンク） */}
-              {step === 4 && <TipsStep affiliateUrl={affiliateUrl} />}
+              {step === 4 && (
+                <LicenseQuestion stepNumber={3} affiliateUrl={affiliateUrl} />
+              )}
             </>
           )}
 
