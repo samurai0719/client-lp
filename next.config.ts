@@ -260,6 +260,14 @@ const nextConfig: NextConfig = {
     ]);
 
     return [
+      // レバジョブ（ドライバー）記事LP：公開URLは driver.taxidriver-beginner.com/levjob-driver だけ。
+      // 他のドメインで開かれたら公開URLへ寄せる（クエリの utm 等はそのまま引き継がれる）。ローカルとプレビューは除外
+      {
+        source: "/levjob-driver",
+        missing: [{ type: "host" as const, value: "(driver\\.taxidriver-beginner\\.com|localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)" }],
+        destination: "https://driver.taxidriver-beginner.com/levjob-driver",
+        statusCode: 301 as const,
+      },
       // ドラテク 営業メール管理: /admin/outreach/* → /adofy-admin/outreach/*
       // /admin は高長建設の管理画面（提携業者もログインする）なので、物理ルートは adofy 管理画面側に置き、
       // adofy 管理者だけが開けるようにしている。redirects は proxy.ts より先に評価されるため、

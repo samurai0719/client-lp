@@ -683,3 +683,137 @@
 .lj-first + .lj-quiz > .lj-step2 {
   margin-top: 0;
 }
+
+/* ── 余白の調整（全体に間隔を空ける）。FVは1問目のボタンが最初の画面に収まる範囲で広げる ── */
+.lj-fv__h1 {
+  padding: 14px 16px 0;
+}
+
+.lj-fv__lead {
+  padding: 8px 16px 0;
+  line-height: 1.65;
+}
+
+.lj-quiz {
+  padding: 0 16px 32px;
+}
+
+.lj-quiz--first {
+  padding: 14px 16px 0;
+}
+
+.lj-q {
+  padding: 14px 16px 16px;
+  border-radius: 16px;
+}
+
+.lj-q__text {
+  margin-top: 8px;
+}
+
+.lj-q__btns {
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.lj-step2 + .lj-q {
+  margin-top: 32px;
+}
+
+.lj-tip {
+  margin-top: 24px;
+  padding: 18px 16px 20px;
+  border-radius: 16px;
+}
+
+.lj-tip__figure {
+  margin-top: 14px;
+}
+
+.lj-tip__text {
+  margin-top: 16px;
+  line-height: 1.85;
+}
+
+.lj-article {
+  padding: 8px 18px 40px;
+}
+
+.lj-result {
+  padding: 26px 18px;
+  border-radius: 16px;
+}
+
+.lj-result__title {
+  margin-top: 10px;
+}
+
+.lj-result__by {
+  margin-top: 8px;
+}
+
+.lj-body {
+  margin-top: 24px;
+  line-height: 1.9;
+}
+
+.lj-cta {
+  margin-top: 28px;
+}
+
+.lj-cta__limited {
+  margin-bottom: 14px;
+}
+
+.lj-cta__sub {
+  margin-top: 12px;
+}
+
+.lj-h3 {
+  margin-top: 48px;
+  padding: 10px 14px;
+}
+
+.lj-features,
+.lj-steps,
+.lj-faq {
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.lj-features li,
+.lj-steps li,
+.lj-faq div {
+  padding: 16px;
+}
+
+.lj-features li {
+  gap: 14px;
+}
+
+.lj-features p,
+.lj-steps p,
+.lj-faq dd {
+  margin-top: 6px;
+  line-height: 1.8;
+}
+
+.lj-final {
+  margin-top: 48px;
+  padding: 26px 18px 28px;
+  border-radius: 16px;
+}
+
+.lj-final__lead {
+  line-height: 1.8;
+}
+
+.lj-footer {
+  padding: 30px 18px 44px;
+  line-height: 1.8;
+}
+
+.lj-footer__op {
+  gap: 6px;
+  margin-top: 16px;
+}
