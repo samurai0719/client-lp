@@ -44,6 +44,7 @@ export default function RootLayout({
           if(p==='/levjob-driver'||p.indexOf('/levjob-driver/')===0)seeker=true;
           // レバジョブ（ドライバー）の選択型LP（/levjob-select）も同じ専用Pixel 1186966720393058 だけ
           if(p==='/levjob-select'||p.indexOf('/levjob-select/')===0)seeker=true;
+          if(p==='/levjob-popup'||p.indexOf('/levjob-popup/')===0)seeker=true;
           // www.tenshoku-gpt.com（看護師転職 比較ナビ）は全ページ Pixel 1263924312012938 だけ（各ページの SingleMetaPixel で読み込む）
           if(h==='www.tenshoku-gpt.com'||h==='tenshoku-gpt.com')seeker=true;
           if(!seeker){

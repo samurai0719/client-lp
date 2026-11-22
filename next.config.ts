@@ -260,8 +260,22 @@ const nextConfig: NextConfig = {
     ]);
 
     return [
-      // レバジョブ（ドライバー）の選択型LP・記事LP：公開URLは driver.taxidriver-beginner.com/levjob-select・/levjob-driver だけ。
+      // レバジョブ（ドライバー）の選択型LP・記事LP・1画面LP：公開URLは driver.taxidriver-beginner.com/levjob-select・/levjob-driver・/levjob-popup だけ。
       // 他のドメインで開かれたら公開URLへ寄せる（クエリの utm 等はそのまま引き継がれる）。ローカルとプレビューは除外
+      {
+        source: "/levjob-popup",
+        missing: [{ type: "host" as const, value: "(driver\\.taxidriver-beginner\\.com|localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)" }],
+        destination: "https://driver.taxidriver-beginner.com/levjob-popup",
+        statusCode: 301 as const,
+      },
+      // レバウェル看護の1画面LP：公開URLは lp.tenshoku-gpt.com/levwell-popup だけ
+      // （www.tenshoku-gpt.com は別の Vercel プロジェクト tenshoku-nurse-remake のため、このプロジェクトに付いている lp. を使う）
+      {
+        source: "/levwell-popup",
+        missing: [{ type: "host" as const, value: "(lp\\.tenshoku-gpt\\.com|localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)" }],
+        destination: "https://lp.tenshoku-gpt.com/levwell-popup",
+        statusCode: 301 as const,
+      },
       {
         source: "/levjob-select",
         missing: [{ type: "host" as const, value: "(driver\\.taxidriver-beginner\\.com|localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)" }],
