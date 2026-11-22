@@ -45,6 +45,8 @@ export default function RootLayout({
           // レバジョブ（ドライバー）の選択型LP（/levjob-select）も同じ専用Pixel 1186966720393058 だけ
           if(p==='/levjob-select'||p.indexOf('/levjob-select/')===0)seeker=true;
           if(p==='/levjob-popup'||p.indexOf('/levjob-popup/')===0)seeker=true;
+          // レバウェル看護の1画面LP（/levwell-popup）は専用Pixel 533491373010800 だけ
+          if(p==='/levwell-popup'||p.indexOf('/levwell-popup/')===0)seeker=true;
           // www.tenshoku-gpt.com（看護師転職 比較ナビ）は全ページ Pixel 1263924312012938 だけ（各ページの SingleMetaPixel で読み込む）
           if(h==='www.tenshoku-gpt.com'||h==='tenshoku-gpt.com')seeker=true;
           if(!seeker){
