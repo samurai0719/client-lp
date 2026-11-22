@@ -268,12 +268,13 @@ const nextConfig: NextConfig = {
         destination: "https://driver.taxidriver-beginner.com/levjob-popup",
         statusCode: 301 as const,
       },
-      // レバウェル看護の1画面LP：公開URLは lp.tenshoku-gpt.com/levwell-popup だけ
-      // （www.tenshoku-gpt.com は別の Vercel プロジェクト tenshoku-nurse-remake のため、このプロジェクトに付いている lp. を使う）
+      // レバウェル看護の1画面LP：公開URLは www.tenshoku-gpt.com/levwell-popup。
+      // www は別の Vercel プロジェクト（tenshoku-nurse-remake・静的）で、その vercel.json が /levwell-popup を lp.tenshoku-gpt.com へ
+      // 外部リライトしている。リライト経由のリクエストは lp. のホストで届くので、lp. は転送しない（転送するとループする）
       {
         source: "/levwell-popup",
         missing: [{ type: "host" as const, value: "(lp\\.tenshoku-gpt\\.com|localhost|127\\.0\\.0\\.1|.*\\.vercel\\.app)" }],
-        destination: "https://lp.tenshoku-gpt.com/levwell-popup",
+        destination: "https://www.tenshoku-gpt.com/levwell-popup",
         statusCode: 301 as const,
       },
       {
