@@ -5,7 +5,6 @@ import HeroSection from './HeroSection';
 import StepHeader from './StepHeader';
 import QuestionCard from './QuestionCard';
 import LicenseQuestion from './LicenseQuestion';
-import TipsStep from './TipsStep';
 
 interface DriverContentProps {
   /** app/driver/page.tsx の AFFILIATE_URL から受け取ります */
@@ -18,12 +17,11 @@ export default function DriverContent({ affiliateUrl }: DriverContentProps) {
    *   0 = ファーストビュー + Q1 表示
    *   1 = Q2: 正社員経験年数
    *   2 = Q3: 在職中かどうか
-   *   3 = Q4: 免許
-   *   4 = 豆知識2つ + 「次に進む」(アフィリエイトへ遷移)
+   *   3 = Q4: 免許 (最終 → アフィリエイトへ遷移)
    */
-  const [step, setStep] = useState<0 | 1 | 2 | 3 | 4>(0);
+  const [step, setStep] = useState<0 | 1 | 2 | 3>(0);
 
-  const advance = (next: 1 | 2 | 3 | 4) => {
+  const advance = (next: 1 | 2 | 3) => {
     setStep(next);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -125,11 +123,11 @@ export default function DriverContent({ affiliateUrl }: DriverContentProps) {
                    免許区分・imageSrc は LicenseQuestion.tsx 内の LICENSE_CHOICES で管理しています。
               */}
               {step === 3 && (
-                <LicenseQuestion stepNumber={3} onSelect={() => advance(4)} />
+                <LicenseQuestion
+                  stepNumber={3}
+                  affiliateUrl={affiliateUrl}
+                />
               )}
-
-              {/* 免許を選んだら、登録時の豆知識2つ（/levjob-driver と同じ）と「次に進む」（A8リンク） */}
-              {step === 4 && <TipsStep affiliateUrl={affiliateUrl} />}
             </>
           )}
 

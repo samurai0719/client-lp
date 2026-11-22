@@ -50,11 +50,10 @@ const LICENSE_CHOICES = [
 
 interface LicenseQuestionProps {
   stepNumber: number;
-  /** 選んだら豆知識のステップへ進む */
-  onSelect: () => void;
+  affiliateUrl: string;
 }
 
-export default function LicenseQuestion({ stepNumber, onSelect }: LicenseQuestionProps) {
+export default function LicenseQuestion({ stepNumber, affiliateUrl }: LicenseQuestionProps) {
   return (
     <section className="px-5 py-8 animate-fade-in">
 
@@ -75,7 +74,7 @@ export default function LicenseQuestion({ stepNumber, onSelect }: LicenseQuestio
             subLabel={c.subLabel}
             imageSrc={c.imageSrc}
             cardLayout="card"
-            onClick={onSelect}
+            href={affiliateUrl}
           />
         ))}
       </div>
