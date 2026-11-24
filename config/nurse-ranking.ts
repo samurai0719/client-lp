@@ -633,6 +633,8 @@ export const shukyuCheckPoints: { title: string; body: string }[] = [
  * adofy 共通の 818193851340214（app/layout.tsx）はそのまま残し、これを追加で読み込む。
  */
 export const RANKING_PIXEL_ID = "1263924312012938";
+/** 2026-11-24 追加：www.tenshoku-gpt.com/osusumesaito-3 用の Meta Pixel（/levwell-popup と同じ）。1263 と並べて読み込む */
+export const RANKING_EXTRA_PIXEL_ID = "533491373010800";
 
 /** 比較表の注記（求人数の出典は各社の notes と同じ内容を短くまとめる） */
 export const tableNotes = [

@@ -7,7 +7,7 @@ import RankCard from "@/components/nurse-ranking/RankCard";
 import FaqSection from "@/components/nurse-ranking/FaqSection";
 import { SectionTitle } from "@/components/nurse-ranking/ui";
 import SvgHeading, { SvgHeadingDefs } from "@/components/nurse-shukyu3/SvgHeading";
-import { RANKING_PIXEL_ID, faqs, rankingNote, services, shukyuCheckPoints, siteMeta } from "@/config/nurse-ranking";
+import { RANKING_EXTRA_PIXEL_ID, RANKING_PIXEL_ID, faqs, rankingNote, services, shukyuCheckPoints, siteMeta } from "@/config/nurse-ranking";
 import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
 
 /**
@@ -56,6 +56,7 @@ export default function NurseRankingPage() {
     <div className="min-h-screen bg-[#fff6f9] text-slate-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SingleMetaPixel id={RANKING_PIXEL_ID} />
+      <SingleMetaPixel id={RANKING_EXTRA_PIXEL_ID} />
       <SvgHeadingDefs />
       <Header />
 
