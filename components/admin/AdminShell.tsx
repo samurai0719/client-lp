@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/check";
+import { useAdminBrand } from "@/components/admin/brand";
 import {
   Users,
   Calendar,
@@ -26,6 +27,9 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const brand = useAdminBrand();
+  const brandName = brand?.name ?? "外構";
+  const initials = brand?.initials ?? "CR";
 
   async function handleLogout() {
     if (isSupabaseConfigured()) {
@@ -46,10 +50,10 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       <div className="p-5 flex items-center justify-between border-b border-[#e7e3d8]">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-[#174f3f] flex items-center justify-center shrink-0">
-            <span className="text-white text-sm font-bold">TN</span>
+            <span className="text-white text-sm font-bold">{initials}</span>
           </div>
           <div>
-            <p className="text-sm font-bold text-[#10302a] leading-tight">高長建設</p>
+            <p className="text-sm font-bold text-[#10302a] leading-tight">{brandName}</p>
             <p className="text-xs text-[#6b7a73]">顧客管理</p>
           </div>
         </div>
@@ -129,9 +133,9 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           </button>
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-[#174f3f] flex items-center justify-center">
-              <span className="text-white text-xs font-bold">TN</span>
+              <span className="text-white text-xs font-bold">{initials}</span>
             </div>
-            <span className="text-sm font-bold text-[#10302a]">高長建設 顧客管理</span>
+            <span className="text-sm font-bold text-[#10302a]">{brandName} 顧客管理</span>
           </div>
         </header>
 

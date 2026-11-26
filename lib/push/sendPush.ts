@@ -55,10 +55,15 @@ export async function sendPushToAll(payload: PushPayload) {
   webpush.setVapidDetails(subject, publicKey, privateKey);
 
   const db = createAdminClient();
+  // LP の問い合わせ通知は高長建設の人にだけ送る（株式会社イレブンの人には届けない）
+  const { data: members } = await db.from("profiles").select("id").eq("company", "takanaga");
+  const memberIds = (members ?? []).map((m) => m.id);
+  if (!memberIds.length) return;
   const { data: subs } = await db
     .from("push_subscriptions")
     .select("id, user_id, endpoint, p256dh, auth")
-    .eq("is_active", true);
+    .eq("is_active", true)
+    .in("user_id", memberIds);
 
   if (!subs?.length) return;
 

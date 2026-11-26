@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   const [actionLeads, urgentLeads] = await Promise.all([
     // 次回対応予定（本日）
     db.from("leads")
-      .select("id, next_action_at, customer:customers(name, city)")
+      .select("id, company, next_action_at, customer:customers(name, city)")
       .not("next_action_at", "is", null)
       .gte("next_action_at", todayStart)
       .lte("next_action_at", now.toISOString())
@@ -31,18 +31,22 @@ export async function GET(request: NextRequest) {
 
     // 30分以上未対応
     db.from("leads")
-      .select("id, status, created_at, customer:customers(name, city)")
+      .select("id, company, status, created_at, customer:customers(name, city)")
       .in("status", ["new", "uncontacted"])
       .lte("created_at", thirtyMinAgo)
       .is("deleted_at", null),
   ]);
 
-  const { data: admins } = await db.from("profiles").select("id").eq("role", "admin");
-  if (!admins?.length) return NextResponse.json({ success: true });
+  const { data: allAdmins } = await db.from("profiles").select("id, company").eq("role", "admin");
+  if (!allAdmins?.length) return NextResponse.json({ success: true });
+  // 通知はその案件の会社の人にだけ送る
+  const adminsOf = (company: string) => allAdmins.filter((a) => a.company === company);
 
   const sent: string[] = [];
 
   for (const lead of actionLeads.data ?? []) {
+    const admins = adminsOf(lead.company);
+    if (!admins.length) continue;
     const schedKey = `next_action_${lead.next_action_at?.slice(0, 16)}`;
     const { count } = await db.from("notification_logs")
       .select("*", { count: "exact", head: true })
@@ -70,17 +74,19 @@ export async function GET(request: NextRequest) {
     sent.push(`next_action:${lead.id}`);
   }
 
-  // 未対応警告（1回のみ）
-  if (urgentLeads.data && urgentLeads.data.length > 0) {
-    const dayKey = now.toISOString().slice(0, 10);
+  // 未対応警告（会社ごとに1日1回のみ）
+  const dayKey = now.toISOString().slice(0, 10);
+  for (const company of new Set((urgentLeads.data ?? []).map((l) => l.company))) {
+    const admins = adminsOf(company);
+    if (!admins.length) continue;
     const { count } = await db.from("notification_logs")
       .select("*", { count: "exact", head: true })
       .eq("notification_type", "uncontacted_warning")
-      .eq("scheduled_key", dayKey)
+      .eq("scheduled_key", `${dayKey}:${company}`)
       .gte("sent_at", todayStart);
 
     if ((count ?? 0) === 0) {
-      const urgentCount = urgentLeads.data.length;
+      const urgentCount = (urgentLeads.data ?? []).filter((l) => l.company === company).length;
       await Promise.allSettled(admins.map((a) => sendPushToUser(a.id, {
         title: "未対応のお問い合わせがあります",
         body: `受付から30分以上経過した未対応案件が${urgentCount}件あります。`,
@@ -89,22 +95,24 @@ export async function GET(request: NextRequest) {
       await db.from("notification_logs").insert(admins.map((a) => ({
         user_id: a.id,
         notification_type: "uncontacted_warning",
-        scheduled_key: dayKey,
+        scheduled_key: `${dayKey}:${company}`,
         status: "sent",
       })));
-      sent.push("uncontacted_warning");
+      sent.push(`uncontacted_warning:${company}`);
     }
   }
 
   // 現地調査予定
   const { data: siteVisits } = await db.from("leads")
-    .select("id, next_action_at, customer:customers(name)")
+    .select("id, company, next_action_at, customer:customers(name)")
     .eq("status", "site_visit_scheduled")
     .gte("next_action_at", todayStart)
     .lte("next_action_at", todayEnd)
     .is("deleted_at", null);
 
   for (const lead of siteVisits ?? []) {
+    const admins = adminsOf(lead.company);
+    if (!admins.length) continue;
     const schedKey = `site_visit_${lead.next_action_at?.slice(0, 16)}`;
     const { count } = await db.from("notification_logs")
       .select("*", { count: "exact", head: true })

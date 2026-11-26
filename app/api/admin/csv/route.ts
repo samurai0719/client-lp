@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdmin, unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { requireCrmAdmin } from "@/lib/crm/company";
 import { LEAD_STATUS_LABELS } from "@/lib/types/crm";
 
 // 公開フォーム由来の値がExcelで数式として実行されないよう、先頭に ' を付けて文字列化する
@@ -16,7 +17,7 @@ function csvCell(value: unknown): string {
 
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
-  const admin = await requireAdmin(supabase);
+  const admin = await requireCrmAdmin(supabase);
   if (!admin) return unauthorizedResponse();
 
   const { searchParams } = request.nextUrl;
@@ -28,6 +29,7 @@ export async function GET(request: NextRequest) {
   let query = db
     .from("leads")
     .select("*, customer:customers(*), attribution:lead_attribution(*)")
+    .eq("company", admin.company)
     .is("deleted_at", null)
     .order("created_at", { ascending: false });
 

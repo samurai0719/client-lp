@@ -1,16 +1,18 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdmin, unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { requireCrmAdmin } from "@/lib/crm/company";
 
 export async function GET() {
   const supabase = await createClient();
-  if (!await requireAdmin(supabase)) return unauthorizedResponse();
+  const admin = await requireCrmAdmin(supabase);
+  if (!admin) return unauthorizedResponse();
 
   const db = createAdminClient();
   const [expRes, leadRes] = await Promise.all([
-    db.from("ad_expenses").select("*").order("date", { ascending: false }),
-    db.from("leads").select("status, source, contract_amount").is("deleted_at", null),
+    db.from("ad_expenses").select("*").eq("company", admin.company).order("date", { ascending: false }),
+    db.from("leads").select("status, source, contract_amount").eq("company", admin.company).is("deleted_at", null),
   ]);
 
   const expenses = expRes.data ?? [];
@@ -36,14 +38,15 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
-  if (!await requireAdmin(supabase)) return unauthorizedResponse();
+  const admin = await requireCrmAdmin(supabase);
+  if (!admin) return unauthorizedResponse();
 
   const body = await request.json();
   const { date, platform, campaign_name, amount, memo } = body;
   if (!date || !platform || !amount) return NextResponse.json({ error: "必須項目が不足しています" }, { status: 400 });
 
   const db = createAdminClient();
-  const { error } = await db.from("ad_expenses").insert({ date, platform, campaign_name, amount, memo });
+  const { error } = await db.from("ad_expenses").insert({ company: admin.company, date, platform, campaign_name, amount, memo });
   if (error) return NextResponse.json({ error: "追加に失敗しました" }, { status: 500 });
   return NextResponse.json({ success: true });
 }

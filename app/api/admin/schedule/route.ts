@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdmin, unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { requireCrmAdmin } from "@/lib/crm/company";
 
 export async function GET() {
   const supabase = await createClient();
-  if (!await requireAdmin(supabase)) return unauthorizedResponse();
+  const admin = await requireCrmAdmin(supabase);
+  if (!admin) return unauthorizedResponse();
 
   const db = createAdminClient();
 
@@ -13,12 +15,14 @@ export async function GET() {
     db
       .from("leads")
       .select("*, customer:customers(*)")
+      .eq("company", admin.company)
       .not("site_visit_at", "is", null)
       .is("deleted_at", null)
       .order("site_visit_at", { ascending: true }),
     db
       .from("leads")
       .select("*, customer:customers(*)")
+      .eq("company", admin.company)
       .not("next_action_at", "is", null)
       .is("deleted_at", null)
       .order("next_action_at", { ascending: true }),

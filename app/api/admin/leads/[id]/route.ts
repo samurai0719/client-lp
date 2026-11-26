@@ -1,13 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdmin, unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { requireCrmAdmin } from "@/lib/crm/company";
 import { LEAD_STATUS_LABELS } from "@/lib/types/crm";
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
-  const admin = await requireAdmin(supabase);
+  const admin = await requireCrmAdmin(supabase);
   if (!admin) return unauthorizedResponse();
 
   const db = createAdminClient();
@@ -15,6 +16,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
     .from("leads")
     .select("*, customer:customers(*), attribution:lead_attribution(*)")
     .eq("id", id)
+    .eq("company", admin.company)
     .is("deleted_at", null)
     .single();
 
@@ -25,7 +27,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
-  const admin = await requireAdmin(supabase);
+  const admin = await requireCrmAdmin(supabase);
   if (!admin) return unauthorizedResponse();
 
   const body = await request.json();
@@ -48,7 +50,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   if (lost_reason !== undefined) updateData.lost_reason = lost_reason;
   if (assigned_user_id !== undefined) updateData.assigned_user_id = assigned_user_id;
 
-  const { error } = await db.from("leads").update(updateData).eq("id", id);
+  const { data: updated, error } = await db
+    .from("leads")
+    .update(updateData)
+    .eq("id", id)
+    .eq("company", admin.company)
+    .select("id");
+  if (!error && !updated?.length) return NextResponse.json({ error: "見つかりません" }, { status: 404 });
   if (error) return NextResponse.json({ error: "更新に失敗しました" }, { status: 500 });
 
   // ステータス変更履歴

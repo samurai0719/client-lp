@@ -1,7 +1,7 @@
 {
-  "name": "高長建設 顧客管理",
-  "short_name": "高長CRM",
-  "description": "高長建設の外構問い合わせ・顧客管理システム",
+  "name": "外構 顧客管理",
+  "short_name": "顧客管理",
+  "description": "外構の問い合わせ・顧客管理システム",
   "start_url": "/admin",
   "scope": "/admin/",
   "display": "standalone",

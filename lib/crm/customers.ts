@@ -16,6 +16,7 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { normalizePhone } from "../utils/format";
+import { DEFAULT_CRM_COMPANY } from "./company";
 
 // 日本の電話番号は10〜11桁。これ未満は照合に使わない（誤結合防止）
 const MIN_MATCHABLE_DIGITS = 10;
@@ -48,6 +49,8 @@ async function findMatchableCustomer(
   const { data } = await db
     .from("customers")
     .select("id, name, email")
+    // LP の問い合わせは高長建設の顧客とだけ照合する（イレブンの顧客に結合しない）
+    .eq("company", DEFAULT_CRM_COMPANY)
     .eq("phone_normalized", phoneNormalized)
     .is("deleted_at", null)
     .order("created_at", { ascending: true })

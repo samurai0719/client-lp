@@ -1,14 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { requireAdmin, unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { unauthorizedResponse } from "@/lib/auth/adminCheck";
+import { leadBelongsTo, requireCrmAdmin } from "@/lib/crm/company";
 
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
-  if (!await requireAdmin(supabase)) return unauthorizedResponse();
+  const admin = await requireCrmAdmin(supabase);
+  if (!admin) return unauthorizedResponse();
 
   const db = createAdminClient();
+  if (!(await leadBelongsTo(db, id, admin.company))) return NextResponse.json({ error: "見つかりません" }, { status: 404 });
   const { data: images } = await db.from("lead_images").select("*").eq("lead_id", id).order("created_at", { ascending: false });
 
   if (!images) return NextResponse.json({ images: [] });
