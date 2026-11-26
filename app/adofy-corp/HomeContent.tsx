@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Noto_Sans_JP, Sora } from "next/font/google";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { ARTICLES } from "@/components/adofy-corp/articles/content";
+import { SHOWREEL } from "@/components/adofy-corp/works/data";
 import "./home-editorial.css";
 
 /**
@@ -107,13 +108,22 @@ const WORKS: Work[] = [
   { img: "/images/adofy/case-01-takanaga.webp", tag: "建設・外構", title: "高長建設様", body: "コーポレートサイト制作・集客設計", href: "https://www.takanagakensetu.com/", external: true },
   { img: "/images/adofy/ad-02-mynavi-pharmacist.webp", tag: "人材・薬剤師", title: "マイナビ薬剤師", body: "広告運用 × 診断LP制作", href: "/works/mynavi-pharmacist" },
   { img: "/images/adofy/ad-01-rizap-golf.webp", tag: "スクール", title: "RIZAP GOLF", body: "広告運用 × 記事LP制作", href: "/works/rizap-golf" },
+  { img: "/images/adofy/ad-03-nurse-senka.webp", tag: "人材・看護師", title: "ナース専科", body: "広告運用 × LP制作", href: "/works/nurse-senka" },
+  { img: "/images/adofy/ad-04-leverages.webp", tag: "人材", title: "レバレジーズグループ", body: "広告運用 × 動画広告制作", href: "/works/leverages" },
 ];
 
-// 動画は採用レスキューの実績と同じ5秒の素材を共用する（public/videos/saiyo-rescue）
-const VIDEO_ADS = [
-  { id: "persol-driver", title: "ドライバー転職パーソル" },
-  { id: "colorful-driver", title: "カラフルエージェントドライバー" },
-  { id: "levjob-driver", title: "ドライバー転職レバジョブ" },
+// 動画広告：実績ページの6秒ループ（components/adofy-corp/works/data.ts）＋ドライバー転職の3本（採用レスキューと共用）
+const VIDEO_ADS: { src: string; poster?: string; client: string; title: string; href?: string }[] = [
+  ...SHOWREEL.map((v) => ({
+    src: `/videos/works/${v.slug}/${v.id}-loop.mp4`,
+    poster: `/images/works/${v.slug}/posters/${v.id}.jpg`,
+    client: v.client,
+    title: v.title,
+    href: `/works/${v.slug}`,
+  })),
+  { src: "/videos/saiyo-rescue/persol-driver.mp4", client: "ドライバー転職パーソル", title: "ドライバー採用" },
+  { src: "/videos/saiyo-rescue/colorful-driver.mp4", client: "カラフルエージェント", title: "ドライバー採用" },
+  { src: "/videos/saiyo-rescue/levjob-driver.mp4", client: "レバジョブ", title: "ドライバー採用" },
 ];
 
 const STATS = [
@@ -173,6 +183,31 @@ function WorkLink({ work, className, children }: { work: Work; className: string
 
 export default function HomeContent() {
   const root = useRef<HTMLDivElement>(null);
+  const reel = useRef<HTMLUListElement>(null);
+
+  const scrollReel = (dir: number) => {
+    const el = reel.current;
+    if (!el) return;
+    const item = el.querySelector("li");
+    el.scrollBy({ left: dir * ((item?.clientWidth ?? 240) + 24) * 2, behavior: "smooth" });
+  };
+
+  // 動画広告は画面に見えているものだけ再生する（11本を同時に読み込まない）
+  useEffect(() => {
+    const el = reel.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => {});
+          else v.pause();
+        }),
+      { threshold: 0.3 },
+    );
+    el.querySelectorAll("video").forEach((v) => io.observe(v));
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = root.current;
@@ -410,18 +445,43 @@ export default function HomeContent() {
                 </ul>
               </div>
 
-              <h3 className="ax-videos__title" data-fade>
-                動画広告
-              </h3>
-              <ul className="ax-videos">
-                {VIDEO_ADS.map((v) => (
-                  <li key={v.id} data-fade>
-                    <video src={`/videos/saiyo-rescue/${v.id}.mp4`} aria-label={`${v.title}の動画広告`} autoPlay muted loop playsInline preload="metadata" />
-                    <p>{v.title}</p>
-                  </li>
-                ))}
-              </ul>
+              <div className="ax-reel__head" data-fade>
+                <div>
+                  <p className="ax-reel__en" lang="en">Video Ads</p>
+                  <h3 className="ax-videos__title">動画広告</h3>
+                </div>
+                <p>RIZAP GOLF・マイナビ薬剤師・ナース専科・レバレジーズなど、制作した動画広告の一部です。</p>
+                <div className="ax-reel__nav">
+                  <button type="button" onClick={() => scrollReel(-1)} aria-label="前の動画へ">
+                    <ArrowLeft aria-hidden="true" />
+                  </button>
+                  <button type="button" onClick={() => scrollReel(1)} aria-label="次の動画へ">
+                    <ArrowRight aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
             </div>
+            <ul className="ax-videos" ref={reel}>
+              {VIDEO_ADS.map((v) => {
+                const body = (
+                  <>
+                    <span className="ax-videos__phone">
+                      <video src={v.src} poster={v.poster} aria-label={`${v.client} ${v.title}の動画広告`} muted loop playsInline preload="none" />
+                    </span>
+                    <span className="ax-videos__client">{v.client}</span>
+                    <span className="ax-videos__name">
+                      {v.title}
+                      {v.href && <ArrowRight aria-hidden="true" />}
+                    </span>
+                  </>
+                );
+                return (
+                  <li key={v.src}>
+                    {v.href ? <Link href={v.href}>{body}</Link> : <div>{body}</div>}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </section>
 

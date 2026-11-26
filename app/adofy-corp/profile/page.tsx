@@ -74,21 +74,17 @@ export default function ProfilePage() {
                   </clipPath>
                 </defs>
               </svg>
-              <div
-                className="relative aspect-[4/5] overflow-hidden bg-mist-blue"
-                style={{ clipPath: `url(#profile-photo-clip-${photoClipId})` }}
-              >
-                {photoSrc ? (
-                  // eslint-disable-next-line @next/next/no-img-element
+              {photoSrc && (
+                <div
+                  className="relative aspect-[4/5] overflow-hidden bg-mist-blue"
+                  style={{ clipPath: `url(#profile-photo-clip-${photoClipId})` }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={photoSrc} alt="塚本 隼平" className="h-full w-full object-cover" />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-ink-soft font-bold">
-                    代表写真をここに配置
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
 
-              <div className="relative mt-6">
+              <div className={photoSrc ? "relative mt-6" : "relative"}>
                 <p className="text-sm text-ink-soft">Representative</p>
                 <h1 className="mt-2 text-3xl font-black text-ink">塚本 隼平</h1>
                 <p className="mt-2 text-ink-soft">adofy 代表</p>
