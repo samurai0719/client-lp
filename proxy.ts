@@ -20,6 +20,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
 
+  // 株式会社イレブン様の顧客管理（同じ管理画面。会社はログインしたアカウントで分かれる）
+  if (hostname === "eleven-gaikou-crm.vercel.app" && pathname === "/") {
+    return NextResponse.redirect(new URL("/admin", request.url));
+  }
+
   // ── takanagakensetu.com のURL構成（2026-07-04切替） ──────────────────
   // / = コーポレートHP、/takanaga = 外構広告LP。
   // next.config.ts の beforeFiles rewrite はマッチ後も評価が続き
