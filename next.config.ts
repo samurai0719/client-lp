@@ -398,6 +398,12 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "golfprayer-joutatu.com" }],
           destination: "/rizap-golf",
         },
+        // 高永建設 外構AIシミュレーション単独公開（Vercel無料ドメイン）
+        {
+          source: "/",
+          has: [{ type: "host", value: "takanaga-simulator.vercel.app" }],
+          destination: "/takanaga-simulator",
+        },
         {
           source: "/",
           has: [{ type: "host", value: "www.golfprayer-joutatu.com" }],
