@@ -1036,13 +1036,16 @@ export default function GaihekiColorSimulator({ onRequestQuote, id }: Props) {
 
               {/* Action buttons */}
               <div className="space-y-3">
-                <button
-                  onClick={handleRequestQuote}
-                  className="w-full py-4 rounded-2xl font-extrabold text-base transition-all active:scale-[0.98]"
-                  style={ctaStyle}
-                >
-                  無料見積もりを依頼する
-                </button>
+                {/* 見積もり依頼先がないページ（シミュレーション単独公開）ではボタンを出さない */}
+                {onRequestQuote && (
+                  <button
+                    onClick={handleRequestQuote}
+                    className="w-full py-4 rounded-2xl font-extrabold text-base transition-all active:scale-[0.98]"
+                    style={ctaStyle}
+                  >
+                    無料見積もりを依頼する
+                  </button>
+                )}
 
                 <div className="grid grid-cols-2 gap-3">
                   <button

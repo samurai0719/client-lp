@@ -406,6 +406,11 @@ const nextConfig: NextConfig = {
         },
         {
           source: "/",
+          has: [{ type: "host", value: "takanaga-paint-simulator.vercel.app" }],
+          destination: "/takanaga-paint-simulator",
+        },
+        {
+          source: "/",
           has: [{ type: "host", value: "www.golfprayer-joutatu.com" }],
           destination: "/rizap-golf",
         },
