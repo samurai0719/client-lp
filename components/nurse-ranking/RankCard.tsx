@@ -75,7 +75,6 @@ export default function RankCard({
         {/* ② 正規の広告素材。無いサービスはロゴを作らず文字で表示する */}
         {s.adImage ? (
           <a href={link} target="_blank" rel="nofollow sponsored noopener" className="relative mx-auto block w-full max-w-[300px]">
-            <span className="absolute left-1 top-1 rounded bg-black/55 px-1 text-[9px] font-bold leading-[14px] text-white">広告</span>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={s.adImage.src} width={s.adImage.width} height={s.adImage.height} alt={s.adImage.alt} className="block h-auto w-full rounded-lg border border-slate-200" loading="lazy" />
           </a>

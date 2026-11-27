@@ -90,7 +90,6 @@ function First({ s }: { s: Service }) {
           <div className="mt-3 flex items-start gap-3">
             {s.adImage && (
               <a href={href} target="_blank" rel="nofollow sponsored noopener" className="relative block w-[42%] max-w-[180px] shrink-0" data-service={s.id}>
-                <span className="absolute left-1 top-1 rounded bg-black/55 px-1 text-[9px] font-bold leading-[14px] text-white">広告</span>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.adImage.src} width={s.adImage.width} height={s.adImage.height} alt={s.adImage.alt} className="block h-auto w-full rounded border border-slate-200" loading="lazy" />
               </a>
