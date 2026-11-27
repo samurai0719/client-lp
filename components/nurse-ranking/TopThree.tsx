@@ -87,14 +87,14 @@ function First({ s }: { s: Service }) {
             <Logo s={s} className="max-h-[30px] max-w-[60%]" />
             <span className="shrink-0 rounded-lg bg-[#e8604c] px-3 py-1.5 text-[13px] font-black text-white">オススメ！</span>
           </div>
-          <div className="mt-3 flex items-start gap-3">
+          <div className="mt-3 flex flex-col items-center gap-3 min-[520px]:flex-row min-[520px]:items-start">
             {s.adImage && (
-              <a href={href} target="_blank" rel="nofollow sponsored noopener" className="relative block w-[42%] max-w-[180px] shrink-0" data-service={s.id}>
+              <a href={href} target="_blank" rel="nofollow sponsored noopener" className="relative block w-[82%] max-w-[300px] shrink-0 min-[520px]:w-[42%] min-[520px]:max-w-[180px]" data-service={s.id}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.adImage.src} width={s.adImage.width} height={s.adImage.height} alt={s.adImage.alt} className="block h-auto w-full rounded border border-slate-200" loading="lazy" />
               </a>
             )}
-            <p className="min-w-0 text-[clamp(13px,3.8vw,15px)] leading-[1.75] text-slate-700">
+            <p className="w-full min-w-0 text-[clamp(14px,4vw,15px)] leading-[1.75] text-slate-700">
               <Red text={pick.text} />
             </p>
           </div>
