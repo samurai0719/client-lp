@@ -4,6 +4,7 @@ import Footer from "@/components/nurse-ranking/Footer";
 import ComparisonTabs from "@/components/nurse-ranking/ComparisonTabs";
 import WorkStyleSection from "@/components/nurse-ranking/WorkStyleSection";
 import RankCard from "@/components/nurse-ranking/RankCard";
+import TopThree from "@/components/nurse-ranking/TopThree";
 import FaqSection from "@/components/nurse-ranking/FaqSection";
 import { SectionTitle } from "@/components/nurse-ranking/ui";
 import SvgHeading, { SvgHeadingDefs } from "@/components/nurse-shukyu3/SvgHeading";
@@ -13,7 +14,7 @@ import SingleMetaPixel from "@/components/analytics/SingleMetaPixel";
 /**
  * 看護師転職サイト おすすめランキング（/nurse-ranking）
  *
- * 構成：ヘッダー → FV画像 → タブ付き比較表 → 希望する働き方から確認 → ランキング詳細（1〜3位）
+ * 構成：ヘッダー → FV画像 → TOP3 → タブ付き比較表 → 希望する働き方から確認 → ランキング詳細（1〜3位）
  *       → 比較するメリット → よくある質問 → 再比較表 → フッター
  * 比較表・詳細カード・FAQ はすべて config/nurse-ranking.ts の共通データから表示する。
  */
@@ -73,6 +74,9 @@ export default function NurseRankingPage() {
           fetchPriority="high"
         />
 
+        {/* 看護師転職サイトTOP3（1位は大きく、2位・3位は横並び） */}
+        <TopThree services={services} />
+
         {/* タブ付き比較表（上部） */}
         <section aria-labelledby="compare-top-title" className="px-3 pb-6 pt-4 min-[400px]:px-4">
           <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
@@ -121,7 +125,7 @@ export default function NurseRankingPage() {
           <SectionTitle id="ranking-title" lines={["週休3日を希望する看護師向け", "おすすめランキング"]} highlight={["おすすめランキング"]} sub={rankingNote} />
           <div className="space-y-6">
             {services.map((s) => (
-              <RankCard key={s.id} s={s} svgHeadings ctaBig ctaLabel="非公開求人を紹介してもらう" />
+              <RankCard key={s.id} s={s} svgHeadings ctaBig ctaLabel="無料で求人を見てみる" />
             ))}
           </div>
         </section>
