@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { checkRateLimit, getClientIp } from '@/lib/security/rateLimit';
+import { isReasonablePayload, isValidEmail } from '@/lib/security/publicForm';
 
 const QUESTION_LABELS = [
   '現在の状況',
@@ -28,15 +30,29 @@ function formatAnswer(val: AnswerValue | undefined): string {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { name, phone, email, comment, answers, segment } = body as {
-      name: string;
-      phone: string;
-      email: string;
-      comment?: string;
-      answers: Record<number, AnswerValue>;
-      segment: string;
-    };
+    // 連続送信・スパム対策（他の公開フォームと同じく1時間5件まで）
+    if (!(await checkRateLimit('contact', getClientIp(req), 5, 3600)).allowed) {
+      return NextResponse.json({ error: '送信回数の上限に達しました。しばらくしてから再度お試しください。' }, { status: 429 });
+    }
+
+    const body = await req.json().catch(() => null);
+    if (!body || typeof body !== 'object' || !isReasonablePayload(body)) {
+      return NextResponse.json({ error: '入力内容が正しくありません' }, { status: 400 });
+    }
+    const raw = body as Record<string, unknown>;
+    const text = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
+    const name = text(raw.name, 100);
+    const phone = text(raw.phone, 30);
+    const email = text(raw.email, 254);
+    const comment = text(raw.comment, 2000);
+    const segment = text(raw.segment, 20);
+    const answers = (raw.answers && typeof raw.answers === 'object' ? raw.answers : {}) as Record<number, AnswerValue>;
+
+    // 必須項目と形式のチェック（電話番号は全角・半角の数字が9桁以上あればよい。表記ゆれで問い合わせを落とさない）
+    const phoneDigits = phone.replace(/[^0-9０-９]/g, '').length;
+    if (!name || phoneDigits < 9 || (email && !isValidEmail(email))) {
+      return NextResponse.json({ error: '入力内容をご確認ください' }, { status: 400 });
+    }
 
     const answersText = QUESTION_LABELS.map(
       (label, i) => `  Q${i + 1}. ${label}：${formatAnswer(answers[i + 1])}`

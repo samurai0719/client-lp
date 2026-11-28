@@ -102,6 +102,23 @@ const takanagaSecurityHeaders = [
     value: "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests",
   },
 ];
+// adofy 系（コーポレート・LP・採用レスキュー・ドラテク・スカウト）と eleven のAIシミュレーター。
+// 外部への埋め込み（クリックジャッキング）を防ぎ、MIME推測・リファラ漏れ・不要なブラウザ機能を止める。
+// 計測タグ（Meta Pixel など）や決済への遷移を壊さないよう、script-src / form-action は指定しない。
+const siteSecurityHeaders = [
+  ...baseSecurityHeaders,
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  {
+    key: "Content-Security-Policy",
+    value: "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests",
+  },
+];
+const siteSecurityHosts = [
+  ...["adofy-site.com", "www.adofy-site.com", "lp.adofy-site.com", "saiyo.adofy-site.com", "doratech.adofy-site.com", "scout.adofy-site.com"],
+  "eleven-simulator.vercel.app",
+  "eleven-paint-simulator.vercel.app",
+];
 const adminSecurityHeaders = [
   ...baseSecurityHeaders,
   { key: "X-Frame-Options", value: "DENY" },
@@ -149,9 +166,20 @@ const nextConfig: NextConfig = {
         has: [{ type: "host" as const, value: host }],
         headers: takanagaSecurityHeaders,
       })),
+      ...siteSecurityHosts.map((host) => ({
+        source: "/:path*",
+        has: [{ type: "host" as const, value: host }],
+        headers: siteSecurityHeaders,
+      })),
       // 後に書いたものが優先されるため、管理画面はホスト共通設定より後に置く
       { source: "/admin/:path*", headers: adminSecurityHeaders },
       { source: "/admin", headers: adminSecurityHeaders },
+      { source: "/adofy-admin/:path*", headers: adminSecurityHeaders },
+      { source: "/adofy-admin", headers: adminSecurityHeaders },
+      {
+        source: "/api/adofy-admin/:path*",
+        headers: [...adminSecurityHeaders, { key: "Cache-Control", value: "no-store" }],
+      },
       {
         source: "/api/admin/:path*",
         headers: [...adminSecurityHeaders, { key: "Cache-Control", value: "no-store" }],
