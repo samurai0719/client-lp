@@ -6,11 +6,11 @@ export const COMPANY = {
   name: "adofy（アドフィー）",
   representative: "塚本 隼平",
   area: "岐阜県（全国対応）",
-  url: "https://adofy-site.com",
-  businessUrl: "https://adofy-site.com/business",
-  profileUrl: "https://adofy-site.com/profile",
-  articlesUrl: "https://adofy-site.com/articles",
-  contactUrl: "https://adofy-site.com/contact",
+  url: "https://www.adofy-site.com",
+  businessUrl: "https://www.adofy-site.com/business",
+  profileUrl: "https://www.adofy-site.com/profile",
+  articlesUrl: "https://www.adofy-site.com/articles",
+  contactUrl: "https://www.adofy-site.com/contact",
 } as const;
 
 export type Business = {

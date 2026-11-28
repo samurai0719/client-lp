@@ -10,7 +10,7 @@ export const LOG_TABLE = "hp_design_email_logs";
 
 /** メール内リンクの基準URL。プレビュー環境などで変えたいときは HP_DESIGN_SITE_URL で上書きする */
 export function siteUrl(): string {
-  return (process.env.HP_DESIGN_SITE_URL ?? "https://adofy-site.com").replace(/\/$/, "");
+  return (process.env.HP_DESIGN_SITE_URL ?? "https://www.adofy-site.com").replace(/\/$/, "");
 }
 
 export function newPublicToken(): string {

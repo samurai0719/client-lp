@@ -418,8 +418,8 @@ export const OPERATOR = {
   representative: "塚本 隼平",
   area: "岐阜県（全国対応）",
   email: "info@tenshoku-gpt.com",
-  siteUrl: "https://adofy-site.com",
-  profileUrl: "https://adofy-site.com/profile",
+  siteUrl: "https://www.adofy-site.com",
+  profileUrl: "https://www.adofy-site.com/profile",
   business:
     "成果報酬型広告運用、LP・ホームページ制作、広告クリエイティブ制作、採用支援（採用レスキュー）、トラックドライバー向け転職支援サービス「ドラテク」の運営",
 } as const;

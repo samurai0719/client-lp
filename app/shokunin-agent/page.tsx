@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   title: SITE.title,
   description: SITE.description,
   applicationName: "職人採用エージェント",
-  authors: [{ name: "adofy", url: "https://adofy-site.com" }],
+  authors: [{ name: "adofy", url: "https://www.adofy-site.com" }],
   openGraph: {
     type: "website",
     locale: "ja_JP",

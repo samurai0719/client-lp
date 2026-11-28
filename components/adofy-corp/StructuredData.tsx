@@ -17,7 +17,14 @@ export function CorpStructuredData({
       "@type": "Organization",
       "@id": `${CORP_SITE.url}/#organization`,
       name: CORP_SITE.name,
-      url: CORP_SITE.url,
+      alternateName: "アドフィー",
+      url: `${CORP_SITE.url}/`,
+      logo: {
+        "@type": "ImageObject",
+        url: `${CORP_SITE.url}${CORP_SITE.logo}`,
+        width: 512,
+        height: 512,
+      },
       description:
         "岐阜を拠点に、Web広告運用とLP・ホームページ制作を行うWebマーケティング会社。",
       areaServed: { "@type": "Country", name: "日本" },
@@ -38,8 +45,9 @@ export function CorpStructuredData({
     {
       "@type": "WebSite",
       "@id": `${CORP_SITE.url}/#website`,
-      url: CORP_SITE.url,
+      url: `${CORP_SITE.url}/`,
       name: CORP_SITE.name,
+      alternateName: ["アドフィー", "adofy-site.com"],
       inLanguage: "ja",
       publisher: { "@id": `${CORP_SITE.url}/#organization` },
     },
@@ -63,7 +71,7 @@ export function CorpStructuredData({
           "@type": "ListItem",
           position: 1,
           name: "ホーム",
-          item: CORP_SITE.url,
+          item: `${CORP_SITE.url}/`,
         },
         ...breadcrumb.map((b, i) => ({
           "@type": "ListItem",

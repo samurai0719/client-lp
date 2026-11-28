@@ -24,7 +24,7 @@ const takanagaHpPaths = [
 // ─────────────────────────────────────────────────────────────────────────────
 // adofy のURL構成（2サイトをホストで分ける）
 //
-//   adofy-site.com            = コーポレートサイト（メイン）
+//   www.adofy-site.com        = コーポレートサイト（メイン・正規URL。apex は Vercel で www へ308）
 //     /            → /adofy-corp
 //     /profile     → /adofy-corp/profile
 //     /works/xxx   → /adofy-corp/works/xxx
@@ -386,6 +386,12 @@ const nextConfig: NextConfig = {
 
     return {
       beforeFiles: [
+        // adofy-site.com: 共通の app/favicon.ico ではなく adofy のロゴを返す（ファイルより先に評価させる）。
+        // /og.png はOGP画像（app/adofy-corp/og-image のルートハンドラー）。
+        ...adofyHosts.flatMap((host) => [
+          { source: "/favicon.ico", has: [{ type: "host" as const, value: host }], destination: "/images/adofy-corp/favicon.ico" },
+          { source: "/og.png", has: [{ type: "host" as const, value: host }], destination: "/adofy-corp/og-image" },
+        ]),
         // 施工管理LP（レバジョブ）: public/sekou-kanri/index.html を静的配信する。
         // Next.jsのルート(app/sekou-kanri)は廃止し、納品HTMLをそのまま配信している。
         // /sekou-kanri/ は Next.js が /sekou-kanri へ308正規化するため、両方同じページになる。

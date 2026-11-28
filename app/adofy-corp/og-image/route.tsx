@@ -1,14 +1,14 @@
 import { ImageResponse } from "next/og";
 
 /**
- * コーポレートサイトのOGP画像をコードで生成する。
+ * コーポレートサイトのOGP画像をコードで生成する（公開URLは /og.png。next.config.ts の rewrite で割り当て）。
+ * opengraph-image 規約だと /adofy-corp/opengraph-image という内部URLが出力され、
+ * /adofy-corp/* → /* の301転送で404になるため、ルートハンドラーで配信している。
  * 日本語フォントを外部取得しないよう、描画は英字と図形のみに限定している。
  */
-export const alt = "adofy — Web advertising and website production";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+const size = { width: 1200, height: 630 };
 
-export default function OgImage() {
+export function GET() {
   return new ImageResponse(
     (
       <div

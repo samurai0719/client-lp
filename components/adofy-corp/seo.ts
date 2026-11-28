@@ -7,7 +7,12 @@ import type { Metadata } from "next";
 
 export const CORP_SITE = {
   name: "adofy",
-  url: "https://adofy-site.com",
+  /** 正規URL。apex(adofy-site.com)は Vercel のドメイン設定で www へ308転送している */
+  url: "https://www.adofy-site.com",
+  /** 検索結果のアイコン・構造化データのロゴ（public/images/adofy-corp） */
+  logo: "/images/adofy-corp/icon-512.png",
+  /** OGP画像。/og.png は next.config.ts の rewrite で /adofy-corp/og-image を配信する */
+  ogImage: "/og.png",
   /** 建設業特化LPは別ホストで運用している */
   lpUrl: "https://lp.adofy-site.com",
   locale: "ja_JP",
@@ -84,13 +89,14 @@ export const CORP_PAGES: Record<string, PageSeo> = {
 /** 各ページの metadata を組み立てる */
 export function corpMetadata(key: keyof typeof CORP_PAGES): Metadata {
   const page = CORP_PAGES[key];
-  const url = `${CORP_SITE.url}${page.path}`;
+  // トップは末尾スラッシュ付き（https://www.adofy-site.com/）で統一する
+  const url = page.path === "/" ? `${CORP_SITE.url}/` : `${CORP_SITE.url}${page.path}`;
 
   return {
     metadataBase: new URL(CORP_SITE.url),
     title: page.title,
     description: page.description,
-    alternates: { canonical: page.path },
+    alternates: { canonical: url },
     openGraph: {
       type: "website",
       locale: CORP_SITE.locale,
@@ -98,11 +104,13 @@ export function corpMetadata(key: keyof typeof CORP_PAGES): Metadata {
       title: page.title,
       description: page.description,
       url,
+      images: [{ url: CORP_SITE.ogImage, width: 1200, height: 630, alt: "adofy" }],
     },
     twitter: {
       card: "summary_large_image",
       title: page.title,
       description: page.description,
+      images: [CORP_SITE.ogImage],
     },
     robots: {
       index: true,

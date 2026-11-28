@@ -11,7 +11,7 @@ import { ARTICLES } from "@/components/adofy-corp/articles/content";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const pages: MetadataRoute.Sitemap = Object.values(CORP_PAGES).map((p) => ({
-    url: `${CORP_SITE.url}${p.path}`,
+    url: p.path === "/" ? `${CORP_SITE.url}/` : `${CORP_SITE.url}${p.path}`,
     lastModified: now,
     changeFrequency: p.path === "/" ? "weekly" : "monthly",
     priority: p.priority,

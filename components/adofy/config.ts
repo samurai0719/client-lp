@@ -33,7 +33,7 @@ export const SITE = {
   description:
     "建設業に特化した集客ホームページ制作。外構工事の集客実績と広告運用のノウハウをもとに、問い合わせ・受注・採用につながるホームページを制作します。",
   /** コーポレートサイト（メインドメイン） */
-  url: "https://adofy-site.com",
+  url: "https://www.adofy-site.com",
   /** 建設業特化LP（サブドメイン）。LPのOGP・構造化データが参照する */
   lpUrl: "https://lp.adofy-site.com",
 } as const;
