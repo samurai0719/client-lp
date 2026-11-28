@@ -2,7 +2,6 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { LogoMark } from "../ui";
 import { wasSubmitted, clearSubmitted } from "./formState";
 
 /** フォーム入力に集中できる簡易ヘッダー */
@@ -11,10 +10,7 @@ export function ContactHeader() {
     <header className="adf-cheader">
       <div className="adf-cheader__inner">
         <Link href="/adofy" className="adf-logo" aria-label="adofy トップへ">
-          <LogoMark className="adf-logo__mark" />
-          <span className="adf-logo__text">
-            adof<b>y</b>
-          </span>
+          <img className="adf-logo__img" src="/images/adofy/logo-white.png" alt="adofy" width={1200} height={293} />
         </Link>
         <span className="adf-cheader__time">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

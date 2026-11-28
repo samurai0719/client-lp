@@ -3,7 +3,6 @@ import "../../adofy/adofy.css";
 import "../free-design.css";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/check";
-import { LogoMark } from "@/components/adofy/ui";
 import PurchaseForm from "./PurchaseForm";
 import FreeDesignFooter from "@/components/adofy/free-design/FreeDesignFooter";
 
@@ -44,10 +43,8 @@ export default async function PurchasePage({ searchParams }: { searchParams: Pro
     <div className="adf-lp fd-page">
       <header className="fd-header">
         <span className="fd-header__logo">
-          <span className="fd-header__mark">
-            <LogoMark className="fd-header__svg" />
-          </span>
-          <span className="fd-header__name">adofy</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="fd-header__brand" src="/images/adofy/logo.png" alt="adofy" width={1200} height={293} />
         </span>
       </header>
       <main className="fd-main fd-purchase">

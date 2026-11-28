@@ -43,10 +43,7 @@ export function LogoMark({ className, drawable = false }: { className?: string; 
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`adf-logo ${className}`}>
-      <LogoMark className="adf-logo__mark" />
-      <span className="adf-logo__text">
-        adof<b>y</b>
-      </span>
+      <img className="adf-logo__img" src="/images/adofy/logo-white.png" alt="adofy" width={1200} height={293} />
     </span>
   );
 }

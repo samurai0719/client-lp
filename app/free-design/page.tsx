@@ -33,11 +33,8 @@ export default function FreeDesignPage() {
       <LpInsightTracker projectId={ADOFY_LP_PROJECT_ID} />
       <header className="fd-header">
         <Link href="/adofy" className="fd-header__logo" aria-label="adofy トップへ">
-          <span className="fd-header__mark">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/adofy/free-design/robot-face.webp" alt="" width={36} height={36} />
-          </span>
-          <span className="fd-header__name">adofy</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="fd-header__brand" src="/images/adofy/logo.png" alt="adofy" width={1200} height={293} />
         </Link>
         <span className="fd-header__tag">ホームページ無料作成</span>
       </header>

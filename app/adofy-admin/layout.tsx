@@ -7,6 +7,10 @@ export const metadata: Metadata = {
   title: "adofy 管理画面",
   description: "adofyの無料相談・顧客管理",
   robots: { index: false, follow: false },
+  icons: {
+    icon: [{ url: "/images/adofy-corp/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: { url: "/images/adofy-corp/apple-touch-icon.png", sizes: "180x180" },
+  },
 };
 
 export default function AdofyAdminRootLayout({

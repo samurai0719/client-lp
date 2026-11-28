@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 import { SITE } from "./config";
-import { LogoMark } from "./ui";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    ▼▼▼ 運営者情報 / プライバシーポリシー / 特定商取引法に基づく表記 差し替え箇所 ▼▼▼
@@ -86,10 +85,7 @@ export default function Footer() {
         <div className="adf-footer__top">
           <div>
             <span className="adf-logo">
-              <LogoMark className="adf-logo__mark" />
-              <span className="adf-logo__text">
-                adof<b>y</b>
-              </span>
+              <img className="adf-logo__img" src="/images/adofy/logo-white.png" alt="adofy" width={1200} height={293} />
             </span>
             <p className="adf-footer__desc">{SITE.description}</p>
           </div>

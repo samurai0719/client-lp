@@ -1197,3 +1197,9 @@
     animation: none;
   }
 }
+
+/* adofy ロゴ（画像） */
+.ax-logo { align-items: center; }
+.ax-logo__img { display: block; height: max(30px, calc(44 * var(--ax-u))); width: auto; }
+.ax-footer__brand img { display: block; height: 38px; width: auto; }
+@media (max-width: 600px) { .ax-logo__img { height: 32px; } }

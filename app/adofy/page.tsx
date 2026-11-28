@@ -40,6 +40,15 @@ export const metadata: Metadata = {
     description: SITE.description,
   },
   robots: { index: true, follow: true },
+  // 検索結果・ブラウザのアイコンを adofy のロゴにする（/favicon.ico も next.config.ts で差し替え）
+  icons: {
+    icon: [
+      { url: "/images/adofy-corp/icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/images/adofy-corp/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/images/adofy-corp/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: { url: "/images/adofy-corp/apple-touch-icon.png", sizes: "180x180" },
+  },
 };
 
 /**

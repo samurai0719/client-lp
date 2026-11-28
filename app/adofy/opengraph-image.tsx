@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 /**
@@ -8,7 +10,9 @@ export const alt = "adofy — websites that bring inquiries to construction busi
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OgImage() {
+export default async function OgImage() {
+  // ロゴ（白抜き）はビルド時に public から読み込む
+  const logo = `data:image/png;base64,${(await readFile(join(process.cwd(), "public/images/adofy/logo-white.png"))).toString("base64")}`;
   return new ImageResponse(
     (
       <div
@@ -35,20 +39,8 @@ export default function OgImage() {
           }}
         />
 
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 18 }}>
-          <div style={{ fontSize: 128, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1 }}>
-            adofy
-          </div>
-          <div
-            style={{
-              display: "flex",
-              width: 22,
-              height: 22,
-              background: "#f26a1b",
-              marginBottom: 16,
-            }}
-          />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+        <img src={logo} width={560} height={137} style={{ marginBottom: 8 }} />
 
         <div
           style={{

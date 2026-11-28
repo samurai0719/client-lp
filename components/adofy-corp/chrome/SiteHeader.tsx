@@ -73,10 +73,8 @@ export default function SiteHeader() {
       ) : (
         <header className={`ah-header${scrolled || !isHome ? " is-scrolled" : ""}`}>
           <Link href="/" className="ah-logo" aria-label="adofy トップへ">
-            <span className="ah-logo__mark">ad</span>
-            <span className="ah-logo__text">
-              adofy<small>Creative Marketing Company</small>
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="ah-logo__img" src="/images/adofy/logo.png" alt="adofy" width={1200} height={293} />
           </Link>
           <nav className="ah-nav" aria-label="メニュー">
             {NAV.map((n) => (

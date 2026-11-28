@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NAV } from "./config";
 import { isFinePointer, onScrollFrame, prefersReducedMotion } from "./motion";
-import { CtaButton, Logo, LogoMark } from "./ui";
+import { CtaButton, Logo } from "./ui";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    ページ骨格まわりのクライアント要素
@@ -52,8 +52,10 @@ export function Loader() {
   return (
     <div ref={ref} className="adf-loader" aria-hidden="true">
       <div className="adf-loader__inner">
-        <LogoMark className="adf-loader__mark" drawable />
-        <span className="adf-loader__word">adofy</span>
+        <img className="adf-loader__mark" src="/images/adofy/logo-mark-white.png" alt="" width={600} height={513} />
+        <span className="adf-loader__word">
+          <img src="/images/adofy/logo-white.png" alt="adofy" width={1200} height={293} />
+        </span>
         <span className="adf-loader__bar">
           <i />
         </span>
@@ -178,10 +180,7 @@ export function Header() {
       <header ref={headerRef} className="adf-header">
         <div className="adf-header__inner">
           <a href="#top" className="adf-logo" aria-label="adofy トップへ">
-            <LogoMark className="adf-logo__mark" />
-            <span className="adf-logo__text">
-              adof<b>y</b>
-            </span>
+            <img className="adf-logo__img" src="/images/adofy/logo-white.png" alt="adofy" width={1200} height={293} />
           </a>
 
           <nav className="adf-nav" aria-label="メインナビゲーション">

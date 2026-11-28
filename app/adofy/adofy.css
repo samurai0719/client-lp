@@ -2103,3 +2103,10 @@
   /* FAQは瞬時に開閉 */
   .adf-faq__panel { transition: none !important; }
 }
+
+/* adofy ロゴ（画像）。濃紺の背景には白抜き版を使う */
+.adf-logo__img { display: block; height: 26px; width: auto; }
+@media (min-width: 768px) { .adf-logo__img { height: 30px; } }
+.adf-loader__mark { width: 84px; height: auto; color: inherit; opacity: 0; animation: adf-pop-in 0.5s var(--adf-ease) 0.1s forwards; }
+.adf-loader__word { letter-spacing: 0; }
+.adf-loader__word img { display: block; height: 30px; width: auto; }

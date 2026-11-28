@@ -271,7 +271,8 @@ export default function HomeContent() {
             </div>
 
             <Link href="/" className="ax-logo" aria-label="adofy トップへ">
-              <b lang="en">adofy</b>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="ax-logo__img" src="/images/adofy/logo.png" alt="adofy" width={1200} height={293} />
               <small>岐阜発・全国対応</small>
             </Link>
             <nav className="ax-hero__nav" aria-label="ページ内メニュー">
@@ -611,7 +612,10 @@ export default function HomeContent() {
       <footer className="ax-footer">
         <div className="ax-wrap">
           <div className="ax-footer__top">
-            <p className="ax-footer__brand" lang="en">adofy</p>
+            <p className="ax-footer__brand">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/adofy/logo-white.png" alt="adofy" width={1200} height={293} />
+            </p>
             <p>岐阜発・全国対応のWebマーケティング会社。広告運用・LP制作・HP制作・クリエイティブ制作・採用支援を行っています。</p>
           </div>
           <nav className="ax-footer__nav" aria-label="フッターメニュー">

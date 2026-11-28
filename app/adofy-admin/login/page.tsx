@@ -64,9 +64,8 @@ export default function AdofyLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#0b2440]">
-            <span className="text-xl font-bold text-white">ad</span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/adofy-corp/icon-192.png" alt="adofy" width={64} height={64} className="mx-auto mb-4 h-16 w-16 rounded-2xl shadow-sm" />
           <h1 className="text-xl font-bold text-slate-900">adofy 管理画面</h1>
           <p className="mt-1 text-sm text-slate-500">管理者ログイン</p>
         </div>

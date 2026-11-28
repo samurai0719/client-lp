@@ -887,3 +887,6 @@
 @media (min-width: 640px) {
   .fd-achv__value b { font-size: 36px; }
 }
+
+/* adofy ロゴ（画像） */
+.fd-header__brand { display: block; height: 24px; width: auto; }

@@ -392,6 +392,12 @@ const nextConfig: NextConfig = {
           { source: "/favicon.ico", has: [{ type: "host" as const, value: host }], destination: "/images/adofy-corp/favicon.ico" },
           { source: "/og.png", has: [{ type: "host" as const, value: host }], destination: "/adofy-corp/og-image" },
         ]),
+        // lp.adofy-site.com（建設業LP）も adofy のロゴを返す
+        ...adofyLpHosts.map((host) => ({
+          source: "/favicon.ico",
+          has: [{ type: "host" as const, value: host }],
+          destination: "/images/adofy-corp/favicon.ico",
+        })),
         // 施工管理LP（レバジョブ）: public/sekou-kanri/index.html を静的配信する。
         // Next.jsのルート(app/sekou-kanri)は廃止し、納品HTMLをそのまま配信している。
         // /sekou-kanri/ は Next.js が /sekou-kanri へ308正規化するため、両方同じページになる。

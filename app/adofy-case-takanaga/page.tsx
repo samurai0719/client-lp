@@ -5,7 +5,6 @@ import "./case.css";
 
 import AdofyMetaPixel from "@/components/analytics/AdofyMetaPixel";
 import LpInsightTracker, { ADOFY_LP_PROJECT_ID } from "@/components/analytics/LpInsightTracker";
-import { LogoMark } from "@/components/adofy/ui";
 import { REFUND_DISCLOSURE, RESULTS, RESULTS_NOTE, SITE } from "@/components/adofy/config";
 import { ArticleCta, ScreenShot, StickyCta, ZoomableImage } from "./ArticleParts";
 import {
@@ -78,10 +77,7 @@ export default async function AdofyCaseTakanagaPage({
 
       <header className="adf-case__header">
         <a href="/adofy" className="adf-logo" aria-label="adofy トップへ">
-          <LogoMark className="adf-logo__mark" />
-          <span className="adf-logo__text">
-            adof<b>y</b>
-          </span>
+          <img className="adf-logo__img" src="/images/adofy/logo-white.png" alt="adofy" width={1200} height={293} />
         </a>
       </header>
 
